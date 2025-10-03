@@ -1,293 +1,301 @@
-# 📱 AI-Powered Mobile App Workflow for Solo Designers
+# ✨ Designer's Life Tracker
 
-> Transform Cursor into your AI development partner for building mobile apps with **Expo + React Native + NativeWind**
+> A calm, reflective journaling app that helps designers discover what truly motivates and drains them in their work.
 
-## 🎯 Who This Is For
+**Reflect. Discover. Grow.**
 
-**Solo designers** with basic HTML/CSS skills who want to build mobile apps using **Cursor + AI**. No deep coding knowledge required!
+---
+
+## 🎯 What Is This?
+
+Designer's Life Tracker is a web-based journaling app built for UX/UI designers and creative professionals. In just 3 minutes a day, you can:
+
+- Log what you worked on across multiple projects
+- Track your emotional responses to different types of work
+- Discover patterns in what energizes or drains you
+- Get insights and suggestions for improving work satisfaction
+
+The app uses a cozy, minimal design with soft colors and gentle interactions to make daily reflection feel effortless and enjoyable.
 
 ---
 
 ## 🚀 Quick Start
 
-1. **Clone or download this workflow template**
-2. **Open in Cursor**
-3. **Follow the 10-step workflow below**
-4. **Start building your app with AI assistance!**
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
 
----
-
-## 🔟 The 10-Step Smart Workflow
-
-### 1. 💡 **App Idea + User Goal**
-
-Start by sketching your app idea and defining 2–3 core features.
-
-**🤖 AI Prompt:**
-```
-I want to build a mobile app that helps users [track workouts / manage mood / etc]. 
-Help me brainstorm features, user goals, and name ideas.
-```
-
-### 2. 📄 **Create Your PRD**
-
-Open `docs/PRD.md` and fill out the template with:
-- App Overview
-- Key Features (as User Stories)  
-- Acceptance Criteria
-- Design or Tech Notes
-
-**🤖 AI Prompt:**
-```
-Help me generate a PRD for a mobile app that lets users [X]. 
-Include overview, user stories, and success criteria.
-```
-
-### 3. ✅ **Break It into Tasks**
-
-Open `tasks/todo.md` and convert your PRD into actionable tasks.
-
-**🤖 AI Prompt:**
-```
-Convert the PRD into a task list with checkboxes. 
-Include UI tasks, logic tasks, and setup tasks.
-```
-
-**Task Tags:** `[todo]` `[in-progress]` `[review]` `[done]` `[blocked]`
-
-### 4. 🎨 **Design the Screen** *(Optional)*
-
-Use Figma or sketch screen layouts. Keep it simple, 1 screen at a time.
-
-**🤖 AI Prompt:**
-```
-Give me tips for designing a clean [workout tracking / mood logging / etc] UI in mobile format.
-```
-
-### 5. 🛠 **Start a Task with Cursor**
-
-Pick one task from your list and get AI to implement it.
-
-**🤖 AI Prompt:**
-```
-Let's start the task: "[Task Name]"
-Requirements:
-- [Requirement 1]
-- [Requirement 2]
-- [Requirement 3]
-Use React Native + Expo + NativeWind for styling.
-```
-
-### 6. 🤖 **Implement UI + Logic Step-by-Step**
-
-Break each task into smaller steps and review each part.
-
-**🤖 AI Prompts:**
-```
-First, create the basic layout.
-```
-```
-Now, add the save functionality using AsyncStorage.
-```
-```
-Now, show success/failure message.
-```
-
-### 7. 🧪 **Test the Feature**
-
-After AI finishes a feature:
-- Test manually on Expo Go
-- Verify acceptance criteria from PRD
-
-**🤖 AI Prompt:**
-```
-What edge cases should I test for this [form / screen / feature]?
-```
-
-### 8. 🔍 **Review + Mark Complete**
-
-Once tested and working:
-
-**🤖 AI Prompt:**
-```
-✅ This task is complete and approved. 
-Let's move on to the next task: "[Next Task Name]"
-```
-
-If there are issues:
-```
-This isn't working. Here's the error [...]. Help me fix it.
-```
-
-### 9. 🚀 **GitHub + Version Control**
+### Installation
 
 ```bash
-git init
-git add .
-git commit -m "Initial commit"
+# Clone the repository
+git clone <your-repo-url>
+cd designer-tracker
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-Create GitHub repo and push. Link to Vercel for web previews if needed.
+The app will open at `http://localhost:5173`
 
-### 10. 📦 **Polish + Share**
+### Build for Production
 
-- Move completed tasks to `tasks/archive.md`
-- Ask AI to clean code and add comments
-- Share QR code from Expo Go
+```bash
+# Create optimized production build
+npm run build
 
-**🤖 AI Prompt:**
-```
-Review the codebase and suggest simple improvements or refactors.
-```
-
----
-
-## 🔁 **Repeat This Loop**
-
-1. **Pick** next task
-2. **Design** (if needed)  
-3. **AI implements**
-4. **You test**
-5. **Review/approve**
-6. **Archive & continue**
-
----
-
-## 💬 **AI Prompt Library**
-
-### 🚀 **Starting Tasks**
-```
-Let's start this task: "[task name]"
-Here's what it should include: [requirements]
-Use React Native + Expo + NativeWind.
-```
-
-### 🏗️ **Architecture Questions**
-```
-How should we structure this [screen/component/feature]?
-```
-
-### 🧪 **Testing Guidance**
-```
-What are some key test cases for this feature?
-```
-```
-Generate test scenarios for [specific functionality].
-```
-
-### 🐛 **Bug Fixes**
-```
-This code throws an error: [error message]. Help me fix it.
-```
-```
-The [feature] isn't working as expected. Here's what's happening: [description]
-```
-
-### ✅ **Task Completion**
-```
-This task is complete. Approved. Move to next task: [task name]
-```
-
-### 🎨 **Design Help**
-```
-Help me design a clean, modern UI for [specific screen/feature].
-```
-```
-What are some mobile UX best practices for [specific interaction]?
-```
-
-### 🔧 **Code Quality**
-```
-Review this code and suggest improvements for readability and performance.
-```
-```
-Help me refactor this component to be more reusable.
+# Preview production build locally
+npm run preview
 ```
 
 ---
 
-## 📁 **Folder Structure**
+## 🛠️ Tech Stack
+
+- **⚡ Vite** - Fast build tool and dev server
+- **⚛️ React 18** - UI framework
+- **📘 TypeScript** - Type safety
+- **🎨 Tailwind CSS** - Utility-first styling
+- **💾 localStorage** - Local data persistence
+- **🎭 Lucide React** - Beautiful icons
+
+No backend required - all data is stored locally in your browser for privacy.
+
+---
+
+## 📁 Project Structure
 
 ```
-/your-app-name
-├── 📄 README.md                    # This workflow guide
+/designer-tracker
+├── 📄 index.html              # Entry HTML
+├── 📄 package.json            # Dependencies and scripts
+├── 📄 vite.config.ts          # Vite configuration
+├── 📄 tailwind.config.js      # Tailwind CSS configuration
+├── 📄 tsconfig.json           # TypeScript configuration
+│
+├── 📁 src/
+│   ├── 📄 main.tsx            # App entry point
+│   ├── 📄 App.tsx             # Main app component & routing
+│   ├── 📄 index.css           # Global styles
+│   │
+│   ├── 📁 components/         # React components
+│   │   ├── Dashboard.tsx      # Main dashboard
+│   │   ├── AddEntryForm.tsx   # Quick entry form
+│   │   ├── EntryList.tsx      # History view
+│   │   ├── EntryDetail.tsx    # Individual entry view
+│   │   ├── InsightsScreen.tsx # Analytics & patterns
+│   │   ├── ProjectSelection.tsx
+│   │   ├── TaskEntry.tsx
+│   │   ├── EmotionSelection.tsx
+│   │   ├── ReviewReflection.tsx
+│   │   └── Onboarding*.tsx    # Onboarding flow
+│   │
+│   ├── 📁 types/
+│   │   └── index.ts           # TypeScript type definitions
+│   │
+│   └── 📁 utils/
+│       ├── storage.ts         # localStorage helpers
+│       ├── dataHelpers.ts     # Data transformation
+│       ├── dateUtils.ts       # Date formatting
+│       ├── suggestionEngine.ts # Insight generation
+│       └── validation.ts      # Form validation
+│
 ├── 📁 docs/
-│   └── 📄 PRD.md                   # Product Requirements Document
-├── 📁 tasks/
-│   ├── 📄 todo.md                  # Active task management
-│   └── 📄 archive.md               # Completed tasks log
-├── 📁 src/                         # Your app source code
-│   ├── 📁 components/              # Reusable UI components
-│   ├── 📁 screens/                 # App screens
-│   ├── 📁 utils/                   # Helper functions
-│   └── 📁 types/                   # TypeScript types
-├── 📄 package.json                 # Dependencies
-├── 📄 app.json                     # Expo configuration
-└── 📄 tailwind.config.js           # NativeWind configuration
+│   ├── PRD.md                 # Product requirements
+│   ├── design-style.md        # Design system
+│   └── workflow.md            # Development workflow
+│
+└── 📁 tasks/
+    ├── todo.md                # Active tasks
+    └── archive.md             # Completed tasks
 ```
 
 ---
 
-## 🛠️ **Tech Stack**
+## ✨ Key Features
 
-- **📱 React Native** - Cross-platform mobile development
-- **🚀 Expo** - Development platform and tools
-- **🎨 NativeWind** - Tailwind CSS for React Native
-- **💾 AsyncStorage** - Local data persistence
-- **🧭 React Navigation** - Screen navigation
-- **📝 TypeScript** - Type safety (recommended)
+### 1. **Daily Reflection Flow**
+A guided 3-minute flow to log your work:
+- Select projects you worked on
+- Describe tasks for each project
+- Choose emotions (multiple allowed)
+- Add optional notes
+- Review and save
+
+### 2. **Multi-Project Task Logging**
+- Create and manage multiple projects
+- Color-code your projects
+- Track tasks across different contexts
+- Edit or delete past entries
+
+### 3. **Emotion Tracking**
+Choose from 5 emotion levels:
+- 😫 Drained (1)
+- 😕 Frustrated (2)
+- 😐 Neutral (3)
+- 🙂 Energized (4)
+- 🤩 Excited (5)
+
+### 4. **Insights Dashboard**
+- Weekly and monthly statistics
+- Emotion distribution charts
+- Project satisfaction scores
+- Task frequency analysis
+- Warm, encouraging suggestions
+
+### 5. **Smooth Onboarding**
+- Welcome flow with app introduction
+- User profile setup
+- First project creation
+- Guided first entry
 
 ---
 
-## 🎯 **Success Tips**
+## 🎨 Design System
 
-### ✅ **Do This:**
-- Work on **one feature at a time**
-- **Test frequently** on real devices via Expo Go
-- **Break large tasks** into smaller steps
-- **Use the task tags** to track progress
-- **Ask AI for specific help** rather than vague questions
-- **Review and approve** each step before moving on
+**Color Palette:**
+- Background: Soft cream (`#FEFBEA`)
+- Text: Gentle gray (`#5E5E5E`)
+- Primary CTA: Warm yellow (`#FFD678`)
+- Supporting: Light grays and soft emotion colors
 
-### ❌ **Avoid This:**
-- Building multiple features simultaneously
-- Skipping the testing phase
-- Making tasks too large or vague
-- Not updating task status regularly
-- Asking AI to build everything at once
+**Typography:**
+- Headings: Playfair Display (serif)
+- Body: Inter (sans-serif)
+- Weights: 300-500 (light to medium)
+
+**Components:**
+- Soft rounded corners (12-24px)
+- Generous padding and whitespace
+- Smooth transitions and micro-interactions
+- Mobile-responsive design
+
+See `docs/design-style.md` for complete specifications.
 
 ---
 
-## 🆘 **Troubleshooting**
+## 📝 Available Scripts
 
-### **Expo Issues**
 ```bash
-# Clear Expo cache
-expo start --clear
+# Development server with hot reload
+npm run dev
 
-# Reset Metro bundler
-npx react-native start --reset-cache
+# Build for production (runs vite build only)
+npm run build
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
 ```
 
-### **NativeWind Not Working**
-- Check `tailwind.config.js` configuration
-- Ensure `nativewind/babel` is in `babel.config.js`
-- Restart Expo development server
+---
 
-### **AsyncStorage Issues**
+## 🔒 Privacy & Data
+
+**All data stays on your device.** The app uses browser localStorage to save:
+- Your entries and reflections
+- Project information
+- User profile (name, design focus)
+- Onboarding status
+
+**No data is sent to any server.** You can export your data anytime by checking the browser's localStorage.
+
+---
+
+## 🐛 Troubleshooting
+
+### Development server won't start
 ```bash
-# Install AsyncStorage
-npx expo install @react-native-async-storage/async-storage
+# Clear node_modules and reinstall
+rm -rf node_modules package-lock.json
+npm install
+npm run dev
 ```
 
+### Build errors
+```bash
+# Check TypeScript errors
+npx tsc --noEmit
+
+# Clear Vite cache
+rm -rf node_modules/.vite
+npm run dev
+```
+
+### Styles not applying
+- Check that Tailwind CSS is properly configured in `tailwind.config.js`
+- Verify PostCSS configuration in `postcss.config.js`
+- Restart the dev server
+
 ---
 
-## 🎉 **You're Ready!**
+## 🚀 Deployment
 
-This workflow turns Cursor into your personal AI development partner. Start with step 1, follow the prompts, and build amazing mobile apps!
+### Deploy to Vercel
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-**Happy building! 🚀**
+# Deploy
+vercel
+```
+
+### Deploy to Netlify
+```bash
+# Build command: npm run build
+# Publish directory: dist
+```
+
+The app is a static site - the `dist` folder contains everything needed for deployment.
 
 ---
 
-*Created for solo designers who want to build mobile apps with AI assistance*
+## 📚 Documentation
+
+- **PRD**: See `docs/PRD.md` for complete product requirements
+- **Design System**: See `docs/design-style.md` for UI/UX specifications
+- **Workflow**: See `docs/workflow.md` for development process
+
+---
+
+## 🎯 Development Workflow
+
+This project was built using AI-assisted development with Cursor. The workflow:
+
+1. **Plan** - Define features in `docs/PRD.md`
+2. **Task** - Break down into tasks in `tasks/todo.md`
+3. **Build** - Implement features with AI assistance
+4. **Test** - Verify in browser
+5. **Archive** - Move completed tasks to `tasks/archive.md`
+
+---
+
+## 🤝 Contributing
+
+This is a personal project, but suggestions and feedback are welcome! Feel free to:
+- Open issues for bugs or feature requests
+- Submit PRs for improvements
+- Share your experience using the app
+
+---
+
+## 📄 License
+
+MIT License - feel free to use this project as inspiration for your own reflective journaling app!
+
+---
+
+## 🌟 About
+
+Built by designers, for designers. This app emerged from a personal need to understand patterns in creative work and make more informed career decisions.
+
+**Happy reflecting! ✨**
+
+---
+
+*Last Updated: October 2025*
