@@ -162,6 +162,15 @@ export const ProjectStorage = {
     ProjectStorage.saveProject(defaultProject)
     return defaultProject
   },
+
+  // Clear all projects
+  clearProjects: (): void => {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.PROJECTS)
+    } catch (error) {
+      console.error('Error clearing projects from localStorage:', error)
+    }
+  },
 };
 
 /**

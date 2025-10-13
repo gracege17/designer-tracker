@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ArrowLeft, Heart, Check } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { EmotionLevel, EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
 
@@ -40,68 +40,40 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
     : null
 
   return (
-    <div className="flex flex-col min-h-screen bg-background-light">
+    <div className="flex flex-col min-h-screen bg-[#F5F6EB]">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-background-light/95 backdrop-blur-sm z-10 border-b border-slate-100">
-        <div className="flex items-center justify-between p-4">
+      <header className="sticky top-0 bg-[#F5F6EB] z-10 p-5 border-b border-slate-200">
+        <div className="max-w-md mx-auto flex items-center justify-between">
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95"
+            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
-            <ArrowLeft size={20} className="text-slate-700" />
+            <ArrowLeft size={24} className="text-slate-900" />
           </button>
           
           {/* Current Project Name */}
           {currentProject && (
-            <div className="flex items-center gap-2">
-              <div
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: currentProject.color }}
-              />
-              <span className="text-sm font-medium text-slate-700">{currentProject.name}</span>
-            </div>
+            <span className="text-[16px] font-bold text-slate-900">{currentProject.name}</span>
           )}
 
-          <div className="w-8"></div>
+          <div className="w-10"></div>
         </div>
-
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow px-6 pt-8 pb-4">
-        {/* Title Section with Selected Count */}
+      <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
+        {/* Title Section */}
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-3">
-            <Heart size={24} className="text-primary" />
-            <h2 className="text-2xl font-bold text-slate-900">
-              How did it make you feel?
-            </h2>
-          </div>
-          
-          {/* Selected Count - Above description */}
-          {selectedEmotions.length > 0 ? (
-            <p className="text-sm font-medium text-slate-600 emotion-bounce">
-              <Check size={14} className="text-primary inline mr-1.5 align-text-bottom" />
-              {selectedEmotions.length} emotion{selectedEmotions.length > 1 ? 's' : ''} selected
-            </p>
-          ) : (
-            <p className="text-slate-600">
-              Choose one or more emotions
-            </p>
-          )}
+          <h2 className="text-[32px] font-bold text-slate-900 mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+            How did it make you feel?
+          </h2>
+          <p className="text-[16px] text-slate-700">
+            Describe what you accomplished today
+          </p>
         </div>
 
-        {/* Task Preview (Optional) */}
-        {initialTaskDescription && (
-          <div className="mb-6 p-4 bg-white rounded-xl border border-slate-200">
-            <p className="text-sm text-slate-600 line-clamp-2">
-              "{initialTaskDescription}"
-            </p>
-          </div>
-        )}
-
-        {/* Emotions Grid - 3 columns, 4 rows */}
-        <div className="grid grid-cols-3 gap-3">
+        {/* Emotions Grid - 4 columns */}
+        <div className="grid grid-cols-4 gap-3">
           {(Object.keys(EMOTIONS) as EmotionLevel[]).map((emotionLevel) => {
             const emotion = EMOTIONS[emotionLevel]
             const isSelected = selectedEmotions.includes(emotionLevel)
@@ -111,40 +83,22 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
                 key={emotionLevel}
                 onClick={() => handleEmotionToggle(emotionLevel)}
                 className={`
-                  relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-200
+                  flex flex-col items-center justify-center py-4 px-2 rounded-xl transition-all duration-200
                   ${isSelected
-                    ? 'bg-primary/10 border-primary shadow-lg shadow-primary/10 scale-105 pulse-ring'
-                    : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-md hover:scale-105 active:scale-95'
+                    ? 'bg-slate-400 scale-105'
+                    : 'bg-[#D1D5DB] hover:bg-slate-300 active:scale-95'
                   }
                 `}
               >
-                {/* Selection Checkmark */}
-                {isSelected && (
-                  <div className="absolute top-2 right-2 w-5 h-5 bg-primary rounded-full flex items-center justify-center emotion-bounce">
-                    <Check size={12} className="text-white" strokeWidth={3} />
-                  </div>
-                )}
-
-                {/* Emoji - Larger and animated */}
-                <span className={`
-                  text-4xl mb-2 transition-all duration-300
-                  ${isSelected ? 'scale-125 rotate-12' : 'scale-100 rotate-0 hover:scale-110'}
-                `}>
-                  {emotion.emoji}
-                </span>
+                {/* Emoji circle placeholder - will show actual emoji */}
+                <div className="w-12 h-12 rounded-full bg-white/30 mb-2 flex items-center justify-center">
+                  <span className="text-2xl">{emotion.emoji}</span>
+                </div>
 
                 {/* Label */}
-                <span className={`
-                  text-sm font-medium transition-colors
-                  ${isSelected ? 'text-primary' : 'text-slate-700'}
-                `}>
+                <span className="text-[11px] font-medium text-slate-900 text-center">
                   {emotion.label}
                 </span>
-
-                {/* Selection Glow */}
-                {isSelected && (
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
-                )}
               </button>
             )
           })}
@@ -152,23 +106,25 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
       </main>
 
       {/* Sticky Bottom CTA */}
-      <footer className="sticky bottom-0 bg-mono-50/95 backdrop-blur-sm border-t border-mono-200 p-6">
-        <button
-          onClick={handleNext}
-          disabled={selectedEmotions.length === 0}
-          className={`
-            w-full py-4 px-6 rounded-xl font-normal text-lg transition-all duration-200
-            ${selectedEmotions.length > 0
-              ? 'bg-mono-900 text-mono-50 hover:bg-mono-800 active:scale-[0.98]'
-              : 'bg-mono-200 text-mono-400 cursor-not-allowed'
+      <footer className="sticky bottom-0 bg-[#F5F6EB] p-5">
+        <div className="max-w-md mx-auto">
+          <button
+            onClick={handleNext}
+            disabled={selectedEmotions.length === 0}
+            className={`
+              w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
+              ${selectedEmotions.length > 0
+                ? 'bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98]'
+                : 'bg-[#999] text-white cursor-not-allowed'
+              }
+            `}
+          >
+            {selectedEmotions.length > 0
+              ? 'Continue'
+              : 'Select at least one emotion'
             }
-          `}
-        >
-          {selectedEmotions.length > 0
-            ? 'Continue'
-            : 'Select at least one emotion'
-          }
-        </button>
+          </button>
+        </div>
       </footer>
     </div>
   )

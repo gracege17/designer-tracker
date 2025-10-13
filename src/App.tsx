@@ -11,6 +11,7 @@ import TaskNotes from './components/TaskNotes'
 import ReviewReflection from './components/ReviewReflection'
 import InsightsScreen from './components/InsightsScreen'
 import EditTask from './components/EditTask'
+import Settings from './components/Settings'
 import OnboardingAuth from './components/OnboardingAuth'
 import OnboardingUserInfo, { UserProfileData } from './components/OnboardingUserInfo'
 import OnboardingFirstProject from './components/OnboardingFirstProject'
@@ -21,7 +22,7 @@ import { Entry, Project, TaskType, EmotionLevel, Task } from './types'
 import { EntryStorage, ProjectStorage, OnboardingStorage, UserProfileStorage } from './utils/storage'
 import { createTodayEntry, getTodayDateString, generateId } from './utils/dataHelpers'
 
-type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask'
+type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings'
 
 interface TaskReview {
   id: string
@@ -581,10 +582,10 @@ function App() {
         return (
           <InsightsScreen
             entries={entries}
-            onBack={() => setCurrentView('dashboard')}
             onNavigateHome={() => setCurrentView('dashboard')}
             onNavigateAdd={handleStartAddEntry}
             onNavigateHistory={() => setCurrentView('entryList')}
+            onNavigateSettings={() => setCurrentView('settings')}
             onViewEntry={handleViewEntry}
           />
         )
@@ -592,10 +593,10 @@ function App() {
         return (
           <EntryList 
             entries={entries}
-            onBack={() => setCurrentView('dashboard')}
             onNavigateHome={() => setCurrentView('dashboard')}
             onNavigateAdd={handleStartAddEntry}
             onNavigateInsights={() => setCurrentView('insights')}
+            onNavigateSettings={() => setCurrentView('settings')}
             onViewEntry={handleViewEntry}
           />
         )
@@ -606,6 +607,11 @@ function App() {
             onBack={() => setCurrentView('entryList')}
             onEditTask={handleEditEntryTask}
             onDeleteTask={handleDeleteEntryTask}
+            onNavigateHome={() => setCurrentView('dashboard')}
+            onNavigateAdd={handleStartAddEntry}
+            onNavigateInsights={() => setCurrentView('insights')}
+            onNavigateHistory={() => setCurrentView('entryList')}
+            onNavigateSettings={() => setCurrentView('settings')}
           />
         ) : (
           <div className="flex items-center justify-center h-screen bg-background-light">
@@ -625,6 +631,16 @@ function App() {
             <p className="text-slate-600">Task not found</p>
           </div>
         )
+      case 'settings':
+        return (
+          <Settings
+            onBack={() => setCurrentView('dashboard')}
+            onNavigateHome={() => setCurrentView('dashboard')}
+            onNavigateAdd={handleStartAddEntry}
+            onNavigateInsights={() => setCurrentView('insights')}
+            onNavigateHistory={() => setCurrentView('entryList')}
+          />
+        )
       default:
         return (
           <Dashboard 
@@ -632,6 +648,7 @@ function App() {
             onAddEntry={handleStartAddEntry}
             onViewEntries={() => setCurrentView('entryList')}
             onViewInsights={() => setCurrentView('insights')}
+            onViewSettings={() => setCurrentView('settings')}
             isLoading={isLoading}
           />
         )

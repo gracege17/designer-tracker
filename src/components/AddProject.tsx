@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
-import { Project, PROJECT_COLORS } from '../types'
+import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
-import Button from './Button'
-import Input from './Input'
 
 interface AddProjectProps {
   onProjectAdded: (project: Project) => void
@@ -13,8 +11,9 @@ interface AddProjectProps {
 
 const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
   const [projectName, setProjectName] = useState('')
-  const [selectedColor, setSelectedColor] = useState(PROJECT_COLORS[0])
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
+  const [lastProjectName, setLastProjectName] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,8 +23,8 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
     setIsSubmitting(true)
 
     try {
-      // Create new project
-      const newProject = createProject(projectName.trim(), selectedColor)
+      // Create new project with default color
+      const newProject = createProject(projectName.trim(), '#94A3B8')
       
       // Save to storage
       ProjectStorage.saveProject(newProject)
@@ -33,8 +32,17 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
       // Notify parent component
       onProjectAdded(newProject)
       
-      // Small delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 300))
+      // Store the project name and show success
+      setLastProjectName(projectName.trim())
+      setShowSuccess(true)
+      
+      // Clear the form
+      setProjectName('')
+      
+      // Hide success message after 2 seconds
+      setTimeout(() => {
+        setShowSuccess(false)
+      }, 2000)
       
     } catch (error) {
       console.error('Error creating project:', error)
@@ -43,93 +51,90 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
     }
   }
 
+  const handleDone = () => {
+    onBack()
+  }
+
   return (
-    <div className="flex flex-col min-h-screen bg-background-light">
+    <div className="flex flex-col min-h-screen bg-[#F5F6EB]">
       {/* Header */}
-      <header className="flex items-center justify-between p-4">
-        <button 
-          onClick={onBack}
-          className="p-2 hover:bg-slate-100 rounded-full transition-colors"
-        >
-          <ArrowLeft size={20} className="text-slate-600" />
-        </button>
-        <h1 className="text-xl font-semibold text-center flex-grow text-slate-900">
-          Add New Project
-        </h1>
-        <div className="w-8"></div>
+      <header className="sticky top-0 bg-[#F5F6EB] z-10 p-5 border-b border-slate-200">
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <button 
+            onClick={onBack}
+            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+          >
+            <ArrowLeft size={24} className="text-slate-900" />
+          </button>
+          <h1 className="text-[18px] font-bold text-slate-900">
+            Add New Project
+          </h1>
+          <div className="w-10"></div>
+        </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow px-6 pt-8 pb-4">
-        <form onSubmit={handleSubmit} className="space-y-8">
+      <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
+        {/* Success Message */}
+        {showSuccess && (
+          <div 
+            className="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 text-[14px] animate-fade-in"
+          >
+            ✓ "{lastProjectName}" added successfully!
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Project Name */}
           <div>
-            <Input
-              label="Project Name"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              placeholder="e.g., Website Redesign, Mobile App, Branding"
-              required
-              className="text-lg"
-            />
-          </div>
-
-          {/* Color Selection */}
-          <div>
-            <label className="block text-lg font-semibold text-slate-800 mb-4">
-              Choose a Color
+            <label className="block mb-2">
+              <span className="text-[14px] font-medium text-slate-700 block mb-2">
+                Project Name
+              </span>
+              <input
+                type="text"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="e.g., Website Redesign"
+                required
+                autoFocus
+                className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 text-slate-900 text-[16px] focus:outline-none focus:border-slate-400 transition-colors"
+              />
             </label>
-            <div className="grid grid-cols-5 gap-3">
-              {PROJECT_COLORS.map((color) => (
-                <button
-                  key={color}
-                  type="button"
-                  onClick={() => setSelectedColor(color)}
-                  className={`
-                    w-12 h-12 rounded-full transition-all duration-200
-                    ${selectedColor === color 
-                      ? 'ring-4 ring-slate-300 scale-110' 
-                      : 'hover:scale-105'
-                    }
-                  `}
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </div>
+            <p className="text-[13px] text-slate-600 mt-2">
+              Add one project at a time. Click Done when finished.
+            </p>
           </div>
-
-          {/* Preview */}
-          {projectName.trim() && (
-            <div>
-              <label className="block text-lg font-semibold text-slate-800 mb-4">
-                Preview
-              </label>
-              <div 
-                className="inline-flex items-center gap-2 py-3 px-5 rounded-full text-lg font-medium soft-shadow"
-                style={{ backgroundColor: selectedColor + '33' }} // 20% opacity
-              >
-                <div 
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: selectedColor }}
-                />
-                <span className="text-slate-800">{projectName.trim()}</span>
-              </div>
-            </div>
-          )}
         </form>
       </main>
 
       {/* Footer with Save Button */}
-      <footer className="p-6">
-        <Button
-          title={isSubmitting ? "Creating..." : "Create Project"}
-          onPress={handleSubmit}
-          variant="primary"
-          size="large"
-          disabled={!projectName.trim() || isSubmitting}
-          loading={isSubmitting}
-          className="w-full rounded-full font-bold text-xl"
-        />
+      <footer className="fixed bottom-0 left-0 right-0 bg-[#F5F6EB] p-5 border-t border-slate-200">
+        <div className="max-w-md mx-auto space-y-3">
+          {/* Primary CTA - Create Project */}
+          <button
+            onClick={handleSubmit}
+            disabled={!projectName.trim() || isSubmitting}
+            className={`
+              w-full py-5 px-6 font-medium text-[17px] transition-all duration-200 active:scale-[0.98]
+              ${!projectName.trim() || isSubmitting 
+                ? 'bg-[#999] text-white cursor-not-allowed' 
+                : 'bg-[#000] text-white hover:bg-slate-900'
+              }
+            `}
+          >
+            {isSubmitting ? "Creating..." : "+ Add Project"}
+          </button>
+
+          {/* Secondary Action - Done */}
+          <button
+            onClick={handleDone}
+            className="w-full py-5 px-6 text-center bg-[#F5F6EB] border text-slate-900 font-medium text-[17px] hover:bg-slate-50 transition-all active:scale-[0.99]"
+            style={{ borderColor: 'rgba(0, 0, 0, 0.6)' }}
+          >
+            Done
+          </button>
+        </div>
       </footer>
     </div>
   )

@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { ArrowLeft, Plus, X, Check, Sparkles } from 'lucide-react'
+import { ArrowLeft, Plus, X } from 'lucide-react'
 import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
+import { createProject } from '../utils/dataHelpers'
 
 interface ProjectSelectionProps {
   projects: Project[]
   onProjectsSelected: (projectIds: string[]) => void
   onBack: () => void
   onAddNewProject: () => void
-  onProjectDeleted: () => void
+  onProjectDeleted?: () => void
 }
 
 const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({ 
@@ -19,8 +20,9 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
   onProjectDeleted
 }) => {
   const [selectedProjects, setSelectedProjects] = useState<string[]>([])
-  const [editingProject, setEditingProject] = useState<string | null>(null)
-  const [editingName, setEditingName] = useState('')
+  const [localProjects, setLocalProjects] = useState<Project[]>(projects)
+  const [showAddInput, setShowAddInput] = useState(false)
+  const [newProjectName, setNewProjectName] = useState('')
 
   const handleProjectToggle = (projectId: string) => {
     setSelectedProjects(prev => 
@@ -30,32 +32,20 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
     )
   }
 
-  const handleEditProject = (project: Project, event: React.MouseEvent) => {
-    event.stopPropagation()
-    setEditingProject(project.id)
-    setEditingName(project.name)
-  }
-
-  const handleSaveEdit = (projectId: string) => {
-    if (editingName.trim()) {
-      const project = projects.find(p => p.id === projectId)
-      if (project) {
-        const updatedProject = { ...project, name: editingName.trim() }
-        ProjectStorage.saveProject(updatedProject)
+  const handleProjectDelete = (projectId: string, e: React.MouseEvent) => {
+    e.stopPropagation() // Prevent toggling when clicking X
+    
+    const project = localProjects.find(p => p.id === projectId)
+    if (!project) return
+    
+    if (window.confirm(`Delete "${project.name}" from your projects?\n\nThis cannot be undone.`)) {
+      ProjectStorage.deleteProject(projectId)
+      setLocalProjects(prev => prev.filter(p => p.id !== projectId))
+      setSelectedProjects(prev => prev.filter(id => id !== projectId))
+      
+      if (onProjectDeleted) {
         onProjectDeleted()
       }
-    }
-    setEditingProject(null)
-    setEditingName('')
-  }
-
-  const handleDeleteProject = (projectId: string, event: React.MouseEvent) => {
-    event.stopPropagation()
-    
-    if (window.confirm('Delete this project? This cannot be undone.')) {
-      setSelectedProjects(prev => prev.filter(id => id !== projectId))
-      ProjectStorage.deleteProject(projectId)
-      onProjectDeleted()
     }
   }
 
@@ -65,161 +55,165 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
     }
   }
 
+  const handleAddProject = () => {
+    if (newProjectName.trim()) {
+      // Create new project
+      const newProject = createProject(newProjectName.trim(), '#94A3B8')
+      
+      // Save to storage
+      ProjectStorage.saveProject(newProject)
+      
+      // Add to local projects
+      setLocalProjects(prev => [...prev, newProject])
+      
+      // Auto-select the new project
+      setSelectedProjects(prev => [...prev, newProject.id])
+      
+      // Reset form
+      setNewProjectName('')
+      setShowAddInput(false)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleAddProject()
+    } else if (e.key === 'Escape') {
+      setShowAddInput(false)
+      setNewProjectName('')
+    }
+  }
+
   return (
-    <div className="flex flex-col min-h-screen bg-background-light slide-in-right">
-      {/* Sticky Header with Progress */}
-      <header className="sticky top-0 bg-background-light/95 backdrop-blur-sm z-10 border-b border-slate-100">
-        <div className="flex items-center justify-between p-4">
+    <div className="flex flex-col min-h-screen bg-[#F5F6EB] slide-in-right">
+      {/* Sticky Header */}
+      <header className="sticky top-0 bg-[#F5F6EB] z-10 p-5">
+        <div className="max-w-md mx-auto">
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95"
+            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
-            <ArrowLeft size={20} className="text-slate-700" />
+            <ArrowLeft size={24} className="text-slate-900" />
           </button>
-          
-
-          <div className="w-8"></div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow px-6 pt-6 pb-4">
-        {/* Title with Icon */}
+      <main className="flex-grow px-5 pt-2 pb-4 max-w-md mx-auto w-full">
+        {/* Title */}
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles size={24} className="text-primary" />
-            <h2 className="text-2xl font-bold text-slate-900">
-              What did you work on?
-            </h2>
-          </div>
-          <p className="text-slate-600">
+          <h2 className="text-[32px] font-bold text-slate-900 mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+            What did you work on?
+          </h2>
+          <p className="text-[16px] text-slate-700">
             Select the projects you worked on today
           </p>
         </div>
 
-
-        {/* Projects Grid */}
-        <div className="space-y-3 mb-6">
-          {projects.map((project) => {
+        {/* All Projects as Pills */}
+        <div className="flex flex-wrap gap-3 mb-6">
+          {localProjects.map((project, index) => {
             const isSelected = selectedProjects.includes(project.id)
-            const isEditing = editingProject === project.id
+            
+            // Use orange for all selected projects
+            const bgColor = isSelected ? '#FF8C42' : '#FFFFFF'
 
             return (
               <div
                 key={project.id}
-                onClick={() => !isEditing && handleProjectToggle(project.id)}
-                className={`
-                  relative group cursor-pointer rounded-2xl p-4 border-2 transition-all duration-200
-                  ${isSelected 
-                    ? 'bg-primary/5 border-primary shadow-sm' 
-                    : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
-                  }
-                `}
+                className="flex items-center justify-between px-5 py-3 border transition-all"
+                style={{ 
+                  backgroundColor: bgColor, 
+                  borderColor: 'rgba(0, 0, 0, 0.6)' 
+                }}
               >
-                <div className="flex items-center gap-3">
-                  {/* Checkbox */}
-                  <div className={`
-                    flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200
-                    ${isSelected 
-                      ? 'bg-primary border-primary' 
-                      : 'border-slate-300 group-hover:border-primary/50'
-                    }
-                  `}>
-                    {isSelected && <Check size={14} className="text-white" strokeWidth={3} />}
-                  </div>
-
-                  {/* Color Dot */}
-                  <div
-                    className="w-3 h-3 rounded-full flex-shrink-0 ring-2 ring-white"
-                    style={{ backgroundColor: project.color }}
-                  />
-
-                  {/* Project Name */}
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editingName}
-                      onChange={(e) => setEditingName(e.target.value)}
-                      onBlur={() => handleSaveEdit(project.id)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') handleSaveEdit(project.id)
-                        if (e.key === 'Escape') {
-                          setEditingProject(null)
-                          setEditingName('')
-                        }
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      autoFocus
-                      className="flex-1 text-base font-semibold text-slate-900 bg-transparent border-none focus:outline-none focus:ring-0 p-0"
-                    />
-                  ) : (
-                    <span
-                      className="flex-1 text-base font-semibold text-slate-900"
-                      onDoubleClick={(e) => handleEditProject(project, e)}
-                    >
-                      {project.name}
-                    </span>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-1 opacity-100">
-                    <button
-                      onClick={(e) => handleEditProject(project, e)}
-                      className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors"
-                      title="Edit project name"
-                    >
-                      <svg className="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={(e) => handleDeleteProject(project.id, e)}
-                      className="p-1.5 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Delete project"
-                    >
-                      <X size={16} className="text-slate-400 hover:text-red-600" />
-                    </button>
-                  </div>
-                </div>
-
+                <button
+                  onClick={() => handleProjectToggle(project.id)}
+                  className="flex-1 text-left active:scale-[0.99] transition-all"
+                >
+                  <span className="text-[14px] font-normal text-slate-900">
+                    {project.name}
+                  </span>
+                </button>
+                <button
+                  onClick={(e) => handleProjectDelete(project.id, e)}
+                  className="ml-3 p-1 hover:bg-black/10 rounded transition-all active:scale-90"
+                  title="Delete project"
+                >
+                  <X size={20} className="text-slate-900 opacity-50" strokeWidth={2.5} />
+                </button>
               </div>
             )
           })}
         </div>
 
-        {/* Add New Project Button */}
-        <button
-          onClick={onAddNewProject}
-          className="w-full flex items-center justify-center gap-2 p-4 rounded-2xl border-2 border-dashed border-slate-300 hover:border-primary hover:bg-primary/5 transition-all duration-200 text-slate-600 hover:text-primary font-medium"
-        >
-          <Plus size={20} />
-          <span>Add new project</span>
-        </button>
-
-        {/* Helper Text */}
-        <p className="mt-6 text-center text-sm text-slate-500">
-          Tip: Double-tap a project name to edit it
-        </p>
+        {/* Add New Project - Inline Input or Button */}
+        {showAddInput ? (
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Project name"
+              autoFocus
+              className="flex-1 px-4 py-3 bg-slate-50 border-2 border-slate-200 text-slate-900 text-[14px] focus:outline-none focus:border-slate-400 transition-colors"
+            />
+            <button
+              onClick={handleAddProject}
+              disabled={!newProjectName.trim()}
+              className={`
+                px-5 py-3 font-medium text-[14px] transition-all active:scale-[0.99]
+                ${newProjectName.trim()
+                  ? 'bg-[#000] text-white hover:bg-slate-900'
+                  : 'bg-[#999] text-white cursor-not-allowed'
+                }
+              `}
+            >
+              Add
+            </button>
+            <button
+              onClick={() => {
+                setShowAddInput(false)
+                setNewProjectName('')
+              }}
+              className="px-5 py-3 bg-white border text-slate-900 font-medium text-[14px] hover:bg-slate-50 transition-all active:scale-[0.99]"
+              style={{ borderColor: 'rgba(0, 0, 0, 0.6)' }}
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setShowAddInput(true)}
+            className="px-5 py-3 bg-[#000] text-white font-medium text-[16px] hover:bg-slate-900 transition-all active:scale-[0.99]"
+          >
+            + Project
+          </button>
+        )}
       </main>
 
       {/* Sticky Bottom CTA */}
-      <footer className="sticky bottom-0 bg-mono-50/95 backdrop-blur-sm border-t border-mono-200 p-6">
-        <button
-          onClick={handleNext}
-          disabled={selectedProjects.length === 0}
-          className={`
-            w-full py-4 px-6 rounded-xl font-normal text-lg transition-all duration-200
-            ${selectedProjects.length > 0
-              ? 'bg-mono-900 text-mono-50 hover:bg-mono-800 active:scale-[0.98]'
-              : 'bg-mono-200 text-mono-400 cursor-not-allowed'
+      <footer className="sticky bottom-0 bg-[#F5F6EB] p-5">
+        <div className="max-w-md mx-auto">
+          <button
+            onClick={handleNext}
+            disabled={selectedProjects.length === 0}
+            className={`
+              w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
+              ${selectedProjects.length > 0
+                ? 'bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98]'
+                : 'bg-[#999] text-white cursor-not-allowed'
+              }
+            `}
+          >
+            {selectedProjects.length > 0 
+              ? `Continue with ${selectedProjects.length} project${selectedProjects.length > 1 ? 's' : ''}`
+              : 'Select at least one project'
             }
-          `}
-        >
-          {selectedProjects.length > 0 
-            ? `Continue with ${selectedProjects.length} project${selectedProjects.length > 1 ? 's' : ''}`
-            : 'Select at least one project'
-          }
-        </button>
+          </button>
+        </div>
       </footer>
     </div>
   )

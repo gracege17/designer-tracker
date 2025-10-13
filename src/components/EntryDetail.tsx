@@ -1,21 +1,25 @@
 import React from 'react'
-import { ArrowLeft, Edit, Trash2 } from 'lucide-react'
+import { ArrowLeft, Home, Plus, BarChart2, Calendar, Settings } from 'lucide-react'
 import { Entry, EMOTIONS } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { ProjectStorage } from '../utils/storage'
-import { calculateEntryAverageEmotion } from '../utils/dataHelpers'
 
 interface EntryDetailProps {
   entry: Entry
   onBack: () => void
   onEditTask?: (taskId: string) => void
   onDeleteTask?: (taskId: string) => void
+  onNavigateHome?: () => void
+  onNavigateAdd?: () => void
+  onNavigateInsights?: () => void
+  onNavigateHistory?: () => void
+  onNavigateSettings?: () => void
 }
 
-const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, onDeleteTask }) => {
+const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, onDeleteTask, onNavigateHome, onNavigateAdd, onNavigateInsights, onNavigateHistory, onNavigateSettings }) => {
   if (!entry) {
     return (
-      <div className="flex items-center justify-center h-screen bg-background-light">
+      <div className="flex items-center justify-center h-screen bg-[#F5F6EB]">
         <p className="text-slate-600">No entry data available</p>
       </div>
     )
@@ -23,23 +27,22 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
   
   if (!entry.tasks || entry.tasks.length === 0) {
     return (
-      <div className="flex flex-col min-h-screen bg-background-light">
-        <header className="sticky top-0 z-10 bg-background-light/80 backdrop-blur-sm border-b border-slate-200 p-4">
-          <div className="flex items-center justify-between">
+      <div className="flex flex-col min-h-screen bg-[#F5F6EB]">
+        <header className="sticky top-0 z-10 bg-[#F5F6EB] border-b border-slate-200 p-5">
+          <div className="max-w-md mx-auto flex items-center justify-between">
             <button
               onClick={onBack}
-              className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+              className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
             >
               <ArrowLeft size={24} className="text-slate-900" />
             </button>
-            <h1 className="text-lg font-bold text-slate-900 flex-1 text-center">
+            <h1 className="text-[18px] font-bold text-slate-900">
               Reflection Details
             </h1>
             <div className="w-10" />
           </div>
         </header>
         <div className="flex flex-col items-center justify-center flex-1 p-4">
-          <div className="text-6xl mb-4">📝</div>
           <h3 className="text-xl font-semibold text-slate-900 mb-2">No tasks found</h3>
           <p className="text-slate-600 text-center">
             This reflection doesn't have any tasks yet.
@@ -48,9 +51,6 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       </div>
     )
   }
-  
-  const averageEmotion = calculateEntryAverageEmotion(entry)
-  const emotionEmoji = EMOTIONS[Math.round(averageEmotion) as keyof typeof EMOTIONS]?.emoji || '😐'
   
   // Group tasks by project
   const tasksByProject: Record<string, typeof entry.tasks> = {}
@@ -61,27 +61,18 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
     tasksByProject[task.projectId].push(task)
   })
 
-  // Card colors for different projects (cycling through colors)
-  const cardColors = [
-    { bg: 'bg-red-50', border: 'border-red-200' },
-    { bg: 'bg-blue-50', border: 'border-blue-200' },
-    { bg: 'bg-green-50', border: 'border-green-200' },
-    { bg: 'bg-yellow-50', border: 'border-yellow-200' },
-    { bg: 'bg-purple-50', border: 'border-purple-200' },
-  ]
-
   return (
-    <div className="flex flex-col min-h-screen bg-background-light">
+    <div className="flex flex-col min-h-screen bg-[#F5F6EB]">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-10 bg-background-light/80 backdrop-blur-sm border-b border-slate-200 p-4">
-        <div className="flex items-center justify-between">
+      <header className="sticky top-0 z-10 bg-[#F5F6EB] border-b border-slate-200 p-5">
+        <div className="max-w-md mx-auto flex items-center justify-between">
           <button
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
             <ArrowLeft size={24} className="text-slate-900" />
           </button>
-          <h1 className="text-lg font-bold text-slate-900 flex-1 text-center">
+          <h1 className="text-[18px] font-bold text-slate-900">
             Reflection Details
           </h1>
           <div className="w-10" />
@@ -89,95 +80,67 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 p-4 space-y-6">
-        {/* Date & Overall Mood */}
-        <div className="pb-4">
-          <h2 className="text-lg font-semibold text-slate-900 mb-1">
+      <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
+        {/* Date */}
+        <div className="mb-6">
+          <h2 className="text-[28px] font-bold text-slate-900">
             {DateUtils.formatDate(new Date(entry.date))}
           </h2>
-          <p className="text-sm text-slate-600">
-            {entry.tasks.length} task{entry.tasks.length !== 1 ? 's' : ''} logged
-          </p>
         </div>
 
         {/* Tasks Grouped by Project */}
-        {Object.entries(tasksByProject).map(([projectId, tasks], index) => {
+        {Object.entries(tasksByProject).map(([projectId, tasks]) => {
           const project = ProjectStorage.getProjectById(projectId)
-          const colorScheme = cardColors[index % cardColors.length]
           
           return (
-            <div 
-              key={projectId}
-              className={`rounded-lg overflow-hidden soft-shadow ${colorScheme.bg} border ${colorScheme.border}`}
-            >
-              {/* Project Header */}
-              <div className="p-4 pb-3">
-                <div className="flex items-center gap-2">
-                  {project && (
-                    <div 
-                      className="w-4 h-4 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: project.color }}
-                    />
-                  )}
-                  <div>
-                    <h3 className="font-bold text-slate-900">
-                      {project?.name || 'Unknown Project'}
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Logged at {DateUtils.formatTime(new Date(tasks[0].createdAt))}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <div key={projectId} className="mb-6">
+              {/* Project Name */}
+              <h3 className="text-[16px] font-bold text-slate-900 mb-4">
+                {project?.name || 'Unknown Project'}
+              </h3>
 
               {/* Tasks for this project */}
-              <div className="space-y-3 px-4 pb-4">
+              <div className="space-y-3">
                 {tasks.map((task) => {
                   const emotions = task.emotions || [task.emotion]
+                  const uniqueEmotions = Array.from(new Set(emotions))
                   
                   return (
-                    <div key={task.id} className="p-4 bg-white/50 rounded-lg">
+                    <div 
+                      key={task.id} 
+                      className="bg-white p-4 border border-slate-200 cursor-pointer transition-all active:scale-[0.99]"
+                      onClick={() => {
+                        const action = window.confirm('Choose an action:\n\nOK = Edit\nCancel = Delete')
+                        if (action && onEditTask) {
+                          onEditTask(task.id)
+                        } else if (!action && onDeleteTask) {
+                          if (window.confirm('Are you sure you want to delete this task?')) {
+                            onDeleteTask(task.id)
+                          }
+                        }
+                      }}
+                    >
                       <div className="flex items-start gap-3">
-                        <div className="flex flex-wrap gap-1 flex-shrink-0">
-                          {emotions.map((emotionLevel) => {
+                        {/* Emotion circles */}
+                        <div className="flex gap-1.5 flex-shrink-0">
+                          {uniqueEmotions.map((emotionLevel, index) => {
                             const emotion = EMOTIONS[emotionLevel]
                             return (
-                              <span key={emotionLevel} className="text-2xl">{emotion?.emoji || '😐'}</span>
+                              <div key={`${emotionLevel}-${index}`} className="w-10 h-10 rounded-full bg-[#D1D5DB] flex items-center justify-center">
+                                <span className="text-lg">{emotion?.emoji || '😐'}</span>
+                              </div>
                             )
                           })}
                         </div>
+                        
                         <div className="flex-1 min-w-0">
-                          <p className="text-slate-900 font-medium break-words">
+                          <p className="text-[16px] font-medium text-slate-900 mb-1 break-words">
                             {task.description}
                           </p>
                           {task.notes && (
-                            <p className="text-sm text-slate-600 mt-2 italic break-words">
+                            <p className="text-[14px] text-slate-600 italic break-words">
                               "{task.notes}"
                             </p>
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-2 flex-shrink-0">
-                          {onEditTask && (
-                            <button
-                              onClick={() => onEditTask(task.id)}
-                              className="p-2 text-slate-500 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                              title="Edit task"
-                            >
-                              <Edit size={18} />
-                            </button>
-                          )}
-                          {onDeleteTask && (
-                            <button
-                              onClick={() => {
-                                if (window.confirm('Are you sure you want to delete this task?')) {
-                                  onDeleteTask(task.id)
-                                }
-                              }}
-                              className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                              title="Delete task"
-                            >
-                              <Trash2 size={18} />
-                            </button>
                           )}
                         </div>
                       </div>
@@ -188,8 +151,58 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
             </div>
           )
         })}
-
       </main>
+
+      {/* Bottom Navigation */}
+      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
+        <div className="relative flex items-end justify-around px-4 py-3">
+          {/* Home */}
+          <button 
+            onClick={onNavigateHome}
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
+          >
+            <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
+            <p className="text-[11px] font-medium">Home</p>
+          </button>
+
+          {/* Overview */}
+          <button 
+            onClick={onNavigateInsights}
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
+          >
+            <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
+            <p className="text-[11px] font-medium">Overview</p>
+          </button>
+
+          {/* Add Button - Center & Elevated */}
+          <button
+            onClick={onNavigateAdd}
+            className="flex flex-col items-center justify-center -mt-6"
+          >
+            <div className="bg-slate-900 rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 active:scale-95 transition-all">
+              <Plus size={28} strokeWidth={2.5} className="text-white" />
+            </div>
+          </button>
+
+          {/* History */}
+          <button 
+            onClick={onNavigateHistory}
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
+          >
+            <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
+            <p className="text-[11px] font-medium">History</p>
+          </button>
+
+          {/* Setting */}
+          <button 
+            onClick={onNavigateSettings}
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
+          >
+            <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
+            <p className="text-[11px] font-medium">Setting</p>
+          </button>
+        </div>
+      </footer>
     </div>
   )
 }

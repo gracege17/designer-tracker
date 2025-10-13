@@ -7,9 +7,23 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Custom slate override
+        slate: {
+          50: '#F6F1EB',
+          100: '#f4f4f5',
+          200: '#F6F1EB',  // Override default slate-200 (#e5e7eb)
+          300: '#d4d4d8',
+          400: '#a1a1aa',
+          500: '#71717a',
+          600: '#52525b',
+          700: '#3f3f46',
+          800: '#27272a',
+          900: '#18181b',
+        },
+        
         // Monochromatic color system
         mono: {
-          50: '#fafafa',  // Lightest background
+          50: '#F6F1EB',  // Lightest background
           100: '#f4f4f5', // Light background
           200: '#e4e4e7', // Subtle borders
           300: '#d4d4d8', // Stronger borders
@@ -22,8 +36,8 @@ export default {
         },
         
         // Fallback colors for backward compatibility
-        primary: '#18181b',
-        'primary-50': '#fafafa',
+        primary: '#FFD678', // Warm yellow for CTAs
+        'primary-50': '#F6F1EB',
         'primary-100': '#f4f4f5',
         'primary-200': '#e4e4e7',
         'primary-300': '#d4d4d8',
@@ -34,7 +48,7 @@ export default {
         'primary-800': '#27272a',
         'primary-900': '#18181b',
         
-        'surface-50': '#fafafa',
+        'surface-50': '#F6F1EB',
         'surface-100': '#f4f4f5',
         'surface-200': '#e4e4e7',
         'surface-300': '#d4d4d8',
@@ -45,28 +59,28 @@ export default {
         'surface-800': '#27272a',
         'surface-900': '#18181b',
         
-        'success-50': '#fafafa',
+        'success-50': '#F6F1EB',
         'success-100': '#f4f4f5',
         'success-200': '#e4e4e7',
         'success-300': '#d4d4d8',
         'success-400': '#a1a1aa',
         'success-500': '#71717a',
         
-        'warning-50': '#fafafa',
+        'warning-50': '#F6F1EB',
         'warning-100': '#f4f4f5',
         'warning-200': '#e4e4e7',
         'warning-300': '#d4d4d8',
         'warning-400': '#a1a1aa',
         'warning-500': '#71717a',
         
-        'error-50': '#fafafa',
+        'error-50': '#F6F1EB',
         'error-100': '#f4f4f5',
         'error-200': '#e4e4e7',
         'error-300': '#d4d4d8',
         'error-400': '#a1a1aa',
         'error-500': '#71717a',
         
-        'background-light': '#fafafa',
+        'background-light': '#F5F6EB',
         'background-dark': '#18181b',
         
         // Project colors - grayscale

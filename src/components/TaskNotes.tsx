@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { ArrowLeft, Plus } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { ProjectStorage } from '../utils/storage'
-import Button from './Button'
 
 interface TaskNotesProps {
   selectedProjectIds: string[]
@@ -43,68 +42,66 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
   const isMultipleProjects = selectedProjectIds.length > 1
 
   return (
-    <div className="flex flex-col justify-between min-h-screen bg-background-light">
-      <div className="p-6">
-        {/* Header */}
-        <header className="flex items-center justify-between mb-8">
+    <div className="flex flex-col min-h-screen bg-[#F5F6EB]">
+      {/* Sticky Header */}
+      <header className="sticky top-0 bg-[#F5F6EB] z-10 p-5 border-b border-slate-200">
+        <div className="max-w-md mx-auto flex items-center justify-between">
           <button 
             onClick={onBack}
-            className="text-slate-900 p-2 hover:bg-slate-100 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={24} className="text-slate-900" />
           </button>
+          
+          {/* Current Project Name */}
           {firstProject && (
-            <div className="flex items-center gap-2">
-              <div
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: firstProject.color }}
-              />
-              <span className="text-sm font-medium text-slate-700">{firstProject.name}</span>
-            </div>
+            <span className="text-[16px] font-bold text-slate-900">{firstProject.name}</span>
           )}
-          <div className="w-8"></div>
-        </header>
 
-        {/* Main Content */}
-        <main>
-          <h1 className="text-3xl font-bold text-slate-900 mb-4">
+          <div className="w-10"></div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
+        {/* Title */}
+        <div className="mb-8">
+          <h2 className="text-[32px] font-bold text-slate-900 mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             Why did you feel that way?
-          </h1>
-          <p className="text-slate-500 mb-8">
+          </h2>
+          <p className="text-[16px] text-slate-700">
             Optional
           </p>
-          <textarea
-            className="w-full min-h-[140px] p-4 bg-slate-50 border-none rounded-lg text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-primary/50 focus:outline-none soft-shadow resize-none"
-            placeholder="e.g., The client loved the direction — felt proud!"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            maxLength={1000}
-          />
-          <div className="text-right mt-2">
-            <span className="text-sm text-slate-500">
-              {notes.length}/1000 characters
-            </span>
-          </div>
-        </main>
-      </div>
+        </div>
+
+        {/* Textarea */}
+        <textarea
+          className="w-full min-h-[140px] p-4 bg-white border-2 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-400 resize-none"
+          placeholder="e.g., The client loved the direction — felt proud!"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          maxLength={1000}
+        />
+      </main>
 
       {/* Footer */}
-      <footer className="p-6 space-y-4">
-        <button
-          onClick={handleAddAnotherTask}
-          className="w-full py-4 text-center rounded-lg bg-slate-50 text-slate-900 font-bold soft-shadow hover:bg-slate-100 transition-colors flex items-center justify-center gap-2"
-        >
-          <Plus size={20} />
-          <span>Add Another Task</span>
-        </button>
-        
-        <Button
-          title={isLastProject ? "Done Reflecting" : "Next Project →"}
-          onPress={isLastProject ? handleDoneReflecting : handleNextProject}
-          variant="primary"
-          size="large"
-          className="w-full rounded-lg font-bold"
-        />
+      <footer className="sticky bottom-0 bg-[#F5F6EB] p-5">
+        <div className="max-w-md mx-auto space-y-3">
+          <button
+            onClick={handleAddAnotherTask}
+            className="w-full py-5 px-6 text-center bg-[#F5F6EB] border text-slate-900 font-medium text-[17px] hover:bg-slate-50 transition-all active:scale-[0.99]"
+            style={{ borderColor: 'rgba(0, 0, 0, 0.6)' }}
+          >
+            + Add another task
+          </button>
+          
+          <button
+            onClick={isLastProject ? handleDoneReflecting : handleNextProject}
+            className="w-full py-5 px-6 font-medium text-[17px] transition-all duration-200 bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98]"
+          >
+            {isLastProject ? "Done Reflecting" : "Next Project"}
+          </button>
+        </div>
       </footer>
     </div>
   )

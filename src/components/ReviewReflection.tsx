@@ -1,8 +1,7 @@
 import React from 'react'
-import { ArrowLeft, Edit, Trash2 } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
-import Button from './Button'
 
 interface TaskReview {
   id: string
@@ -36,123 +35,115 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
     return acc
   }, {} as Record<string, TaskReview[]>)
 
-  // Card colors for different projects (cycling through them)
-  const cardColors = [
-    'bg-red-50 border-red-100',
-    'bg-blue-50 border-blue-100', 
-    'bg-green-50 border-green-100',
-    'bg-purple-50 border-purple-100',
-    'bg-yellow-50 border-yellow-100',
-    'bg-pink-50 border-pink-100'
-  ]
-
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-background-light">
-      <div className="flex-grow">
-        {/* Header */}
-        <header className="sticky top-0 bg-background-light/80 backdrop-blur-sm z-10 p-4">
-          <div className="flex items-center justify-between">
-            <button 
-              onClick={onBack}
-              className="text-slate-900 p-1 hover:bg-slate-100 rounded-full transition-colors"
-            >
-              <ArrowLeft size={20} />
-            </button>
-            <h1 className="text-lg font-bold text-slate-900">
-              Today's Tasks
-            </h1>
-            <div className="w-8"></div>
-          </div>
-        </header>
+    <div className="min-h-screen flex flex-col bg-[#F5F6EB]">
+      {/* Header */}
+      <header className="sticky top-0 bg-[#F5F6EB] z-10 p-5 border-b border-slate-200">
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <button 
+            onClick={onBack}
+            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+          >
+            <ArrowLeft size={24} className="text-slate-900" />
+          </button>
+          <h1 className="text-[18px] font-bold text-slate-900">
+            Today's Tasks
+          </h1>
+          <div className="w-10"></div>
+        </div>
+      </header>
 
-        {/* Main Content */}
-        <main className="p-4 space-y-6">
-          {Object.entries(tasksByProject).map(([projectId, projectTasks], projectIndex) => {
-            const project = ProjectStorage.getProjectById(projectId)
-            const cardColorClass = cardColors[projectIndex % cardColors.length]
-            
-            return (
-              <div key={projectId} className={`${cardColorClass} rounded-xl overflow-hidden border`}>
-                {/* Project Header */}
-                <div className="p-4">
-                  <h2 className="font-bold text-slate-900 flex items-center gap-3">
-                    {project && (
-                      <div 
-                        className="w-4 h-4 rounded-full"
-                        style={{ backgroundColor: project.color }}
-                      />
-                    )}
-                    Project: {project?.name || 'Unknown Project'}
-                  </h2>
-                </div>
+      {/* Main Content */}
+      <main className="flex-1 px-5 pt-6 pb-4 max-w-md mx-auto w-full overflow-y-auto">
+        {Object.entries(tasksByProject).map(([projectId, projectTasks]) => {
+          const project = ProjectStorage.getProjectById(projectId)
+          
+          return (
+            <div key={projectId} className="mb-6">
+              {/* Project Name */}
+              <h2 className="text-[18px] font-bold text-slate-900 mb-4">
+                {project?.name || 'Unknown Project'}
+              </h2>
 
-                {/* Tasks */}
+              {/* Tasks */}
+              <div className="space-y-3">
                 {projectTasks.map((task) => {
                   const emotions = task.emotions || [task.emotion]
+                  const uniqueEmotions = Array.from(new Set(emotions))
                   
                   return (
-                    <div key={task.id} className="mt-3">
-                      <div className="p-4 flex items-start space-x-4">
-                        <div className="flex flex-wrap gap-1">
-                          {emotions.map((emotionLevel) => {
+                    <div 
+                      key={task.id} 
+                      className="bg-white p-4 border border-slate-200 cursor-pointer transition-all active:scale-[0.99]"
+                      onClick={() => {
+                        const action = window.confirm('Choose an action:\n\nOK = Edit\nCancel = Delete')
+                        if (action) {
+                          onEditTask(task.id)
+                        } else {
+                          if (window.confirm('Are you sure you want to delete this task?')) {
+                            onDeleteTask(task.id)
+                          }
+                        }
+                      }}
+                    >
+                      <div className="flex items-start gap-3 mb-2">
+                        {/* Emotion circles */}
+                        <div className="flex gap-1.5 flex-shrink-0">
+                          {uniqueEmotions.map((emotionLevel, index) => {
                             const emotion = EMOTIONS[emotionLevel]
                             return (
-                              <span key={emotionLevel} className="text-2xl">{emotion?.emoji || '😐'}</span>
+                              <div key={`${emotionLevel}-${index}`} className="w-10 h-10 rounded-full bg-[#D1D5DB] flex items-center justify-center">
+                                <span className="text-lg">{emotion?.emoji || '😐'}</span>
+                              </div>
                             )
                           })}
                         </div>
+                        
                         <div className="flex-1">
-                          <p className="text-slate-900 mb-1">{task.description}</p>
+                          <p className="text-[16px] font-medium text-slate-900 mb-1">{task.description}</p>
                           {task.notes && (
-                            <p className="text-slate-600 text-sm italic">"{task.notes}"</p>
+                            <p className="text-[14px] text-slate-600 italic">"{task.notes}"</p>
                           )}
-                        </div>
-                        <div className="flex space-x-2">
-                          <button 
-                            onClick={() => onEditTask(task.id)}
-                            className="text-slate-500 hover:text-slate-700 p-1 hover:bg-slate-100 rounded transition-colors"
-                          >
-                            <Edit size={16} />
-                          </button>
-                          <button 
-                            onClick={() => onDeleteTask(task.id)}
-                            className="text-slate-500 hover:text-red-600 p-1 hover:bg-slate-100 rounded transition-colors"
-                          >
-                            <Trash2 size={16} />
-                          </button>
                         </div>
                       </div>
                     </div>
                   )
                 })}
               </div>
-            )
-          })}
-
-          {tasks.length === 0 && (
-            <div className="text-center py-12">
-              <div className="text-6xl mb-4">📝</div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                No tasks to review
-              </h3>
-              <p className="text-slate-600">
-                Go back and add some tasks to your reflection.
-              </p>
             </div>
-          )}
-        </main>
-      </div>
+          )
+        })}
+
+        {tasks.length === 0 && (
+          <div className="text-center py-12">
+            <h3 className="text-xl font-semibold text-slate-900 mb-2">
+              No tasks to review
+            </h3>
+            <p className="text-slate-600">
+              Go back and add some tasks to your reflection.
+            </p>
+          </div>
+        )}
+      </main>
 
       {/* Footer */}
-      <footer className="sticky bottom-0 bg-background-light/80 backdrop-blur-sm p-4">
-        <Button
-          title="Save Reflection"
-          onPress={onSaveReflection}
-          variant="primary"
-          size="large"
-          disabled={tasks.length === 0}
-          className="w-full rounded-xl font-bold"
-        />
+      <footer className="sticky bottom-0 bg-[#F5F6EB] p-5">
+        <div className="max-w-md mx-auto">
+          <button
+            onClick={onSaveReflection}
+            disabled={tasks.length === 0}
+            className={`
+              w-full py-5 px-6 font-bold text-[17px] transition-all duration-200
+              ${tasks.length > 0
+                ? 'bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98] shadow-lg'
+                : 'bg-[#999] text-white cursor-not-allowed'
+              }
+            `}
+            style={{ borderRadius: '0 32px 0 0' }}
+          >
+            Save Reflections
+          </button>
+        </div>
       </footer>
     </div>
   )

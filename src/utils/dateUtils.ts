@@ -2,9 +2,8 @@ export const DateUtils = {
   // Format date for display
   formatDate: (date: Date): string => {
     return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
+      weekday: 'short', 
+      month: 'short', 
       day: 'numeric' 
     })
   },

@@ -1,0 +1,16 @@
+<svg width="320" height="192" viewBox="0 0 320 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Placeholder illustration - replace with your custom artwork -->
+  <!-- Abstract geometric shapes for visual interest -->
+  <circle cx="80" cy="96" r="40" fill="#FFE5D9" opacity="0.5"/>
+  <circle cx="240" cy="96" r="50" fill="#E0BBE4" opacity="0.4"/>
+  <rect x="120" y="60" width="80" height="80" rx="12" fill="#D4E4F7" opacity="0.3"/>
+  
+  <!-- Decorative elements -->
+  <path d="M50 50 L70 30 M60 40 L80 20" stroke="#FF8C42" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <path d="M250 140 L270 160 M260 150 L280 170" stroke="#6366F1" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  
+  <!-- Central motif -->
+  <circle cx="160" cy="96" r="25" fill="white" stroke="#94A3B8" stroke-width="2"/>
+  <path d="M150 96 L160 86 L170 96" stroke="#94A3B8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+

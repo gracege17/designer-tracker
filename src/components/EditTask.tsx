@@ -32,11 +32,13 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
 
   const handleSave = () => {
     if (description.trim() && selectedEmotions.length > 0) {
+      // Remove duplicate emotions
+      const uniqueEmotions = Array.from(new Set(selectedEmotions))
       const updatedTask: Task = {
         ...task,
         description: description.trim(),
-        emotion: selectedEmotions[0],
-        emotions: selectedEmotions,
+        emotion: uniqueEmotions[0],
+        emotions: uniqueEmotions,
         notes: notes.trim() || undefined,
       }
       onSave(updatedTask)
