@@ -23,6 +23,13 @@ export const DateUtils = {
     return date.toDateString() === today.toDateString()
   },
 
+  // Check if a date string (YYYY-MM-DD format) is today
+  isDateStringToday: (dateString: string): boolean => {
+    const date = new Date(dateString)
+    const today = new Date()
+    return date.toDateString() === today.toDateString()
+  },
+
   // Check if date is this week
   isThisWeek: (date: Date): boolean => {
     const today = new Date()

@@ -51,21 +51,20 @@ padding: 24px; /* p-6 for larger cards */
 
 ### **Title Text** (Card Headers)
 ```css
-font-size: 14px;
-font-weight: 700; /* font-bold */
+font-size: 12px;
+font-weight: 400; /* font-normal */
 color: #0F172A; /* slate-900 */
 ```
-Example: "What lifted you up this week?"
+Example: "What gave you joy", "What sparked your passion"
 
 ### **Main Content** (Hero Text)
 ```css
-font-size: 24px;
+font-size: 20px;
 font-weight: 900; /* font-black */
 line-height: tight;
 color: #0F172A; /* slate-900 */
-text-transform: capitalize;
 ```
-Example: "Design", "Review design work"
+Example: Task descriptions from reflections
 
 ### **Subtitle/Meta** (Supporting Text)
 ```css
@@ -80,13 +79,96 @@ Example: "Based on 5 reflections"
 ## Color System
 
 ### **Background Colors**
-- **Orange (Energy Boost):** `#FF8C42`
-- **Gray (Energy Drain):** `#E0E0E0`
-- **Coral/Red (Happy):** `#FF6B6B`
-- **Light Green (Frustrators):** `#D4E5D4`
-- **Cyan (Struggles):** `#7DD3FC`
+
+**Gradient Backgrounds:**
+
+1. **Joy Gradient** 🌅
+   ```css
+   background: linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%);
+   ```
+   - Direction: 132° (diagonal)
+   - Start: `#FFE27A` (Light Yellow)
+   - End: `#FF7B54` (Coral Orange)
+   - Use case: "What gave you joy" card
+
+2. **Passion Gradient** 🔥
+   ```css
+   background: linear-gradient(180deg, #FA604D 0%, #F37E58 100%);
+   ```
+   - Direction: 180° (top to bottom)
+   - Start: `#FA604D` (Coral Red)
+   - End: `#F37E58` (Soft Orange)
+   - Use case: "What sparked your passion" card, "Top Happy", "Top Struggles"
+
+3. **Meaningful Gradient** 💜
+   ```css
+   background: linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%);
+   ```
+   - Direction: 132° (diagonal)
+   - Start: `#C7D1FF` (Light Lavender)
+   - End: `#BC7AFF` (Bright Purple)
+   - Use case: "What felt meaningful" card ONLY
+   - Text color: Dark (`#0F172A` slate-900) for better contrast on light gradient
+
+4. **Draining Gradient** 🌫️
+   ```css
+   background: linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%);
+   ```
+   - Direction: 132° (diagonal)
+   - Start: `#E3E3E3` (Very Light Gray)
+   - End: `#A69FAE` (Muted Purple Gray)
+   - Use case: "What drained you" card, "Top Struggles"
+   - Text color: Dark (`#0F172A` slate-900) for contrast on light gradient
+
+**Additional Gradients (Overview Page):**
+
+5. **Frustrators Gradient** 🌿
+   ```css
+   background: linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%);
+   ```
+   - Direction: 180° (top to bottom)
+   - Start: `#DAE6E6` (Soft Teal)
+   - End: `#B8C6AD` (Sage Green)
+   - Use case: "Top Frustrators" in Overview page only
+
+**Solid Backgrounds:**
 - **White (Default):** `#FFFFFF`
 - **Off-White (Inputs):** `#F8FAFC` (slate-50)
+
+### **Gradient Implementation**
+
+**React/Tailwind Inline Style:**
+```jsx
+style={{ 
+  borderRadius: '0 48px 0 0',
+  background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
+}}
+```
+
+**CSS Class:**
+```css
+.gradient-joy {
+  background: linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%);
+}
+
+.gradient-passion {
+  background: linear-gradient(180deg, #FA604D 0%, #F37E58 100%);
+}
+
+.gradient-meaningful {
+  background: linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%);
+  color: #0F172A; /* Dark text for contrast on light gradient */
+}
+
+.gradient-frustrators {
+  background: linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%);
+}
+
+.gradient-draining {
+  background: linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%);
+  color: #0F172A; /* Dark text for contrast on light gradient */
+}
+```
 
 ### **Text Colors**
 - **Primary:** `#0F172A` (slate-900)
@@ -146,16 +228,18 @@ opacity: 1; /* keep solid, not faded */
 
 ### **React/Tailwind Implementation**
 
-**Large Card (Energy/Overview):**
+**Insight Card (Homepage):**
 ```jsx
 <div 
-  className="bg-[#FF8C42] p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-  style={{ borderRadius: '0 48px 0 0', gap: '-2px' }}
+  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+  style={{ 
+    borderRadius: '0 48px 0 0',
+    background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+  }}
 >
-  <div className="flex flex-col items-start gap-4 w-full">
-    <p className="text-[14px] font-bold text-slate-900">Title</p>
-    <p className="text-[24px] font-black text-slate-900 leading-tight">Main Content</p>
-    <p className="text-[12px] text-slate-700 font-medium">Subtitle</p>
+  <div className="flex flex-col items-start gap-2 w-full">
+    <p className="text-[12px] font-normal text-slate-900">What sparked your passion</p>
+    <p className="text-[20px] font-black text-slate-900 leading-tight">Task description</p>
   </div>
 </div>
 ```
@@ -182,6 +266,48 @@ opacity: 1; /* keep solid, not faded */
 
 ---
 
+## Homepage Insight Cards
+
+Four emotional insight cards displayed on the dashboard, pulling from the user's entire reflection history.
+
+### **Card Categories & Colors**
+
+**1. What gave you joy** 🌅
+- Background: `linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)`
+- Emotions: Happy (😀), Excited (🤩), Energized (⚡)
+- Shows random task from joy-related reflections
+
+**2. What sparked your passion** 🔥
+- Background: `linear-gradient(180deg, #FA604D 0%, #F37E58 100%)`
+- Emotions: Excited (🤩), Energized (⚡), Surprised (😮)
+- Shows random task from passion-related reflections
+
+**3. What felt meaningful** 💜
+- Background: `linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)`
+- Text Color: Dark (slate-900) for contrast on light gradient
+- Emotions: Relaxed (😌), Nostalgic (🥹), Normal (🙂)
+- Shows random task from meaningful reflections
+
+**4. What drained you** 🌫️
+- Background: `linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)`
+- Text Color: Dark (slate-900) for contrast on light gradient
+- Emotions: Tired (😴), Bored (😐), Anxious (😰), Sad (😢)
+- Shows random task from draining reflections
+
+### **Typography Structure**
+```jsx
+<p className="text-[12px] font-normal text-slate-900">Card title</p>
+<p className="text-[20px] font-black text-slate-900 leading-tight">Task description</p>
+```
+
+### **Display Logic**
+- Cards only appear if user has tasks with matching emotions
+- Randomly selects from up to 5 matching tasks to keep content fresh
+- Uses entire history (not just current week)
+- Maintains consistent spacing with `gap-2` between title and content
+
+---
+
 ## Design Principles
 
 ### **Why Asymmetric Corner?**
@@ -197,9 +323,16 @@ opacity: 1; /* keep solid, not faded */
 4. **Print-Ready:** Works well in any medium
 
 ### **Why This Typography Scale?**
-- **14px titles:** Small enough to be subtle, bold enough to be clear
-- **24px main:** Large enough to be hero content, not overwhelming
+- **12px titles:** Compact and subtle, regular weight for clean look
+- **20px main:** Large enough for impact, not overwhelming
 - **12px meta:** Compact but readable supporting information
+
+### **Why Gradients?**
+1. **Visual Depth:** Creates dimension without shadows
+2. **Emotional Connection:** Warm, vibrant gradients evoke feelings
+3. **Brand Personality:** Modern, energetic, design-forward
+4. **Subtle Movement:** Gradients add life to flat design
+5. **Category Distinction:** Each emotion has unique gradient signature
 
 ---
 
@@ -207,7 +340,7 @@ opacity: 1; /* keep solid, not faded */
 
 | Element | Border Radius | Padding | Shadow | Border |
 |---------|--------------|---------|--------|--------|
-| Energy Card | 0 48px 0 0 | 16px | None | None |
+| Insight Card (Joy/Passion/Meaningful/Draining) | 0 48px 0 0 | 16px | None | None |
 | CTA Button | 0 32px 0 0 | 20px v | None | None |
 | Settings Card | 0 24px 0 0 | 20px | None | 2px slate-200 |
 | Task Card | 0 20px 0 0 | 16px | None | 2px slate-200 |

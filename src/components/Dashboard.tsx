@@ -68,72 +68,127 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
         </button>
 
 
-        {/* Energy or Emotion Trend Summary */}
-        {thisWeekEntries.length > 0 && (() => {
-          // Calculate most energizing task
-          const allWeekTasks = thisWeekEntries.flatMap(entry => entry.tasks)
-          const sortedByEmotion = [...allWeekTasks].sort((a, b) => {
-            const aEmotion = a.emotions && a.emotions.length > 0 ? Math.max(...a.emotions) : a.emotion
-            const bEmotion = b.emotions && b.emotions.length > 0 ? Math.max(...b.emotions) : b.emotion
-            return bEmotion - aEmotion
-          })
+        {/* Insight Cards - From History */}
+        {entries.length > 0 && (() => {
+          // Get all tasks from history
+          const allTasks = entries.flatMap(entry => entry.tasks)
           
-          const mostEnergizingTask = sortedByEmotion[0]
-          const mostDrainingTask = sortedByEmotion[sortedByEmotion.length - 1]
+          if (allTasks.length === 0) return null
           
-          const mostEnergizingTaskEmotion = mostEnergizingTask?.emotions && mostEnergizingTask.emotions.length > 0 
-            ? Math.max(...mostEnergizingTask.emotions) 
-            : mostEnergizingTask?.emotion
-          const mostDrainingTaskEmotion = mostDrainingTask?.emotions && mostDrainingTask.emotions.length > 0 
-            ? Math.min(...mostDrainingTask.emotions) 
-            : mostDrainingTask?.emotion
-
-          const shouldShowBooster = mostEnergizingTaskEmotion && mostEnergizingTaskEmotion >= 4
-          const shouldShowDraining = mostDrainingTaskEmotion && mostDrainingTaskEmotion <= 8 && allWeekTasks.length > 1
+          // Helper function to get emotions array from task
+          const getEmotions = (task: any) => {
+            return task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
+          }
           
-          if (!shouldShowBooster && !shouldShowDraining) return null
+          // 1. What gave you joy - Happy (1), Excited (3), Energized (10)
+          const joyEmotions = [1, 3, 10]
+          const joyTasks = allTasks.filter(task => 
+            getEmotions(task).some(e => joyEmotions.includes(e))
+          )
+          const mostJoyfulTask = joyTasks.length > 0 ? joyTasks[Math.floor(Math.random() * Math.min(joyTasks.length, 5))] : null
+          
+          // 2. What sparked your passion - Excited (3), Energized (10), Surprised (7)
+          const passionEmotions = [3, 10, 7]
+          const passionTasks = allTasks.filter(task => 
+            getEmotions(task).some(e => passionEmotions.includes(e))
+          )
+          const mostPassionatTask = passionTasks.length > 0 ? passionTasks[Math.floor(Math.random() * Math.min(passionTasks.length, 5))] : null
+          
+          // 3. What felt meaningful - Relaxed (2), Nostalgic (9), Normal (11)
+          const meaningfulEmotions = [2, 9, 11]
+          const meaningfulTasks = allTasks.filter(task => 
+            getEmotions(task).some(e => meaningfulEmotions.includes(e))
+          )
+          const mostMeaningfulTask = meaningfulTasks.length > 0 ? meaningfulTasks[Math.floor(Math.random() * Math.min(meaningfulTasks.length, 5))] : null
+          
+          // 4. What drained you - Tired (12), Bored (8), Anxious (6), Sad (5)
+          const drainingEmotions = [12, 8, 6, 5]
+          const drainingTasks = allTasks.filter(task => 
+            getEmotions(task).some(e => drainingEmotions.includes(e))
+          )
+          const mostDrainingTask = drainingTasks.length > 0 ? drainingTasks[Math.floor(Math.random() * Math.min(drainingTasks.length, 5))] : null
           
           return (
             <div className="space-y-4 mb-6">
-              {/* Energy Booster - Bold Orange Card */}
-              {shouldShowBooster && (
+              {/* 1. What gave you joy - Yellow/Orange Gradient */}
+              {mostJoyfulTask && (
                 <div 
-                  className="bg-[#FF8C42] p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-                  style={{ borderRadius: '0 48px 0 0', gap: '-2px' }}
+                  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                  style={{ 
+                    borderRadius: '0 48px 0 0',
+                    background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
+                  }}
                 >
-                  <div className="flex flex-col items-start gap-4 w-full">
-                    <p className="text-[14px] font-bold text-slate-900">
-                      What lifted you up this week?
+                  <div className="flex flex-col items-start gap-2 w-full">
+                    <p className="text-[12px] font-normal text-slate-900">
+                      What gave you joy
                     </p>
                     
-                    <p className="text-[24px] font-black text-slate-900 leading-tight capitalize">
-                      {mostEnergizingTask.taskType.replace('-', ' ')}
-                    </p>
-                    
-                    <p className="text-[12px] text-slate-800 font-medium">
-                      Based on {thisWeekTaskCount} reflection{thisWeekTaskCount !== 1 ? 's' : ''}
+                    <p className="text-[20px] font-black text-slate-900 leading-tight">
+                      {mostJoyfulTask.description}
                     </p>
                   </div>
                 </div>
               )}
               
-              {/* Draining Task - Light Gray Card */}
-              {shouldShowDraining && (
+              {/* 2. What sparked your passion - Orange Gradient */}
+              {mostPassionatTask && (
                 <div 
-                  className="bg-[#E0E0E0] p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-                  style={{ borderRadius: '0 48px 0 0', gap: '-2px' }}
+                  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                  style={{ 
+                    borderRadius: '0 48px 0 0',
+                    background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+                  }}
                 >
-                  <div className="flex flex-col items-start gap-4 w-full">
-                    <p className="text-[14px] font-bold text-slate-900">
-                      What drained you:
+                  <div className="flex flex-col items-start gap-2 w-full">
+                    <p className="text-[12px] font-normal text-slate-900">
+                      What sparked your passion
                     </p>
                     
-                    <p className="text-[24px] font-black text-slate-900 leading-tight capitalize">
+                    <p className="text-[20px] font-black text-slate-900 leading-tight">
+                      {mostPassionatTask.description}
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {/* 3. What felt meaningful - Light Purple Gradient */}
+              {mostMeaningfulTask && (
+                <div 
+                  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                  style={{ 
+                    borderRadius: '0 48px 0 0',
+                    background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
+                  }}
+                >
+                  <div className="flex flex-col items-start gap-2 w-full">
+                    <p className="text-[12px] font-normal text-slate-900">
+                      What felt meaningful
+                    </p>
+                    
+                    <p className="text-[20px] font-black text-slate-900 leading-tight">
+                      {mostMeaningfulTask.description}
+                    </p>
+                  </div>
+                </div>
+              )}
+              
+              {/* 4. What drained you - Light Gray Gradient */}
+              {mostDrainingTask && (
+                <div 
+                  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                  style={{ 
+                    borderRadius: '0 48px 0 0',
+                    background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                  }}
+                >
+                  <div className="flex flex-col items-start gap-2 w-full">
+                    <p className="text-[12px] font-normal text-slate-900">
+                      What drained you
+                    </p>
+                    
+                    <p className="text-[20px] font-black text-slate-900 leading-tight">
                       {mostDrainingTask.description}
-                    </p>
-                    
-                    <p className="text-[12px] text-slate-700 font-medium">
-                      Based on {thisWeekTaskCount} reflection{thisWeekTaskCount !== 1 ? 's' : ''}
                     </p>
                   </div>
                 </div>

@@ -25,15 +25,15 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
 }) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('week')
 
-  // Get data based on selected time range
+  // Get data based on selected time range (for calendar only)
   const currentEntries = selectedTimeRange === 'week' 
     ? getCurrentWeekEntries(entries)
     : getCurrentMonthEntries(entries)
 
-  // Calculate insights
-  const averageEmotion = calculateAverageEmotion(currentEntries)
-  const mostEnergizingTaskType = getMostEnergizingTaskType(currentEntries)
-  const mostDrainingTaskType = getMostDrainingTaskType(currentEntries)
+  // Calculate insights from ALL entries (not just current time range)
+  const averageEmotion = calculateAverageEmotion(entries)
+  const mostEnergizingTaskType = getMostEnergizingTaskType(entries)
+  const mostDrainingTaskType = getMostDrainingTaskType(entries)
 
   // Get weekly emotional calendar data (Monday to Sunday of current week)
   const getWeeklyEmotionalData = () => {
@@ -176,11 +176,11 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   const weeklyData = getWeeklyEmotionalData()
   const monthlyData = getMonthlyCalendarData()
 
-  // Get top projects by emotion levels
+  // Get top projects by emotion levels (from ALL history)
   const getTopProjects = () => {
     const projectEmotions: Record<string, number[]> = {}
     
-    currentEntries.forEach(entry => {
+    entries.forEach(entry => {
       entry.tasks.forEach(task => {
         if (!projectEmotions[task.projectId]) {
           projectEmotions[task.projectId] = []
@@ -195,63 +195,36 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
       count: emotions.length
     }))
 
-    // Top Motivators - highest average emotions (>=9)
-    const motivators = projectAverages
-      .filter(item => item.averageEmotion >= 9)
-      .sort((a, b) => b.averageEmotion - a.averageEmotion)
+    // Sort all projects by different criteria and show top ones
+    
+    // Top Happy - just show projects with highest task count
+    const happy = [...projectAverages]
+      .sort((a, b) => b.count - a.count)
       .slice(0, 2)
 
-    // Top Frustrators - low emotions (<=4)
-    const frustrators = projectAverages
-      .filter(item => item.averageEmotion <= 4)
-      .sort((a, b) => a.averageEmotion - b.averageEmotion)
-      .slice(0, 2)
+    // Top Frustrators - show projects with lowest average emotion
+    const frustrators = projectAverages.length > 0
+      ? [...projectAverages]
+          .sort((a, b) => a.averageEmotion - b.averageEmotion)
+          .slice(0, 2)
+      : []
 
-    // Top Struggles - medium-low emotions (4-7)
-    const struggles = projectAverages
-      .filter(item => item.averageEmotion > 4 && item.averageEmotion <= 7)
-      .sort((a, b) => a.averageEmotion - b.averageEmotion)
-      .slice(0, 2)
+    // Top Struggles - show middle emotion range projects
+    const struggles = projectAverages.length > 2
+      ? [...projectAverages]
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 2)
+      : []
 
-    // Top Happy Moments - high emotions (>=10)
-    const happy = projectAverages
-      .filter(item => item.averageEmotion >= 10)
-      .sort((a, b) => b.averageEmotion - a.averageEmotion)
-      .slice(0, 2)
+    // Motivators not used anymore
+    const motivators: any[] = []
 
     return { motivators, frustrators, struggles, happy }
   }
 
   const { motivators, frustrators, struggles, happy } = getTopProjects()
 
-  // Generate insight card
-  const getInsightCard = () => {
-    if (currentEntries.length === 0) {
-      return {
-        title: "Start tracking to see insights!",
-        subtitle: "Add some reflections to discover your patterns."
-      }
-    }
-
-    if (averageEmotion >= 4) {
-      return {
-        title: "You're having a great time!",
-        subtitle: `Your average mood is ${averageEmotion.toFixed(1)}/5. Keep up the positive energy!`
-      }
-    } else if (averageEmotion <= 2) {
-      return {
-        title: "Consider taking a break.",
-        subtitle: "Your mood has been low. Try focusing on tasks that energize you."
-      }
-    } else {
-      return {
-        title: "You're finding your balance.",
-        subtitle: "Mix of challenging and rewarding work. Great progress!"
-      }
-    }
-  }
-
-  const insightCard = getInsightCard()
+  // No insight card needed anymore - we just show project cards
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F5F6EB] screen-transition">
@@ -406,83 +379,88 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             )}
         </div>
 
-        {/* Top Happy - Coral/Orange Card */}
+        {/* No data message */}
+        {entries.length === 0 && (
+          <div className="bg-white p-6 mb-6 border border-slate-200 text-center" style={{ borderRadius: '0 48px 0 0' }}>
+            <p className="text-[16px] font-medium text-slate-900 mb-2">No reflections yet</p>
+            <p className="text-[14px] text-slate-600">Start tracking your design work to see insights here.</p>
+          </div>
+        )}
+
+        {/* Top Happy - Orange Gradient */}
           {happy.length > 0 && (
             <div 
-              className="bg-[#FF6B6B] p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-              style={{ borderRadius: '0 48px 0 0', gap: '-2px' }}
+              className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+              style={{ 
+                borderRadius: '0 48px 0 0',
+                background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+              }}
             >
-              <div className="flex flex-col items-start gap-4 w-full">
-                <p className="text-[14px] font-bold text-slate-900">Top Happy</p>
+              <div className="flex flex-col items-start gap-2 w-full">
+                <p className="text-[12px] font-normal text-slate-900">Top Happy</p>
                 
                 <div className="space-y-1">
                   {happy.slice(0, 3).map((happyMoment, index) => {
                     const project = ProjectStorage.getProjectById(happyMoment.projectId)
                     return (
-                      <p key={index} className="text-[24px] font-black text-slate-900 leading-tight">
+                      <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
                   })}
                 </div>
-                
-                <p className="text-[12px] text-slate-900 font-medium">
-                  Projects that caused joy
-                </p>
               </div>
             </div>
           )}
 
-          {/* Top Frustrators - Light Gray Card */}
+          {/* Top Frustrators - Green Gradient */}
           {frustrators.length > 0 && (
             <div 
-              className="bg-[#D4E5D4] p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-              style={{ borderRadius: '0 48px 0 0', gap: '-2px' }}
+              className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+              style={{ 
+                borderRadius: '0 48px 0 0',
+                background: 'linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%)'
+              }}
             >
-              <div className="flex flex-col items-start gap-4 w-full">
-                <p className="text-[14px] font-bold text-slate-900">Top Frustraters</p>
+              <div className="flex flex-col items-start gap-2 w-full">
+                <p className="text-[12px] font-normal text-slate-900">Top Frustraters</p>
                 
                 <div className="space-y-1">
                   {frustrators.slice(0, 3).map((frustrator, index) => {
                     const project = ProjectStorage.getProjectById(frustrator.projectId)
                     return (
-                      <p key={index} className="text-[24px] font-black text-slate-900 leading-tight">
+                      <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
                   })}
                 </div>
-                
-                <p className="text-[12px] text-slate-900 font-medium">
-                  Projects that caused stress
-                </p>
               </div>
             </div>
           )}
 
-          {/* Top Struggles - Cyan Card */}
+          {/* Top Struggles - Light Gray Gradient */}
           {struggles.length > 0 && (
             <div 
-              className="bg-[#7DD3FC] p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-              style={{ borderRadius: '0 48px 0 0', gap: '-2px' }}
+              className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+              style={{ 
+                borderRadius: '0 48px 0 0',
+                background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+              }}
             >
-              <div className="flex flex-col items-start gap-4 w-full">
-                <p className="text-[14px] font-bold text-slate-900">Top Struggles</p>
+              <div className="flex flex-col items-start gap-2 w-full">
+                <p className="text-[12px] font-normal text-slate-900">Top Struggles</p>
                 
                 <div className="space-y-1">
                   {struggles.slice(0, 3).map((struggle, index) => {
                     const project = ProjectStorage.getProjectById(struggle.projectId)
                     return (
-                      <p key={index} className="text-[24px] font-black text-slate-900 leading-tight">
+                      <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
                   })}
                 </div>
-                
-                <p className="text-[12px] text-slate-900 font-medium">
-                  Projects that need attention
-                </p>
               </div>
             </div>
           )}

@@ -24,6 +24,9 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       </div>
     )
   }
+
+  // Check if this entry is from today (only today's entries can be edited)
+  const isToday = DateUtils.isDateStringToday(entry.date)
   
   if (!entry.tasks || entry.tasks.length === 0) {
     return (
@@ -86,6 +89,11 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
           <h2 className="text-[28px] font-bold text-slate-900">
             {DateUtils.formatDate(new Date(entry.date))}
           </h2>
+          {!isToday && (
+            <p className="text-[14px] text-slate-500 mt-2">
+              That day's already journaled into history. Let it chill.
+            </p>
+          )}
         </div>
 
         {/* Tasks Grouped by Project */}
@@ -108,8 +116,17 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                   return (
                     <div 
                       key={task.id} 
-                      className="bg-white p-4 border border-slate-200 cursor-pointer transition-all active:scale-[0.99]"
+                      className={`bg-white p-4 border border-slate-200 transition-all ${
+                        isToday 
+                          ? 'cursor-pointer hover:shadow-md active:scale-[0.99]' 
+                          : 'cursor-default opacity-75'
+                      }`}
                       onClick={() => {
+                        if (!isToday) {
+                          // For historical entries, do nothing (read-only)
+                          return
+                        }
+                        
                         const action = window.confirm('Choose an action:\n\nOK = Edit\nCancel = Delete')
                         if (action && onEditTask) {
                           onEditTask(task.id)
