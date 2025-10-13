@@ -50,14 +50,14 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete, onB
   ]
 
   return (
-    <div className="min-h-screen flex flex-col bg-background-light">
+    <div className="min-h-screen flex flex-col bg-[#F5F6EB]">
       {/* Progress Indicator */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-2">
-          <div className="h-2 flex-1 rounded-full bg-primary"></div>
-          <div className="h-2 flex-1 rounded-full bg-slate-200"></div>
-          <div className="h-2 flex-1 rounded-full bg-slate-200"></div>
-          <div className="h-2 flex-1 rounded-full bg-slate-200"></div>
+          <div className="h-2 flex-1 bg-[#FFD678]" style={{ borderRadius: '0 8px 0 0' }}></div>
+          <div className="h-2 flex-1 bg-slate-200" style={{ borderRadius: '0 8px 0 0' }}></div>
+          <div className="h-2 flex-1 bg-slate-200" style={{ borderRadius: '0 8px 0 0' }}></div>
+          <div className="h-2 flex-1 bg-slate-200" style={{ borderRadius: '0 8px 0 0' }}></div>
         </div>
       </div>
 
@@ -65,16 +65,16 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete, onB
       <div className="flex-grow px-6 py-8">
         {/* Icon */}
         <div className="mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-blue-100 flex items-center justify-center mx-auto">
-            <User size={32} className="text-blue-600" />
+          <div className="w-16 h-16 bg-[#C7D1FF] flex items-center justify-center mx-auto" style={{ borderRadius: '0 16px 0 0' }}>
+            <User size={32} className="text-slate-900" />
           </div>
         </div>
 
         {/* Title & Description */}
-        <h2 className="text-3xl font-bold text-slate-900 mb-3 text-center">
+        <h2 className="text-[28px] font-bold text-slate-900 mb-3 text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
           Tell Us About Yourself
         </h2>
-        <p className="text-slate-600 text-center mb-8 leading-relaxed">
+        <p className="text-[16px] text-slate-700 text-center mb-8 leading-relaxed">
           This helps us personalize your experience and provide better insights.
         </p>
 
@@ -122,11 +122,12 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete, onB
                 <button
                   key={option.value}
                   onClick={() => setGender(option.value)}
-                  className={`p-4 rounded-xl border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                  className={`p-4 border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
                     gender === option.value
-                      ? 'border-primary bg-primary/10 shadow-sm'
+                      ? 'border-slate-900 bg-[#FFD678]'
                       : 'border-slate-200 bg-white hover:border-slate-300'
                   }`}
+                  style={{ borderRadius: '0 16px 0 0' }}
                 >
                   <span className="text-2xl">{option.emoji}</span>
                   <span className={`text-sm font-medium ${
@@ -144,7 +145,7 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete, onB
         </div>
 
         {/* Privacy Notice */}
-        <div className="mt-8 max-w-md mx-auto bg-blue-50 rounded-xl p-4 border border-blue-100">
+        <div className="mt-8 max-w-md mx-auto bg-white p-4 border border-slate-200" style={{ borderRadius: '0 24px 0 0' }}>
           <p className="text-xs text-slate-700 text-center">
             🔒 <span className="font-semibold">Your privacy matters.</span> We use this info to improve your experience. You can update it anytime in settings.
           </p>
@@ -156,11 +157,12 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete, onB
         <button
           onClick={handleContinue}
           disabled={!name.trim() || !jobTitle.trim()}
-          className={`w-full bg-primary text-slate-900 font-bold py-4 px-6 rounded-xl text-lg soft-shadow transition-all duration-200 ease-out flex items-center justify-center gap-2 ${
+          className={`w-full bg-[#000] text-white font-bold py-5 px-6 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 ${
             !name.trim() || !jobTitle.trim()
-              ? 'opacity-50 cursor-not-allowed'
-              : 'hover:opacity-90 hover:scale-[0.98] active:scale-95'
+              ? 'bg-[#999] cursor-not-allowed'
+              : 'hover:bg-slate-900 active:scale-[0.98]'
           }`}
+          style={{ borderRadius: '0 32px 0 0' }}
         >
           <span>Continue</span>
           <ArrowRight size={20} />

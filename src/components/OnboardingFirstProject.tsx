@@ -23,14 +23,14 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background-light">
+    <div className="min-h-screen flex flex-col bg-[#F5F6EB]">
       {/* Progress Indicator */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-2">
-          <div className="h-2 flex-1 rounded-full bg-primary"></div>
-          <div className="h-2 flex-1 rounded-full bg-primary"></div>
-          <div className="h-2 flex-1 rounded-full bg-primary"></div>
-          <div className="h-2 flex-1 rounded-full bg-slate-200"></div>
+          <div className="h-2 flex-1 bg-[#FFD678]" style={{ borderRadius: '0 8px 0 0' }}></div>
+          <div className="h-2 flex-1 bg-[#FFD678]" style={{ borderRadius: '0 8px 0 0' }}></div>
+          <div className="h-2 flex-1 bg-[#FFD678]" style={{ borderRadius: '0 8px 0 0' }}></div>
+          <div className="h-2 flex-1 bg-slate-200" style={{ borderRadius: '0 8px 0 0' }}></div>
         </div>
       </div>
 
@@ -38,16 +38,16 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
       <div className="flex-grow px-6 py-8">
         {/* Icon */}
         <div className="mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto">
-            <Palette size={32} className="text-primary" />
+          <div className="w-16 h-16 bg-[#FFD678] flex items-center justify-center mx-auto" style={{ borderRadius: '0 16px 0 0' }}>
+            <Palette size={32} className="text-slate-900" />
           </div>
         </div>
 
         {/* Title & Description */}
-        <h2 className="text-3xl font-bold text-slate-900 mb-3 text-center">
+        <h2 className="text-[28px] font-bold text-slate-900 mb-3 text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
           Create Your First Project
         </h2>
-        <p className="text-slate-600 text-center mb-8 leading-relaxed">
+        <p className="text-[16px] text-slate-700 text-center mb-8 leading-relaxed">
           Projects help you organize your work. Start with one you're currently working on.
         </p>
 
@@ -76,12 +76,12 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
               <button
                 key={color}
                 onClick={() => setSelectedColor(color)}
-                className={`w-full aspect-square rounded-xl transition-all duration-200 ${
+                className={`w-full aspect-square transition-all duration-200 ${
                   selectedColor === color
-                    ? 'ring-4 ring-primary ring-offset-2 scale-110'
+                    ? 'ring-4 ring-slate-900 ring-offset-2 scale-110'
                     : 'hover:scale-105'
                 }`}
-                style={{ backgroundColor: color }}
+                style={{ backgroundColor: color, borderRadius: '0 12px 0 0' }}
                 aria-label={`Select color ${color}`}
               />
             ))}
@@ -89,7 +89,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
         </div>
 
         {/* Example Card */}
-        <div className="bg-white rounded-2xl p-5 border border-slate-200 border-l-4" style={{ borderLeftColor: selectedColor }}>
+        <div className="bg-white p-5 border border-slate-200 border-l-4" style={{ borderRadius: '0 24px 0 0', borderLeftColor: selectedColor }}>
           <p className="text-sm font-medium text-slate-600 mb-2">Preview:</p>
           <div className="flex items-center gap-3">
             <div 
@@ -108,11 +108,12 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
         <button
           onClick={handleContinue}
           disabled={!projectName.trim()}
-          className={`w-full bg-primary text-slate-900 font-bold py-4 px-6 rounded-xl text-lg soft-shadow transition-all duration-200 ease-out flex items-center justify-center gap-2 ${
+          className={`w-full text-white font-bold py-5 px-6 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 ${
             !projectName.trim()
-              ? 'opacity-50 cursor-not-allowed'
-              : 'hover:opacity-90 hover:scale-[0.98] active:scale-95'
+              ? 'bg-[#999] cursor-not-allowed'
+              : 'bg-[#000] hover:bg-slate-900 active:scale-[0.98]'
           }`}
+          style={{ borderRadius: '0 32px 0 0' }}
         >
           <span>Continue</span>
           <ArrowRight size={20} />

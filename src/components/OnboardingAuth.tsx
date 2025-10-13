@@ -14,24 +14,24 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
   onContinueWithEmail
 }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-primary/20 via-background-light to-background-light">
+    <div className="min-h-screen flex flex-col bg-[#F5F6EB]">
       {/* Hero Section */}
       <div className="flex-grow flex flex-col items-center justify-center px-6 pt-12 pb-8">
         {/* App Icon / Logo */}
         <div className="mb-8 relative">
-          <div className="w-24 h-24 rounded-full bg-primary flex items-center justify-center soft-shadow">
+          <div className="w-24 h-24 rounded-full bg-[#FFD678] flex items-center justify-center">
             <span className="text-5xl">✨</span>
           </div>
         </div>
 
         {/* Welcome Text */}
-        <h1 className="text-4xl font-bold text-slate-900 mb-4 text-center">
+        <h1 className="text-[32px] font-bold text-slate-900 mb-4 text-center leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
           Welcome to
           <br />
           Designer's Life Tracker
         </h1>
         
-        <p className="text-lg text-slate-600 text-center mb-12 max-w-md leading-relaxed">
+        <p className="text-[16px] text-slate-700 text-center mb-12 max-w-md leading-relaxed">
           Sign in to start tracking your creative journey and discover what brings you joy.
         </p>
 
@@ -40,7 +40,8 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
           {/* Google Sign In */}
           <button
             onClick={onContinueWithGoogle}
-            className="w-full bg-white text-slate-900 font-semibold py-4 px-6 rounded-xl soft-shadow hover:shadow-md transition-all duration-200 flex items-center justify-center gap-3 border border-slate-200 hover:border-slate-300"
+            className="w-full bg-white text-slate-900 font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 border border-slate-200 hover:bg-slate-50 active:scale-[0.98]"
+            style={{ borderRadius: '0 32px 0 0' }}
           >
             <Chrome size={24} className="text-blue-600" />
             <span>Continue with Google</span>
@@ -49,7 +50,8 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
           {/* Facebook Sign In */}
           <button
             onClick={onContinueWithFacebook}
-            className="w-full bg-[#1877F2] text-white font-semibold py-4 px-6 rounded-xl soft-shadow hover:shadow-md transition-all duration-200 flex items-center justify-center gap-3"
+            className="w-full bg-[#1877F2] text-white font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-[#1565D8] active:scale-[0.98]"
+            style={{ borderRadius: '0 32px 0 0' }}
           >
             <Facebook size={24} fill="white" />
             <span>Continue with Facebook</span>
@@ -58,7 +60,8 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
           {/* Email Sign In */}
           <button
             onClick={onContinueWithEmail}
-            className="w-full bg-slate-800 text-white font-semibold py-4 px-6 rounded-xl soft-shadow hover:shadow-md transition-all duration-200 flex items-center justify-center gap-3 hover:bg-slate-900"
+            className="w-full bg-[#000] text-white font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-slate-900 active:scale-[0.98]"
+            style={{ borderRadius: '0 32px 0 0' }}
           >
             <Mail size={24} />
             <span>Continue with Email</span>
