@@ -135,11 +135,10 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
             className={`
               w-full py-5 px-6 font-bold text-[17px] transition-all duration-200
               ${tasks.length > 0
-                ? 'bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98] shadow-lg'
+                ? 'bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98]'
                 : 'bg-[#999] text-white cursor-not-allowed'
               }
             `}
-            style={{ borderRadius: '0 32px 0 0' }}
           >
             Save Reflections
           </button>
