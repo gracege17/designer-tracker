@@ -353,7 +353,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           >
                             {/* Emoji */}
                             <div 
-                              className={`text-2xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : ''}`}
+                              className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : ''}`}
                             >
                               {getEmotionEmoji()}
                             </div>
