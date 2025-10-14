@@ -132,16 +132,17 @@ const EntryList: React.FC<EntryListProps> = ({
                           {entry.tasks.slice(0, 3).map((task, index) => (
                             <p 
                               key={index} 
-                              className={`truncate ${
-                                index === 0 
-                                  ? 'text-[14px] font-bold text-slate-900 mb-1' 
-                                  : 'text-[14px] font-normal text-slate-700 mb-1 last:mb-0'
-                              }`}
+                              className="truncate text-[14px] font-bold text-slate-900 mb-1"
                               style={{ lineHeight: '1.5' }}
                             >
                               {task.description}
                             </p>
                           ))}
+                          {entry.tasks.length > 3 && (
+                            <p className="text-[14px] font-bold text-slate-900">
+                              ...
+                            </p>
+                          )}
                         </div>
                       </div>
                     )
