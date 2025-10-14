@@ -162,7 +162,6 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete, onB
               ? 'bg-[#999] cursor-not-allowed'
               : 'hover:bg-slate-900 active:scale-[0.98]'
           }`}
-          style={{ borderRadius: '0 32px 0 0' }}
         >
           <span>Continue</span>
           <ArrowRight size={20} />

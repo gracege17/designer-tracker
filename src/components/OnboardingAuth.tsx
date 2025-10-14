@@ -41,7 +41,6 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
           <button
             onClick={onContinueWithGoogle}
             className="w-full bg-white text-slate-900 font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 border border-slate-200 hover:bg-slate-50 active:scale-[0.98]"
-            style={{ borderRadius: '0 32px 0 0' }}
           >
             <Chrome size={24} className="text-blue-600" />
             <span>Continue with Google</span>
@@ -51,7 +50,6 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
           <button
             onClick={onContinueWithFacebook}
             className="w-full bg-[#1877F2] text-white font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-[#1565D8] active:scale-[0.98]"
-            style={{ borderRadius: '0 32px 0 0' }}
           >
             <Facebook size={24} fill="white" />
             <span>Continue with Facebook</span>
@@ -61,7 +59,6 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
           <button
             onClick={onContinueWithEmail}
             className="w-full bg-[#000] text-white font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-slate-900 active:scale-[0.98]"
-            style={{ borderRadius: '0 32px 0 0' }}
           >
             <Mail size={24} />
             <span>Continue with Email</span>

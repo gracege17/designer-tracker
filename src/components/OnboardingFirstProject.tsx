@@ -113,7 +113,6 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
               ? 'bg-[#999] cursor-not-allowed'
               : 'bg-[#000] hover:bg-slate-900 active:scale-[0.98]'
           }`}
-          style={{ borderRadius: '0 32px 0 0' }}
         >
           <span>Continue</span>
           <ArrowRight size={20} />
