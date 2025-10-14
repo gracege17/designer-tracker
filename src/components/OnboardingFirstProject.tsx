@@ -133,16 +133,6 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F5F6EB]">
-      {/* Progress Indicator */}
-      <div className="px-6 pt-6 pb-4">
-        <div className="flex items-center gap-2">
-          <div className="h-2 flex-1 bg-[#FFD678]" style={{ borderRadius: '0 8px 0 0' }}></div>
-          <div className="h-2 flex-1 bg-[#FFD678]" style={{ borderRadius: '0 8px 0 0' }}></div>
-          <div className="h-2 flex-1 bg-[#FFD678]" style={{ borderRadius: '0 8px 0 0' }}></div>
-          <div className="h-2 flex-1 bg-slate-200" style={{ borderRadius: '0 8px 0 0' }}></div>
-        </div>
-      </div>
-
       {/* Chat Messages */}
       <div className="flex-grow overflow-y-auto px-6 py-8 space-y-4">
         {messages.map((message, index) => (
