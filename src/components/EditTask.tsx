@@ -120,9 +120,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
             How did it make you feel?
           </label>
           <p className="text-xs text-slate-500 mb-3">
-            Select all that apply
+            Pick as many as you'd like
           </p>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-4 gap-3">
             {emotionOptions.map((emotion) => {
               const isSelected = selectedEmotions.includes(emotion.level)
               
@@ -132,16 +132,20 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
                   type="button"
                   onClick={() => handleEmotionToggle(emotion.level)}
                   className={`
-                    flex flex-col items-center justify-center p-4 rounded-xl shadow-sm space-y-2 
-                    transition-all duration-200 hover:scale-105
+                    flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border-2
                     ${isSelected 
-                      ? 'bg-primary/30 ring-2 ring-primary shadow-md' 
-                      : 'bg-white hover:bg-slate-50'
+                      ? 'bg-[#FFD678] border-slate-900 scale-105' 
+                      : 'bg-white border-slate-200 hover:border-slate-300 active:scale-95'
                     }
                   `}
+                  style={{ borderRadius: '0 24px 0 0' }}
                 >
-                  <span className="text-3xl">{emotion.emoji}</span>
-                  <span className="text-xs font-medium text-slate-900">{emotion.label}</span>
+                  <div className="mb-2 flex items-center justify-center">
+                    <span className="text-3xl">{emotion.emoji}</span>
+                  </div>
+                  <span className="text-[11px] font-medium text-slate-900 text-center leading-tight">
+                    {emotion.label}
+                  </span>
                 </button>
               )
             })}
