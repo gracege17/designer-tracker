@@ -363,32 +363,53 @@ function App() {
   }
 
   const handleSaveEditedTask = (updatedTask: Task) => {
-    if (!selectedEntry) return
-    
     try {
-      // Update the task in the entry
-      const updatedTasks = selectedEntry.tasks.map(task => 
-        task.id === updatedTask.id ? updatedTask : task
-      )
-      
-      const updatedEntry: Entry = {
-        ...selectedEntry,
-        tasks: updatedTasks,
-        updatedAt: new Date()
+      if (selectedEntry) {
+        // Editing a saved entry task
+        const updatedTasks = selectedEntry.tasks.map(task => 
+          task.id === updatedTask.id ? updatedTask : task
+        )
+        
+        const updatedEntry: Entry = {
+          ...selectedEntry,
+          tasks: updatedTasks,
+          updatedAt: new Date()
+        }
+        
+        // Save to storage
+        EntryStorage.saveEntry(updatedEntry)
+        
+        // Update state
+        setEntries(prev => prev.map(e => e.id === updatedEntry.id ? updatedEntry : e))
+        setSelectedEntry(updatedEntry)
+        setEditingTask(null)
+        
+        // Show success
+        showSuccess('Task updated successfully!')
+        
+        setCurrentView('entryDetail')
+      } else {
+        // Editing a collected task (during review)
+        const updatedCollectedTasks = collectedTasks.map(task => 
+          task.id === updatedTask.id 
+            ? {
+                ...task,
+                description: updatedTask.description,
+                emotion: updatedTask.emotion,
+                emotions: updatedTask.emotions,
+                notes: updatedTask.notes
+              }
+            : task
+        )
+        
+        setCollectedTasks(updatedCollectedTasks)
+        setEditingTask(null)
+        
+        // Show success
+        showSuccess('Task updated successfully!')
+        
+        setCurrentView('reviewReflection')
       }
-      
-      // Save to storage
-      EntryStorage.saveEntry(updatedEntry)
-      
-      // Update state
-      setEntries(prev => prev.map(e => e.id === updatedEntry.id ? updatedEntry : e))
-      setSelectedEntry(updatedEntry)
-      setEditingTask(null)
-      
-      // Show success
-      showSuccess('Task updated successfully!')
-      
-      setCurrentView('entryDetail')
     } catch (error) {
       console.error('Error saving edited task:', error)
       alert('Failed to save changes. Please try again.')
@@ -397,7 +418,12 @@ function App() {
 
   const handleCancelEditTask = () => {
     setEditingTask(null)
-    setCurrentView('entryDetail')
+    // Go back to the appropriate view
+    if (selectedEntry) {
+      setCurrentView('entryDetail')
+    } else {
+      setCurrentView('reviewReflection')
+    }
   }
 
   const handleDeleteEntryTask = (taskId: string) => {
@@ -625,10 +651,10 @@ function App() {
           </div>
         )
       case 'editTask':
-        return (editingTask && selectedEntry) ? (
+        return editingTask ? (
           <EditTask
             task={editingTask}
-            entryDate={selectedEntry.date}
+            entryDate={selectedEntry?.date || getTodayDateString()}
             onSave={handleSaveEditedTask}
             onCancel={handleCancelEditTask}
           />
