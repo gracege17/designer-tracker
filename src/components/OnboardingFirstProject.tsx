@@ -5,6 +5,7 @@ import Input from './Input'
 import { PROJECT_COLORS } from '../types'
 
 interface OnboardingFirstProjectProps {
+  userName: string
   onComplete: (projects: Array<{ name: string; color: string }>) => void
   onSkip: () => void
 }
@@ -20,11 +21,11 @@ interface ChatMessage {
   projects?: Project[]
 }
 
-const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onComplete, onSkip }) => {
+const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userName, onComplete, onSkip }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       type: 'ai',
-      content: 'Got any projects in motion?\nYou can jot down a few now or add them later. No rush.'
+      content: `Hey ${userName} 👋\n\nGot any projects in motion?\nYou can jot down a few now or add them later. No rush.`
     }
   ])
   const [inputValue, setInputValue] = useState('')

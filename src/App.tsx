@@ -49,6 +49,7 @@ function App() {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(0)
   const [collectedTasks, setCollectedTasks] = useState<TaskReview[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [userProfile, setUserProfile] = useState<UserProfileData | null>(null)
   
   // Success toast state
   const [successToast, setSuccessToast] = useState({ show: false, message: '' })
@@ -443,10 +444,12 @@ function App() {
   const handleUserInfoComplete = (userData: UserProfileData) => {
     // Save user profile
     const authMethod = localStorage.getItem('designer_tracker_auth_method') as any || 'guest'
-    UserProfileStorage.saveUserProfile({
+    const fullUserData = {
       ...userData,
       authMethod
-    })
+    }
+    UserProfileStorage.saveUserProfile(fullUserData)
+    setUserProfile(userData)
     setCurrentView('onboardingFirstProject')
   }
 
@@ -502,6 +505,7 @@ function App() {
       case 'onboardingFirstProject':
         return (
           <OnboardingFirstProject
+            userName={userProfile?.name || 'there'}
             onComplete={handleOnboardingProjectComplete}
             onSkip={handleOnboardingSkip}
           />
