@@ -269,23 +269,21 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 ))}
               </div>
               
-              {/* Week circles */}
+              {/* Week emojis */}
               <div className="grid grid-cols-7 gap-2">
                 {weeklyData.map((day, index) => {
-                  // Get color based on emotion
-                  const getEmotionColor = () => {
-                    if (!day.hasData) return '#D1D5DB'
+                  // Get emoji based on emotion
+                  const getEmotionEmoji = () => {
+                    if (!day.hasData) return '⚪'
                     const firstTask = day.entry?.tasks[0]
-                    if (!firstTask) return '#D1D5DB'
+                    if (!firstTask) return '⚪'
                     
                     const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
                       ? firstTask.emotions[0] 
                       : firstTask.emotion
                     
-                    // Map emotions to colors
-                    if (emotionLevel <= 5) return '#EF4444' // Red for negative
-                    if (emotionLevel <= 8) return '#6366F1' // Blue for neutral/bored
-                    return '#8B5CF6' // Purple for positive
+                    const emotion = EMOTIONS[emotionLevel]
+                    return emotion?.emoji || '😐'
                   }
                   
                   return (
@@ -294,14 +292,15 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                       className="flex flex-col items-center gap-2"
                     >
                       <div 
-                        className="w-8 h-8 rounded-full transition-all cursor-pointer hover:scale-110"
-                        style={{ backgroundColor: getEmotionColor() }}
+                        className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : ''}`}
                         onClick={() => {
                           if (day.hasData && day.entry) {
                             onViewEntry(day.entry)
                           }
                         }}
-                      ></div>
+                      >
+                        {getEmotionEmoji()}
+                      </div>
                       <span className="text-[10px] font-medium text-slate-900">
                         {day.date}
                       </span>
@@ -325,20 +324,18 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 {/* Calendar Grid */}
                 <div className="grid grid-cols-7 gap-2">
                   {monthlyData.map((day, index) => {
-                    // Get color based on emotion
-                    const getEmotionColor = () => {
-                      if (day.isEmpty || !day.hasData) return '#D1D5DB'
+                    // Get emoji based on emotion
+                    const getEmotionEmoji = () => {
+                      if (day.isEmpty || !day.hasData) return '⚪'
                       const firstTask = day.entry?.tasks[0]
-                      if (!firstTask) return '#D1D5DB'
+                      if (!firstTask) return '⚪'
                       
                       const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
                         ? firstTask.emotions[0] 
                         : firstTask.emotion
                       
-                      // Map emotions to colors
-                      if (emotionLevel <= 5) return '#EF4444' // Red for negative
-                      if (emotionLevel <= 8) return '#6366F1' // Blue for neutral/bored
-                      return '#8B5CF6' // Purple for positive
+                      const emotion = EMOTIONS[emotionLevel]
+                      return emotion?.emoji || '😐'
                     }
                     
                     return (
@@ -354,11 +351,12 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                               }
                             }}
                           >
-                            {/* Colored circle */}
+                            {/* Emoji */}
                             <div 
-                              className={`w-8 h-8 rounded-full transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : ''}`}
-                              style={{ backgroundColor: getEmotionColor() }}
-                            ></div>
+                              className={`text-2xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : ''}`}
+                            >
+                              {getEmotionEmoji()}
+                            </div>
                             
                             {/* Date number */}
                             <span className="text-[10px] font-medium text-slate-900">
