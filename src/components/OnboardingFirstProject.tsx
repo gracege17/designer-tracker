@@ -52,7 +52,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
         </p>
 
         {/* Project Name Input */}
-        <div className="mb-6">
+        <div className="mb-8">
           <Input
             label="Project Name"
             value={projectName}
@@ -64,28 +64,6 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
             error={error}
             autoFocus
           />
-        </div>
-
-        {/* Color Selection */}
-        <div className="mb-8">
-          <label className="block text-sm font-medium text-slate-700 mb-3">
-            Choose a Color
-          </label>
-          <div className="grid grid-cols-6 gap-3">
-            {PROJECT_COLORS.map((color) => (
-              <button
-                key={color}
-                onClick={() => setSelectedColor(color)}
-                className={`w-full aspect-square transition-all duration-200 ${
-                  selectedColor === color
-                    ? 'ring-4 ring-slate-900 ring-offset-2 scale-110'
-                    : 'hover:scale-105'
-                }`}
-                style={{ backgroundColor: color, borderRadius: '0 12px 0 0' }}
-                aria-label={`Select color ${color}`}
-              />
-            ))}
-          </div>
         </div>
 
         {/* Example Card */}
