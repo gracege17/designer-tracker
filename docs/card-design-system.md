@@ -308,6 +308,148 @@ Four emotional insight cards displayed on the dashboard, pulling from the user's
 
 ---
 
+## Emotion Selection Cards
+
+Interactive cards used for selecting emotional states during task reflection and editing. Features a 4-column grid layout with asymmetric corners and clear visual states.
+
+### **Visual Properties**
+
+```css
+/* Grid Layout */
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 12px; /* gap-3 */
+
+/* Card Style */
+border-radius: 0 24px 0 0;
+padding: 16px 8px; /* py-4 px-2 */
+border: 2px solid;
+transition: all 0.2s;
+```
+
+### **States**
+
+**Unselected State (Default):**
+```css
+background-color: #FFFFFF;
+border-color: #E2E8F0; /* slate-200 */
+```
+```jsx
+className="bg-white border-slate-200"
+```
+
+**Hover State:**
+```css
+border-color: #CBD5E1; /* slate-300 */
+```
+```jsx
+className="hover:border-slate-300"
+```
+
+**Selected State:**
+```css
+background-color: #FFD678;
+border-color: #0F172A; /* slate-900 */
+transform: scale(1.05);
+```
+```jsx
+className="bg-[#FFD678] border-slate-900 scale-105"
+```
+
+**Active/Pressed State:**
+```css
+transform: scale(0.95);
+```
+```jsx
+className="active:scale-95"
+```
+
+### **Typography**
+
+**Emoji:**
+```css
+font-size: 30px; /* text-3xl */
+margin-bottom: 8px;
+```
+
+**Label:**
+```css
+font-size: 11px;
+font-weight: 500; /* font-medium */
+line-height: 1.25; /* leading-tight */
+color: #0F172A; /* slate-900 */
+text-align: center;
+```
+
+### **12 Emotion Options**
+
+| Level | Emoji | Label | Category |
+|-------|-------|-------|----------|
+| 1 | 😀 | Happy | Positive |
+| 2 | 😌 | Relaxed | Neutral |
+| 3 | 🤩 | Excited | Positive |
+| 4 | 😠 | Angry | Negative |
+| 5 | 😢 | Sad | Negative |
+| 6 | 😰 | Anxious | Negative |
+| 7 | 😮 | Surprised | Neutral |
+| 8 | 😐 | Bored | Neutral |
+| 9 | 🥹 | Nostalgic | Neutral |
+| 10 | ⚡ | Energized | Positive |
+| 11 | 🙂 | Normal | Neutral |
+| 12 | 😴 | Tired | Neutral |
+
+### **Usage Context**
+
+Used in:
+- Emotion Selection screen (during daily reflection)
+- Edit Task screen (when editing existing tasks)
+- Multiple selections allowed (Pick as many as you'd like)
+
+### **Implementation Example**
+
+```jsx
+<div className="grid grid-cols-4 gap-3">
+  {emotions.map((emotion) => {
+    const isSelected = selectedEmotions.includes(emotion.level)
+    
+    return (
+      <button
+        key={emotion.level}
+        onClick={() => handleEmotionToggle(emotion.level)}
+        className={`
+          flex flex-col items-center justify-center py-4 px-2 
+          transition-all duration-200 border-2
+          ${isSelected 
+            ? 'bg-[#FFD678] border-slate-900 scale-105' 
+            : 'bg-white border-slate-200 hover:border-slate-300 active:scale-95'
+          }
+        `}
+        style={{ borderRadius: '0 24px 0 0' }}
+      >
+        <div className="mb-2 flex items-center justify-center">
+          <span className="text-3xl">{emotion.emoji}</span>
+        </div>
+        <span className="text-[11px] font-medium text-slate-900 text-center leading-tight">
+          {emotion.label}
+        </span>
+      </button>
+    )
+  })}
+</div>
+```
+
+### **Design Notes**
+
+- **4 columns** create balanced, scannable layout
+- **Yellow selection** (`#FFD678`) provides warm, friendly feedback
+- **Dark border** on selected state creates strong contrast
+- **Scale effects** provide tactile interaction feedback
+- **Asymmetric corner** maintains brand consistency
+- **No shadows** keeps design clean and flat
+- **Multi-select** allows nuanced emotional expression
+
+---
+
 ## Design Principles
 
 ### **Why Asymmetric Corner?**
@@ -342,6 +484,7 @@ Four emotional insight cards displayed on the dashboard, pulling from the user's
 |---------|--------------|---------|--------|--------|
 | Insight Card (Joy/Passion/Meaningful/Draining) | 0 48px 0 0 | 16px | None | None |
 | CTA Button | 0 32px 0 0 | 20px v | None | None |
+| Emotion Selection Card | 0 24px 0 0 | 16px v, 8px h | None | 2px (slate-200 or slate-900) |
 | Settings Card | 0 24px 0 0 | 20px | None | 2px slate-200 |
 | Task Card | 0 20px 0 0 | 16px | None | 2px slate-200 |
 | Project Pill | 0 16px 0 0 | 12px v, 20px h | None | 2px slate-900 |
