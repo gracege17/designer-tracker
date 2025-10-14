@@ -87,14 +87,14 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
                       }}
                     >
                       <div className="flex items-start gap-3 mb-2">
-                        {/* Emotion circles */}
+                        {/* Emotion emojis */}
                         <div className="flex gap-1.5 flex-shrink-0">
                           {uniqueEmotions.map((emotionLevel, index) => {
                             const emotion = EMOTIONS[emotionLevel]
                             return (
-                              <div key={`${emotionLevel}-${index}`} className="w-10 h-10 rounded-full bg-[#D1D5DB] flex items-center justify-center">
-                                <span className="text-lg">{emotion?.emoji || '😐'}</span>
-                              </div>
+                              <span key={`${emotionLevel}-${index}`} className="text-2xl">
+                                {emotion?.emoji || '😐'}
+                              </span>
                             )
                           })}
                         </div>
