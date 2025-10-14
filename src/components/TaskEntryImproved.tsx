@@ -73,8 +73,8 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
       <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
         {/* Title Section */}
         <div className="mb-8">
-          <h2 className="text-[32px] font-bold text-slate-900 mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
-            What task did you work on {currentProject?.name}?
+          <h2 className="text-[32px] font-normal text-slate-900 mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+            What task did you work on <span className="font-bold">{currentProject?.name}</span>?
           </h2>
           <p className="text-[16px] text-slate-700">
             Describe what you accomplished today
