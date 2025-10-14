@@ -1,25 +1,57 @@
 import React, { useState } from 'react'
-import { Palette, ArrowRight } from 'lucide-react'
+import { Palette, ArrowRight, Plus, X } from 'lucide-react'
 import Button from './Button'
 import Input from './Input'
 import { PROJECT_COLORS } from '../types'
 
 interface OnboardingFirstProjectProps {
-  onComplete: (projectName: string, projectColor: string) => void
+  onComplete: (projects: Array<{ name: string; color: string }>) => void
   onSkip: () => void
+}
+
+interface Project {
+  name: string
+  color: string
 }
 
 const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onComplete, onSkip }) => {
   const [projectName, setProjectName] = useState('')
-  const [selectedColor, setSelectedColor] = useState(PROJECT_COLORS[0])
+  const [projects, setProjects] = useState<Project[]>([])
   const [error, setError] = useState('')
 
-  const handleContinue = () => {
+  const handleAddProject = () => {
     if (!projectName.trim()) {
       setError('Please enter a project name')
       return
     }
-    onComplete(projectName.trim(), selectedColor)
+    
+    // Add project to list with default color
+    const newProject: Project = {
+      name: projectName.trim(),
+      color: PROJECT_COLORS[projects.length % PROJECT_COLORS.length]
+    }
+    
+    setProjects([...projects, newProject])
+    setProjectName('')
+    setError('')
+  }
+
+  const handleRemoveProject = (index: number) => {
+    setProjects(projects.filter((_, i) => i !== index))
+  }
+
+  const handleContinue = () => {
+    if (projects.length === 0) {
+      setError('Please add at least one project')
+      return
+    }
+    onComplete(projects)
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && projectName.trim()) {
+      handleAddProject()
+    }
   }
 
   return (
@@ -45,14 +77,14 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
 
         {/* Title & Description */}
         <h2 className="text-[28px] font-bold text-slate-900 mb-3 text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
-          Create Your First Project
+          Create Your Projects
         </h2>
         <p className="text-[16px] text-slate-700 text-center mb-8 leading-relaxed">
-          Projects help you organize your work. Start with one you're currently working on.
+          Add the projects you're currently working on. You can add more later.
         </p>
 
         {/* Project Name Input */}
-        <div className="mb-8">
+        <div className="mb-4">
           <Input
             label="Project Name"
             value={projectName}
@@ -60,34 +92,61 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
               setProjectName(e.target.value)
               setError('')
             }}
+            onKeyPress={handleKeyPress}
             placeholder="e.g., Mobile App Redesign"
             error={error}
             autoFocus
           />
         </div>
 
-        {/* Example Card */}
-        <div className="space-y-3">
-          <p className="text-sm font-medium text-slate-600">Preview:</p>
-          <div className="inline-flex items-center gap-2 bg-white px-4 py-2 border border-slate-200 rounded-full">
-            <div 
-              className="w-3 h-3 rounded-full flex-shrink-0"
-              style={{ backgroundColor: selectedColor }}
-            />
-            <span className="text-slate-900 font-medium text-[15px]">
-              {projectName || 'Your Project Name'}
-            </span>
+        {/* Add Project Button */}
+        <button
+          onClick={handleAddProject}
+          disabled={!projectName.trim()}
+          className={`w-full mb-6 py-3 px-4 border-2 border-dashed transition-all duration-200 flex items-center justify-center gap-2 ${
+            projectName.trim()
+              ? 'border-slate-300 text-slate-700 hover:border-slate-400 hover:bg-slate-50 active:scale-[0.98]'
+              : 'border-slate-200 text-slate-400 cursor-not-allowed'
+          }`}
+        >
+          <Plus size={20} />
+          <span className="font-medium">Add Project</span>
+        </button>
+
+        {/* Projects List */}
+        {projects.length > 0 && (
+          <div className="space-y-3">
+            <p className="text-sm font-medium text-slate-600">Your Projects ({projects.length}):</p>
+            <div className="flex flex-wrap gap-2">
+              {projects.map((project, index) => (
+                <div 
+                  key={index}
+                  className="inline-flex items-center gap-2 bg-white px-4 py-2 border border-slate-200 rounded-full group hover:border-slate-300 transition-all"
+                >
+                  <span className="text-slate-900 font-medium text-[15px]">
+                    {project.name}
+                  </span>
+                  <button
+                    onClick={() => handleRemoveProject(index)}
+                    className="text-slate-400 hover:text-slate-700 transition-colors"
+                    aria-label={`Remove ${project.name}`}
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Action Buttons */}
       <div className="px-6 pb-8 space-y-3">
         <button
           onClick={handleContinue}
-          disabled={!projectName.trim()}
+          disabled={projects.length === 0}
           className={`w-full text-white font-bold py-5 px-6 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 ${
-            !projectName.trim()
+            projects.length === 0
               ? 'bg-[#999] cursor-not-allowed'
               : 'bg-[#000] hover:bg-slate-900 active:scale-[0.98]'
           }`}

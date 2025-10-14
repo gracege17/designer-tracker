@@ -450,16 +450,18 @@ function App() {
     setCurrentView('onboardingFirstProject')
   }
 
-  const handleOnboardingProjectComplete = (projectName: string, projectColor: string) => {
-    // Create the first project
-    const newProject: Project = {
+  const handleOnboardingProjectComplete = (projectsData: Array<{ name: string; color: string }>) => {
+    // Create all projects
+    const newProjects: Project[] = projectsData.map(projectData => ({
       id: generateId(),
-      name: projectName,
-      color: projectColor,
+      name: projectData.name,
+      color: projectData.color,
       createdAt: new Date()
-    }
-    ProjectStorage.saveProject(newProject)
-    setProjects([newProject])
+    }))
+    
+    // Save all projects
+    newProjects.forEach(project => ProjectStorage.saveProject(project))
+    setProjects(newProjects)
     setCurrentView('onboardingFirstEntry')
   }
 
