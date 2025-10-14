@@ -67,14 +67,14 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ onCompl
         </div>
 
         {/* Example Card */}
-        <div className="bg-white p-5 border border-slate-200 border-l-4" style={{ borderRadius: '0 24px 0 0', borderLeftColor: selectedColor }}>
-          <p className="text-sm font-medium text-slate-600 mb-2">Preview:</p>
-          <div className="flex items-center gap-3">
+        <div className="space-y-3">
+          <p className="text-sm font-medium text-slate-600">Preview:</p>
+          <div className="inline-flex items-center gap-2 bg-white px-4 py-2 border border-slate-200 rounded-full">
             <div 
-              className="w-4 h-4 rounded-full flex-shrink-0"
+              className="w-3 h-3 rounded-full flex-shrink-0"
               style={{ backgroundColor: selectedColor }}
             />
-            <span className="text-slate-900 font-semibold">
+            <span className="text-slate-900 font-medium text-[15px]">
               {projectName || 'Your Project Name'}
             </span>
           </div>
