@@ -68,31 +68,29 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
         </button>
 
 
-        {/* Insight Cards - From History */}
-        {entries.length > 0 && (() => {
+        {/* Insight Cards - Always Show */}
+        {(() => {
           // Get all tasks from history
-          const allTasks = entries.flatMap(entry => entry.tasks)
-          
-          if (allTasks.length === 0) return null
+          const allTasks = entries.length > 0 ? entries.flatMap(entry => entry.tasks) : []
           
           // Helper function to get emotions array from task
           const getEmotions = (task: any) => {
             return task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
           }
           
-          // 1. What gave you joy - Happy (1), Excited (3), Energized (10)
-          const joyEmotions = [1, 3, 10]
-          const joyTasks = allTasks.filter(task => 
-            getEmotions(task).some(e => joyEmotions.includes(e))
+          // 1. What gave you energy - Happy (1), Excited (3), Energized (10)
+          const energyEmotions = [1, 3, 10]
+          const energyTasks = allTasks.filter(task => 
+            getEmotions(task).some(e => energyEmotions.includes(e))
           )
-          const mostJoyfulTask = joyTasks.length > 0 ? joyTasks[Math.floor(Math.random() * Math.min(joyTasks.length, 5))] : null
+          const mostEnergeticTask = energyTasks.length > 0 ? energyTasks[Math.floor(Math.random() * Math.min(energyTasks.length, 5))] : null
           
-          // 2. What sparked your passion - Excited (3), Energized (10), Surprised (7)
-          const passionEmotions = [3, 10, 7]
-          const passionTasks = allTasks.filter(task => 
-            getEmotions(task).some(e => passionEmotions.includes(e))
+          // 2. What drained you - Tired (12), Bored (8), Anxious (6), Sad (5)
+          const drainingEmotions = [12, 8, 6, 5]
+          const drainingTasks = allTasks.filter(task => 
+            getEmotions(task).some(e => drainingEmotions.includes(e))
           )
-          const mostPassionatTask = passionTasks.length > 0 ? passionTasks[Math.floor(Math.random() * Math.min(passionTasks.length, 5))] : null
+          const mostDrainingTask = drainingTasks.length > 0 ? drainingTasks[Math.floor(Math.random() * Math.min(drainingTasks.length, 5))] : null
           
           // 3. What felt meaningful - Relaxed (2), Nostalgic (9), Normal (11)
           const meaningfulEmotions = [2, 9, 11]
@@ -101,98 +99,114 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           )
           const mostMeaningfulTask = meaningfulTasks.length > 0 ? meaningfulTasks[Math.floor(Math.random() * Math.min(meaningfulTasks.length, 5))] : null
           
-          // 4. What drained you - Tired (12), Bored (8), Anxious (6), Sad (5)
-          const drainingEmotions = [12, 8, 6, 5]
-          const drainingTasks = allTasks.filter(task => 
-            getEmotions(task).some(e => drainingEmotions.includes(e))
+          // 4. What sparked your passion - Excited (3), Energized (10), Surprised (7)
+          const passionEmotions = [3, 10, 7]
+          const passionTasks = allTasks.filter(task => 
+            getEmotions(task).some(e => passionEmotions.includes(e))
           )
-          const mostDrainingTask = drainingTasks.length > 0 ? drainingTasks[Math.floor(Math.random() * Math.min(drainingTasks.length, 5))] : null
+          const mostPassionateTask = passionTasks.length > 0 ? passionTasks[Math.floor(Math.random() * Math.min(passionTasks.length, 5))] : null
           
           return (
             <div className="space-y-4 mb-6">
-              {/* 1. What gave you joy - Yellow/Orange Gradient */}
-              {mostJoyfulTask && (
-                <div 
-                  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-                  style={{ 
-                    borderRadius: '0 48px 0 0',
-                    background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
-                  }}
-                >
-                  <div className="flex flex-col items-start gap-2 w-full">
-                    <p className="text-[12px] font-normal text-slate-900">
-                      What gave you joy
-                    </p>
-                    
+              {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
+              <div 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                style={{ 
+                  borderRadius: '0 48px 0 0',
+                  background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
+                }}
+              >
+                <div className="flex flex-col items-start gap-2 w-full">
+                  <p className="text-[12px] font-normal text-slate-900">
+                    What Gave You Energy
+                  </p>
+                  
+                  {mostEnergeticTask ? (
                     <p className="text-[20px] font-black text-slate-900 leading-tight">
-                      {mostJoyfulTask.description}
+                      {mostEnergeticTask.description}
                     </p>
-                  </div>
+                  ) : (
+                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
+                      Those moments that light you up — a flow state, a breakthrough, or just pure fun.
+                    </p>
+                  )}
                 </div>
-              )}
+              </div>
               
-              {/* 2. What sparked your passion - Orange Gradient */}
-              {mostPassionatTask && (
-                <div 
-                  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-                  style={{ 
-                    borderRadius: '0 48px 0 0',
-                    background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
-                  }}
-                >
-                  <div className="flex flex-col items-start gap-2 w-full">
-                    <p className="text-[12px] font-normal text-slate-900">
-                      What sparked your passion
-                    </p>
-                    
-                    <p className="text-[20px] font-black text-slate-900 leading-tight">
-                      {mostPassionatTask.description}
-                    </p>
-                  </div>
-                </div>
-              )}
-              
-              {/* 3. What felt meaningful - Light Purple Gradient */}
-              {mostMeaningfulTask && (
-                <div 
-                  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-                  style={{ 
-                    borderRadius: '0 48px 0 0',
-                    background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
-                  }}
-                >
-                  <div className="flex flex-col items-start gap-2 w-full">
-                    <p className="text-[12px] font-normal text-slate-900">
-                      What felt meaningful
-                    </p>
-                    
-                    <p className="text-[20px] font-black text-slate-900 leading-tight">
-                      {mostMeaningfulTask.description}
-                    </p>
-                  </div>
-                </div>
-              )}
-              
-              {/* 4. What drained you - Light Gray Gradient */}
-              {mostDrainingTask && (
-                <div 
-                  className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-                  style={{ 
-                    borderRadius: '0 48px 0 0',
-                    background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
-                  }}
-                >
-                  <div className="flex flex-col items-start gap-2 w-full">
-                    <p className="text-[12px] font-normal text-slate-900">
-                      What drained you
-                    </p>
-                    
+              {/* 2. What Drained You - Light Gray Gradient */}
+              <div 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                style={{ 
+                  borderRadius: '0 48px 0 0',
+                  background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                }}
+              >
+                <div className="flex flex-col items-start gap-2 w-full">
+                  <p className="text-[12px] font-normal text-slate-900">
+                    What Drained You
+                  </p>
+                  
+                  {mostDrainingTask ? (
                     <p className="text-[20px] font-black text-slate-900 leading-tight">
                       {mostDrainingTask.description}
                     </p>
-                  </div>
+                  ) : (
+                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
+                      The tasks that took your energy — tedious work, confusion, or feeling stuck.
+                    </p>
+                  )}
                 </div>
-              )}
+              </div>
+              
+              {/* 3. What Felt Meaningful - Light Purple Gradient */}
+              <div 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                style={{ 
+                  borderRadius: '0 48px 0 0',
+                  background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
+                }}
+              >
+                <div className="flex flex-col items-start gap-2 w-full">
+                  <p className="text-[12px] font-normal text-slate-900">
+                    What Felt Meaningful
+                  </p>
+                  
+                  {mostMeaningfulTask ? (
+                    <p className="text-[20px] font-black text-slate-900 leading-tight">
+                      {mostMeaningfulTask.description}
+                    </p>
+                  ) : (
+                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
+                      Work that felt purposeful — making an impact, solving real problems, or growth.
+                    </p>
+                  )}
+                </div>
+              </div>
+              
+              {/* 4. What Sparked Passion - Orange Gradient */}
+              <div 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                style={{ 
+                  borderRadius: '0 48px 0 0',
+                  background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+                }}
+              >
+                <div className="flex flex-col items-start gap-2 w-full">
+                  <p className="text-[12px] font-normal text-slate-900">
+                    What Sparked Passion
+                  </p>
+                  
+                  {mostPassionateTask ? (
+                    <p className="text-[20px] font-black text-slate-900 leading-tight">
+                      {mostPassionateTask.description}
+                    </p>
+                  ) : (
+                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
+                      Tasks that ignited your creativity — exploring ideas, experimenting, or discovering.
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           )
         })()}
