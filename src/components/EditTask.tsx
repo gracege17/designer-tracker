@@ -45,21 +45,8 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
     }
   }
 
-  // All 12 emotion options
-  const emotionOptions = [
-    { level: 1 as EmotionLevel, emoji: '😀', label: 'Happy' },
-    { level: 2 as EmotionLevel, emoji: '😌', label: 'Relaxed' },
-    { level: 3 as EmotionLevel, emoji: '🤩', label: 'Excited' },
-    { level: 4 as EmotionLevel, emoji: '😠', label: 'Angry' },
-    { level: 5 as EmotionLevel, emoji: '😢', label: 'Sad' },
-    { level: 6 as EmotionLevel, emoji: '😰', label: 'Anxious' },
-    { level: 7 as EmotionLevel, emoji: '😮', label: 'Surprised' },
-    { level: 8 as EmotionLevel, emoji: '😐', label: 'Bored' },
-    { level: 9 as EmotionLevel, emoji: '🥹', label: 'Nostalgic' },
-    { level: 10 as EmotionLevel, emoji: '⚡', label: 'Energized' },
-    { level: 11 as EmotionLevel, emoji: '🙂', label: 'Normal' },
-    { level: 12 as EmotionLevel, emoji: '😴', label: 'Tired' },
-  ]
+  // Get all emotion options from EMOTIONS constant
+  const emotionOptions = (Object.keys(EMOTIONS) as EmotionLevel[]).map(level => EMOTIONS[level])
 
   const isValid = description.trim().length > 0 && selectedEmotions.length > 0
 

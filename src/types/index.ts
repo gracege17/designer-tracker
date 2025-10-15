@@ -1,7 +1,7 @@
 // Designer's Life Tracker - Type Definitions
 
 // Core emotion tracking types
-export type EmotionLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type EmotionLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 
 export interface EmotionData {
   level: EmotionLevel;
@@ -170,17 +170,21 @@ export interface LoadingState {
 // Constants for emotion system
 export const EMOTIONS: Record<EmotionLevel, EmotionData> = {
   1: { level: 1, emoji: '😀', label: 'Happy' },
-  2: { level: 2, emoji: '😌', label: 'Relaxed' },
+  2: { level: 2, emoji: '😌', label: 'Calm' },
   3: { level: 3, emoji: '🤩', label: 'Excited' },
-  4: { level: 4, emoji: '😠', label: 'Angry' },
+  4: { level: 4, emoji: '😠', label: 'Frustrated' },
   5: { level: 5, emoji: '😢', label: 'Sad' },
   6: { level: 6, emoji: '😰', label: 'Anxious' },
   7: { level: 7, emoji: '😮', label: 'Surprised' },
-  8: { level: 8, emoji: '😐', label: 'Bored' },
+  8: { level: 8, emoji: '😐', label: 'Neutral' },
   9: { level: 9, emoji: '🥹', label: 'Nostalgic' },
   10: { level: 10, emoji: '⚡', label: 'Energized' },
   11: { level: 11, emoji: '🙂', label: 'Normal' },
   12: { level: 12, emoji: '😴', label: 'Tired' },
+  13: { level: 13, emoji: '😊', label: 'Satisfied' },
+  14: { level: 14, emoji: '😖', label: 'Annoyed' },
+  15: { level: 15, emoji: '😫', label: 'Drained' },
+  16: { level: 16, emoji: '😍', label: 'Proud' },
 };
 
 // Task type labels for UI

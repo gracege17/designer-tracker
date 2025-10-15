@@ -381,22 +381,26 @@ color: #0F172A; /* slate-900 */
 text-align: center;
 ```
 
-### **12 Emotion Options**
+### **16 Emotion Options**
 
 | Level | Emoji | Label | Category |
 |-------|-------|-------|----------|
 | 1 | 😀 | Happy | Positive |
-| 2 | 😌 | Relaxed | Neutral |
+| 2 | 😌 | Calm | Neutral |
 | 3 | 🤩 | Excited | Positive |
-| 4 | 😠 | Angry | Negative |
+| 4 | 😠 | Frustrated | Negative |
 | 5 | 😢 | Sad | Negative |
 | 6 | 😰 | Anxious | Negative |
 | 7 | 😮 | Surprised | Neutral |
-| 8 | 😐 | Bored | Neutral |
+| 8 | 😐 | Neutral | Neutral |
 | 9 | 🥹 | Nostalgic | Neutral |
 | 10 | ⚡ | Energized | Positive |
 | 11 | 🙂 | Normal | Neutral |
 | 12 | 😴 | Tired | Neutral |
+| 13 | 😊 | Satisfied | Positive |
+| 14 | 😖 | Annoyed | Negative |
+| 15 | 😫 | Drained | Negative |
+| 16 | 😍 | Proud | Positive |
 
 ### **Usage Context**
 
