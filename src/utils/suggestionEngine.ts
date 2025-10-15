@@ -225,8 +225,8 @@ const generateConsistencySuggestion = (entries: Entry[]): Suggestion | null => {
   let consecutiveDays = 1
   
   for (let i = 0; i < sortedEntries.length - 1; i++) {
-    const currentDate = new Date(sortedEntries[i].date)
-    const nextDate = new Date(sortedEntries[i + 1].date)
+    const currentDate = new Date(sortedEntries[i].date + 'T00:00:00')
+    const nextDate = new Date(sortedEntries[i + 1].date + 'T00:00:00')
     const dayDiff = Math.floor((currentDate.getTime() - nextDate.getTime()) / (1000 * 60 * 60 * 24))
     
     if (dayDiff === 1) {

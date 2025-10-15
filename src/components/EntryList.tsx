@@ -30,7 +30,7 @@ const EntryList: React.FC<EntryListProps> = ({
     const grouped: Record<string, Entry[]> = {}
     
     entries.forEach(entry => {
-      const date = new Date(entry.date)
+      const date = DateUtils.parseLocalDate(entry.date)
       const monthKey = `${date.toLocaleString('en-US', { month: 'short' })}, ${date.getFullYear()}`
       
       if (!grouped[monthKey]) {
@@ -107,7 +107,7 @@ const EntryList: React.FC<EntryListProps> = ({
                 {expandedMonths[monthKey] && (
                   <div className="space-y-3">
                   {monthEntries.map((entry) => {
-                    const date = new Date(entry.date)
+                    const date = DateUtils.parseLocalDate(entry.date)
                     const dayNumber = date.getDate()
                     const dayName = date.toLocaleDateString('en-US', { weekday: 'short' })
                     

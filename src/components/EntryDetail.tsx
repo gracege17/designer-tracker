@@ -87,7 +87,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
         {/* Date */}
         <div className="mb-6">
           <h2 className="text-[28px] font-bold text-slate-900">
-            {DateUtils.formatDate(new Date(entry.date))}
+            {DateUtils.formatDate(DateUtils.parseLocalDate(entry.date))}
           </h2>
           {!isToday && (
             <p className="text-[14px] text-slate-500 mt-2">

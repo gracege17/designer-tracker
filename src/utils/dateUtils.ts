@@ -1,4 +1,10 @@
 export const DateUtils = {
+  // Parse YYYY-MM-DD string as local date (not UTC)
+  parseLocalDate: (dateString: string): Date => {
+    const [year, month, day] = dateString.split('-').map(Number)
+    return new Date(year, month - 1, day) // month is 0-indexed
+  },
+
   // Format date for display
   formatDate: (date: Date): string => {
     return date.toLocaleDateString('en-US', { 
@@ -25,7 +31,9 @@ export const DateUtils = {
 
   // Check if a date string (YYYY-MM-DD format) is today
   isDateStringToday: (dateString: string): boolean => {
-    const date = new Date(dateString)
+    // Parse as local date by adding time component
+    const [year, month, day] = dateString.split('-').map(Number)
+    const date = new Date(year, month - 1, day) // month is 0-indexed
     const today = new Date()
     return date.toDateString() === today.toDateString()
   },
