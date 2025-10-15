@@ -73,6 +73,12 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           // Get all tasks from history
           const allTasks = entries.length > 0 ? entries.flatMap(entry => entry.tasks) : []
           
+          // Debug logging
+          console.log('🏠 Dashboard Debug:')
+          console.log('- Total entries:', entries.length)
+          console.log('- Total tasks:', allTasks.length)
+          console.log('- Sample task emotions:', allTasks[0]?.emotions || allTasks[0]?.emotion)
+          
           // Helper function to get emotions array from task
           const getEmotions = (task: any) => {
             return task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
@@ -137,6 +143,13 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               return bCount - aCount
             })
             .slice(0, 3)
+          
+          // Debug logging for card data
+          console.log('📊 Card Data:')
+          console.log('- Energy projects:', energyProjects.length)
+          console.log('- Draining projects:', drainingProjects.length)
+          console.log('- Meaningful projects:', meaningfulProjects.length)
+          console.log('- Passion projects:', passionProjects.length)
           
           return (
             <div className="space-y-4 mb-6">
