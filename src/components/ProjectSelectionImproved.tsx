@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ArrowLeft, Plus, X } from 'lucide-react'
 import { Project } from '../types'
-import { ProjectStorage } from '../utils/storage'
+import { ProjectStorage, EntryStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
 
 interface ProjectSelectionProps {
@@ -37,6 +37,17 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
     
     const project = localProjects.find(p => p.id === projectId)
     if (!project) return
+    
+    // Check if project has any tasks
+    const entries = EntryStorage.loadEntries()
+    const hasTasksInProject = entries.some(entry => 
+      entry.tasks.some(task => task.projectId === projectId)
+    )
+    
+    if (hasTasksInProject) {
+      alert(`Cannot delete "${project.name}" because it has tasks.\n\nTo delete this project, first remove all its tasks from your reflections.`)
+      return
+    }
     
     if (window.confirm(`Delete "${project.name}" from your projects?\n\nThis cannot be undone.`)) {
       ProjectStorage.deleteProject(projectId)
