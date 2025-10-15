@@ -25,12 +25,14 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       type: 'ai',
-      content: `Hey ${userName} 👋\n\nGot any projects in motion?\nYou can jot down a few now or add them later. No rush.`
+      content: `Hey ${userName} 👋\n\nGot any projects in motion?\n\nYou can list them like:\n• One per line, or\n• Separate with commas, or\n• Use "and" between them\n\nType "skip" if you'd rather add them later. No rush!`
     }
   ])
   const [inputValue, setInputValue] = useState('')
   const [projects, setProjects] = useState<Project[]>([])
+  const [pendingProjects, setPendingProjects] = useState<Project[]>([])
   const [waitingForConfirmation, setWaitingForConfirmation] = useState(false)
+  const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -66,6 +68,72 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
       content: userInput
     }])
 
+    // Check if user is confirming projects
+    if (waitingForProjectConfirmation) {
+      if (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'correct' || userInput.toLowerCase() === 'good') {
+        // User confirmed, save the projects
+        setProjects(prev => [...prev, ...pendingProjects])
+        setPendingProjects([])
+        setWaitingForProjectConfirmation(false)
+        
+        setMessages(prev => [...prev, {
+          type: 'ai',
+          content: `Perfect! I've saved your ${pendingProjects.length > 1 ? 'projects' : 'project'}. 🎉`
+        }])
+
+        // Add instruction message
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            type: 'ai',
+            content: 'Type "Done" or "Great" when you\'re ready to move on. 🙌'
+          }])
+          setWaitingForConfirmation(true)
+        }, 500)
+        
+        setInputValue('')
+        return
+      } else {
+        // User wants to re-type, reset and parse again
+        setWaitingForProjectConfirmation(false)
+        setPendingProjects([])
+        
+        // Parse the new input as a correction
+        const projectNames = parseProjects(userInput)
+        
+        if (projectNames.length > 0) {
+          const newProjects: Project[] = projectNames.map((name, index) => ({
+            name,
+            color: PROJECT_COLORS[(projects.length + index) % PROJECT_COLORS.length]
+          }))
+
+          setPendingProjects(newProjects)
+          
+          // Show parsed projects for confirmation
+          setMessages(prev => [...prev, {
+            type: 'ai',
+            content: `I see you mentioned:`,
+            projects: newProjects
+          }])
+
+          setTimeout(() => {
+            setMessages(prev => [...prev, {
+              type: 'ai',
+              content: 'Does this look right?\nReply "yes" to continue, or re-type to fix.'
+            }])
+            setWaitingForProjectConfirmation(true)
+          }, 500)
+        } else {
+          setMessages(prev => [...prev, {
+            type: 'ai',
+            content: 'Hmm, I didn\'t catch any project names. Try listing them clearly, like "NetSave 2, K12 visual UI" or type "Skip".'
+          }])
+        }
+        
+        setInputValue('')
+        return
+      }
+    }
+
     // Check if user wants to finish
     if (waitingForConfirmation && (userInput.toLowerCase() === 'done' || userInput.toLowerCase() === 'great')) {
       if (projects.length > 0) {
@@ -98,28 +166,27 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
         color: PROJECT_COLORS[(projects.length + index) % PROJECT_COLORS.length]
       }))
 
-      setProjects(prev => [...prev, ...newProjects])
+      setPendingProjects(newProjects)
       
-      // Add AI confirmation message
+      // Show parsed projects for confirmation
       setMessages(prev => [...prev, {
         type: 'ai',
-        content: `Awesome — I've saved your ${newProjects.length > 1 ? 'projects' : 'project'}:`,
+        content: `I see you mentioned:`,
         projects: newProjects
       }])
 
-      // Add instruction message
       setTimeout(() => {
         setMessages(prev => [...prev, {
           type: 'ai',
-          content: 'Type "Done" or "Great" when you\'re ready to move on. 🙌'
+          content: 'Does this look right?\nReply "yes" to continue, or re-type to fix.'
         }])
-        setWaitingForConfirmation(true)
+        setWaitingForProjectConfirmation(true)
       }, 500)
     } else {
       // Couldn't parse projects
       setMessages(prev => [...prev, {
         type: 'ai',
-        content: 'Hmm, I didn\'t catch any project names. Try something like "Website redesign, Mobile app" or type "Skip" if you\'d like to add them later.'
+        content: 'Hmm, I didn\'t catch any project names. Try listing them clearly, like "NetSave 2, K12 visual UI" or type "Skip".'
       }])
     }
 
