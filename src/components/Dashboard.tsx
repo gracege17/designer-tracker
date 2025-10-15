@@ -1,6 +1,6 @@
 import React from 'react'
 import { Plus, Settings, Home, PlusCircle, BarChart2, Calendar } from 'lucide-react'
-import { Entry, EMOTIONS } from '../types'
+import { Entry, EMOTIONS, EmotionLevel } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { getTodayDateString, getCurrentWeekEntries, getTotalTaskCount, getMostEnergizingTaskType } from '../utils/dataHelpers'
 import { ProjectStorage, UserProfileStorage } from '../utils/storage'
@@ -78,33 +78,65 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             return task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
           }
           
+          // Group tasks by project with emotion counts
+          const projectEmotionMap = new Map<string, { projectId: string; emotions: EmotionLevel[] }>()
+          
+          allTasks.forEach(task => {
+            const taskEmotions = getEmotions(task)
+            const existing = projectEmotionMap.get(task.projectId)
+            if (existing) {
+              existing.emotions.push(...taskEmotions)
+            } else {
+              projectEmotionMap.set(task.projectId, {
+                projectId: task.projectId,
+                emotions: [...taskEmotions]
+              })
+            }
+          })
+          
           // 1. What gave you energy - Happy (1), Excited (3), Energized (10), Satisfied (13), Proud (16)
           const energyEmotions = [1, 3, 10, 13, 16]
-          const energyTasks = allTasks.filter(task => 
-            getEmotions(task).some(e => energyEmotions.includes(e))
-          )
-          const mostEnergeticTask = energyTasks.length > 0 ? energyTasks[Math.floor(Math.random() * Math.min(energyTasks.length, 5))] : null
+          const energyProjects = Array.from(projectEmotionMap.values())
+            .filter(p => p.emotions.some(e => energyEmotions.includes(e)))
+            .sort((a, b) => {
+              const aCount = a.emotions.filter(e => energyEmotions.includes(e)).length
+              const bCount = b.emotions.filter(e => energyEmotions.includes(e)).length
+              return bCount - aCount
+            })
+            .slice(0, 3)
           
           // 2. What drained you - Sad (5), Anxious (6), Neutral (8), Tired (12), Annoyed (14), Drained (15)
           const drainingEmotions = [5, 6, 8, 12, 14, 15]
-          const drainingTasks = allTasks.filter(task => 
-            getEmotions(task).some(e => drainingEmotions.includes(e))
-          )
-          const mostDrainingTask = drainingTasks.length > 0 ? drainingTasks[Math.floor(Math.random() * Math.min(drainingTasks.length, 5))] : null
+          const drainingProjects = Array.from(projectEmotionMap.values())
+            .filter(p => p.emotions.some(e => drainingEmotions.includes(e)))
+            .sort((a, b) => {
+              const aCount = a.emotions.filter(e => drainingEmotions.includes(e)).length
+              const bCount = b.emotions.filter(e => drainingEmotions.includes(e)).length
+              return bCount - aCount
+            })
+            .slice(0, 3)
           
           // 3. What felt meaningful - Calm (2), Nostalgic (9), Normal (11), Satisfied (13)
           const meaningfulEmotions = [2, 9, 11, 13]
-          const meaningfulTasks = allTasks.filter(task => 
-            getEmotions(task).some(e => meaningfulEmotions.includes(e))
-          )
-          const mostMeaningfulTask = meaningfulTasks.length > 0 ? meaningfulTasks[Math.floor(Math.random() * Math.min(meaningfulTasks.length, 5))] : null
+          const meaningfulProjects = Array.from(projectEmotionMap.values())
+            .filter(p => p.emotions.some(e => meaningfulEmotions.includes(e)))
+            .sort((a, b) => {
+              const aCount = a.emotions.filter(e => meaningfulEmotions.includes(e)).length
+              const bCount = b.emotions.filter(e => meaningfulEmotions.includes(e)).length
+              return bCount - aCount
+            })
+            .slice(0, 3)
           
           // 4. What sparked your passion - Excited (3), Surprised (7), Energized (10), Proud (16)
           const passionEmotions = [3, 7, 10, 16]
-          const passionTasks = allTasks.filter(task => 
-            getEmotions(task).some(e => passionEmotions.includes(e))
-          )
-          const mostPassionateTask = passionTasks.length > 0 ? passionTasks[Math.floor(Math.random() * Math.min(passionTasks.length, 5))] : null
+          const passionProjects = Array.from(projectEmotionMap.values())
+            .filter(p => p.emotions.some(e => passionEmotions.includes(e)))
+            .sort((a, b) => {
+              const aCount = a.emotions.filter(e => passionEmotions.includes(e)).length
+              const bCount = b.emotions.filter(e => passionEmotions.includes(e)).length
+              return bCount - aCount
+            })
+            .slice(0, 3)
           
           return (
             <div className="space-y-4 mb-6">
@@ -116,15 +148,27 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
                 }}
               >
-                <div className="flex flex-col items-start gap-2 w-full">
+                <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
                     What Gave You Energy
                   </p>
                   
-                  {mostEnergeticTask ? (
-                    <p className="text-[20px] font-black text-slate-900 leading-tight">
-                      {mostEnergeticTask.description}
-                    </p>
+                  {energyProjects.length > 0 ? (
+                    <>
+                      <div className="space-y-1">
+                        {energyProjects.map((proj, index) => {
+                          const project = ProjectStorage.getProjectById(proj.projectId)
+                          return (
+                            <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
+                              {project?.name || 'Unknown Project'}
+                            </p>
+                          )
+                        })}
+                      </div>
+                      <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                        Projects that ignited excitement
+                      </p>
+                    </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
                       Those moments that light you up — a flow state, a breakthrough, or just pure fun.
@@ -141,15 +185,27 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
                 }}
               >
-                <div className="flex flex-col items-start gap-2 w-full">
+                <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
                     What Drained You
                   </p>
                   
-                  {mostDrainingTask ? (
-                    <p className="text-[20px] font-black text-slate-900 leading-tight">
-                      {mostDrainingTask.description}
-                    </p>
+                  {drainingProjects.length > 0 ? (
+                    <>
+                      <div className="space-y-1">
+                        {drainingProjects.map((proj, index) => {
+                          const project = ProjectStorage.getProjectById(proj.projectId)
+                          return (
+                            <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
+                              {project?.name || 'Unknown Project'}
+                            </p>
+                          )
+                        })}
+                      </div>
+                      <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                        Projects that took your energy
+                      </p>
+                    </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
                       The tasks that took your energy — tedious work, confusion, or feeling stuck.
@@ -166,15 +222,27 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
                 }}
               >
-                <div className="flex flex-col items-start gap-2 w-full">
+                <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
                     What Felt Meaningful
                   </p>
                   
-                  {mostMeaningfulTask ? (
-                    <p className="text-[20px] font-black text-slate-900 leading-tight">
-                      {mostMeaningfulTask.description}
-                    </p>
+                  {meaningfulProjects.length > 0 ? (
+                    <>
+                      <div className="space-y-1">
+                        {meaningfulProjects.map((proj, index) => {
+                          const project = ProjectStorage.getProjectById(proj.projectId)
+                          return (
+                            <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
+                              {project?.name || 'Unknown Project'}
+                            </p>
+                          )
+                        })}
+                      </div>
+                      <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                        Projects with purposeful impact
+                      </p>
+                    </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
                       Work that felt purposeful — making an impact, solving real problems, or growth.
@@ -191,15 +259,27 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
                 }}
               >
-                <div className="flex flex-col items-start gap-2 w-full">
+                <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
                     What Sparked Passion
                   </p>
                   
-                  {mostPassionateTask ? (
-                    <p className="text-[20px] font-black text-slate-900 leading-tight">
-                      {mostPassionateTask.description}
-                    </p>
+                  {passionProjects.length > 0 ? (
+                    <>
+                      <div className="space-y-1">
+                        {passionProjects.map((proj, index) => {
+                          const project = ProjectStorage.getProjectById(proj.projectId)
+                          return (
+                            <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
+                              {project?.name || 'Unknown Project'}
+                            </p>
+                          )
+                        })}
+                      </div>
+                      <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                        Projects that ignited excitement
+                      </p>
+                    </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
                       Tasks that ignited your creativity — exploring ideas, experimenting, or discovering.
