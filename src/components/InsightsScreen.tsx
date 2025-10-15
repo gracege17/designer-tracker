@@ -386,7 +386,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
           </div>
         )}
 
-        {/* Top Happy - Orange Gradient */}
+        {/* What Sparked Passion - Orange Gradient */}
           {happy.length > 0 && (
             <div 
               className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
@@ -395,8 +395,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
               }}
             >
-              <div className="flex flex-col items-start gap-2 w-full">
-                <p className="text-[12px] font-normal text-slate-900">Top Happy</p>
+              <div className="flex flex-col items-start gap-3 w-full">
+                <p className="text-[12px] font-normal text-slate-900">What Sparked Passion</p>
                 
                 <div className="space-y-1">
                   {happy.slice(0, 3).map((happyMoment, index) => {
@@ -408,11 +408,15 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     )
                   })}
                 </div>
+                
+                <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                  Projects that ignited excitement
+                </p>
               </div>
             </div>
           )}
 
-          {/* Top Frustrators - Green Gradient */}
+          {/* What Felt Meaningful - Green Gradient */}
           {frustrators.length > 0 && (
             <div 
               className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
@@ -421,8 +425,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 background: 'linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%)'
               }}
             >
-              <div className="flex flex-col items-start gap-2 w-full">
-                <p className="text-[12px] font-normal text-slate-900">Top Frustraters</p>
+              <div className="flex flex-col items-start gap-3 w-full">
+                <p className="text-[12px] font-normal text-slate-900">What Felt Meaningful</p>
                 
                 <div className="space-y-1">
                   {frustrators.slice(0, 3).map((frustrator, index) => {
@@ -434,11 +438,15 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     )
                   })}
                 </div>
+                
+                <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                  Projects with purposeful impact
+                </p>
               </div>
             </div>
           )}
 
-          {/* Top Struggles - Light Gray Gradient */}
+          {/* What Drained You - Light Gray Gradient */}
           {struggles.length > 0 && (
             <div 
               className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
@@ -447,8 +455,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
               }}
             >
-              <div className="flex flex-col items-start gap-2 w-full">
-                <p className="text-[12px] font-normal text-slate-900">Top Struggles</p>
+              <div className="flex flex-col items-start gap-3 w-full">
+                <p className="text-[12px] font-normal text-slate-900">What Drained You</p>
                 
                 <div className="space-y-1">
                   {struggles.slice(0, 3).map((struggle, index) => {
@@ -460,6 +468,10 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     )
                   })}
                 </div>
+                
+                <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                  Projects that took your energy
+                </p>
               </div>
             </div>
           )}
