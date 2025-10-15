@@ -271,6 +271,7 @@ function App() {
         description: task.description,
         taskType: 'design' as TaskType, // Default task type
         emotion: task.emotion,
+        emotions: task.emotions, // Include multiple emotions array
         notes: task.notes,
         createdAt: new Date()
       }))
