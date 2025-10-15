@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ChevronRight, Home, Plus, BarChart2, Calendar, Search, Settings } from 'lucide-react'
 import { Entry } from '../types'
 import { ProjectStorage } from '../utils/storage'
+import { DateUtils } from '../utils/dateUtils'
 
 interface EntryListProps {
   entries: Entry[]
