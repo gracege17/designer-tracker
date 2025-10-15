@@ -78,29 +78,29 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             return task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
           }
           
-          // 1. What gave you energy - Happy (1), Excited (3), Energized (10)
-          const energyEmotions = [1, 3, 10]
+          // 1. What gave you energy - Happy (1), Excited (3), Energized (10), Satisfied (13), Proud (16)
+          const energyEmotions = [1, 3, 10, 13, 16]
           const energyTasks = allTasks.filter(task => 
             getEmotions(task).some(e => energyEmotions.includes(e))
           )
           const mostEnergeticTask = energyTasks.length > 0 ? energyTasks[Math.floor(Math.random() * Math.min(energyTasks.length, 5))] : null
           
-          // 2. What drained you - Tired (12), Bored (8), Anxious (6), Sad (5)
-          const drainingEmotions = [12, 8, 6, 5]
+          // 2. What drained you - Sad (5), Anxious (6), Neutral (8), Tired (12), Annoyed (14), Drained (15)
+          const drainingEmotions = [5, 6, 8, 12, 14, 15]
           const drainingTasks = allTasks.filter(task => 
             getEmotions(task).some(e => drainingEmotions.includes(e))
           )
           const mostDrainingTask = drainingTasks.length > 0 ? drainingTasks[Math.floor(Math.random() * Math.min(drainingTasks.length, 5))] : null
           
-          // 3. What felt meaningful - Relaxed (2), Nostalgic (9), Normal (11)
-          const meaningfulEmotions = [2, 9, 11]
+          // 3. What felt meaningful - Calm (2), Nostalgic (9), Normal (11), Satisfied (13)
+          const meaningfulEmotions = [2, 9, 11, 13]
           const meaningfulTasks = allTasks.filter(task => 
             getEmotions(task).some(e => meaningfulEmotions.includes(e))
           )
           const mostMeaningfulTask = meaningfulTasks.length > 0 ? meaningfulTasks[Math.floor(Math.random() * Math.min(meaningfulTasks.length, 5))] : null
           
-          // 4. What sparked your passion - Excited (3), Energized (10), Surprised (7)
-          const passionEmotions = [3, 10, 7]
+          // 4. What sparked your passion - Excited (3), Surprised (7), Energized (10), Proud (16)
+          const passionEmotions = [3, 7, 10, 16]
           const passionTasks = allTasks.filter(task => 
             getEmotions(task).some(e => passionEmotions.includes(e))
           )
