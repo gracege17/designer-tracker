@@ -70,7 +70,48 @@ function App() {
           finalProjects = [defaultProject]
         }
         
-        setEntries(loadedEntries)
+        // Check for orphaned tasks (tasks with invalid project IDs)
+        const projectIds = new Set(finalProjects.map(p => p.id))
+        const hasOrphanedTasks = loadedEntries.some(entry => 
+          entry.tasks.some(task => !projectIds.has(task.projectId))
+        )
+        
+        if (hasOrphanedTasks) {
+          console.warn('⚠️ Found tasks with invalid project IDs. Cleaning up...')
+          
+          // Create a recovery project for orphaned tasks
+          const recoveryProject: Project = {
+            id: 'recovered-project',
+            name: 'Recovered Projects',
+            color: '#D1D5DB', // Gray
+            createdAt: new Date()
+          }
+          
+          // Check if recovery project already exists
+          if (!projectIds.has('recovered-project')) {
+            ProjectStorage.saveProject(recoveryProject)
+            finalProjects.push(recoveryProject)
+          }
+          
+          // Fix orphaned tasks
+          const cleanedEntries = loadedEntries.map(entry => ({
+            ...entry,
+            tasks: entry.tasks.map(task => {
+              if (!projectIds.has(task.projectId)) {
+                console.warn(`Fixing task "${task.description}" with invalid projectId: ${task.projectId}`)
+                return { ...task, projectId: 'recovered-project' }
+              }
+              return task
+            })
+          }))
+          
+          // Save cleaned entries
+          cleanedEntries.forEach(entry => EntryStorage.saveEntry(entry))
+          setEntries(cleanedEntries)
+        } else {
+          setEntries(loadedEntries)
+        }
+        
         setProjects(finalProjects)
         setIsLoading(false)
       } catch (error) {

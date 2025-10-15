@@ -62,8 +62,40 @@ export const EntryStorage = {
     return entries.find(entry => entry.date === date) || null
   },
 
+  // Validate that all project IDs in entry exist
+  validateProjectIds: (entry: Entry): { isValid: boolean; invalidIds: string[] } => {
+    const projects = ProjectStorage.loadProjects()
+    const validProjectIds = new Set(projects.map(p => p.id))
+    const invalidIds: string[] = []
+    
+    entry.tasks.forEach(task => {
+      if (!validProjectIds.has(task.projectId)) {
+        invalidIds.push(task.projectId)
+      }
+    })
+    
+    return {
+      isValid: invalidIds.length === 0,
+      invalidIds: Array.from(new Set(invalidIds)) // Remove duplicates
+    }
+  },
+
   // Save single entry (create or update)
   saveEntry: (entry: Entry): void => {
+    // Validate project IDs before saving
+    const validation = EntryStorage.validateProjectIds(entry)
+    if (!validation.isValid) {
+      console.error(
+        '❌ Attempted to save entry with invalid project IDs:', 
+        validation.invalidIds,
+        '\nEntry:', entry
+      )
+      throw new Error(
+        `Cannot save entry: Invalid project IDs found (${validation.invalidIds.join(', ')}). ` +
+        `Please ensure all projects exist before saving tasks.`
+      )
+    }
+    
     const entries = EntryStorage.loadEntries()
     const existingIndex = entries.findIndex(e => e.id === entry.id)
     

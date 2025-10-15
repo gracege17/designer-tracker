@@ -77,6 +77,71 @@ const Settings: React.FC<SettingsProps> = ({
     }
   }
 
+  const handleCheckDataIntegrity = () => {
+    try {
+      const entries = EntryStorage.loadEntries()
+      const projects = ProjectStorage.loadProjects()
+      const projectIds = new Set(projects.map(p => p.id))
+      
+      // Find orphaned tasks
+      const orphanedTasks: Array<{entryDate: string, taskDescription: string, invalidProjectId: string}> = []
+      entries.forEach(entry => {
+        entry.tasks.forEach(task => {
+          if (!projectIds.has(task.projectId)) {
+            orphanedTasks.push({
+              entryDate: entry.date,
+              taskDescription: task.description,
+              invalidProjectId: task.projectId
+            })
+          }
+        })
+      })
+      
+      if (orphanedTasks.length === 0) {
+        alert('✅ Data integrity check passed!\n\nAll tasks have valid project references.')
+      } else {
+        const message = `⚠️ Found ${orphanedTasks.length} task(s) with invalid project references:\n\n` +
+          orphanedTasks.slice(0, 5).map(t => `• ${t.taskDescription} (${t.entryDate})`).join('\n') +
+          (orphanedTasks.length > 5 ? `\n... and ${orphanedTasks.length - 5} more` : '') +
+          '\n\nThis usually happens when projects are deleted but tasks remain.\n\nWould you like to fix this automatically? We\'ll move these tasks to a "Recovered Projects" folder.'
+        
+        if (window.confirm(message)) {
+          // Create recovery project
+          const recoveryProject = {
+            id: 'recovered-project',
+            name: 'Recovered Projects',
+            color: '#D1D5DB',
+            createdAt: new Date()
+          }
+          
+          if (!projectIds.has('recovered-project')) {
+            ProjectStorage.saveProject(recoveryProject)
+          }
+          
+          // Fix orphaned tasks
+          const cleanedEntries = entries.map(entry => ({
+            ...entry,
+            tasks: entry.tasks.map(task => {
+              if (!projectIds.has(task.projectId)) {
+                return { ...task, projectId: 'recovered-project' }
+              }
+              return task
+            })
+          }))
+          
+          // Save cleaned entries
+          cleanedEntries.forEach(entry => EntryStorage.saveEntries(cleanedEntries))
+          
+          alert('✅ Data has been repaired!\n\nAll orphaned tasks have been moved to "Recovered Projects".')
+          window.location.reload()
+        }
+      }
+    } catch (error) {
+      console.error('Data integrity check failed:', error)
+      alert('❌ Failed to check data integrity. Please try again.')
+    }
+  }
+
   const handleSendFeedback = () => {
     window.location.href = 'mailto:feedback@designertracker.app?subject=Designer Tracker Feedback'
   }
@@ -177,6 +242,25 @@ const Settings: React.FC<SettingsProps> = ({
                 <div>
                   <p className="text-[16px] font-bold text-slate-900">Export My Entries</p>
                   <p className="text-[13px] text-slate-600">Download as JSON</p>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          {/* Check Data Integrity */}
+          <button
+            onClick={handleCheckDataIntegrity}
+            className="w-full p-5 mb-3 border-2 border-slate-200 text-left transition-all active:scale-[0.99]"
+            style={{ borderRadius: '0 24px 0 0' }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                  <SettingsIcon size={20} className="text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-[16px] font-bold text-slate-900">Check Data Integrity</p>
+                  <p className="text-[13px] text-slate-600">Find and fix data issues</p>
                 </div>
               </div>
             </div>
