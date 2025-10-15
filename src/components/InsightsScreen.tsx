@@ -202,9 +202,10 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
       .sort((a, b) => b.count - a.count)
       .slice(0, 2)
 
-    // Top Frustrators - show projects with lowest average emotion
+    // Top Frustrators - show projects with lowest average emotion (only if emotion is below 7)
     const frustrators = projectAverages.length > 0
       ? [...projectAverages]
+          .filter(p => p.averageEmotion < 7) // Only show if genuinely frustrating
           .sort((a, b) => a.averageEmotion - b.averageEmotion)
           .slice(0, 2)
       : []
