@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Settings, Home, PlusCircle, BarChart2, Calendar, RefreshCw } from 'lucide-react'
+import { Plus, Settings, Home, PlusCircle, BarChart2, Calendar } from 'lucide-react'
 import { Entry, EMOTIONS, EmotionLevel } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { getTodayDateString, getCurrentWeekEntries, getTotalTaskCount, getMostEnergizingTaskType } from '../utils/dataHelpers'
@@ -83,11 +83,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
     loadAiInsights()
   }, [entries.length]) // Re-fetch when entries change
 
-  // Manual regenerate handler
-  const handleRegenerateInsights = () => {
-    loadAiInsights(true) // Force regenerate
-  }
-
   return (
     <div className="min-h-screen flex flex-col bg-[#F5F6EB] screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
@@ -108,21 +103,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
         >
           + Capture the moment
         </button>
-
-        {/* Regenerate Insights Button */}
-        {thisWeekEntries.length > 0 && (
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[14px] font-semibold text-slate-700">This Week's Insights</h3>
-            <button
-              onClick={handleRegenerateInsights}
-              disabled={isLoadingInsights}
-              className="flex items-center gap-2 px-3 py-1.5 text-[13px] text-slate-600 hover:text-slate-900 transition-colors disabled:opacity-50"
-            >
-              <RefreshCw size={14} className={isLoadingInsights ? 'animate-spin' : ''} />
-              {isLoadingInsights ? 'Generating...' : 'Regenerate'}
-            </button>
-          </div>
-        )}
 
         {/* Insight Cards - Always Show */}
         {(() => {
@@ -327,7 +307,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                             </p>
                           )
                         })}
-                      </div>
+                  </div>
                       <p className="text-[14px] font-normal text-slate-900 opacity-70">
                         Projects that took your energy
                       </p>
@@ -439,7 +419,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                             </p>
                           )
                         })}
-                      </div>
+                  </div>
                       <p className="text-[14px] font-normal text-slate-900 opacity-70">
                         Projects that ignited excitement
                       </p>
