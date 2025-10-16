@@ -101,7 +101,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
         {/* Greeting - Clean and Simple */}
         <div className="mb-6">
           <h1 className="text-[32px] leading-tight font-bold text-slate-900 mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Hey Designer
+            Hey {userName}
           </h1>
           <p className="text-[16px] text-slate-700" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.02em' }}>
             How was your workday?
