@@ -22,6 +22,21 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   const [aiInsights, setAiInsights] = useState<AIInsights | null>(null)
   const [isLoadingInsights, setIsLoadingInsights] = useState(false)
   const [insightsError, setInsightsError] = useState<string | null>(null)
+  
+  // Expandable card state
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
+  
+  const toggleCard = (cardId: string) => {
+    setExpandedCards(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(cardId)) {
+        newSet.delete(cardId)
+      } else {
+        newSet.add(cardId)
+      }
+      return newSet
+    })
+  }
 
   // Get user profile
   const userProfile = UserProfileStorage.getUserProfile()
@@ -207,7 +222,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             <div className="space-y-4 mb-6">
               {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
               <div 
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                onClick={() => (aiInsights?.energy || energyProjects.length > 0) && toggleCard('energy')}
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
@@ -227,38 +243,50 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                       <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
                         {aiInsights.energy.insight}
                       </p>
-                      {aiInsights.energy.tasks.length > 0 && (
+                      {expandedCards.has('energy') && aiInsights.energy.tasks.length > 0 && (
                         <div className="space-y-1">
                           {aiInsights.energy.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-semibold text-slate-900 leading-tight">
+                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
                               • {task}
                             </p>
                           ))}
                         </div>
                       )}
+                      {!expandedCards.has('energy') && aiInsights.energy.tasks.length > 0 && (
+                        <p className="text-[13px] font-normal text-slate-900 underline">
+                          See more
+                        </p>
+                      )}
                     </>
                   ) : energyProjects.length > 0 ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug mb-2">
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug">
                         Creative tasks that involved visual thinking energized you.
                       </p>
-                      <div className="space-y-1">
-                        {(() => {
-                          // Get tasks with energy emotions
-                          const energyTasks = allTasks
-                            .filter(task => {
-                              const emotions = getEmotions(task)
-                              return emotions.some(e => energyEmotions.includes(e))
-                            })
-                            .slice(0, 3)
-                          
-                          return energyTasks.map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
-                              • {task.description}
-                            </p>
-                          ))
-                        })()}
-                      </div>
+                      {expandedCards.has('energy') && (
+                        <div className="space-y-1">
+                          {(() => {
+                            // Get tasks with energy emotions
+                            const energyTasks = allTasks
+                              .filter(task => {
+                                const emotions = getEmotions(task)
+                                return emotions.some(e => energyEmotions.includes(e))
+                              })
+                              .slice(0, 3)
+                            
+                            return energyTasks.map((task, index) => (
+                              <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                                • {task.description}
+                              </p>
+                            ))
+                          })()}
+                        </div>
+                      )}
+                      {!expandedCards.has('energy') && (
+                        <p className="text-[13px] font-normal text-slate-900 underline">
+                          See more
+                        </p>
+                      )}
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
@@ -270,7 +298,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               
               {/* 2. What Drained You - Light Gray Gradient */}
               <div 
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                onClick={() => (aiInsights?.drained || drainingProjects.length > 0) && toggleCard('drained')}
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
@@ -290,38 +319,50 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                       <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
                         {aiInsights.drained.insight}
                       </p>
-                      {aiInsights.drained.tasks.length > 0 && (
+                      {expandedCards.has('drained') && aiInsights.drained.tasks.length > 0 && (
                         <div className="space-y-1">
                           {aiInsights.drained.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-semibold text-slate-900 leading-tight">
+                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
                               • {task}
                             </p>
                           ))}
                         </div>
                       )}
+                      {!expandedCards.has('drained') && aiInsights.drained.tasks.length > 0 && (
+                        <p className="text-[13px] font-normal text-slate-900 underline">
+                          See more
+                        </p>
+                      )}
                     </>
                   ) : drainingProjects.length > 0 ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug mb-2">
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug">
                         Tedious or repetitive tasks drained your creative energy.
                       </p>
-                      <div className="space-y-1">
-                        {(() => {
-                          // Get tasks with draining emotions
-                          const drainingTasks = allTasks
-                            .filter(task => {
-                              const emotions = getEmotions(task)
-                              return emotions.some(e => drainingEmotions.includes(e))
-                            })
-                            .slice(0, 3)
-                          
-                          return drainingTasks.map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
-                              • {task.description}
-                            </p>
-                          ))
-                        })()}
-                      </div>
+                      {expandedCards.has('drained') && (
+                        <div className="space-y-1">
+                          {(() => {
+                            // Get tasks with draining emotions
+                            const drainingTasks = allTasks
+                              .filter(task => {
+                                const emotions = getEmotions(task)
+                                return emotions.some(e => drainingEmotions.includes(e))
+                              })
+                              .slice(0, 3)
+                            
+                            return drainingTasks.map((task, index) => (
+                              <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                                • {task.description}
+                              </p>
+                            ))
+                          })()}
+                        </div>
+                      )}
+                      {!expandedCards.has('drained') && (
+                        <p className="text-[13px] font-normal text-slate-900 underline">
+                          See more
+                        </p>
+                      )}
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
@@ -333,7 +374,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               
               {/* 3. What Felt Meaningful - Light Purple Gradient */}
               <div 
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                onClick={() => (aiInsights?.meaningful || meaningfulProjects.length > 0) && toggleCard('meaningful')}
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
@@ -353,38 +395,50 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                       <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
                         {aiInsights.meaningful.insight}
                       </p>
-                      {aiInsights.meaningful.tasks.length > 0 && (
+                      {expandedCards.has('meaningful') && aiInsights.meaningful.tasks.length > 0 && (
                         <div className="space-y-1">
                           {aiInsights.meaningful.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-semibold text-slate-900 leading-tight">
+                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
                               • {task}
                             </p>
                           ))}
                         </div>
                       )}
+                      {!expandedCards.has('meaningful') && aiInsights.meaningful.tasks.length > 0 && (
+                        <p className="text-[13px] font-normal text-slate-900 underline">
+                          See more
+                        </p>
+                      )}
                     </>
                   ) : meaningfulProjects.length > 0 ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug mb-2">
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug">
                         Work that felt purposeful and aligned with your values.
                       </p>
-                      <div className="space-y-1">
-                        {(() => {
-                          // Get tasks with meaningful emotions
-                          const meaningfulTasks = allTasks
-                            .filter(task => {
-                              const emotions = getEmotions(task)
-                              return emotions.some(e => meaningfulEmotions.includes(e))
-                            })
-                            .slice(0, 3)
-                          
-                          return meaningfulTasks.map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
-                              • {task.description}
-                            </p>
-                          ))
-                        })()}
-                      </div>
+                      {expandedCards.has('meaningful') && (
+                        <div className="space-y-1">
+                          {(() => {
+                            // Get tasks with meaningful emotions
+                            const meaningfulTasks = allTasks
+                              .filter(task => {
+                                const emotions = getEmotions(task)
+                                return emotions.some(e => meaningfulEmotions.includes(e))
+                              })
+                              .slice(0, 3)
+                            
+                            return meaningfulTasks.map((task, index) => (
+                              <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                                • {task.description}
+                              </p>
+                            ))
+                          })()}
+                        </div>
+                      )}
+                      {!expandedCards.has('meaningful') && (
+                        <p className="text-[13px] font-normal text-slate-900 underline">
+                          See more
+                        </p>
+                      )}
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
@@ -396,7 +450,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               
               {/* 4. What Sparked Passion - Orange Gradient */}
               <div 
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
+                onClick={() => (aiInsights?.passion || passionProjects.length > 0) && toggleCard('passion')}
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
@@ -416,38 +471,50 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                       <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
                         {aiInsights.passion.insight}
                       </p>
-                      {aiInsights.passion.tasks.length > 0 && (
+                      {expandedCards.has('passion') && aiInsights.passion.tasks.length > 0 && (
                         <div className="space-y-1">
                           {aiInsights.passion.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-semibold text-slate-900 leading-tight">
+                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
                               • {task}
                             </p>
                           ))}
                         </div>
                       )}
+                      {!expandedCards.has('passion') && aiInsights.passion.tasks.length > 0 && (
+                        <p className="text-[13px] font-normal text-slate-900 underline">
+                          See more
+                        </p>
+                      )}
                     </>
                   ) : passionProjects.length > 0 ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug mb-2">
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug">
                         Exploratory and experimental tasks lit up your curiosity.
                       </p>
-                      <div className="space-y-1">
-                        {(() => {
-                          // Get tasks with passion emotions
-                          const passionTasks = allTasks
-                            .filter(task => {
-                              const emotions = getEmotions(task)
-                              return emotions.some(e => passionEmotions.includes(e))
-                            })
-                            .slice(0, 3)
-                          
-                          return passionTasks.map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
-                              • {task.description}
-                            </p>
-                          ))
-                        })()}
-                      </div>
+                      {expandedCards.has('passion') && (
+                        <div className="space-y-1">
+                          {(() => {
+                            // Get tasks with passion emotions
+                            const passionTasks = allTasks
+                              .filter(task => {
+                                const emotions = getEmotions(task)
+                                return emotions.some(e => passionEmotions.includes(e))
+                              })
+                              .slice(0, 3)
+                            
+                            return passionTasks.map((task, index) => (
+                              <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                                • {task.description}
+                              </p>
+                            ))
+                          })()}
+                        </div>
+                      )}
+                      {!expandedCards.has('passion') && (
+                        <p className="text-[13px] font-normal text-slate-900 underline">
+                          See more
+                        </p>
+                      )}
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
