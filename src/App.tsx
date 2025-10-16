@@ -592,6 +592,7 @@ function App() {
         return (
           <ProjectSelection
             projects={projects}
+            initialSelectedProjects={selectedProjectIds}
             onProjectsSelected={handleProjectsSelected}
             onBack={() => setCurrentView('dashboard')}
             onAddNewProject={handleAddNewProject}
@@ -609,6 +610,7 @@ function App() {
         return (
           <TaskEntry
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
+            initialTaskDescription={taskDescription}
             onNext={handleTaskDescriptionNext}
             onBack={() => setCurrentView('projectSelection')}
           />
@@ -617,6 +619,8 @@ function App() {
         return (
           <EmotionSelection
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
+            initialTaskDescription={taskDescription}
+            initialEmotion={selectedEmotions}
             onNext={handleEmotionNext}
             onBack={() => {
               console.log('Going back from emotionSelection to taskEntry')

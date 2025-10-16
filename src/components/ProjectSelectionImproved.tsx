@@ -6,6 +6,7 @@ import { createProject } from '../utils/dataHelpers'
 
 interface ProjectSelectionProps {
   projects: Project[]
+  initialSelectedProjects?: string[]
   onProjectsSelected: (projectIds: string[]) => void
   onBack: () => void
   onAddNewProject: () => void
@@ -14,12 +15,13 @@ interface ProjectSelectionProps {
 
 const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({ 
   projects,
+  initialSelectedProjects = [],
   onProjectsSelected, 
   onBack, 
   onAddNewProject,
   onProjectDeleted
 }) => {
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([])
+  const [selectedProjects, setSelectedProjects] = useState<string[]>(initialSelectedProjects)
   const [localProjects, setLocalProjects] = useState<Project[]>(projects)
   const [showAddInput, setShowAddInput] = useState(false)
   const [newProjectName, setNewProjectName] = useState('')
