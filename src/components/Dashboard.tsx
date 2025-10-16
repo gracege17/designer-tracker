@@ -96,7 +96,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   }, [entries.length]) // Re-fetch when entries change
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF2F1] screen-transition">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8] screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
         {/* Greeting - Clean and Simple */}
         <div className="mb-6">

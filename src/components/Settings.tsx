@@ -147,9 +147,9 @@ const Settings: React.FC<SettingsProps> = ({
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF2F1]">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8]">
       {/* Header */}
-      <header className="sticky top-0 bg-[#FFF2F1] z-10 p-5 border-b border-slate-200">
+      <header className="sticky top-0 bg-[#FFF9F8] z-10 p-5 border-b border-slate-200">
         <div className="max-w-md mx-auto flex items-center justify-center">
           <h1 className="text-[18px] font-bold text-slate-900">
             Settings

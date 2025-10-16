@@ -104,9 +104,9 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF2F1] slide-in-right">
+    <div className="flex flex-col min-h-screen bg-[#FFF9F8] slide-in-right">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-[#FFF2F1] z-10 p-5">
+      <header className="sticky top-0 bg-[#FFF9F8] z-10 p-5">
         <div className="max-w-md mx-auto">
           <button 
             onClick={onBack}
@@ -213,7 +213,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
       </main>
 
       {/* Sticky Bottom CTA */}
-      <footer className="sticky bottom-0 bg-[#FFF2F1] p-5">
+      <footer className="sticky bottom-0 bg-[#FFF9F8] p-5">
         <div className="max-w-md mx-auto">
           <button
             onClick={handleNext}

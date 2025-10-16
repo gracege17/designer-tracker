@@ -19,7 +19,7 @@ interface EntryDetailProps {
 const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, onDeleteTask, onNavigateHome, onNavigateAdd, onNavigateInsights, onNavigateHistory, onNavigateSettings }) => {
   if (!entry) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#FFF2F1]">
+      <div className="flex items-center justify-center h-screen bg-[#FFF9F8]">
         <p className="text-slate-600">No entry data available</p>
       </div>
     )
@@ -30,8 +30,8 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
   
   if (!entry.tasks || entry.tasks.length === 0) {
     return (
-      <div className="flex flex-col min-h-screen bg-[#FFF2F1]">
-        <header className="sticky top-0 z-10 bg-[#FFF2F1] border-b border-slate-200 p-5">
+      <div className="flex flex-col min-h-screen bg-[#FFF9F8]">
+        <header className="sticky top-0 z-10 bg-[#FFF9F8] border-b border-slate-200 p-5">
           <div className="max-w-md mx-auto flex items-center justify-between">
             <button
               onClick={onBack}
@@ -65,9 +65,9 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
   })
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF2F1]">
+    <div className="flex flex-col min-h-screen bg-[#FFF9F8]">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-10 bg-[#FFF2F1] border-b border-slate-200 p-5">
+      <header className="sticky top-0 z-10 bg-[#FFF9F8] border-b border-slate-200 p-5">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button
             onClick={onBack}

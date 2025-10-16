@@ -228,7 +228,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   // No insight card needed anymore - we just show project cards
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF2F1] screen-transition">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8] screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
         {/* Time Range Toggle */}
         <div className="mb-6 flex gap-6 items-baseline">

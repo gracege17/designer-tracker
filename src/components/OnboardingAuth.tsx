@@ -14,7 +14,7 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
   onContinueWithEmail
 }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF2F1]">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8]">
       {/* Hero Section */}
       <div className="flex-grow flex flex-col items-center justify-center px-6 pt-12 pb-8">
         {/* App Icon / Logo */}
