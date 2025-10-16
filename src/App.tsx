@@ -571,7 +571,6 @@ function App() {
         return (
           <OnboardingUserInfo
             onComplete={handleUserInfoComplete}
-            onBack={() => setCurrentView('onboardingAuth')}
           />
         )
       case 'onboardingFirstProject':

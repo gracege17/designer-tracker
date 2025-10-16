@@ -5,7 +5,6 @@ import Input from './Input'
 
 interface OnboardingUserInfoProps {
   onComplete: (userData: UserProfileData) => void
-  onBack: () => void
 }
 
 export interface UserProfileData {
@@ -14,7 +13,7 @@ export interface UserProfileData {
   gender: 'male' | 'female' | 'non-binary' | 'prefer-not-to-say'
 }
 
-const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete, onBack }) => {
+const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) => {
   const [name, setName] = useState('')
   const [jobTitle, setJobTitle] = useState('')
   const [gender, setGender] = useState<UserProfileData['gender']>('prefer-not-to-say')
@@ -165,13 +164,6 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete, onB
         >
           <span>Continue</span>
           <ArrowRight size={20} />
-        </button>
-        
-        <button
-          onClick={onBack}
-          className="w-full py-3 text-slate-600 hover:text-slate-900 text-sm font-medium transition-colors"
-        >
-          Back
         </button>
       </div>
     </div>
