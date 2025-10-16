@@ -240,7 +240,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </p>
                   ) : aiInsights?.energy ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
+                      <p className="text-[20px] font-medium text-slate-900 leading-snug italic">
                         {aiInsights.energy.insight}
                       </p>
                       {expandedCards.has('energy') && aiInsights.energy.tasks.length > 0 && (
@@ -260,7 +260,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : energyProjects.length > 0 ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug">
+                      <p className="text-[20px] font-medium text-slate-900 leading-snug">
                         Creative tasks that involved visual thinking energized you.
                       </p>
                       {expandedCards.has('energy') && (
@@ -316,7 +316,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </p>
                   ) : aiInsights?.drained ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
+                      <p className="text-[20px] font-medium text-slate-900 leading-snug italic">
                         {aiInsights.drained.insight}
                       </p>
                       {expandedCards.has('drained') && aiInsights.drained.tasks.length > 0 && (
@@ -336,7 +336,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : drainingProjects.length > 0 ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug">
+                      <p className="text-[20px] font-medium text-slate-900 leading-snug">
                         Tedious or repetitive tasks drained your creative energy.
                       </p>
                       {expandedCards.has('drained') && (
@@ -392,7 +392,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </p>
                   ) : aiInsights?.meaningful ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
+                      <p className="text-[20px] font-medium text-slate-900 leading-snug italic">
                         {aiInsights.meaningful.insight}
                       </p>
                       {expandedCards.has('meaningful') && aiInsights.meaningful.tasks.length > 0 && (
@@ -412,7 +412,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : meaningfulProjects.length > 0 ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug">
+                      <p className="text-[20px] font-medium text-slate-900 leading-snug">
                         Work that felt purposeful and aligned with your values.
                       </p>
                       {expandedCards.has('meaningful') && (
@@ -468,7 +468,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </p>
                   ) : aiInsights?.passion ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
+                      <p className="text-[20px] font-medium text-slate-900 leading-snug italic">
                         {aiInsights.passion.insight}
                       </p>
                       {expandedCards.has('passion') && aiInsights.passion.tasks.length > 0 && (
@@ -488,7 +488,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : passionProjects.length > 0 ? (
                     <>
-                      <p className="text-[16px] font-medium text-slate-900 leading-snug">
+                      <p className="text-[20px] font-medium text-slate-900 leading-snug">
                         Exploratory and experimental tasks lit up your curiosity.
                       </p>
                       {expandedCards.has('passion') && (
