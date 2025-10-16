@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ArrowLeft, Plus, X } from 'lucide-react'
 import { Project } from '../types'
 import { ProjectStorage, EntryStorage } from '../utils/storage'
@@ -25,6 +25,11 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
   const [localProjects, setLocalProjects] = useState<Project[]>(projects)
   const [showAddInput, setShowAddInput] = useState(false)
   const [newProjectName, setNewProjectName] = useState('')
+
+  // Update local projects when projects prop changes (e.g., after adding a new project)
+  useEffect(() => {
+    setLocalProjects(projects)
+  }, [projects])
 
   const handleProjectToggle = (projectId: string) => {
     setSelectedProjects(prev => 
