@@ -65,9 +65,9 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
   })
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F5F6EB]">
+    <div className="flex flex-col min-h-screen bg-[#FFF2F1]">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-10 bg-[#F5F6EB] border-b border-slate-200 p-5">
+      <header className="sticky top-0 z-10 bg-[#FFF2F1] border-b border-slate-200 p-5">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button
             onClick={onBack}

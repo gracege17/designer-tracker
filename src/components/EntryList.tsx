@@ -62,9 +62,9 @@ const EntryList: React.FC<EntryListProps> = ({
   }
 
   return (
-    <div className="flex h-full min-h-screen w-full flex-col bg-[#F5F6EB] text-slate-800 screen-transition">
+    <div className="flex h-full min-h-screen w-full flex-col bg-[#FFF2F1] text-slate-800 screen-transition">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#F5F6EB] border-b border-slate-200 p-5">
+      <header className="sticky top-0 z-10 bg-[#FFF2F1] border-b border-slate-200 p-5">
         <div className="flex items-center justify-between max-w-md mx-auto">
           <h1 className="text-[24px] font-bold text-slate-900" style={{ fontFamily: 'Playfair Display, serif' }}>Reflections</h1>
           <button className="p-2 hover:bg-slate-100 rounded-full transition-colors">

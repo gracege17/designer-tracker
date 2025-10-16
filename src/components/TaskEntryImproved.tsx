@@ -49,9 +49,9 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
     : null
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F5F6EB]">
+    <div className="flex flex-col min-h-screen bg-[#FFF2F1]">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-[#F5F6EB] z-10 p-5 border-b border-slate-200">
+      <header className="sticky top-0 bg-[#FFF2F1] z-10 p-5 border-b border-slate-200">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button 
             onClick={onBack}

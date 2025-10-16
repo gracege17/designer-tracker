@@ -109,7 +109,7 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
       </main>
 
       {/* Footer with Save Button */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-[#F5F6EB] p-5 border-t border-slate-200">
+      <footer className="fixed bottom-0 left-0 right-0 bg-[#FFF2F1] p-5 border-t border-slate-200">
         <div className="max-w-md mx-auto space-y-3">
           {/* Primary CTA - Create Project */}
           <button
