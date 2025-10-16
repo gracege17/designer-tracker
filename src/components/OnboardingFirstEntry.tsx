@@ -8,7 +8,7 @@ interface OnboardingFirstEntryProps {
 
 const OnboardingFirstEntry: React.FC<OnboardingFirstEntryProps> = ({ onStartEntry }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-[#F5F6EB]">
+    <div className="min-h-screen flex flex-col bg-[#FFF2F1]">
       {/* Progress Indicator */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-2">

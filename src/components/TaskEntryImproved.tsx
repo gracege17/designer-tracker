@@ -93,7 +93,7 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
       </main>
 
       {/* Sticky Bottom CTA */}
-      <footer className="sticky bottom-0 bg-[#F5F6EB] p-5">
+      <footer className="sticky bottom-0 bg-[#FFF2F1] p-5">
         <div className="max-w-md mx-auto">
           <button
             onClick={handleNext}

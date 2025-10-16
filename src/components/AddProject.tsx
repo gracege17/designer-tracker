@@ -56,9 +56,9 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#F5F6EB]">
+    <div className="flex flex-col min-h-screen bg-[#FFF2F1]">
       {/* Header */}
-      <header className="sticky top-0 bg-[#F5F6EB] z-10 p-5 border-b border-slate-200">
+      <header className="sticky top-0 bg-[#FFF2F1] z-10 p-5 border-b border-slate-200">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button 
             onClick={onBack}
@@ -129,7 +129,7 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
           {/* Secondary Action - Done */}
           <button
             onClick={handleDone}
-            className="w-full py-5 px-6 text-center bg-[#F5F6EB] border text-slate-900 font-medium text-[17px] hover:bg-slate-50 transition-all active:scale-[0.99]"
+            className="w-full py-5 px-6 text-center bg-[#FFF2F1] border text-slate-900 font-medium text-[17px] hover:bg-slate-50 transition-all active:scale-[0.99]"
             style={{ borderColor: 'rgba(0, 0, 0, 0.6)' }}
           >
             Done

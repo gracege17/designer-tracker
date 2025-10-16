@@ -89,7 +89,7 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
         <div className="max-w-md mx-auto space-y-3">
           <button
             onClick={handleAddAnotherTask}
-            className="w-full py-5 px-6 text-center bg-[#F5F6EB] border text-slate-900 font-medium text-[17px] hover:bg-slate-50 transition-all active:scale-[0.99]"
+            className="w-full py-5 px-6 text-center bg-[#FFF2F1] border text-slate-900 font-medium text-[17px] hover:bg-slate-50 transition-all active:scale-[0.99]"
             style={{ borderColor: 'rgba(0, 0, 0, 0.6)' }}
           >
             + Add another task

@@ -200,7 +200,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F5F6EB]">
+    <div className="min-h-screen flex flex-col bg-[#FFF2F1]">
       {/* Chat Messages */}
       <div className="flex-grow overflow-y-auto px-6 py-8 space-y-4">
         {messages.map((message, index) => (
