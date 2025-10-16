@@ -77,7 +77,12 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           console.log('🏠 Dashboard Debug:')
           console.log('- Total entries:', entries.length)
           console.log('- Total tasks:', allTasks.length)
-          console.log('- Sample task emotions:', allTasks[0]?.emotions || allTasks[0]?.emotion)
+          if (allTasks.length > 0) {
+            console.log('- Sample task:', allTasks[0])
+            console.log('- Sample task.emotion:', allTasks[0].emotion)
+            console.log('- Sample task.emotions:', allTasks[0].emotions)
+            console.log('- getEmotions result:', allTasks[0].emotions && allTasks[0].emotions.length > 0 ? allTasks[0].emotions : [allTasks[0].emotion])
+          }
           
           // Helper function to get emotions array from task
           const getEmotions = (task: any) => {
@@ -100,8 +105,20 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             }
           })
           
+          console.log('🗂️ Project Emotion Map:', Array.from(projectEmotionMap.entries()).map(([id, data]) => ({
+            projectId: id,
+            emotionCount: data.emotions.length,
+            uniqueEmotions: [...new Set(data.emotions)]
+          })))
+          
           // 1. What gave you energy - Happy (1), Excited (3), Energized (10), Satisfied (13), Proud (16)
           const energyEmotions = [1, 3, 10, 13, 16]
+          console.log('⚡ Energy filter:', energyEmotions)
+          console.log('⚡ Projects with energy emotions:', Array.from(projectEmotionMap.values()).filter(p => p.emotions.some(e => energyEmotions.includes(e))).map(p => ({
+            projectId: p.projectId,
+            matchingEmotions: p.emotions.filter(e => energyEmotions.includes(e))
+          })))
+          
           const energyProjects = Array.from(projectEmotionMap.values())
             .filter(p => p.emotions.some(e => energyEmotions.includes(e)))
             .sort((a, b) => {
