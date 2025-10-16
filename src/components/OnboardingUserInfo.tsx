@@ -11,12 +11,14 @@ export interface UserProfileData {
   name: string
   jobTitle: string
   gender: 'male' | 'female' | 'non-binary' | 'prefer-not-to-say'
+  ageRange: '18-24' | '25-34' | '35-44' | '45-54' | '55-64' | '65+'
 }
 
 const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) => {
   const [name, setName] = useState('')
   const [jobTitle, setJobTitle] = useState('')
   const [gender, setGender] = useState<UserProfileData['gender']>('prefer-not-to-say')
+  const [ageRange, setAgeRange] = useState<UserProfileData['ageRange']>('25-34')
   const [errors, setErrors] = useState<{ name?: string; jobTitle?: string }>({})
 
   const handleContinue = () => {
@@ -37,7 +39,8 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
     onComplete({
       name: name.trim(),
       jobTitle: jobTitle.trim(),
-      gender
+      gender,
+      ageRange
     })
   }
 
@@ -46,6 +49,15 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
     { value: 'female' as const, label: 'Female', emoji: '👩' },
     { value: 'non-binary' as const, label: 'Non-binary', emoji: '🧑' },
     { value: 'prefer-not-to-say' as const, label: 'Prefer not to say', emoji: '👤' }
+  ]
+
+  const ageRangeOptions = [
+    { value: '18-24' as const, label: '18-24' },
+    { value: '25-34' as const, label: '25-34' },
+    { value: '35-44' as const, label: '35-44' },
+    { value: '45-54' as const, label: '45-54' },
+    { value: '55-64' as const, label: '55-64' },
+    { value: '65+' as const, label: '65+' }
   ]
 
   return (
@@ -140,6 +152,33 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
             <p className="text-xs text-slate-500 mt-2 ml-1">
               Used for analytics and personalization only
             </p>
+          </div>
+
+          {/* Age Range */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-slate-700 mb-3 ml-1">
+              Age Range
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {ageRangeOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => setAgeRange(option.value)}
+                  className={`p-3 border-2 transition-all duration-200 flex items-center justify-center ${
+                    ageRange === option.value
+                      ? 'border-slate-900 bg-[#FFD678]'
+                      : 'border-slate-200 bg-white hover:border-slate-300'
+                  }`}
+                  style={{ borderRadius: '0 16px 0 0' }}
+                >
+                  <span className={`text-sm font-medium ${
+                    ageRange === option.value ? 'text-slate-900' : 'text-slate-600'
+                  }`}>
+                    {option.label}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
