@@ -270,8 +270,8 @@ function App() {
         projectId: task.projectId,
         description: task.description,
         taskType: 'design' as TaskType, // Default task type
-        emotion: task.emotion,
-        emotions: task.emotions, // Include multiple emotions array
+        emotion: typeof task.emotion === 'string' ? parseInt(task.emotion, 10) : task.emotion,
+        emotions: task.emotions ? task.emotions.map(e => typeof e === 'string' ? parseInt(e, 10) : e) : undefined, // Ensure numbers
         notes: task.notes,
         createdAt: new Date()
       }))

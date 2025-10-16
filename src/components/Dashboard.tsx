@@ -85,8 +85,10 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           }
           
           // Helper function to get emotions array from task
-          const getEmotions = (task: any) => {
-            return task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
+          const getEmotions = (task: any): number[] => {
+            const emotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
+            // Convert to numbers in case they're stored as strings
+            return emotions.map((e: any) => typeof e === 'string' ? parseInt(e, 10) : e)
           }
           
           // Group tasks by project with emotion counts
