@@ -63,11 +63,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
     setInsightsError(null)
 
     try {
-      // Prepare task data for AI
-      const tasksForAI = prepareTasksForAI(thisWeekEntries).map(task => ({
-        ...task,
-        projectName: ProjectStorage.getProjectById(task.projectName)?.name || task.projectName
-      }))
+      // Prepare task data for AI (no project names - focus on task types)
+      const tasksForAI = prepareTasksForAI(thisWeekEntries)
 
       const insights = await fetchAiInsights(tasksForAI, forceRegenerate)
       setAiInsights(insights)
@@ -242,19 +239,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : energyProjects.length > 0 ? (
                     <>
-                      <div className="space-y-1">
-                        {energyProjects.map((proj, index) => {
-                          const project = ProjectStorage.getProjectById(proj.projectId)
-                          return (
-                            <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
-                              {project?.name || 'Unknown Project'}
-                            </p>
-                          )
-                        })}
-                      </div>
-                      <p className="text-[14px] font-normal text-slate-900 opacity-70">
-                        Projects that ignited excitement
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug mb-2">
+                        Creative tasks that involved visual thinking energized you.
                       </p>
+                      <div className="space-y-1">
+                        {(() => {
+                          // Get tasks with energy emotions
+                          const energyTasks = allTasks
+                            .filter(task => {
+                              const emotions = getEmotions(task)
+                              return emotions.some(e => energyEmotions.includes(e))
+                            })
+                            .slice(0, 3)
+                          
+                          return energyTasks.map((task, index) => (
+                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                              • {task.description}
+                            </p>
+                          ))
+                        })()}
+                      </div>
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
@@ -298,19 +302,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : drainingProjects.length > 0 ? (
                     <>
-                      <div className="space-y-1">
-                        {drainingProjects.map((proj, index) => {
-                          const project = ProjectStorage.getProjectById(proj.projectId)
-                          return (
-                            <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
-                              {project?.name || 'Unknown Project'}
-                            </p>
-                          )
-                        })}
-                  </div>
-                      <p className="text-[14px] font-normal text-slate-900 opacity-70">
-                        Projects that took your energy
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug mb-2">
+                        Tedious or repetitive tasks drained your creative energy.
                       </p>
+                      <div className="space-y-1">
+                        {(() => {
+                          // Get tasks with draining emotions
+                          const drainingTasks = allTasks
+                            .filter(task => {
+                              const emotions = getEmotions(task)
+                              return emotions.some(e => drainingEmotions.includes(e))
+                            })
+                            .slice(0, 3)
+                          
+                          return drainingTasks.map((task, index) => (
+                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                              • {task.description}
+                            </p>
+                          ))
+                        })()}
+                      </div>
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
@@ -354,19 +365,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : meaningfulProjects.length > 0 ? (
                     <>
-                      <div className="space-y-1">
-                        {meaningfulProjects.map((proj, index) => {
-                          const project = ProjectStorage.getProjectById(proj.projectId)
-                          return (
-                            <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
-                              {project?.name || 'Unknown Project'}
-                            </p>
-                          )
-                        })}
-                      </div>
-                      <p className="text-[14px] font-normal text-slate-900 opacity-70">
-                        Projects with purposeful impact
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug mb-2">
+                        Work that felt purposeful and aligned with your values.
                       </p>
+                      <div className="space-y-1">
+                        {(() => {
+                          // Get tasks with meaningful emotions
+                          const meaningfulTasks = allTasks
+                            .filter(task => {
+                              const emotions = getEmotions(task)
+                              return emotions.some(e => meaningfulEmotions.includes(e))
+                            })
+                            .slice(0, 3)
+                          
+                          return meaningfulTasks.map((task, index) => (
+                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                              • {task.description}
+                            </p>
+                          ))
+                        })()}
+                      </div>
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
@@ -410,19 +428,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : passionProjects.length > 0 ? (
                     <>
-                      <div className="space-y-1">
-                        {passionProjects.map((proj, index) => {
-                          const project = ProjectStorage.getProjectById(proj.projectId)
-                          return (
-                            <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
-                              {project?.name || 'Unknown Project'}
-                            </p>
-                          )
-                        })}
-                  </div>
-                      <p className="text-[14px] font-normal text-slate-900 opacity-70">
-                        Projects that ignited excitement
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug mb-2">
+                        Exploratory and experimental tasks lit up your curiosity.
                       </p>
+                      <div className="space-y-1">
+                        {(() => {
+                          // Get tasks with passion emotions
+                          const passionTasks = allTasks
+                            .filter(task => {
+                              const emotions = getEmotions(task)
+                              return emotions.some(e => passionEmotions.includes(e))
+                            })
+                            .slice(0, 3)
+                          
+                          return passionTasks.map((task, index) => (
+                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                              • {task.description}
+                            </p>
+                          ))
+                        })()}
+                      </div>
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">

@@ -36,10 +36,9 @@ export default async function handler(
       return res.status(500).json({ error: 'AI service not configured' });
     }
 
-    // Prepare task data for AI
+    // Prepare task data for AI (remove project names to focus on task types)
     const taskSummary = tasks.map(t => ({
       task: t.description,
-      project: t.projectName,
       emotions: t.emotions
     }));
 
@@ -71,16 +70,22 @@ Create four cards with this format:
 3. What Drained Your Energy (emotions: 5-Sad, 6-Anxious, 8-Neutral, 12-Tired, 14-Annoyed, 15-Drained)
 4. What Felt Fulfilling (emotions: 2-Calm, 9-Nostalgic, 11-Normal, 13-Satisfied)
 
-Each card should have:
-- A SHORT, punchy insight sentence (10-12 words max). Examples:
-  * "Creative and expressive work fuels your momentum."
-  * "Open-ended thinking lights up your process."
-  * "Tedious execution drains your creative energy."
-- 1-3 specific task examples from the data
+🎯 IMPORTANT RULES:
+- Focus on TASK TYPES and DESIGN SKILLS (e.g., "debugging," "UX writing," "layout work," "user flows")
+- DO NOT mention project names in your insights or task examples
+- Summarize by the KIND of work, not which project it was for
+- Help them reflect on what types of tasks energize or drain them
 
-Tone: Casual, direct, supportive — like a creative friend who gets you.
-Focus on actionable patterns, not vague descriptions.
-Keep insights brief, concrete, and energizing.
+Each card should have:
+- A SHORT, warm insight sentence (10-15 words). Focus on the TYPE of work. Examples:
+  * "Creative tasks involving visual thinking and user journeys energized you."
+  * "Exploratory design work lit up your curiosity and flow state."
+  * "Repetitive execution tasks drained your creative energy."
+- 1-3 specific task descriptions from the data (NEVER include project names)
+
+Tone: Warm, timeless, reflective — like a wise creative mentor.
+Focus on TYPES of work and SKILLS, not projects.
+Keep insights brief, meaningful, and actionable.
 
 Return ONLY valid JSON in this format:
 {

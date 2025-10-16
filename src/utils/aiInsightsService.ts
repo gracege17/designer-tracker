@@ -20,11 +20,11 @@ interface AIResponse {
 
 /**
  * Fetch AI-generated insights for the given tasks
- * @param tasks - Array of tasks with emotions
+ * @param tasks - Array of tasks with emotions (no project names - focus on task types)
  * @param forceRegenerate - If true, bypass cache and generate fresh insights
  */
 export const fetchAiInsights = async (
-  tasks: { description: string; projectName: string; emotions: number[] }[],
+  tasks: { description: string; emotions: number[] }[],
   forceRegenerate = false
 ): Promise<AIInsights | null> => {
   try {
@@ -74,9 +74,10 @@ export const fetchAiInsights = async (
 
 /**
  * Prepare tasks from entries for AI analysis
+ * Note: We intentionally don't include project names to help users focus on task TYPES, not projects
  */
-export const prepareTasksForAI = (entries: Entry[]): { description: string; projectName: string; emotions: number[] }[] => {
-  const tasks: { description: string; projectName: string; emotions: number[] }[] = []
+export const prepareTasksForAI = (entries: Entry[]): { description: string; emotions: number[] }[] => {
+  const tasks: { description: string; emotions: number[] }[] = []
 
   entries.forEach(entry => {
     entry.tasks.forEach(task => {
@@ -87,7 +88,6 @@ export const prepareTasksForAI = (entries: Entry[]): { description: string; proj
 
       tasks.push({
         description: task.description,
-        projectName: task.projectId, // Will be replaced with actual project name
         emotions,
       })
     })
