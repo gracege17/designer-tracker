@@ -540,10 +540,10 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           
           return (
             <div className="bg-white p-6 mb-6 border border-slate-200" style={{ borderRadius: '0 48px 0 0' }}>
-              {/* Custom Illustration - Replace with your artwork */}
+              {/* Custom Illustration */}
               <div className="h-48 mb-4 flex items-center justify-center overflow-hidden" style={{ borderRadius: '0 36px 0 0' }}>
                 <img 
-                  src="/illustrations/quote-illustration.svg" 
+                  src="https://cdn.midjourney.com/b0df52e3-5e6e-42d5-9597-331f1a2ed698/0_3.png" 
                   alt="Decorative illustration" 
                   className="w-full h-full object-cover"
                 />
