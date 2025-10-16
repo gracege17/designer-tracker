@@ -21,6 +21,7 @@ import { SuccessToast, Confetti } from './components/SuccessToast'
 import { Entry, Project, TaskType, EmotionLevel, Task } from './types'
 import { EntryStorage, ProjectStorage, OnboardingStorage, UserProfileStorage } from './utils/storage'
 import { createTodayEntry, getTodayDateString, generateId } from './utils/dataHelpers'
+import { clearAICache } from './utils/aiInsightsService'
 
 type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings'
 
@@ -306,6 +307,9 @@ function App() {
       setSelectedEmotions([])
       setCurrentProjectIndex(0)
       setCollectedTasks([])
+      
+      // Clear AI cache to trigger regeneration of insights
+      clearAICache()
       
       // Show success celebration
       showSuccess('Reflection saved! Great work today! 🎉', true)

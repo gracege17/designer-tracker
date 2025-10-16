@@ -1,133 +1,105 @@
-import { Entry } from '../types'
-import { ProjectStorage } from './storage'
+import { Entry, Task } from '../types'
+
+export interface InsightCardData {
+  insight: string
+  tasks: string[]
+}
 
 export interface AIInsights {
-  passion: {
-    insight: string
-    tasks: string[]
-  }
-  energy: {
-    insight: string
-    tasks: string[]
-  }
-  drained: {
-    insight: string
-    tasks: string[]
-  }
-  meaningful: {
-    insight: string
-    tasks: string[]
-  }
+  passion: InsightCardData
+  energy: InsightCardData
+  drained: InsightCardData
+  meaningful: InsightCardData
 }
 
-interface TaskForAI {
-  description: string
-  projectName: string
-  emotions: number[]
+interface AIResponse {
+  success: boolean
+  insights: AIInsights
+  tasksAnalyzed: number
 }
 
-export class AIInsightsService {
-  private static API_ENDPOINT = '/api/generate-insights'
-
-  /**
-   * Generate AI insights from entries
-   */
-  static async generateInsights(entries: Entry[]): Promise<AIInsights> {
-    // Prepare tasks for AI analysis
-    const tasks: TaskForAI[] = []
-    
-    entries.forEach(entry => {
-      entry.tasks.forEach(task => {
-        const project = ProjectStorage.getProjectById(task.projectId)
-        const emotions = task.emotions && task.emotions.length > 0 
-          ? task.emotions.map(e => typeof e === 'string' ? parseInt(e, 10) : e)
-          : [typeof task.emotion === 'string' ? parseInt(task.emotion, 10) : task.emotion]
-        
-        tasks.push({
-          description: task.description,
-          projectName: project?.name || 'Unknown Project',
-          emotions
-        })
-      })
-    })
-
-    if (tasks.length === 0) {
-      throw new Error('No tasks to analyze')
+/**
+ * Fetch AI-generated insights for the given tasks
+ * @param tasks - Array of tasks with emotions
+ * @param forceRegenerate - If true, bypass cache and generate fresh insights
+ */
+export const fetchAiInsights = async (
+  tasks: { description: string; projectName: string; emotions: number[] }[],
+  forceRegenerate = false
+): Promise<AIInsights | null> => {
+  try {
+    // Check cache first (unless force regenerate)
+    if (!forceRegenerate) {
+      const cached = localStorage.getItem('ai_insights_cache')
+      const cacheTimestamp = localStorage.getItem('ai_insights_timestamp')
+      
+      if (cached && cacheTimestamp) {
+        const cacheAge = Date.now() - parseInt(cacheTimestamp, 10)
+        // Cache valid for 1 hour
+        if (cacheAge < 60 * 60 * 1000) {
+          return JSON.parse(cached)
+        }
+      }
     }
 
-    // Call the serverless API
-    const response = await fetch(this.API_ENDPOINT, {
+    // Call the API
+    const response = await fetch('/api/generate-insights', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ tasks })
+      body: JSON.stringify({ tasks }),
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.error || 'Failed to generate insights')
+      throw new Error(`API error: ${response.status}`)
     }
 
-    const data = await response.json()
-    return data.insights
-  }
+    const data: AIResponse = await response.json()
 
-  /**
-   * Check if AI insights are available (has API key configured)
-   */
-  static async checkAvailability(): Promise<boolean> {
-    try {
-      // Try a simple health check (could add a dedicated endpoint)
-      return true // For now, assume always available
-    } catch {
-      return false
+    if (data.success && data.insights) {
+      // Cache the result
+      localStorage.setItem('ai_insights_cache', JSON.stringify(data.insights))
+      localStorage.setItem('ai_insights_timestamp', Date.now().toString())
+      
+      return data.insights
     }
+
+    return null
+  } catch (error) {
+    console.error('Failed to fetch AI insights:', error)
+    return null
   }
 }
 
-// Storage key for caching insights
-const INSIGHTS_CACHE_KEY = 'designerTracker_aiInsights'
-const INSIGHTS_CACHE_TIMESTAMP_KEY = 'designerTracker_aiInsightsTimestamp'
+/**
+ * Prepare tasks from entries for AI analysis
+ */
+export const prepareTasksForAI = (entries: Entry[]): { description: string; projectName: string; emotions: number[] }[] => {
+  const tasks: { description: string; projectName: string; emotions: number[] }[] = []
 
-export const AIInsightsCache = {
-  save: (insights: AIInsights): void => {
-    try {
-      localStorage.setItem(INSIGHTS_CACHE_KEY, JSON.stringify(insights))
-      localStorage.setItem(INSIGHTS_CACHE_TIMESTAMP_KEY, new Date().toISOString())
-    } catch (error) {
-      console.error('Failed to cache insights:', error)
-    }
-  },
+  entries.forEach(entry => {
+    entry.tasks.forEach(task => {
+      // Get emotions array (handle both old single emotion and new multiple emotions)
+      const emotions = task.emotions && task.emotions.length > 0 
+        ? task.emotions.map(e => typeof e === 'string' ? parseInt(e, 10) : e)
+        : [typeof task.emotion === 'string' ? parseInt(task.emotion, 10) : task.emotion]
 
-  load: (): { insights: AIInsights | null; timestamp: Date | null } => {
-    try {
-      const cached = localStorage.getItem(INSIGHTS_CACHE_KEY)
-      const timestamp = localStorage.getItem(INSIGHTS_CACHE_TIMESTAMP_KEY)
-      
-      if (!cached) return { insights: null, timestamp: null }
-      
-      return {
-        insights: JSON.parse(cached),
-        timestamp: timestamp ? new Date(timestamp) : null
-      }
-    } catch (error) {
-      console.error('Failed to load cached insights:', error)
-      return { insights: null, timestamp: null }
-    }
-  },
+      tasks.push({
+        description: task.description,
+        projectName: task.projectId, // Will be replaced with actual project name
+        emotions,
+      })
+    })
+  })
 
-  clear: (): void => {
-    localStorage.removeItem(INSIGHTS_CACHE_KEY)
-    localStorage.removeItem(INSIGHTS_CACHE_TIMESTAMP_KEY)
-  },
-
-  isStale: (maxAgeHours: number = 24): boolean => {
-    const { timestamp } = AIInsightsCache.load()
-    if (!timestamp) return true
-    
-    const ageHours = (Date.now() - timestamp.getTime()) / (1000 * 60 * 60)
-    return ageHours > maxAgeHours
-  }
+  return tasks
 }
 
+/**
+ * Clear AI insights cache (useful for debugging)
+ */
+export const clearAICache = (): void => {
+  localStorage.removeItem('ai_insights_cache')
+  localStorage.removeItem('ai_insights_timestamp')
+}

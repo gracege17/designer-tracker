@@ -1,11 +1,12 @@
-import React from 'react'
-import { Plus, Settings, Home, PlusCircle, BarChart2, Calendar } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Plus, Settings, Home, PlusCircle, BarChart2, Calendar, RefreshCw } from 'lucide-react'
 import { Entry, EMOTIONS, EmotionLevel } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { getTodayDateString, getCurrentWeekEntries, getTotalTaskCount, getMostEnergizingTaskType } from '../utils/dataHelpers'
 import { ProjectStorage, UserProfileStorage } from '../utils/storage'
 import { generateSuggestions, getMotivationalQuote } from '../utils/suggestionEngine'
 import SuggestionsCard from './SuggestionsCard'
+import { fetchAiInsights, prepareTasksForAI, AIInsights } from '../utils/aiInsightsService'
 
 interface DashboardProps {
   entries: Entry[]
@@ -17,6 +18,11 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntries, onViewInsights, onViewSettings, isLoading = false }) => {
+  // AI Insights State
+  const [aiInsights, setAiInsights] = useState<AIInsights | null>(null)
+  const [isLoadingInsights, setIsLoadingInsights] = useState(false)
+  const [insightsError, setInsightsError] = useState<string | null>(null)
+
   // Get user profile
   const userProfile = UserProfileStorage.getUserProfile()
   const userName = userProfile?.name || 'Designer'
@@ -46,6 +52,42 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
     : 6
   const motivationalQuote = getMotivationalQuote(recentAvgEmotion)
 
+  // Fetch AI Insights on mount and when entries change
+  const loadAiInsights = async (forceRegenerate = false) => {
+    if (thisWeekEntries.length === 0) {
+      setAiInsights(null)
+      return
+    }
+
+    setIsLoadingInsights(true)
+    setInsightsError(null)
+
+    try {
+      // Prepare task data for AI
+      const tasksForAI = prepareTasksForAI(thisWeekEntries).map(task => ({
+        ...task,
+        projectName: ProjectStorage.getProjectById(task.projectName)?.name || task.projectName
+      }))
+
+      const insights = await fetchAiInsights(tasksForAI, forceRegenerate)
+      setAiInsights(insights)
+    } catch (error) {
+      console.error('Failed to load AI insights:', error)
+      setInsightsError('Unable to generate insights right now')
+    } finally {
+      setIsLoadingInsights(false)
+    }
+  }
+
+  useEffect(() => {
+    loadAiInsights()
+  }, [entries.length]) // Re-fetch when entries change
+
+  // Manual regenerate handler
+  const handleRegenerateInsights = () => {
+    loadAiInsights(true) // Force regenerate
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#F5F6EB] screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
@@ -67,6 +109,20 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           + Capture the moment
         </button>
 
+        {/* Regenerate Insights Button */}
+        {thisWeekEntries.length > 0 && (
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-[14px] font-semibold text-slate-700">This Week's Insights</h3>
+            <button
+              onClick={handleRegenerateInsights}
+              disabled={isLoadingInsights}
+              className="flex items-center gap-2 px-3 py-1.5 text-[13px] text-slate-600 hover:text-slate-900 transition-colors disabled:opacity-50"
+            >
+              <RefreshCw size={14} className={isLoadingInsights ? 'animate-spin' : ''} />
+              {isLoadingInsights ? 'Generating...' : 'Regenerate'}
+            </button>
+          </div>
+        )}
 
         {/* Insight Cards - Always Show */}
         {(() => {
@@ -185,7 +241,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     What Gave You Energy
                   </p>
                   
-                  {energyProjects.length > 0 ? (
+                  {isLoadingInsights ? (
+                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic animate-pulse">
+                      Analyzing your week...
+                    </p>
+                  ) : aiInsights?.energy ? (
+                    <>
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
+                        {aiInsights.energy.insight}
+                      </p>
+                      {aiInsights.energy.tasks.length > 0 && (
+                        <div className="space-y-1">
+                          {aiInsights.energy.tasks.slice(0, 3).map((task, index) => (
+                            <p key={index} className="text-[14px] font-semibold text-slate-900 leading-tight">
+                              • {task}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : energyProjects.length > 0 ? (
                     <>
                       <div className="space-y-1">
                         {energyProjects.map((proj, index) => {
@@ -222,7 +297,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     What Drained You
                   </p>
                   
-                  {drainingProjects.length > 0 ? (
+                  {isLoadingInsights ? (
+                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic animate-pulse">
+                      Analyzing your week...
+                    </p>
+                  ) : aiInsights?.drained ? (
+                    <>
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
+                        {aiInsights.drained.insight}
+                      </p>
+                      {aiInsights.drained.tasks.length > 0 && (
+                        <div className="space-y-1">
+                          {aiInsights.drained.tasks.slice(0, 3).map((task, index) => (
+                            <p key={index} className="text-[14px] font-semibold text-slate-900 leading-tight">
+                              • {task}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : drainingProjects.length > 0 ? (
                     <>
                       <div className="space-y-1">
                         {drainingProjects.map((proj, index) => {
@@ -259,7 +353,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     What Felt Meaningful
                   </p>
                   
-                  {meaningfulProjects.length > 0 ? (
+                  {isLoadingInsights ? (
+                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic animate-pulse">
+                      Analyzing your week...
+                    </p>
+                  ) : aiInsights?.meaningful ? (
+                    <>
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
+                        {aiInsights.meaningful.insight}
+                      </p>
+                      {aiInsights.meaningful.tasks.length > 0 && (
+                        <div className="space-y-1">
+                          {aiInsights.meaningful.tasks.slice(0, 3).map((task, index) => (
+                            <p key={index} className="text-[14px] font-semibold text-slate-900 leading-tight">
+                              • {task}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : meaningfulProjects.length > 0 ? (
                     <>
                       <div className="space-y-1">
                         {meaningfulProjects.map((proj, index) => {
@@ -296,7 +409,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     What Sparked Passion
                   </p>
                   
-                  {passionProjects.length > 0 ? (
+                  {isLoadingInsights ? (
+                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic animate-pulse">
+                      Analyzing your week...
+                    </p>
+                  ) : aiInsights?.passion ? (
+                    <>
+                      <p className="text-[16px] font-medium text-slate-900 leading-snug italic">
+                        {aiInsights.passion.insight}
+                      </p>
+                      {aiInsights.passion.tasks.length > 0 && (
+                        <div className="space-y-1">
+                          {aiInsights.passion.tasks.slice(0, 3).map((task, index) => (
+                            <p key={index} className="text-[14px] font-semibold text-slate-900 leading-tight">
+                              • {task}
+                            </p>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : passionProjects.length > 0 ? (
                     <>
                       <div className="space-y-1">
                         {passionProjects.map((proj, index) => {
