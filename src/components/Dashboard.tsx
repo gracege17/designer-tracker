@@ -218,7 +218,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               >
                 <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
-                    What Gave You Energy
+                    What Gave You a Boost
                   </p>
                   
                   {isLoadingInsights ? (
@@ -274,7 +274,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               >
                 <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
-                    What Drained You
+                    What Drained Your Energy
                   </p>
                   
                   {isLoadingInsights ? (
@@ -330,7 +330,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               >
                 <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
-                    What Felt Meaningful
+                    What Felt Fulfilling
                   </p>
                   
                   {isLoadingInsights ? (
@@ -386,7 +386,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               >
                 <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
-                    What Sparked Passion
+                    What Lit You Up
                   </p>
                   
                   {isLoadingInsights ? (

@@ -66,18 +66,21 @@ Emotion Scale Reference:
 - 13: Satisfied, 14: Annoyed, 15: Drained, 16: Proud
 
 Create four cards with this format:
-1. What Sparked Passion (emotions: 3-Excited, 7-Surprised, 10-Energized, 16-Proud)
-2. What Gave You Energy (emotions: 1-Happy, 3-Excited, 10-Energized, 13-Satisfied, 16-Proud)
-3. What Drained You (emotions: 5-Sad, 6-Anxious, 8-Neutral, 12-Tired, 14-Annoyed, 15-Drained)
-4. What Felt Meaningful (emotions: 2-Calm, 9-Nostalgic, 11-Normal, 13-Satisfied)
+1. What Lit You Up (emotions: 3-Excited, 7-Surprised, 10-Energized, 16-Proud)
+2. What Gave You a Boost (emotions: 1-Happy, 3-Excited, 10-Energized, 13-Satisfied, 16-Proud)
+3. What Drained Your Energy (emotions: 5-Sad, 6-Anxious, 8-Neutral, 12-Tired, 14-Annoyed, 15-Drained)
+4. What Felt Fulfilling (emotions: 2-Calm, 9-Nostalgic, 11-Normal, 13-Satisfied)
 
 Each card should have:
-- A short, warm, reflective insight sentence (like: "You thrive in creative exploration and open-ended thinking.")
+- A SHORT, punchy insight sentence (10-12 words max). Examples:
+  * "Creative and expressive work fuels your momentum."
+  * "Open-ended thinking lights up your process."
+  * "Tedious execution drains your creative energy."
 - 1-3 specific task examples from the data
 
-Tone: Calm, reflective, supportive, personal — like a caring design mentor.
-Focus on emotional patterns and creative insights, not metrics.
-Keep insights brief and meaningful.
+Tone: Casual, direct, supportive — like a creative friend who gets you.
+Focus on actionable patterns, not vague descriptions.
+Keep insights brief, concrete, and energizing.
 
 Return ONLY valid JSON in this format:
 {
