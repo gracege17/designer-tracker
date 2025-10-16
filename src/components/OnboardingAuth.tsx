@@ -19,8 +19,12 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
       <div className="flex-grow flex flex-col items-center justify-center px-6 pt-12 pb-8">
         {/* App Icon / Logo */}
         <div className="mb-8 relative">
-          <div className="w-24 h-24 rounded-full bg-[#FFD678] flex items-center justify-center">
-            <span className="text-5xl">✨</span>
+          <div className="w-24 h-24 flex items-center justify-center">
+            <img 
+              src="/images/favicon.svg" 
+              alt="Designer's Life Tracker Logo" 
+              className="w-full h-full"
+            />
           </div>
         </div>
 
