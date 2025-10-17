@@ -223,7 +223,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
               <div 
                 onClick={() => (aiInsights?.energy || energyProjects.length > 0) && toggleCard('energy')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#FFD3A5_0%,#FD6585_103.78%),#FFF]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#FFE27A_0%,#FF7B54_103.78%),#FFF]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
