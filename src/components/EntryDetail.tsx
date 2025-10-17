@@ -176,18 +176,18 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
           {/* Home */}
           <button 
             onClick={onNavigateHome}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
+            <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Home</p>
           </button>
 
           {/* Overview */}
           <button 
             onClick={onNavigateInsights}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
+            <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Overview</p>
           </button>
 
@@ -196,26 +196,26 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-slate-900 rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white" />
+            <div className="bg-slate-900 dark:bg-slate-100 rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 dark:hover:bg-slate-200 active:scale-95 transition-all">
+              <Plus size={28} strokeWidth={2.5} className="text-white dark:text-slate-900" />
             </div>
           </button>
 
           {/* History */}
           <button 
             onClick={onNavigateHistory}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
+            <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">History</p>
           </button>
 
           {/* Settings */}
           <button 
             onClick={onNavigateSettings}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
+            <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>
