@@ -7,6 +7,7 @@ import { ProjectStorage, UserProfileStorage } from '../utils/storage'
 import { generateSuggestions, getMotivationalQuote } from '../utils/suggestionEngine'
 import SuggestionsCard from './SuggestionsCard'
 import { fetchAiInsights, prepareTasksForAI, AIInsights } from '../utils/aiInsightsService'
+import { useTheme } from '../context/ThemeContext'
 
 interface DashboardProps {
   entries: Entry[]
@@ -18,6 +19,9 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntries, onViewInsights, onViewSettings, isLoading = false }) => {
+  // Theme
+  const { theme } = useTheme()
+  
   // AI Insights State
   const [aiInsights, setAiInsights] = useState<AIInsights | null>(null)
   const [isLoadingInsights, setIsLoadingInsights] = useState(false)
@@ -223,10 +227,12 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
               <div 
                 onClick={() => (aiInsights?.energy || energyProjects.length > 0) && toggleCard('energy')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#FFE27A_0%,#FF7B54_103.78%),#FFF]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
-                  background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
+                  background: theme === 'dark' 
+                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
+                    : 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
                 }}
               >
                 <div className="flex flex-col items-start gap-3 w-full">
@@ -299,10 +305,12 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 2. What Drained You - Light Gray Gradient */}
               <div 
                 onClick={() => (aiInsights?.drained || drainingProjects.length > 0) && toggleCard('drained')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#E3E3E3_0%,#A69FAE_103.78%),#FFF]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
-                  background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                  background: theme === 'dark'
+                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                    : 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
                 }}
               >
                 <div className="flex flex-col items-start gap-3 w-full">
@@ -375,10 +383,12 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 3. What Felt Meaningful - Light Purple Gradient */}
               <div 
                 onClick={() => (aiInsights?.meaningful || meaningfulProjects.length > 0) && toggleCard('meaningful')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#C7D1FF_0%,#BC7AFF_103.78%),#FFF]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
-                  background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
+                  background: theme === 'dark'
+                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
+                    : 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
                 }}
               >
                 <div className="flex flex-col items-start gap-3 w-full">
@@ -451,10 +461,12 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 4. What Sparked Passion - Orange Gradient */}
               <div 
                 onClick={() => (aiInsights?.passion || passionProjects.length > 0) && toggleCard('passion')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(180deg,#FA604D_0%,#F37E58_100%),#FFF]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
-                  background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+                  background: theme === 'dark'
+                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+                    : 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
                 }}
               >
                 <div className="flex flex-col items-start gap-3 w-full">
