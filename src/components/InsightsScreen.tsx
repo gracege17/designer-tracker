@@ -3,6 +3,7 @@ import { Home, Plus, BarChart2, Calendar, Settings } from 'lucide-react'
 import { Entry, EMOTIONS, TASK_TYPE_LABELS } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { getCurrentWeekEntries, getCurrentMonthEntries, calculateAverageEmotion, getMostEnergizingTaskType, getMostDrainingTaskType } from '../utils/dataHelpers'
+import { useTheme } from '../context/ThemeContext'
 
 interface InsightsScreenProps {
   entries: Entry[]
@@ -23,6 +24,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   onNavigateSettings,
   onViewEntry
 }) => {
+  const { theme } = useTheme()
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('week')
 
   // Get data based on selected time range (for calendar only)
@@ -293,7 +295,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                       className="flex flex-col items-center gap-0"
                     >
                       <div 
-                        className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : ''}`}
+                        className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'dark:opacity-60'}`}
                         onClick={() => {
                           if (day.hasData && day.entry) {
                             onViewEntry(day.entry)
@@ -354,7 +356,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           >
                             {/* Emoji */}
                             <div 
-                              className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : ''}`}
+                              className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'dark:opacity-60'}`}
                             >
                               {getEmotionEmoji()}
                             </div>
@@ -392,7 +394,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
               style={{ 
                 borderRadius: '0 48px 0 0',
-                background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+                background: theme === 'dark'
+                  ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+                  : 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
@@ -422,7 +426,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
               style={{ 
                 borderRadius: '0 48px 0 0',
-                background: 'linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%)'
+                background: theme === 'dark'
+                  ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%)'
+                  : 'linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%)'
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
@@ -452,7 +458,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
               style={{ 
                 borderRadius: '0 48px 0 0',
-                background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                background: theme === 'dark'
+                  ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                  : 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
