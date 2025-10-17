@@ -500,7 +500,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#FF9274] active:scale-95 transition-all">
+            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-95 transition-all">
               <Plus size={28} strokeWidth={2.5} className="text-white" />
             </div>
           </button>

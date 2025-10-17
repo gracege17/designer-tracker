@@ -115,7 +115,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
         {/* Big CTA Button at Top */}
         <button
           onClick={onAddEntry}
-          className="w-full bg-[#F37E58] text-white py-5 px-6 font-medium text-[17px] mb-6 hover:bg-[#E66A44] dark:hover:bg-[#FF9274] transition-all duration-200 active:scale-[0.98]"
+          className="w-full bg-[#F37E58] text-white py-5 px-6 font-medium text-[17px] mb-6 hover:bg-[#E66A44] dark:hover:bg-[#AF4336] transition-all duration-200 active:scale-[0.98]"
         >
           Capture the moment
         </button>
@@ -592,7 +592,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             onClick={onAddEntry}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#FF9274] active:scale-95 transition-all">
+            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-95 transition-all">
               <Plus size={28} strokeWidth={2.5} className="text-white" />
             </div>
           </button>
