@@ -236,8 +236,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             onClick={() => setSelectedTimeRange('week')}
             className={`text-[28px] transition-all ${
               selectedTimeRange === 'week' 
-                ? 'font-bold text-slate-900' 
-                : 'font-normal text-slate-400'
+                ? 'font-bold text-slate-900 dark:text-[#E6E1E5]' 
+                : 'font-normal text-slate-400 dark:text-[#938F99]'
             }`}
             style={{ fontFamily: 'Playfair Display, serif' }}
           >
@@ -247,8 +247,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             onClick={() => setSelectedTimeRange('month')}
             className={`text-[28px] transition-all ${
               selectedTimeRange === 'month' 
-                ? 'font-bold text-slate-900' 
-                : 'font-normal text-slate-400'
+                ? 'font-bold text-slate-900 dark:text-[#E6E1E5]' 
+                : 'font-normal text-slate-400 dark:text-[#938F99]'
             }`}
             style={{ fontFamily: 'Playfair Display, serif' }}
           >
@@ -264,7 +264,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               {/* Week day headers */}
               <div className="grid grid-cols-7 gap-1 mb-2">
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((dayName) => (
-                  <div key={dayName} className="text-center text-xs font-medium text-slate-500 py-2">
+                  <div key={dayName} className="text-center text-xs font-medium text-slate-500 dark:text-[#938F99] py-2">
                     {dayName}
                   </div>
                 ))}
@@ -302,7 +302,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                       >
                         {getEmotionEmoji()}
                       </div>
-                      <span className="text-[10px] font-medium text-slate-900 -mt-1">
+                      <span className="text-[10px] font-medium text-slate-900 dark:text-[#E6E1E5] -mt-1">
                         {day.date}
                       </span>
                     </div>
@@ -360,7 +360,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                             </div>
                             
                             {/* Date number */}
-                            <span className="text-[10px] font-medium text-slate-900 -mt-1">
+                            <span className="text-[10px] font-medium text-slate-900 dark:text-[#E6E1E5] -mt-1">
                               {day.date}
                             </span>
                             
@@ -396,20 +396,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900">What Excited You</p>
+                <p className="text-[12px] font-normal text-slate-900 dark:text-white">What Excited You</p>
                 
                 <div className="space-y-1">
                   {happy.slice(0, 3).map((happyMoment, index) => {
                     const project = ProjectStorage.getProjectById(happyMoment.projectId)
                     return (
-                      <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
+                      <p key={index} className="text-[20px] font-black text-slate-900 dark:text-white leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
                   })}
                 </div>
                 
-                <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
                   Projects that sparked excitement
                 </p>
               </div>
@@ -426,20 +426,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900">What Drained You</p>
+                <p className="text-[12px] font-normal text-slate-900 dark:text-white">What Drained You</p>
                 
                 <div className="space-y-1">
                   {frustrators.slice(0, 3).map((frustrator, index) => {
                     const project = ProjectStorage.getProjectById(frustrator.projectId)
                     return (
-                      <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
+                      <p key={index} className="text-[20px] font-black text-slate-900 dark:text-white leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
                   })}
                 </div>
                 
-                <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
                   Projects that drained your energy
                 </p>
               </div>
@@ -456,20 +456,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900">What Felt Meaningful</p>
+                <p className="text-[12px] font-normal text-slate-900 dark:text-white">What Felt Meaningful</p>
                 
                 <div className="space-y-1">
                   {struggles.slice(0, 3).map((struggle, index) => {
                     const project = ProjectStorage.getProjectById(struggle.projectId)
                     return (
-                      <p key={index} className="text-[20px] font-black text-slate-900 leading-tight">
+                      <p key={index} className="text-[20px] font-black text-slate-900 dark:text-white leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
                   })}
                 </div>
                 
-                <p className="text-[14px] font-normal text-slate-900 opacity-70">
+                <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
                   Projects that made an impact
                 </p>
               </div>
