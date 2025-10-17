@@ -17,11 +17,17 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return (saved as Theme) || 'light'
   })
 
-  // Apply theme to document root
+  // Apply theme to document root and body for Material 3 styles
   useEffect(() => {
     const root = window.document.documentElement
+    const body = window.document.body
+    
+    // Apply to both html and body for full Material 3 support
     root.classList.remove('light', 'dark')
     root.classList.add(theme)
+    body.classList.remove('light', 'dark')
+    body.classList.add(theme)
+    
     localStorage.setItem('designer-tracker-theme', theme)
   }, [theme])
 

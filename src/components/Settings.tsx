@@ -150,11 +150,11 @@ const Settings: React.FC<SettingsProps> = ({
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-slate-900">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F]">
       {/* Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-slate-900 z-10 p-5 border-b border-slate-200 dark:border-slate-700">
+      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] z-10 p-5 border-b border-slate-200 dark:border-[#49454F]">
         <div className="max-w-md mx-auto flex items-center justify-center">
-          <h1 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="text-[18px] font-bold text-slate-900 dark:text-[#E6E1E5]">
             Settings
           </h1>
         </div>
@@ -164,21 +164,21 @@ const Settings: React.FC<SettingsProps> = ({
       <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
         {/* Daily Reminder Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 dark:text-slate-100 mb-4">Daily Reminder</h2>
-          <div className="p-5 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" style={{ borderRadius: '0 24px 0 0' }}>
+          <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">Daily Reminder</h2>
+          <div className="p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block mb-3">
-              <span className="text-[14px] font-medium text-slate-700 dark:text-slate-300 mb-2 block">
+              <span className="text-[14px] font-medium text-slate-700 dark:text-[#CAC4D0] mb-2 block">
                 Reminder Time
               </span>
               <input
                 type="time"
                 value={reminderTime}
                 onChange={(e) => setReminderTime(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#D0BCFF]"
                 style={{ borderRadius: '0 12px 0 0' }}
               />
             </label>
-            <p className="text-[13px] text-slate-600 dark:text-slate-400">
+            <p className="text-[13px] text-slate-600 dark:text-[#938F99]">
               Remind me to reflect at {reminderTime}
             </p>
           </div>
@@ -186,10 +186,10 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* Account Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 dark:text-slate-100 mb-4">Account</h2>
-          <div className="p-5 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" style={{ borderRadius: '0 24px 0 0' }}>
+          <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">Account</h2>
+          <div className="p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block">
-              <span className="text-[14px] font-medium text-slate-700 dark:text-slate-300 mb-2 block">
+              <span className="text-[14px] font-medium text-slate-700 dark:text-[#CAC4D0] mb-2 block">
                 Your Name
               </span>
               {isEditingName ? (
@@ -207,21 +207,21 @@ const Settings: React.FC<SettingsProps> = ({
                       }
                     }}
                     autoFocus
-                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500"
+                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#D0BCFF]"
                     style={{ borderRadius: '0 12px 0 0' }}
                   />
                 </div>
               ) : (
                 <div 
                   onClick={() => setIsEditingName(true)}
-                  className="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 text-slate-900 dark:text-slate-100 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+                  className="px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] cursor-pointer hover:bg-slate-100 dark:hover:bg-[#2B2930] transition-colors"
                   style={{ borderRadius: '0 12px 0 0' }}
                 >
                   {name || 'Tap to set your name'}
                 </div>
               )}
             </label>
-            <p className="text-[13px] text-slate-600 dark:text-slate-400 mt-3">
+            <p className="text-[13px] text-slate-600 dark:text-[#938F99] mt-3">
               Used for personalized greetings
             </p>
           </div>
@@ -291,28 +291,28 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* App Theme Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 dark:text-slate-100 mb-4">App Theme</h2>
-          <div className="p-5 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" style={{ borderRadius: '0 24px 0 0' }}>
+          <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">App Theme</h2>
+          <div className="p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
-                  {isDarkMode ? <Moon size={20} className="text-slate-700 dark:text-slate-300" /> : <Sun size={20} className="text-slate-700 dark:text-slate-300" />}
+                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#211F26] flex items-center justify-center">
+                  {isDarkMode ? <Moon size={20} className="text-slate-700 dark:text-[#D0BCFF]" /> : <Sun size={20} className="text-slate-700 dark:text-[#D0BCFF]" />}
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-slate-900 dark:text-slate-100">Dark Mode</p>
-                  <p className="text-[13px] text-slate-600 dark:text-slate-400">{isDarkMode ? 'Enabled' : 'Disabled'}</p>
+                  <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Dark Mode</p>
+                  <p className="text-[13px] text-slate-600 dark:text-[#938F99]">{isDarkMode ? 'Enabled' : 'Disabled'}</p>
                 </div>
               </div>
               <button
                 onClick={toggleTheme}
                 className={`
                   relative w-14 h-8 rounded-full transition-all cursor-pointer
-                  ${isDarkMode ? 'bg-slate-700' : 'bg-slate-300'}
+                  ${isDarkMode ? 'bg-[#D0BCFF]' : 'bg-slate-300'}
                 `}
               >
                 <div className={`
-                  absolute top-1 w-6 h-6 bg-white rounded-full transition-transform
-                  ${isDarkMode ? 'translate-x-7' : 'translate-x-1'}
+                  absolute top-1 w-6 h-6 rounded-full transition-transform
+                  ${isDarkMode ? 'bg-[#381E72] translate-x-7' : 'bg-white translate-x-1'}
                 `}></div>
               </button>
             </div>
