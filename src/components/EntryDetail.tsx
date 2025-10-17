@@ -19,8 +19,8 @@ interface EntryDetailProps {
 const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, onDeleteTask, onNavigateHome, onNavigateAdd, onNavigateInsights, onNavigateHistory, onNavigateSettings }) => {
   if (!entry) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#FFF9F8]">
-        <p className="text-slate-600">No entry data available</p>
+      <div className="flex items-center justify-center h-screen bg-[#FFF9F8] dark:bg-slate-900">
+        <p className="text-slate-600 dark:text-slate-400">No entry data available</p>
       </div>
     )
   }
@@ -30,8 +30,8 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
   
   if (!entry.tasks || entry.tasks.length === 0) {
     return (
-      <div className="flex flex-col min-h-screen bg-[#FFF9F8]">
-        <header className="sticky top-0 z-10 bg-[#FFF9F8] border-b border-slate-200 p-5">
+      <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-slate-900">
+        <header className="sticky top-0 z-10 bg-[#FFF9F8] dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 p-5">
           <div className="max-w-md mx-auto flex items-center justify-between">
             <button
               onClick={onBack}
@@ -39,15 +39,15 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
             >
               <ArrowLeft size={24} className="text-slate-900" />
             </button>
-            <h1 className="text-[18px] font-bold text-slate-900">
+            <h1 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">
               Reflection Details
             </h1>
             <div className="w-10" />
           </div>
         </header>
         <div className="flex flex-col items-center justify-center flex-1 p-4">
-          <h3 className="text-xl font-semibold text-slate-900 mb-2">No tasks found</h3>
-          <p className="text-slate-600 text-center">
+          <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">No tasks found</h3>
+          <p className="text-slate-600 dark:text-slate-400 text-center">
             This reflection is empty.
           </p>
         </div>
@@ -65,9 +65,9 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
   })
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF9F8]">
+    <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-slate-900">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-10 bg-[#FFF9F8] border-b border-slate-200 p-5">
+      <header className="sticky top-0 z-10 bg-[#FFF9F8] dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 p-5">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button
             onClick={onBack}
@@ -86,11 +86,11 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
         {/* Date */}
         <div className="mb-6">
-          <h2 className="text-[28px] font-bold text-slate-900">
+          <h2 className="text-[28px] font-bold text-slate-900 dark:text-slate-100">
             {DateUtils.formatDate(DateUtils.parseLocalDate(entry.date))}
           </h2>
           {!isToday && (
-            <p className="text-[14px] text-slate-500 mt-2">
+            <p className="text-[14px] text-slate-500 dark:text-slate-400 mt-2">
               That day's already journaled into history. Let it chill.
             </p>
           )}
@@ -103,7 +103,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
           return (
             <div key={projectId} className="mb-6">
               {/* Project Name */}
-              <h3 className="text-[16px] font-bold text-slate-900 mb-4">
+              <h3 className="text-[16px] font-bold text-slate-900 dark:text-slate-100 mb-4">
                 {project?.name || 'Unknown Project'}
               </h3>
 
@@ -116,7 +116,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                   return (
                     <div 
                       key={task.id} 
-                      className={`bg-white p-4 border border-slate-200 transition-all ${
+                      className={`bg-white dark:bg-slate-800 p-4 border border-slate-200 dark:border-slate-700 transition-all ${
                         isToday 
                           ? 'cursor-pointer hover:shadow-md active:scale-[0.99]' 
                           : 'cursor-default opacity-75'
@@ -151,11 +151,11 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <p className="text-[16px] font-medium text-slate-900 mb-1 break-words">
+                          <p className="text-[16px] font-medium text-slate-900 dark:text-slate-100 mb-1 break-words">
                             {task.description}
                           </p>
                           {task.notes && (
-                            <p className="text-[14px] text-slate-600 italic break-words">
+                            <p className="text-[14px] text-slate-600 dark:text-slate-400 italic break-words">
                               "{task.notes}"
                             </p>
                           )}
@@ -171,7 +171,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button 

@@ -96,14 +96,14 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   }, [entries.length]) // Re-fetch when entries change
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8] screen-transition">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-slate-900 screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
         {/* Greeting - Clean and Simple */}
         <div className="mb-6">
-          <h1 className="text-[32px] leading-tight font-bold text-slate-900 mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h1 className="text-[32px] leading-tight font-bold text-slate-900 dark:text-slate-100 mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
             Hey {userName}
           </h1>
-          <p className="text-[16px] text-slate-700" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.02em' }}>
+          <p className="text-[16px] text-slate-700 dark:text-slate-300" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.02em' }}>
             What did you work on today?
           </p>
         </div>
@@ -111,7 +111,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
         {/* Big CTA Button at Top */}
         <button
           onClick={onAddEntry}
-          className="w-full bg-[#000] text-white py-5 px-6 font-medium text-[17px] mb-6 hover:bg-slate-900 transition-all duration-200 active:scale-[0.98]"
+          className="w-full bg-[#000] dark:bg-slate-100 text-white dark:text-slate-900 py-5 px-6 font-medium text-[17px] mb-6 hover:bg-slate-900 dark:hover:bg-slate-200 transition-all duration-200 active:scale-[0.98]"
         >
           Capture the moment
         </button>
@@ -539,7 +539,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
           
           return (
-            <div className="bg-white p-6 mb-6 border border-slate-200" style={{ borderRadius: '0 48px 0 0' }}>
+            <div className="bg-white dark:bg-slate-800 p-6 mb-6 border border-slate-200 dark:border-slate-700" style={{ borderRadius: '0 48px 0 0' }}>
               {/* Custom Illustration */}
               <div className="h-48 mb-4 flex items-center justify-center overflow-hidden" style={{ borderRadius: '0 36px 0 0' }}>
                 <img 
@@ -549,7 +549,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 />
               </div>
               
-              <p className="text-[17px] text-slate-700 italic leading-relaxed text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
+              <p className="text-[17px] text-slate-700 dark:text-slate-300 italic leading-relaxed text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
                 "{randomQuote}"
               </p>
             </div>
@@ -558,7 +558,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 min-w-[64px] py-1">

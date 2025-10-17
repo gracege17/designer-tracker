@@ -62,11 +62,11 @@ const EntryList: React.FC<EntryListProps> = ({
   }
 
   return (
-    <div className="flex h-full min-h-screen w-full flex-col bg-[#FFF9F8] text-slate-800 screen-transition">
+    <div className="flex h-full min-h-screen w-full flex-col bg-[#FFF9F8] dark:bg-slate-900 text-slate-800 dark:text-slate-200 screen-transition">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#FFF9F8] border-b border-slate-200 p-5">
+      <header className="sticky top-0 z-10 bg-[#FFF9F8] dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 p-5">
         <div className="flex items-center justify-between max-w-md mx-auto">
-          <h1 className="text-[24px] font-bold text-slate-900" style={{ fontFamily: 'Playfair Display, serif' }}>Reflections</h1>
+          <h1 className="text-[24px] font-bold text-slate-900 dark:text-slate-100" style={{ fontFamily: 'Playfair Display, serif' }}>Reflections</h1>
           <button className="p-2 hover:bg-slate-100 rounded-full transition-colors">
             <Search size={24} className="text-slate-900" />
           </button>
@@ -77,10 +77,10 @@ const EntryList: React.FC<EntryListProps> = ({
       <main className="flex-1 overflow-y-auto p-5 max-w-md mx-auto w-full">
         {entries.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64">
-            <h3 className="text-xl font-semibold text-slate-900 mb-2 text-center">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 text-center">
               No reflections yet
             </h3>
-            <p className="text-slate-600 text-center">
+            <p className="text-slate-600 dark:text-slate-400 text-center">
               Start tracking your work to see your history here.
             </p>
           </div>
@@ -93,7 +93,7 @@ const EntryList: React.FC<EntryListProps> = ({
                   onClick={() => toggleMonth(monthKey)}
                   className="flex items-center justify-between w-full py-3 mb-3"
                 >
-                  <h3 className="text-[16px] font-bold text-slate-900">
+                  <h3 className="text-[16px] font-bold text-slate-900 dark:text-slate-100">
                     {monthKey}
                   </h3>
                   <ChevronRight 
@@ -116,7 +116,7 @@ const EntryList: React.FC<EntryListProps> = ({
                       <div 
                         key={entry.id}
                         onClick={() => onViewEntry(entry)}
-                        className="flex cursor-pointer items-stretch bg-white transition-all border border-slate-200 overflow-hidden"
+                        className="flex cursor-pointer items-stretch bg-white dark:bg-slate-800 transition-all border border-slate-200 dark:border-slate-700 overflow-hidden"
                       >
                         {/* Date Box - Full Height */}
                         <div className="flex-shrink-0 bg-[#000] w-[70px] flex flex-col items-center justify-center text-white py-5">
@@ -133,14 +133,14 @@ const EntryList: React.FC<EntryListProps> = ({
                           {entry.tasks.slice(0, 3).map((task, index) => (
                             <p 
                               key={index} 
-                              className="truncate text-[14px] font-bold text-slate-900 mb-1"
+                              className="truncate text-[14px] font-bold text-slate-900 dark:text-slate-100 mb-1"
                               style={{ lineHeight: '1.5' }}
                             >
                               {task.description}
                             </p>
                           ))}
                           {entry.tasks.length > 3 && (
-                            <p className="text-[14px] font-bold text-slate-900">
+                            <p className="text-[14px] font-bold text-slate-900 dark:text-slate-100">
                               ...
                             </p>
                           )}
@@ -157,7 +157,7 @@ const EntryList: React.FC<EntryListProps> = ({
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button 

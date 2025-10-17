@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ArrowLeft, Download, Trash2, Mail, Moon, Sun, Home, Plus, BarChart2, Calendar, Settings as SettingsIcon } from 'lucide-react'
 import { UserProfileStorage, EntryStorage, ProjectStorage } from '../utils/storage'
+import { useTheme } from '../context/ThemeContext'
 
 interface SettingsProps {
   onBack: () => void
@@ -17,11 +18,13 @@ const Settings: React.FC<SettingsProps> = ({
   onNavigateInsights,
   onNavigateHistory
 }) => {
+  const { theme, toggleTheme } = useTheme()
   const userProfile = UserProfileStorage.getUserProfile()
   const [name, setName] = useState(userProfile?.name || '')
   const [reminderTime, setReminderTime] = useState('19:00')
-  const [darkMode, setDarkMode] = useState(false)
   const [isEditingName, setIsEditingName] = useState(false)
+  
+  const isDarkMode = theme === 'dark'
 
   const handleSaveName = () => {
     if (name.trim() && userProfile) {
@@ -147,11 +150,11 @@ const Settings: React.FC<SettingsProps> = ({
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8]">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-slate-900">
       {/* Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] z-10 p-5 border-b border-slate-200">
+      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-slate-900 z-10 p-5 border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-md mx-auto flex items-center justify-center">
-          <h1 className="text-[18px] font-bold text-slate-900">
+          <h1 className="text-[18px] font-bold text-slate-900 dark:text-slate-100">
             Settings
           </h1>
         </div>
@@ -161,21 +164,21 @@ const Settings: React.FC<SettingsProps> = ({
       <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
         {/* Daily Reminder Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 mb-4">Daily Reminder</h2>
-          <div className="p-5 border-2 border-slate-200" style={{ borderRadius: '0 24px 0 0' }}>
+          <h2 className="text-[16px] font-bold text-slate-900 dark:text-slate-100 mb-4">Daily Reminder</h2>
+          <div className="p-5 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block mb-3">
-              <span className="text-[14px] font-medium text-slate-700 mb-2 block">
+              <span className="text-[14px] font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                 Reminder Time
               </span>
               <input
                 type="time"
                 value={reminderTime}
                 onChange={(e) => setReminderTime(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 text-slate-900 focus:outline-none focus:border-slate-400"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500"
                 style={{ borderRadius: '0 12px 0 0' }}
               />
             </label>
-            <p className="text-[13px] text-slate-600">
+            <p className="text-[13px] text-slate-600 dark:text-slate-400">
               Remind me to reflect at {reminderTime}
             </p>
           </div>
@@ -183,10 +186,10 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* Account Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 mb-4">Account</h2>
-          <div className="p-5 border-2 border-slate-200" style={{ borderRadius: '0 24px 0 0' }}>
+          <h2 className="text-[16px] font-bold text-slate-900 dark:text-slate-100 mb-4">Account</h2>
+          <div className="p-5 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block">
-              <span className="text-[14px] font-medium text-slate-700 mb-2 block">
+              <span className="text-[14px] font-medium text-slate-700 dark:text-slate-300 mb-2 block">
                 Your Name
               </span>
               {isEditingName ? (
@@ -204,21 +207,21 @@ const Settings: React.FC<SettingsProps> = ({
                       }
                     }}
                     autoFocus
-                    className="flex-1 px-4 py-3 bg-slate-50 border-2 border-slate-200 text-slate-900 focus:outline-none focus:border-slate-400"
+                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-slate-400 dark:focus:border-slate-500"
                     style={{ borderRadius: '0 12px 0 0' }}
                   />
                 </div>
               ) : (
                 <div 
                   onClick={() => setIsEditingName(true)}
-                  className="px-4 py-3 bg-slate-50 border-2 border-slate-200 text-slate-900 cursor-pointer hover:bg-slate-100 transition-colors"
+                  className="px-4 py-3 bg-slate-50 dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 text-slate-900 dark:text-slate-100 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
                   style={{ borderRadius: '0 12px 0 0' }}
                 >
                   {name || 'Tap to set your name'}
                 </div>
               )}
             </label>
-            <p className="text-[13px] text-slate-600 mt-3">
+            <p className="text-[13px] text-slate-600 dark:text-slate-400 mt-3">
               Used for personalized greetings
             </p>
           </div>
@@ -288,29 +291,28 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* App Theme Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 mb-4">App Theme</h2>
-          <div className="p-5 border-2 border-slate-200" style={{ borderRadius: '0 24px 0 0' }}>
+          <h2 className="text-[16px] font-bold text-slate-900 dark:text-slate-100 mb-4">App Theme</h2>
+          <div className="p-5 border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800" style={{ borderRadius: '0 24px 0 0' }}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-                  {darkMode ? <Moon size={20} className="text-slate-700" /> : <Sun size={20} className="text-slate-700" />}
+                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                  {isDarkMode ? <Moon size={20} className="text-slate-700 dark:text-slate-300" /> : <Sun size={20} className="text-slate-700 dark:text-slate-300" />}
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-slate-900">Dark Mode</p>
-                  <p className="text-[13px] text-slate-600">Coming soon</p>
+                  <p className="text-[16px] font-bold text-slate-900 dark:text-slate-100">Dark Mode</p>
+                  <p className="text-[13px] text-slate-600 dark:text-slate-400">{isDarkMode ? 'Enabled' : 'Disabled'}</p>
                 </div>
               </div>
               <button
-                onClick={() => setDarkMode(!darkMode)}
-                disabled
+                onClick={toggleTheme}
                 className={`
-                  relative w-14 h-8 rounded-full transition-all cursor-not-allowed opacity-50
-                  ${darkMode ? 'bg-slate-700' : 'bg-slate-300'}
+                  relative w-14 h-8 rounded-full transition-all cursor-pointer
+                  ${isDarkMode ? 'bg-slate-700' : 'bg-slate-300'}
                 `}
               >
                 <div className={`
                   absolute top-1 w-6 h-6 bg-white rounded-full transition-transform
-                  ${darkMode ? 'translate-x-7' : 'translate-x-1'}
+                  ${isDarkMode ? 'translate-x-7' : 'translate-x-1'}
                 `}></div>
               </button>
             </div>

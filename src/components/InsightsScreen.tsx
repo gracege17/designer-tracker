@@ -228,7 +228,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   // No insight card needed anymore - we just show project cards
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8] screen-transition">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-slate-900 screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
         {/* Time Range Toggle */}
         <div className="mb-6 flex gap-6 items-baseline">
@@ -380,9 +380,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
 
         {/* No data message */}
         {entries.length === 0 && (
-          <div className="bg-white p-6 mb-6 border border-slate-200 text-center" style={{ borderRadius: '0 48px 0 0' }}>
-            <p className="text-[16px] font-medium text-slate-900 mb-2">No data yet</p>
-            <p className="text-[14px] text-slate-600">Add some reflections to see insights here.</p>
+          <div className="bg-white dark:bg-slate-800 p-6 mb-6 border border-slate-200 dark:border-slate-700 text-center" style={{ borderRadius: '0 48px 0 0' }}>
+            <p className="text-[16px] font-medium text-slate-900 dark:text-slate-100 mb-2">No data yet</p>
+            <p className="text-[14px] text-slate-600 dark:text-slate-400">Add some reflections to see insights here.</p>
           </div>
         )}
 
@@ -478,7 +478,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button 
