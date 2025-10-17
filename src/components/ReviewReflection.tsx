@@ -76,7 +76,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
                       key={task.id} 
                       className="bg-white p-4 border border-slate-200 cursor-pointer transition-all active:scale-[0.99]"
                       onClick={() => {
-                        const action = window.confirm('Choose an action:\n\nOK = Edit\nCancel = Delete')
+                        const action = window.confirm('What would you like to do with this task?\n\nPress OK to edit, or Cancel to delete.')
                         if (action) {
                           onEditTask(task.id)
                         } else {
@@ -117,10 +117,10 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
         {tasks.length === 0 && (
           <div className="text-center py-12">
             <h3 className="text-xl font-semibold text-slate-900 mb-2">
-              No tasks to review
+              No tasks yet
             </h3>
             <p className="text-slate-600">
-              Go back and add some tasks to your reflection.
+              Start by capturing a moment from your day.
             </p>
           </div>
         )}
@@ -140,7 +140,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
               }
             `}
           >
-            Save Reflections
+            Save reflections
           </button>
         </div>
       </footer>

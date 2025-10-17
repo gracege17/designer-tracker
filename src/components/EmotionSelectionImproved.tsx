@@ -122,7 +122,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
           >
             {selectedEmotions.length > 0
               ? 'Continue'
-              : 'Select at least one emotion'
+              : 'Pick an emotion to continue'
             }
           </button>
         </div>

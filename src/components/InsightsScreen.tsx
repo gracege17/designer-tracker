@@ -290,7 +290,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   return (
                     <div 
                       key={index} 
-                      className="flex flex-col items-center gap-2"
+                      className="flex flex-col items-center gap-0"
                     >
                       <div 
                         className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : ''}`}
@@ -302,7 +302,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                       >
                         {getEmotionEmoji()}
                       </div>
-                      <span className="text-[10px] font-medium text-slate-900">
+                      <span className="text-[10px] font-medium text-slate-900 -mt-1">
                         {day.date}
                       </span>
                     </div>
@@ -345,7 +345,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           <div className="w-full h-full"></div>
                         ) : (
                           <div 
-                            className="w-full h-full flex flex-col items-center justify-center gap-1 transition-all relative"
+                            className="w-full h-full flex flex-col items-center justify-center gap-0 transition-all relative"
                             onClick={() => {
                               if (day.hasData && day.entry) {
                                 onViewEntry(day.entry)
@@ -360,7 +360,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                             </div>
                             
                             {/* Date number */}
-                            <span className="text-[10px] font-medium text-slate-900">
+                            <span className="text-[10px] font-medium text-slate-900 -mt-1">
                               {day.date}
                             </span>
                             
@@ -381,8 +381,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
         {/* No data message */}
         {entries.length === 0 && (
           <div className="bg-white p-6 mb-6 border border-slate-200 text-center" style={{ borderRadius: '0 48px 0 0' }}>
-            <p className="text-[16px] font-medium text-slate-900 mb-2">No reflections yet</p>
-            <p className="text-[14px] text-slate-600">Start tracking your design work to see insights here.</p>
+            <p className="text-[16px] font-medium text-slate-900 mb-2">No data yet</p>
+            <p className="text-[14px] text-slate-600">Add some reflections to see insights here.</p>
           </div>
         )}
 
@@ -396,7 +396,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900">What Sparked Passion</p>
+                <p className="text-[12px] font-normal text-slate-900">What Excited You</p>
                 
                 <div className="space-y-1">
                   {happy.slice(0, 3).map((happyMoment, index) => {
@@ -410,7 +410,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 </div>
                 
                 <p className="text-[14px] font-normal text-slate-900 opacity-70">
-                  Projects that ignited excitement
+                  Projects that sparked excitement
                 </p>
               </div>
             </div>
@@ -426,7 +426,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900">What Felt Meaningful</p>
+                <p className="text-[12px] font-normal text-slate-900">What Drained You</p>
                 
                 <div className="space-y-1">
                   {frustrators.slice(0, 3).map((frustrator, index) => {
@@ -440,7 +440,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 </div>
                 
                 <p className="text-[14px] font-normal text-slate-900 opacity-70">
-                  Projects with purposeful impact
+                  Projects that drained your energy
                 </p>
               </div>
             </div>
@@ -456,7 +456,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               }}
             >
               <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900">What Drained You</p>
+                <p className="text-[12px] font-normal text-slate-900">What Felt Meaningful</p>
                 
                 <div className="space-y-1">
                   {struggles.slice(0, 3).map((struggle, index) => {
@@ -470,7 +470,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 </div>
                 
                 <p className="text-[14px] font-normal text-slate-900 opacity-70">
-                  Projects that took your energy
+                  Projects that made an impact
                 </p>
               </div>
             </div>
@@ -520,7 +520,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Setting</p>
+            <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>
       </footer>

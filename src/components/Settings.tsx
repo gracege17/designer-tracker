@@ -60,10 +60,10 @@ const Settings: React.FC<SettingsProps> = ({
   }
 
   const handleDeleteAllData = () => {
-    const confirm1 = window.confirm('Are you sure you want to delete ALL your data?\n\nThis cannot be undone.')
+    const confirm1 = window.confirm('Delete everything? You can\'t undo this.')
     if (!confirm1) return
     
-    const confirm2 = window.confirm('Really delete everything? All your reflections will be lost forever.')
+    const confirm2 = window.confirm('Last chance. Your reflections will be gone forever. Really delete?')
     if (!confirm2) return
     
     try {
@@ -176,7 +176,7 @@ const Settings: React.FC<SettingsProps> = ({
               />
             </label>
             <p className="text-[13px] text-slate-600">
-              Send me a check-in reminder at {reminderTime}
+              Remind me to reflect at {reminderTime}
             </p>
           </div>
         </div>
@@ -187,7 +187,7 @@ const Settings: React.FC<SettingsProps> = ({
           <div className="p-5 border-2 border-slate-200" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block">
               <span className="text-[14px] font-medium text-slate-700 mb-2 block">
-                Name or Nickname
+                Your Name
               </span>
               {isEditingName ? (
                 <div className="flex gap-2">
@@ -240,7 +240,7 @@ const Settings: React.FC<SettingsProps> = ({
                   <Download size={20} className="text-slate-700" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-slate-900">Export My Entries</p>
+                  <p className="text-[16px] font-bold text-slate-900">Export data</p>
                   <p className="text-[13px] text-slate-600">Download as JSON</p>
                 </div>
               </div>
@@ -259,8 +259,8 @@ const Settings: React.FC<SettingsProps> = ({
                   <SettingsIcon size={20} className="text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-slate-900">Check Data Integrity</p>
-                  <p className="text-[13px] text-slate-600">Find and fix data issues</p>
+                  <p className="text-[16px] font-bold text-slate-900">Check for Issues</p>
+                  <p className="text-[13px] text-slate-600">Scan and repair broken links</p>
                 </div>
               </div>
             </div>
@@ -278,7 +278,7 @@ const Settings: React.FC<SettingsProps> = ({
                   <Trash2 size={20} className="text-red-600" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-red-600">Delete All My Data</p>
+                  <p className="text-[16px] font-bold text-red-600">Delete all my data</p>
                   <p className="text-[13px] text-slate-600">Permanently remove everything</p>
                 </div>
               </div>
@@ -387,7 +387,7 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Setting */}
           <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 min-w-[64px] py-1">
             <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px]" />
-            <p className="text-[11px] font-medium">Setting</p>
+            <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>
       </footer>

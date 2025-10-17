@@ -29,7 +29,7 @@ const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ onGetStarted }) =
         </h1>
         
         <p className="text-lg text-slate-600 text-center mb-12 max-w-md leading-relaxed">
-          A calm space to reflect on your daily creative work and discover what truly brings you joy.
+          A calm space to reflect on your design work and discover what brings you joy.
         </p>
 
         {/* Feature Cards */}
@@ -65,7 +65,7 @@ const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ onGetStarted }) =
             <div>
               <h3 className="font-bold text-slate-900 mb-1">3-Minute Daily Check-in</h3>
               <p className="text-sm text-slate-600">
-                Quick, gentle reflections that fit into your busy creative life
+                Quick, gentle check-ins that fit your busy life
               </p>
             </div>
           </div>
@@ -76,7 +76,7 @@ const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ onGetStarted }) =
       <div className="px-6 pb-8">
         <div className="bg-white rounded-2xl p-6 soft-shadow mb-4">
           <p className="text-center text-sm text-slate-600 mb-4">
-            <span className="font-semibold text-slate-900">100% Private.</span> All your reflections stay on your device.
+            <span className="font-semibold text-slate-900">100% Private.</span> Everything stays on your device.
           </p>
           <Button 
             variant="primary" 

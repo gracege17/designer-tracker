@@ -59,7 +59,7 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
     event.stopPropagation() // Prevent project selection when clicking delete
     
     // Show confirmation
-    if (window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+    if (window.confirm('Delete this project? This can\'t be undone.')) {
       // Remove from selected projects if it was selected
       setSelectedProjects(prev => prev.filter(id => id !== projectId))
       
@@ -96,7 +96,7 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
       {/* Main Content */}
       <main className="flex-grow px-6 pt-8 pb-4">
         <h2 className="text-3xl font-semibold mb-6 text-slate-900">
-          Select one or more projects you worked on
+          Which projects did you work on today?
         </h2>
         
         {/* Project Selection */}
@@ -111,7 +111,7 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
                 <button
                   onClick={(e) => handleDeleteProject(project.id, e)}
                   className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-400 hover:bg-red-500 text-white flex items-center justify-center transition-all duration-200 hover:scale-110 z-10 shadow-sm"
-                  title={`Delete ${project.name} project`}
+                  title={`Delete ${project.name}`}
                 >
                   <X size={12} />
                 </button>

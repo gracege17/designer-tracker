@@ -49,7 +49,7 @@ const TaskEntry: React.FC<TaskEntryProps> = ({
         </div>
         
         <h2 className="text-2xl font-bold text-slate-900">
-          What task did you work on?
+          What did you work on?
         </h2>
       </header>
 

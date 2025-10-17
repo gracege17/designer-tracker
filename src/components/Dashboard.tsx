@@ -104,7 +104,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             Hey {userName}
           </h1>
           <p className="text-[16px] text-slate-700" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.02em' }}>
-            How was your workday?
+            What did you work on today?
           </p>
         </div>
 
@@ -113,7 +113,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           onClick={onAddEntry}
           className="w-full bg-[#000] text-white py-5 px-6 font-medium text-[17px] mb-6 hover:bg-slate-900 transition-all duration-200 active:scale-[0.98]"
         >
-          + Capture the moment
+          Capture the moment
         </button>
 
         {/* Insight Cards - Always Show */}
@@ -231,7 +231,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               >
                 <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
-                    What Gave You a Boost
+                    What Energized You
                   </p>
                   
                   {isLoadingInsights ? (
@@ -290,7 +290,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
-                      Those moments that light you up — a flow state, a breakthrough, or just pure fun.
+                      Moments that energize you — hitting flow, breakthroughs, or pure fun.
                     </p>
                   )}
                 </div>
@@ -307,7 +307,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               >
                 <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
-                    What Drained Your Energy
+                    What Drained You
                   </p>
                   
                   {isLoadingInsights ? (
@@ -366,7 +366,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                     </>
                   ) : (
                     <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
-                      The tasks that took your energy — tedious work, confusion, or feeling stuck.
+                      Tasks that drain you — tedious work, confusion, or feeling stuck.
                     </p>
                   )}
                 </div>
@@ -383,7 +383,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               >
                 <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
-                    What Felt Fulfilling
+                    What Felt Meaningful
                   </p>
                   
                   {isLoadingInsights ? (
@@ -459,7 +459,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               >
                 <div className="flex flex-col items-start gap-3 w-full">
                   <p className="text-[12px] font-normal text-slate-900">
-                    What Lit You Up
+                    What Excited You
                   </p>
                   
                   {isLoadingInsights ? (
@@ -600,7 +600,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Setting</p>
+            <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>
       </footer>

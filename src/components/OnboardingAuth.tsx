@@ -36,7 +36,7 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
         </h1>
         
         <p className="text-[16px] text-slate-700 text-center mb-12 max-w-md leading-relaxed">
-          Sign in to start tracking your creative journey and discover what brings you joy.
+          Track your creative work and discover what brings you joy.
         </p>
 
         {/* Auth Buttons */}
@@ -88,7 +88,7 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
       {/* Privacy Notice */}
       <div className="px-6 pb-8">
         <p className="text-center text-xs text-slate-500 leading-relaxed">
-          By continuing, you agree to our Terms of Service and Privacy Policy.
+          By continuing, you agree to our Terms & Privacy Policy.
           <br />
           <span className="font-semibold text-slate-700">Your data is encrypted and private.</span>
         </p>

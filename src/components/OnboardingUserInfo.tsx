@@ -83,10 +83,10 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
 
         {/* Title & Description */}
         <h2 className="text-[28px] font-bold text-slate-900 mb-3 text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
-          Tell Us About Yourself
+          A bit about you
         </h2>
         <p className="text-[16px] text-slate-700 text-center mb-8 leading-relaxed">
-          This helps us personalize your experience and provide better insights.
+          This helps us give you better insights.
         </p>
 
         {/* Form Fields */}
@@ -119,7 +119,7 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
               error={errors.jobTitle}
             />
             <p className="text-xs text-slate-500 mt-1 ml-1">
-              This helps us give you relevant insights
+              This helps give you relevant insights.
             </p>
           </div>
 
@@ -185,7 +185,7 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
         {/* Privacy Notice */}
         <div className="mt-8 max-w-md mx-auto bg-white p-4 border border-slate-200" style={{ borderRadius: '0 24px 0 0' }}>
           <p className="text-xs text-slate-700 text-center">
-            🔒 <span className="font-semibold">Your privacy matters.</span> We use this info to improve your experience. You can update it anytime in settings.
+            🔒 <span className="font-semibold">Your privacy matters.</span> Everything stays on your device. You can update this anytime in settings.
           </p>
         </div>
       </div>

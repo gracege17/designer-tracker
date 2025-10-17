@@ -48,7 +48,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
         <div className="flex flex-col items-center justify-center flex-1 p-4">
           <h3 className="text-xl font-semibold text-slate-900 mb-2">No tasks found</h3>
           <p className="text-slate-600 text-center">
-            This reflection doesn't have any tasks yet.
+            This reflection is empty.
           </p>
         </div>
       </div>
@@ -127,7 +127,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                           return
                         }
                         
-                        const action = window.confirm('Choose an action:\n\nOK = Edit\nCancel = Delete')
+                        const action = window.confirm('What would you like to do with this task?\n\nPress OK to edit, or Cancel to delete.')
                         if (action && onEditTask) {
                           onEditTask(task.id)
                         } else if (!action && onDeleteTask) {
@@ -210,13 +210,13 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
             <p className="text-[11px] font-medium">History</p>
           </button>
 
-          {/* Setting */}
+          {/* Settings */}
           <button 
             onClick={onNavigateSettings}
             className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Setting</p>
+            <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>
       </footer>

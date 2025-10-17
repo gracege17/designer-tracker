@@ -84,7 +84,7 @@ const EmotionSelection: React.FC<EmotionSelectionProps> = ({
             How did it make you feel?
           </h1>
           <p className="text-sm text-slate-600">
-            Select all that apply
+            Pick as many as you'd like
           </p>
         </div>
         

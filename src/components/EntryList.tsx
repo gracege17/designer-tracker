@@ -81,7 +81,7 @@ const EntryList: React.FC<EntryListProps> = ({
               No reflections yet
             </h3>
             <p className="text-slate-600 text-center">
-              Start tracking your design work to see your history here.
+              Start tracking your work to see your history here.
             </p>
           </div>
         ) : (
@@ -199,7 +199,7 @@ const EntryList: React.FC<EntryListProps> = ({
             className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Setting</p>
+            <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>
       </footer>

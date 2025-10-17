@@ -186,7 +186,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
       // Couldn't parse projects
       setMessages(prev => [...prev, {
         type: 'ai',
-        content: 'Hmm, I didn\'t catch any project names. Try listing them clearly, like "NetSave 2, K12 visual UI" or type "Skip".'
+        content: 'Hmm, I didn\'t catch any project names. Try something like: \'NetSave 2, K12 visual UI\' or type \'skip\'.'
       }])
     }
 
