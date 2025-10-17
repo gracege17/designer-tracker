@@ -375,7 +375,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 3. What Felt Meaningful - Light Purple Gradient */}
               <div 
                 onClick={() => (aiInsights?.meaningful || meaningfulProjects.length > 0) && toggleCard('meaningful')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#FFE27A_0%,#FF7B54_103.78%),#FFF]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#C7D1FF_0%,#BC7AFF_103.78%),#FFF]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
