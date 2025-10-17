@@ -228,7 +228,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   // No insight card needed anymore - we just show project cards
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-slate-900 screen-transition">
+    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F] screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
         {/* Time Range Toggle */}
         <div className="mb-6 flex gap-6 items-baseline">
@@ -380,9 +380,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
 
         {/* No data message */}
         {entries.length === 0 && (
-          <div className="bg-white dark:bg-slate-800 p-6 mb-6 border border-slate-200 dark:border-slate-700 text-center" style={{ borderRadius: '0 48px 0 0' }}>
-            <p className="text-[16px] font-medium text-slate-900 dark:text-slate-100 mb-2">No data yet</p>
-            <p className="text-[14px] text-slate-600 dark:text-slate-400">Add some reflections to see insights here.</p>
+          <div className="bg-white dark:bg-[#2B2930] p-6 mb-6 border border-slate-200 dark:border-[#49454F] text-center" style={{ borderRadius: '0 48px 0 0' }}>
+            <p className="text-[16px] font-medium text-slate-900 dark:text-[#E6E1E5] mb-2">No data yet</p>
+            <p className="text-[14px] text-slate-600 dark:text-[#CAC4D0]">Add some reflections to see insights here.</p>
           </div>
         )}
 
@@ -478,19 +478,19 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#211F26] border-t border-slate-200 dark:border-[#49454F] z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button 
             onClick={onNavigateHome}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Home</p>
           </button>
 
           {/* Overview */}
-          <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 dark:text-slate-100 min-w-[64px] py-1">
+          <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 dark:text-[#E6E1E5] min-w-[64px] py-1">
             <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Overview</p>
           </button>
@@ -500,15 +500,15 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-slate-900 dark:bg-slate-100 rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 dark:hover:bg-slate-200 active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white dark:text-slate-900" />
+            <div className="bg-slate-900 dark:bg-[#D0BCFF] rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 dark:hover:bg-[#E8DEF8] active:scale-95 transition-all">
+              <Plus size={28} strokeWidth={2.5} className="text-white dark:text-[#381E72]" />
             </div>
           </button>
 
           {/* History */}
           <button 
             onClick={onNavigateHistory}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">History</p>
@@ -517,7 +517,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
           {/* Setting */}
           <button 
             onClick={onNavigateSettings}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Settings</p>

@@ -62,11 +62,11 @@ const EntryList: React.FC<EntryListProps> = ({
   }
 
   return (
-    <div className="flex h-full min-h-screen w-full flex-col bg-[#FFF9F8] dark:bg-slate-900 text-slate-800 dark:text-slate-200 screen-transition">
+    <div className="flex h-full min-h-screen w-full flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F] text-slate-800 dark:text-[#E6E1E5] screen-transition">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#FFF9F8] dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 p-5">
+      <header className="sticky top-0 z-10 bg-[#FFF9F8] dark:bg-[#1C1B1F] border-b border-slate-200 dark:border-[#49454F] p-5">
         <div className="flex items-center justify-between max-w-md mx-auto">
-          <h1 className="text-[24px] font-bold text-slate-900 dark:text-slate-100" style={{ fontFamily: 'Playfair Display, serif' }}>Reflections</h1>
+          <h1 className="text-[24px] font-bold text-slate-900 dark:text-[#E6E1E5]" style={{ fontFamily: 'Playfair Display, serif' }}>Reflections</h1>
           <button className="p-2 hover:bg-slate-100 rounded-full transition-colors">
             <Search size={24} className="text-slate-900" />
           </button>
@@ -77,10 +77,10 @@ const EntryList: React.FC<EntryListProps> = ({
       <main className="flex-1 overflow-y-auto p-5 max-w-md mx-auto w-full">
         {entries.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64">
-            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2 text-center">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-[#E6E1E5] mb-2 text-center">
               No reflections yet
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 text-center">
+            <p className="text-slate-600 dark:text-[#CAC4D0] text-center">
               Start tracking your work to see your history here.
             </p>
           </div>
@@ -93,7 +93,7 @@ const EntryList: React.FC<EntryListProps> = ({
                   onClick={() => toggleMonth(monthKey)}
                   className="flex items-center justify-between w-full py-3 mb-3"
                 >
-                  <h3 className="text-[16px] font-bold text-slate-900 dark:text-slate-100">
+                  <h3 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">
                     {monthKey}
                   </h3>
                   <ChevronRight 
@@ -116,7 +116,7 @@ const EntryList: React.FC<EntryListProps> = ({
                       <div 
                         key={entry.id}
                         onClick={() => onViewEntry(entry)}
-                        className="flex cursor-pointer items-stretch bg-white dark:bg-slate-800 transition-all border border-slate-200 dark:border-slate-700 overflow-hidden"
+                        className="flex cursor-pointer items-stretch bg-white dark:bg-[#2B2930] transition-all border border-slate-200 dark:border-[#49454F] overflow-hidden"
                       >
                         {/* Date Box - Full Height */}
                         <div className="flex-shrink-0 bg-[#000] w-[70px] flex flex-col items-center justify-center text-white py-5">
@@ -133,14 +133,14 @@ const EntryList: React.FC<EntryListProps> = ({
                           {entry.tasks.slice(0, 3).map((task, index) => (
                             <p 
                               key={index} 
-                              className="truncate text-[14px] font-bold text-slate-900 dark:text-slate-100 mb-1"
+                              className="truncate text-[14px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-1"
                               style={{ lineHeight: '1.5' }}
                             >
                               {task.description}
                             </p>
                           ))}
                           {entry.tasks.length > 3 && (
-                            <p className="text-[14px] font-bold text-slate-900 dark:text-slate-100">
+                            <p className="text-[14px] font-bold text-slate-900 dark:text-[#E6E1E5]">
                               ...
                             </p>
                           )}
@@ -157,12 +157,12 @@ const EntryList: React.FC<EntryListProps> = ({
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#211F26] border-t border-slate-200 dark:border-[#49454F] z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button 
             onClick={onNavigateHome}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Home</p>
@@ -171,7 +171,7 @@ const EntryList: React.FC<EntryListProps> = ({
           {/* Overview */}
           <button 
             onClick={onNavigateInsights}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Overview</p>
@@ -182,13 +182,13 @@ const EntryList: React.FC<EntryListProps> = ({
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-slate-900 dark:bg-slate-100 rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 dark:hover:bg-slate-200 active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white dark:text-slate-900" />
+            <div className="bg-slate-900 dark:bg-[#D0BCFF] rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 dark:hover:bg-[#E8DEF8] active:scale-95 transition-all">
+              <Plus size={28} strokeWidth={2.5} className="text-white dark:text-[#381E72]" />
             </div>
           </button>
 
           {/* History */}
-          <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 dark:text-slate-100 min-w-[64px] py-1">
+          <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 dark:text-[#E6E1E5] min-w-[64px] py-1">
             <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">History</p>
           </button>
@@ -196,7 +196,7 @@ const EntryList: React.FC<EntryListProps> = ({
           {/* Setting */}
           <button 
             onClick={onNavigateSettings}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
             <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
             <p className="text-[11px] font-medium">Settings</p>
