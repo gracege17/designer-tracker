@@ -223,7 +223,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
               <div 
                 onClick={() => (aiInsights?.energy || energyProjects.length > 0) && toggleCard('energy')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),linear-gradient(132deg,#FFE27A_0%,#FF7B54_103.78%)]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#FFD3A5_0%,#FD6585_103.78%),#FFF]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
@@ -299,7 +299,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 2. What Drained You - Light Gray Gradient */}
               <div 
                 onClick={() => (aiInsights?.drained || drainingProjects.length > 0) && toggleCard('drained')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),linear-gradient(132deg,#E3E3E3_0%,#A69FAE_103.78%)]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(309deg,#A1C4FD_-2.1%,#C2E9FB_100%),#FFF]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
@@ -375,7 +375,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 3. What Felt Meaningful - Light Purple Gradient */}
               <div 
                 onClick={() => (aiInsights?.meaningful || meaningfulProjects.length > 0) && toggleCard('meaningful')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),linear-gradient(132deg,#C7D1FF_0%,#BC7AFF_103.78%)]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#FFE27A_0%,#FF7B54_103.78%),#FFF]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
@@ -451,7 +451,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 4. What Sparked Passion - Orange Gradient */}
               <div 
                 onClick={() => (aiInsights?.passion || passionProjects.length > 0) && toggleCard('passion')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),linear-gradient(180deg,#FA604D_0%,#F37E58_100%)]" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.4)_100%),linear-gradient(132deg,#E3E3E3_0%,#A69FAE_103.78%),#FFF]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
