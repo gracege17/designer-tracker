@@ -196,8 +196,8 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-slate-900 dark:bg-[#D0BCFF] rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 dark:hover:bg-[#E8DEF8] active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white dark:text-[#381E72]" />
+            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#FF9274] active:scale-95 transition-all">
+              <Plus size={28} strokeWidth={2.5} className="text-white" />
             </div>
           </button>
 

@@ -174,7 +174,7 @@ const Settings: React.FC<SettingsProps> = ({
                 type="time"
                 value={reminderTime}
                 onChange={(e) => setReminderTime(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#D0BCFF]"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58]"
                 style={{ borderRadius: '0 12px 0 0' }}
               />
             </label>
@@ -207,7 +207,7 @@ const Settings: React.FC<SettingsProps> = ({
                       }
                     }}
                     autoFocus
-                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#D0BCFF]"
+                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58]"
                     style={{ borderRadius: '0 12px 0 0' }}
                   />
                 </div>
@@ -296,7 +296,7 @@ const Settings: React.FC<SettingsProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#211F26] flex items-center justify-center">
-                  {isDarkMode ? <Moon size={20} className="text-slate-700 dark:text-[#D0BCFF]" /> : <Sun size={20} className="text-slate-700 dark:text-[#D0BCFF]" />}
+                  {isDarkMode ? <Moon size={20} className="text-slate-700 dark:text-[#F37E58]" /> : <Sun size={20} className="text-slate-700 dark:text-[#F37E58]" />}
                 </div>
                 <div>
                   <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Dark Mode</p>
@@ -307,12 +307,12 @@ const Settings: React.FC<SettingsProps> = ({
                 onClick={toggleTheme}
                 className={`
                   relative w-14 h-8 rounded-full transition-all cursor-pointer
-                  ${isDarkMode ? 'bg-[#D0BCFF]' : 'bg-slate-300'}
+                  ${isDarkMode ? 'bg-[#F37E58]' : 'bg-slate-300'}
                 `}
               >
                 <div className={`
                   absolute top-1 w-6 h-6 rounded-full transition-transform
-                  ${isDarkMode ? 'bg-[#381E72] translate-x-7' : 'bg-white translate-x-1'}
+                  ${isDarkMode ? 'bg-white translate-x-7' : 'bg-white translate-x-1'}
                 `}></div>
               </button>
             </div>
@@ -372,8 +372,8 @@ const Settings: React.FC<SettingsProps> = ({
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-slate-900 dark:bg-[#D0BCFF] rounded-[18px] px-6 py-3 hover:bg-slate-800 dark:hover:bg-[#E8DEF8] active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white dark:text-[#381E72]" />
+            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 hover:bg-[#E66A44] dark:hover:bg-[#FF9274] active:scale-95 transition-all">
+              <Plus size={28} strokeWidth={2.5} className="text-white" />
             </div>
           </button>
 

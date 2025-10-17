@@ -111,7 +111,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
         {/* Big CTA Button at Top */}
         <button
           onClick={onAddEntry}
-          className="w-full bg-[#000] dark:bg-[#D0BCFF] text-white dark:text-[#381E72] py-5 px-6 font-medium text-[17px] mb-6 hover:bg-slate-900 dark:hover:bg-[#E8DEF8] transition-all duration-200 active:scale-[0.98]"
+          className="w-full bg-[#F37E58] text-white py-5 px-6 font-medium text-[17px] mb-6 hover:bg-[#E66A44] dark:hover:bg-[#FF9274] transition-all duration-200 active:scale-[0.98]"
         >
           Capture the moment
         </button>
@@ -223,44 +223,44 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
               <div 
                 onClick={() => (aiInsights?.energy || energyProjects.length > 0) && toggleCard('energy')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),linear-gradient(132deg,#FFE27A_0%,#FF7B54_103.78%)]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
                 }}
               >
                 <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900">
+                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
                     What Energized You
                   </p>
                   
                   {isLoadingInsights ? (
-                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic animate-pulse">
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
                       Analyzing your week...
                     </p>
                   ) : aiInsights?.energy ? (
                     <>
-                      <p className="text-[20px] font-medium text-slate-900 leading-snug italic">
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug italic">
                         {aiInsights.energy.insight}
                       </p>
                       {expandedCards.has('energy') && aiInsights.energy.tasks.length > 0 && (
                         <div className="space-y-1">
                           {aiInsights.energy.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
                               • {task}
                             </p>
                           ))}
                         </div>
                       )}
                       {!expandedCards.has('energy') && aiInsights.energy.tasks.length > 0 && (
-                        <p className="text-[13px] font-normal text-slate-900 underline">
+                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
                           See more
                         </p>
                       )}
                     </>
                   ) : energyProjects.length > 0 ? (
                     <>
-                      <p className="text-[20px] font-medium text-slate-900 leading-snug">
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
                         Creative tasks that involved visual thinking energized you.
                       </p>
                       {expandedCards.has('energy') && (
@@ -275,7 +275,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                               .slice(0, 3)
                             
                             return energyTasks.map((task, index) => (
-                              <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                              <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
                                 • {task.description}
                               </p>
                             ))
@@ -283,13 +283,13 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                         </div>
                       )}
                       {!expandedCards.has('energy') && (
-                        <p className="text-[13px] font-normal text-slate-900 underline">
+                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
                           See more
                         </p>
                       )}
                     </>
                   ) : (
-                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
                       Moments that energize you — hitting flow, breakthroughs, or pure fun.
                     </p>
                   )}
@@ -299,44 +299,44 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 2. What Drained You - Light Gray Gradient */}
               <div 
                 onClick={() => (aiInsights?.drained || drainingProjects.length > 0) && toggleCard('drained')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),linear-gradient(132deg,#E3E3E3_0%,#A69FAE_103.78%)]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
                 }}
               >
                 <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900">
+                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
                     What Drained You
                   </p>
                   
                   {isLoadingInsights ? (
-                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic animate-pulse">
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
                       Analyzing your week...
                     </p>
                   ) : aiInsights?.drained ? (
                     <>
-                      <p className="text-[20px] font-medium text-slate-900 leading-snug italic">
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug italic">
                         {aiInsights.drained.insight}
                       </p>
                       {expandedCards.has('drained') && aiInsights.drained.tasks.length > 0 && (
                         <div className="space-y-1">
                           {aiInsights.drained.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
                               • {task}
                             </p>
                           ))}
                         </div>
                       )}
                       {!expandedCards.has('drained') && aiInsights.drained.tasks.length > 0 && (
-                        <p className="text-[13px] font-normal text-slate-900 underline">
+                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
                           See more
                         </p>
                       )}
                     </>
                   ) : drainingProjects.length > 0 ? (
                     <>
-                      <p className="text-[20px] font-medium text-slate-900 leading-snug">
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
                         Tedious or repetitive tasks drained your creative energy.
                       </p>
                       {expandedCards.has('drained') && (
@@ -351,7 +351,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                               .slice(0, 3)
                             
                             return drainingTasks.map((task, index) => (
-                              <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                              <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
                                 • {task.description}
                               </p>
                             ))
@@ -359,13 +359,13 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                         </div>
                       )}
                       {!expandedCards.has('drained') && (
-                        <p className="text-[13px] font-normal text-slate-900 underline">
+                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
                           See more
                         </p>
                       )}
                     </>
                   ) : (
-                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
                       Tasks that drain you — tedious work, confusion, or feeling stuck.
                     </p>
                   )}
@@ -375,44 +375,44 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 3. What Felt Meaningful - Light Purple Gradient */}
               <div 
                 onClick={() => (aiInsights?.meaningful || meaningfulProjects.length > 0) && toggleCard('meaningful')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),linear-gradient(132deg,#C7D1FF_0%,#BC7AFF_103.78%)]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
                 }}
               >
                 <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900">
+                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
                     What Felt Meaningful
                   </p>
                   
                   {isLoadingInsights ? (
-                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic animate-pulse">
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
                       Analyzing your week...
                     </p>
                   ) : aiInsights?.meaningful ? (
                     <>
-                      <p className="text-[20px] font-medium text-slate-900 leading-snug italic">
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug italic">
                         {aiInsights.meaningful.insight}
                       </p>
                       {expandedCards.has('meaningful') && aiInsights.meaningful.tasks.length > 0 && (
                         <div className="space-y-1">
                           {aiInsights.meaningful.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
                               • {task}
                             </p>
                           ))}
                         </div>
                       )}
                       {!expandedCards.has('meaningful') && aiInsights.meaningful.tasks.length > 0 && (
-                        <p className="text-[13px] font-normal text-slate-900 underline">
+                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
                           See more
                         </p>
                       )}
                     </>
                   ) : meaningfulProjects.length > 0 ? (
                     <>
-                      <p className="text-[20px] font-medium text-slate-900 leading-snug">
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
                         Work that felt purposeful and aligned with your values.
                       </p>
                       {expandedCards.has('meaningful') && (
@@ -427,7 +427,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                               .slice(0, 3)
                             
                             return meaningfulTasks.map((task, index) => (
-                              <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                              <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
                                 • {task.description}
                               </p>
                             ))
@@ -435,13 +435,13 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                         </div>
                       )}
                       {!expandedCards.has('meaningful') && (
-                        <p className="text-[13px] font-normal text-slate-900 underline">
+                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
                           See more
                         </p>
                       )}
                     </>
                   ) : (
-                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
                       Work that felt purposeful — making an impact, solving real problems, or growth.
                     </p>
                   )}
@@ -451,44 +451,44 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* 4. What Sparked Passion - Orange Gradient */}
               <div 
                 onClick={() => (aiInsights?.passion || passionProjects.length > 0) && toggleCard('passion')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer dark:[background:linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),linear-gradient(180deg,#FA604D_0%,#F37E58_100%)]" 
                 style={{ 
                   borderRadius: '0 48px 0 0',
                   background: 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
                 }}
               >
                 <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900">
+                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
                     What Excited You
                   </p>
                   
                   {isLoadingInsights ? (
-                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic animate-pulse">
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
                       Analyzing your week...
                     </p>
                   ) : aiInsights?.passion ? (
                     <>
-                      <p className="text-[20px] font-medium text-slate-900 leading-snug italic">
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug italic">
                         {aiInsights.passion.insight}
                       </p>
                       {expandedCards.has('passion') && aiInsights.passion.tasks.length > 0 && (
                         <div className="space-y-1">
                           {aiInsights.passion.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
                               • {task}
                             </p>
                           ))}
                         </div>
                       )}
                       {!expandedCards.has('passion') && aiInsights.passion.tasks.length > 0 && (
-                        <p className="text-[13px] font-normal text-slate-900 underline">
+                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
                           See more
                         </p>
                       )}
                     </>
                   ) : passionProjects.length > 0 ? (
                     <>
-                      <p className="text-[20px] font-medium text-slate-900 leading-snug">
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
                         Exploratory and experimental tasks lit up your curiosity.
                       </p>
                       {expandedCards.has('passion') && (
@@ -503,7 +503,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                               .slice(0, 3)
                             
                             return passionTasks.map((task, index) => (
-                              <p key={index} className="text-[14px] font-normal text-slate-900 leading-tight">
+                              <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
                                 • {task.description}
                               </p>
                             ))
@@ -511,13 +511,13 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                         </div>
                       )}
                       {!expandedCards.has('passion') && (
-                        <p className="text-[13px] font-normal text-slate-900 underline">
+                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
                           See more
                         </p>
                       )}
                     </>
                   ) : (
-                    <p className="text-[16px] font-medium text-slate-700 leading-snug italic">
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
                       Tasks that ignited your creativity — exploring ideas, experimenting, or discovering.
                     </p>
                   )}
@@ -580,8 +580,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             onClick={onAddEntry}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-slate-900 dark:bg-[#D0BCFF] rounded-[18px] px-6 py-3 shadow-xl hover:bg-slate-800 dark:hover:bg-[#E8DEF8] active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white dark:text-[#381E72]" />
+            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#FF9274] active:scale-95 transition-all">
+              <Plus size={28} strokeWidth={2.5} className="text-white" />
             </div>
           </button>
 
