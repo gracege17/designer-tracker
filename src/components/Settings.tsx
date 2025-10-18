@@ -229,22 +229,22 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* Data Control Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 mb-4">Data Control</h2>
+          <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">Data Control</h2>
           
           {/* Export Data */}
           <button
             onClick={handleExportData}
-            className="w-full p-5 mb-3 border-2 border-slate-200 text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 mb-3 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-                  <Download size={20} className="text-slate-700" />
+                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#211F26] flex items-center justify-center">
+                  <Download size={20} className="text-slate-700 dark:text-[#CAC4D0]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-slate-900">Export data</p>
-                  <p className="text-[13px] text-slate-600">Download as JSON</p>
+                  <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Export data</p>
+                  <p className="text-[13px] text-slate-600 dark:text-[#938F99]">Download as JSON</p>
                 </div>
               </div>
             </div>
@@ -253,17 +253,17 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Check Data Integrity */}
           <button
             onClick={handleCheckDataIntegrity}
-            className="w-full p-5 mb-3 border-2 border-slate-200 text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 mb-3 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-                  <SettingsIcon size={20} className="text-blue-600" />
+                <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-[#211F26] flex items-center justify-center">
+                  <SettingsIcon size={20} className="text-blue-600 dark:text-[#A1C4FD]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-slate-900">Check for Issues</p>
-                  <p className="text-[13px] text-slate-600">Scan and repair broken links</p>
+                  <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Check for Issues</p>
+                  <p className="text-[13px] text-slate-600 dark:text-[#938F99]">Scan and repair broken links</p>
                 </div>
               </div>
             </div>
@@ -272,17 +272,17 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Delete All Data */}
           <button
             onClick={handleDeleteAllData}
-            className="w-full p-5 border-2 border-slate-200 text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
-                  <Trash2 size={20} className="text-red-600" />
+                <div className="w-10 h-10 rounded-full bg-red-50 dark:bg-[#211F26] flex items-center justify-center">
+                  <Trash2 size={20} className="text-red-600 dark:text-[#FF6B6B]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-red-600">Delete all my data</p>
-                  <p className="text-[13px] text-slate-600">Permanently remove everything</p>
+                  <p className="text-[16px] font-bold text-red-600 dark:text-[#FF6B6B]">Delete all my data</p>
+                  <p className="text-[13px] text-slate-600 dark:text-[#938F99]">Permanently remove everything</p>
                 </div>
               </div>
             </div>
@@ -323,16 +323,16 @@ const Settings: React.FC<SettingsProps> = ({
         <div className="mb-8">
           <button
             onClick={handleSendFeedback}
-            className="w-full p-5 border-2 border-slate-200 text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-                <Mail size={20} className="text-slate-700" />
+              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#211F26] flex items-center justify-center">
+                <Mail size={20} className="text-slate-700 dark:text-[#CAC4D0]" />
               </div>
               <div>
-                <p className="text-[16px] font-bold text-slate-900">Send Feedback</p>
-                <p className="text-[13px] text-slate-600">Help us improve the app</p>
+                <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Send Feedback</p>
+                <p className="text-[13px] text-slate-600 dark:text-[#938F99]">Help us improve the app</p>
               </div>
             </div>
           </button>
@@ -340,7 +340,7 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* App Version */}
         <div className="text-center py-8">
-          <p className="text-[13px] text-slate-500">
+          <p className="text-[13px] text-slate-500 dark:text-[#938F99]">
             Designer's Life Tracker v1.0.0
           </p>
         </div>
