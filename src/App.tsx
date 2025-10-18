@@ -12,6 +12,7 @@ import ReviewReflection from './components/ReviewReflection'
 import InsightsScreen from './components/InsightsScreen'
 import EditTask from './components/EditTask'
 import Settings from './components/Settings'
+import OverallFeeling from './components/OverallFeeling'
 import OnboardingAuth from './components/OnboardingAuth'
 import OnboardingUserInfo, { UserProfileData } from './components/OnboardingUserInfo'
 import OnboardingFirstProject from './components/OnboardingFirstProject'
@@ -23,7 +24,7 @@ import { EntryStorage, ProjectStorage, OnboardingStorage, UserProfileStorage } f
 import { createTodayEntry, getTodayDateString, generateId } from './utils/dataHelpers'
 import { clearAICache } from './utils/aiInsightsService'
 
-type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings'
+type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'overallFeeling' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings'
 
 interface TaskReview {
   id: string
@@ -51,6 +52,7 @@ function App() {
   const [collectedTasks, setCollectedTasks] = useState<TaskReview[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [userProfile, setUserProfile] = useState<UserProfileData | null>(null)
+  const [overallFeeling, setOverallFeeling] = useState<number>(50)
   
   // Success toast state
   const [successToast, setSuccessToast] = useState({ show: false, message: '' })
@@ -134,6 +136,11 @@ function App() {
   }
 
   const handleStartAddEntry = () => {
+    setCurrentView('overallFeeling')
+  }
+
+  const handleOverallFeelingComplete = (feelingScore: number) => {
+    setOverallFeeling(feelingScore)
     setCurrentView('projectSelection')
   }
 
@@ -587,13 +594,20 @@ function App() {
             onStartEntry={handleOnboardingStartEntry}
           />
         )
+      case 'overallFeeling':
+        return (
+          <OverallFeeling
+            onComplete={handleOverallFeelingComplete}
+            onBack={() => setCurrentView('dashboard')}
+          />
+        )
       case 'projectSelection':
         return (
           <ProjectSelection
             projects={projects}
             initialSelectedProjects={selectedProjectIds}
             onProjectsSelected={handleProjectsSelected}
-            onBack={() => setCurrentView('dashboard')}
+            onBack={() => setCurrentView('overallFeeling')}
             onAddNewProject={handleAddNewProject}
             onProjectDeleted={refreshProjects}
           />
