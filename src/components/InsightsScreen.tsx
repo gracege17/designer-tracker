@@ -295,7 +295,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                       className="flex flex-col items-center gap-0"
                     >
                       <div 
-                        className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'dark:opacity-60'}`}
+                        className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'dark:opacity-30'}`}
                         onClick={() => {
                           if (day.hasData && day.entry) {
                             onViewEntry(day.entry)
@@ -356,7 +356,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           >
                             {/* Emoji */}
                             <div 
-                              className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'dark:opacity-60'}`}
+                              className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'dark:opacity-30'}`}
                             >
                               {getEmotionEmoji()}
                             </div>
