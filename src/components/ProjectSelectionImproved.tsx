@@ -104,15 +104,15 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF9F8] slide-in-right">
+    <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-[#1C1B1F] slide-in-right">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] z-10 p-5">
+      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] z-10 p-5">
         <div className="max-w-md mx-auto">
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-[#2B2930] rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
-            <ArrowLeft size={24} className="text-slate-900" />
+            <ArrowLeft size={24} className="text-slate-900 dark:text-[#E6E1E5]" />
           </button>
         </div>
       </header>
@@ -121,10 +121,10 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
       <main className="flex-grow px-5 pt-2 pb-4 max-w-md mx-auto w-full">
         {/* Title */}
         <div className="mb-8">
-          <h2 className="text-[32px] font-bold text-slate-900 mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h2 className="text-[32px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
             What did you work on?
           </h2>
-          <p className="text-[16px] text-slate-700">
+          <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]">
             Select the projects you worked on today
           </p>
         </div>
@@ -150,7 +150,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
                   onClick={() => handleProjectToggle(project.id)}
                   className="flex-1 text-left active:scale-[0.99] transition-all"
                 >
-                  <span className="text-[14px] font-normal text-slate-900">
+                  <span className="text-[14px] font-normal text-slate-900 dark:text-[#1C1B1F]">
                     {project.name}
                   </span>
                 </button>
@@ -159,7 +159,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
                   className="ml-3 p-1 hover:bg-black/10 rounded transition-all active:scale-90"
                   title="Delete project"
                 >
-                  <X size={20} className="text-slate-900 opacity-50" strokeWidth={2.5} />
+                  <X size={20} className="text-slate-900 dark:text-[#1C1B1F] opacity-50" strokeWidth={2.5} />
                 </button>
               </div>
             )
@@ -176,7 +176,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
               onKeyDown={handleKeyDown}
               placeholder="Project name"
               autoFocus
-              className="flex-1 px-4 py-3 bg-slate-50 border-2 border-slate-200 text-slate-900 text-[14px] focus:outline-none focus:border-slate-400 transition-colors"
+              className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#2B2930] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] text-[14px] placeholder:text-slate-400 dark:placeholder:text-[#938F99] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58] transition-colors"
             />
             <button
               onClick={handleAddProject}
@@ -184,8 +184,8 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
               className={`
                 px-5 py-3 font-medium text-[14px] transition-all active:scale-[0.99]
                 ${newProjectName.trim()
-                  ? 'bg-[#000] text-white hover:bg-slate-900'
-                  : 'bg-[#999] text-white cursor-not-allowed'
+                  ? 'bg-[#F37E58] text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336]'
+                  : 'bg-slate-200 dark:bg-[#2B2930] text-slate-400 dark:text-[#938F99] cursor-not-allowed'
                 }
               `}
             >
@@ -196,8 +196,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
                 setShowAddInput(false)
                 setNewProjectName('')
               }}
-              className="px-5 py-3 bg-white border text-slate-900 font-medium text-[14px] hover:bg-slate-50 transition-all active:scale-[0.99]"
-              style={{ borderColor: 'rgba(0, 0, 0, 0.6)' }}
+              className="px-5 py-3 bg-white dark:bg-[#2B2930] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] font-medium text-[14px] hover:bg-slate-50 dark:hover:bg-[#36343B] transition-all active:scale-[0.99]"
             >
               Cancel
             </button>
@@ -205,7 +204,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
         ) : (
           <button
             onClick={() => setShowAddInput(true)}
-            className="px-5 py-3 bg-[#000] text-white font-medium text-[16px] hover:bg-slate-900 transition-all active:scale-[0.99]"
+            className="px-5 py-3 bg-[#F37E58] text-white font-medium text-[16px] hover:bg-[#E66A44] dark:hover:bg-[#AF4336] transition-all active:scale-[0.99]"
           >
             + Project
           </button>
@@ -213,7 +212,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
       </main>
 
       {/* Sticky Bottom CTA */}
-      <footer className="sticky bottom-0 bg-[#FFF9F8] p-5">
+      <footer className="sticky bottom-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] p-5">
         <div className="max-w-md mx-auto">
           <button
             onClick={handleNext}
@@ -221,8 +220,8 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             className={`
               w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
               ${selectedProjects.length > 0
-                ? 'bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98]'
-                : 'bg-[#999] text-white cursor-not-allowed'
+                ? 'bg-[#F37E58] text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
+                : 'bg-slate-200 dark:bg-[#2B2930] text-slate-400 dark:text-[#938F99] cursor-not-allowed'
               }
             `}
           >
