@@ -406,7 +406,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {happy.slice(0, 3).map((happyMoment, index) => {
                     const project = ProjectStorage.getProjectById(happyMoment.projectId)
                     return (
-                      <p key={index} className="text-[20px] font-black text-slate-900 dark:text-white leading-tight">
+                      <p key={index} className="text-[20px] font-medium text-slate-900 dark:text-white leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
@@ -438,7 +438,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {frustrators.slice(0, 3).map((frustrator, index) => {
                     const project = ProjectStorage.getProjectById(frustrator.projectId)
                     return (
-                      <p key={index} className="text-[20px] font-black text-slate-900 dark:text-white leading-tight">
+                      <p key={index} className="text-[20px] font-medium text-slate-900 dark:text-white leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
@@ -470,7 +470,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {struggles.slice(0, 3).map((struggle, index) => {
                     const project = ProjectStorage.getProjectById(struggle.projectId)
                     return (
-                      <p key={index} className="text-[20px] font-black text-slate-900 dark:text-white leading-tight">
+                      <p key={index} className="text-[20px] font-medium text-slate-900 dark:text-white leading-tight">
                         {project?.name || 'Unknown Project'}
                       </p>
                     )
