@@ -488,9 +488,9 @@ Used in:
 |---------|--------------|---------|--------|--------|
 | Insight Card (Joy/Passion/Meaningful/Draining) | 0 48px 0 0 | 16px | None | None |
 | CTA Button | 0 32px 0 0 | 20px v | None | None |
-| Emotion Selection Card | 0 24px 0 0 | 16px v, 8px h | None | 2px (slate-200 or slate-900) |
-| Settings Card | 0 24px 0 0 | 20px | None | 2px slate-200 |
-| Task Card | 0 20px 0 0 | 16px | None | 2px slate-200 |
+| Emotion Selection Card | 0 24px 0 0 | 16px v, 8px h | None | 1px (slate-200 or slate-900) |
+| Settings Card | 0 24px 0 0 | 20px | None | 1px slate-200 |
+| Task Card | 0 20px 0 0 | 16px | None | 1px slate-200 |
 | Project Pill | 0 16px 0 0 | 12px v, 20px h | None | 2px slate-900 |
 
 ---
