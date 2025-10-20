@@ -118,7 +118,7 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
 
                 {isEditing ? (
                   /* Edit Mode */
-                  <div className="flex items-center gap-3 py-4 px-6 rounded-full bg-white border-2 border-primary soft-shadow">
+                  <div className="flex items-center gap-3 py-4 px-6 rounded-full bg-white border border-primary soft-shadow">
                     <div 
                       className="w-4 h-4 rounded-full flex-shrink-0"
                       style={{ backgroundColor: project.color }}
@@ -146,7 +146,7 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
                       flex items-center gap-3 py-4 px-6 rounded-full text-lg font-medium 
                       soft-shadow hover:shadow-md transition-all duration-200
                       ${isSelected 
-                        ? 'bg-white border-2 text-slate-900 shadow-md' 
+                        ? 'bg-white border text-slate-900 shadow-md' 
                         : 'bg-white/80 border border-slate-200 text-slate-800 hover:bg-white hover:shadow-lg'
                       }
                     `}

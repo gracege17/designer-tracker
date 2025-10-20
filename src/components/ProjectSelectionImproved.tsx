@@ -200,7 +200,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
               onKeyDown={handleKeyDown}
               placeholder="Project name"
               autoFocus
-              className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#2B2930] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] text-[14px] placeholder:text-slate-400 dark:placeholder:text-[#938F99] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58] transition-colors"
+              className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#2B2930] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] text-[14px] placeholder:text-slate-400 dark:placeholder:text-[#938F99] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58] transition-colors"
             />
             <button
               onClick={handleAddProject}

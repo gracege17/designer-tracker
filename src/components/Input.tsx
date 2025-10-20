@@ -32,7 +32,7 @@ export default function Input({
       <input
         className={`
           px-4 py-4
-          border-2 rounded-xl
+          border rounded-xl
           bg-white
           text-slate-900
           font-body text-body-md

@@ -88,7 +88,7 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder="e.g., Redesigned the homepage hero section and created 3 new component variants for the design system..."
-          className="w-full min-h-[140px] p-4 bg-white dark:bg-[#2B2930] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] placeholder:text-slate-400 dark:placeholder:text-[#938F99] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58] resize-none"
+          className="w-full min-h-[140px] p-4 bg-white dark:bg-[#2B2930] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] placeholder:text-slate-400 dark:placeholder:text-[#938F99] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58] resize-none"
         />
       </main>
 

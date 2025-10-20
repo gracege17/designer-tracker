@@ -65,7 +65,7 @@ export default function Button({
       className={`
         ${getVariantStyles()}
         ${getSizeStyles()}
-        ${variant === 'pill' ? '' : 'border-2 rounded-xl'}
+        ${variant === 'pill' ? '' : 'border rounded-xl'}
         ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'opacity-100'}
         ${className}
         flex items-center justify-center

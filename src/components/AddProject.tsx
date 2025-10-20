@@ -98,7 +98,7 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
                 placeholder="e.g., Website Redesign"
                 required
                 autoFocus
-                className="w-full px-4 py-3 bg-slate-50 border-2 border-slate-200 text-slate-900 text-[16px] focus:outline-none focus:border-slate-400 transition-colors"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-[16px] focus:outline-none focus:border-slate-400 transition-colors"
               />
             </label>
             <p className="text-[13px] text-slate-600 mt-2">

@@ -103,7 +103,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
                   key={projectOption.id}
                   type="button"
                   onClick={() => setProject(projectOption.name)}
-                  className={`w-full text-left p-4 rounded-lg border-2 transition-colors soft-shadow ${
+                  className={`w-full text-left p-4 rounded-lg border transition-colors soft-shadow ${
                     project === projectOption.name
                       ? 'border-primary bg-primary/20'
                       : 'border-slate-200 bg-white hover:border-slate-300'
@@ -145,7 +145,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
                   key={type}
                   type="button"
                   onClick={() => setTaskType(type)}
-                  className={`p-3 rounded-lg border-2 transition-colors text-left soft-shadow ${
+                  className={`p-3 rounded-lg border transition-colors text-left soft-shadow ${
                     taskType === type
                       ? 'border-primary bg-primary/20'
                       : 'border-slate-200 bg-white hover:border-slate-300'
@@ -186,7 +186,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Any additional thoughts about this task?"
               rows={3}
-              className="w-full p-4 border-2 border-slate-200 rounded-lg focus:border-primary focus:outline-none text-slate-800 resize-none soft-shadow"
+              className="w-full p-4 border border-slate-200 rounded-lg focus:border-primary focus:outline-none text-slate-800 resize-none soft-shadow"
               maxLength={1000}
             />
             <p className="text-sm text-slate-500 mt-1">

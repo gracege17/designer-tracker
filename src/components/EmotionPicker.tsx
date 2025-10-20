@@ -63,8 +63,8 @@ export default function EmotionPicker({
                 hover:scale-105
                 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50
                 ${isSelected 
-                  ? 'bg-primary/20 soft-shadow border-2 border-primary' 
-                  : 'bg-white soft-shadow border-2 border-slate-200 hover:border-primary'
+                  ? 'bg-primary/20 soft-shadow border border-primary' 
+                  : 'bg-white soft-shadow border border-slate-200 hover:border-primary'
                 }
               `}
             >

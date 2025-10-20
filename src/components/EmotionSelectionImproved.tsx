@@ -83,7 +83,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
                 key={emotionLevel}
                 onClick={() => handleEmotionToggle(emotionLevel)}
                 className={`
-                  flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border-2
+                  flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border
                   ${isSelected
                     ? 'bg-[#FFD678] border-slate-900 scale-105'
                     : 'bg-white border-slate-200 hover:border-slate-300 active:scale-95'

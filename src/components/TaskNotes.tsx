@@ -76,7 +76,7 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
 
         {/* Textarea */}
         <textarea
-          className="w-full min-h-[140px] p-4 bg-white border-2 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-400 resize-none"
+          className="w-full min-h-[140px] p-4 bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-400 resize-none"
           placeholder="e.g., The client loved the direction — felt proud!"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}

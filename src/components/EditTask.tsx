@@ -118,9 +118,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
                   key={emotion.level}
                   type="button"
                   onClick={() => handleEmotionToggle(emotion.level)}
-                  className={`
-                    flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border-2
-                    ${isSelected 
+                className={`
+                  flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border
+                  ${isSelected
                       ? 'bg-[#FFD678] border-slate-900 scale-105' 
                       : 'bg-white border-slate-200 hover:border-slate-300 active:scale-95'
                     }

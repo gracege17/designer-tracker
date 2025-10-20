@@ -133,7 +133,7 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
                 <button
                   key={option.value}
                   onClick={() => setGender(option.value)}
-                  className={`p-4 border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                  className={`p-4 border transition-all duration-200 flex flex-col items-center gap-2 ${
                     gender === option.value
                       ? 'border-slate-900 bg-[#FFD678]'
                       : 'border-slate-200 bg-white hover:border-slate-300'
@@ -164,7 +164,7 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
                 <button
                   key={option.value}
                   onClick={() => setAgeRange(option.value)}
-                  className={`p-3 border-2 transition-all duration-200 flex items-center justify-center ${
+                  className={`p-3 border transition-all duration-200 flex items-center justify-center ${
                     ageRange === option.value
                       ? 'border-slate-900 bg-[#FFD678]'
                       : 'border-slate-200 bg-white hover:border-slate-300'
