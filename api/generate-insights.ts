@@ -6,12 +6,6 @@ interface Task {
   emotions: number[];
 }
 
-interface InsightCard {
-  type: 'passion' | 'energy' | 'drained' | 'meaningful';
-  insight: string;
-  tasks: string[];
-}
-
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse,
