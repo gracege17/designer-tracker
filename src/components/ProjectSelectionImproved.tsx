@@ -3,6 +3,7 @@ import { ArrowLeft, Plus, X } from 'lucide-react'
 import { Project } from '../types'
 import { ProjectStorage, EntryStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
+import { useTheme } from '../context/ThemeContext'
 
 interface ProjectSelectionProps {
   projects: Project[]
@@ -21,6 +22,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
   onAddNewProject,
   onProjectDeleted
 }) => {
+  const { theme } = useTheme()
   const [selectedProjects, setSelectedProjects] = useState<string[]>(initialSelectedProjects)
   const [localProjects, setLocalProjects] = useState<Project[]>(projects)
   const [showAddInput, setShowAddInput] = useState(false)
@@ -134,32 +136,54 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
           {localProjects.map((project, index) => {
             const isSelected = selectedProjects.includes(project.id)
             
-            // Use orange for all selected projects
-            const bgColor = isSelected ? '#FF8C42' : '#FFFFFF'
+            // Dynamic styling based on selection and theme
+            const getStyles = () => {
+              if (isSelected) {
+                return {
+                  backgroundColor: '#FF8C42',
+                  borderColor: 'rgba(0, 0, 0, 0.6)',
+                  textColor: 'text-slate-900'
+                }
+              } else if (theme === 'dark') {
+                return {
+                  backgroundColor: 'transparent',
+                  borderColor: 'rgba(255, 255, 255, 0.6)',
+                  textColor: 'text-[#E6E1E5]'
+                }
+              } else {
+                return {
+                  backgroundColor: '#FFFFFF',
+                  borderColor: 'rgba(0, 0, 0, 0.6)',
+                  textColor: 'text-slate-900'
+                }
+              }
+            }
+            
+            const styles = getStyles()
 
             return (
               <div
                 key={project.id}
                 className="flex items-center justify-between px-5 py-3 border transition-all"
                 style={{ 
-                  backgroundColor: bgColor, 
-                  borderColor: 'rgba(0, 0, 0, 0.6)' 
+                  backgroundColor: styles.backgroundColor, 
+                  borderColor: styles.borderColor 
                 }}
               >
                 <button
                   onClick={() => handleProjectToggle(project.id)}
                   className="flex-1 text-left active:scale-[0.99] transition-all"
                 >
-                  <span className="text-[14px] font-normal text-slate-900 dark:text-[#1C1B1F]">
+                  <span className={`text-[14px] font-normal ${styles.textColor}`}>
                     {project.name}
                   </span>
                 </button>
                 <button
                   onClick={(e) => handleProjectDelete(project.id, e)}
-                  className="ml-3 p-1 hover:bg-black/10 rounded transition-all active:scale-90"
+                  className="ml-3 p-1 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-all active:scale-90"
                   title="Delete project"
                 >
-                  <X size={20} className="text-slate-900 dark:text-[#1C1B1F] opacity-50" strokeWidth={2.5} />
+                  <X size={20} className={`opacity-50 ${styles.textColor}`} strokeWidth={2.5} />
                 </button>
               </div>
             )
