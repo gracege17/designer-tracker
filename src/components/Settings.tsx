@@ -165,7 +165,7 @@ const Settings: React.FC<SettingsProps> = ({
         {/* Daily Reminder Section */}
         <div className="mb-8">
           <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">Daily Reminder</h2>
-          <div className="p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
+          <div className="p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block mb-3">
               <span className="text-[14px] font-medium text-slate-700 dark:text-[#CAC4D0] mb-2 block">
                 Reminder Time
@@ -174,7 +174,7 @@ const Settings: React.FC<SettingsProps> = ({
                 type="time"
                 value={reminderTime}
                 onChange={(e) => setReminderTime(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58]"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#211F26] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58]"
                 style={{ borderRadius: '0 12px 0 0' }}
               />
             </label>
@@ -187,7 +187,7 @@ const Settings: React.FC<SettingsProps> = ({
         {/* Account Section */}
         <div className="mb-8">
           <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">Account</h2>
-          <div className="p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
+          <div className="p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block">
               <span className="text-[14px] font-medium text-slate-700 dark:text-[#CAC4D0] mb-2 block">
                 Your Name
@@ -207,14 +207,14 @@ const Settings: React.FC<SettingsProps> = ({
                       }
                     }}
                     autoFocus
-                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58]"
+                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#211F26] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58]"
                     style={{ borderRadius: '0 12px 0 0' }}
                   />
                 </div>
               ) : (
                 <div 
                   onClick={() => setIsEditingName(true)}
-                  className="px-4 py-3 bg-slate-50 dark:bg-[#211F26] border-2 border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] cursor-pointer hover:bg-slate-100 dark:hover:bg-[#2B2930] transition-colors"
+                  className="px-4 py-3 bg-slate-50 dark:bg-[#211F26] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] cursor-pointer hover:bg-slate-100 dark:hover:bg-[#2B2930] transition-colors"
                   style={{ borderRadius: '0 12px 0 0' }}
                 >
                   {name || 'Tap to set your name'}
@@ -234,7 +234,7 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Export Data */}
           <button
             onClick={handleExportData}
-            className="w-full p-5 mb-3 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 mb-3 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
@@ -253,7 +253,7 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Check Data Integrity */}
           <button
             onClick={handleCheckDataIntegrity}
-            className="w-full p-5 mb-3 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 mb-3 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
@@ -272,7 +272,7 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Delete All Data */}
           <button
             onClick={handleDeleteAllData}
-            className="w-full p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
@@ -292,7 +292,7 @@ const Settings: React.FC<SettingsProps> = ({
         {/* App Theme Section */}
         <div className="mb-8">
           <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">App Theme</h2>
-          <div className="p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
+          <div className="p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#211F26] flex items-center justify-center">
@@ -323,7 +323,7 @@ const Settings: React.FC<SettingsProps> = ({
         <div className="mb-8">
           <button
             onClick={handleSendFeedback}
-            className="w-full p-5 border-2 border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center gap-3">
