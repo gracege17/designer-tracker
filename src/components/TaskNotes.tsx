@@ -97,7 +97,7 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
           
           <button
             onClick={isLastProject ? handleDoneReflecting : handleNextProject}
-            className="w-full py-5 px-6 font-medium text-[17px] transition-all duration-200 bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98]"
+            className="w-full py-5 px-6 font-medium text-[17px] transition-all duration-200 bg-[#F37E58] text-slate-900 dark:text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]"
           >
             {isLastProject ? "Done Reflecting" : "Next Project"}
           </button>

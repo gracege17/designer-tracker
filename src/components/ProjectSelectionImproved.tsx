@@ -208,7 +208,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
               className={`
                 px-5 py-3 font-medium text-[14px] transition-all active:scale-[0.99]
                 ${newProjectName.trim()
-                  ? 'bg-[#F37E58] text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336]'
+                  ? 'bg-[#F37E58] text-slate-900 dark:text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336]'
                   : 'bg-slate-200 dark:bg-[#2B2930] text-slate-400 dark:text-[#938F99] cursor-not-allowed'
                 }
               `}
@@ -228,7 +228,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
         ) : (
           <button
             onClick={() => setShowAddInput(true)}
-            className="px-5 py-3 bg-[#F37E58] text-white font-medium text-[16px] hover:bg-[#E66A44] dark:hover:bg-[#AF4336] transition-all active:scale-[0.99]"
+            className="px-5 py-3 bg-[#F37E58] text-slate-900 dark:text-white font-medium text-[16px] hover:bg-[#E66A44] dark:hover:bg-[#AF4336] transition-all active:scale-[0.99]"
           >
             + Project
           </button>
@@ -244,7 +244,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             className={`
               w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
               ${selectedProjects.length > 0
-                ? 'bg-[#F37E58] text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
+                ? 'bg-[#F37E58] text-slate-900 dark:text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
                 : 'bg-slate-200 dark:bg-[#2B2930] text-slate-400 dark:text-[#938F99] cursor-not-allowed'
               }
             `}

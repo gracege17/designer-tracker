@@ -101,7 +101,7 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
             className={`
               w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
               ${description.trim()
-                ? 'bg-[#F37E58] text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
+                ? 'bg-[#F37E58] text-slate-900 dark:text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
                 : 'bg-slate-200 dark:bg-[#2B2930] text-slate-400 dark:text-[#938F99] cursor-not-allowed'
               }
             `}

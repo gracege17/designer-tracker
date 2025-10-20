@@ -135,7 +135,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
             className={`
               w-full py-5 px-6 font-bold text-[17px] transition-all duration-200
               ${tasks.length > 0
-                ? 'bg-[#000] text-white hover:bg-slate-900 active:scale-[0.98]'
+                ? 'bg-[#F37E58] text-slate-900 dark:text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
                 : 'bg-[#999] text-white cursor-not-allowed'
               }
             `}
