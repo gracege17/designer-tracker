@@ -112,14 +112,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </p>
         </div>
 
-        {/* Big CTA Button at Top */}
-        <button
-          onClick={onAddEntry}
-          className="w-full bg-[#F37E58] text-slate-900 dark:text-white py-5 px-6 font-medium text-[17px] mb-6 hover:bg-[#E66A44] dark:hover:bg-[#AF4336] transition-all duration-200 active:scale-[0.98]"
-        >
-          Capture the moment
-        </button>
-
         {/* Insight Cards - Always Show */}
         {(() => {
           // Get all tasks from history
