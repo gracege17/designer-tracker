@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
-import { TaskType, EmotionLevel, TASK_TYPE_LABELS, EMOTIONS } from '../types'
+import { TaskType, EmotionLevel, TASK_TYPE_LABELS, EMOTIONS, Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
-import EmotionPicker from './EmotionPicker'
 import Button from './Button'
 import Input from './Input'
 
@@ -30,14 +29,14 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
   const [project, setProject] = useState('')
   const [taskName, setTaskName] = useState(initialTaskDescription)
   const [taskType, setTaskType] = useState<TaskType | ''>('')
-  const [emotion, setEmotion] = useState<EmotionLevel | undefined>(initialEmotion || undefined)
+  const emotion = initialEmotion || undefined
   const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Get selected projects from storage
   const selectedProjects = selectedProjectIds
     .map(id => ProjectStorage.getProjectById(id))
-    .filter(Boolean)
+    .filter((p): p is Project => p !== null)
 
   // Get task types from the types file
   const taskTypes: TaskType[] = [
@@ -53,8 +52,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
     'other'
   ]
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     if (project && taskName && taskType && emotion && !isSubmitting) {
       setIsSubmitting(true)
       
@@ -91,7 +89,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
 
       {/* Form */}
       <main className="flex-1 p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="space-y-6">
           {/* Project Selection */}
           <div>
             <label className="block text-lg font-semibold text-slate-800 mb-3">
