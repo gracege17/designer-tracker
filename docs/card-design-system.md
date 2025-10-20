@@ -34,7 +34,7 @@ box-shadow: none;
 
 ### **Border**
 ```css
-border: 2px solid #F6F1EB; /* slate-200 */
+border: 1px solid #F6F1EB; /* slate-200 */
 ```
 - Only used on white/light cards
 - Not used on colored cards (orange, gray, cyan, etc.)
