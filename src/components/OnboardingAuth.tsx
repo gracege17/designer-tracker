@@ -21,7 +21,7 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
         <div className="mb-8 relative">
           <div className="w-24 h-24 flex items-center justify-center">
             <img 
-              src="/images/favicon.svg" 
+              src="/images/designer's logo.svg" 
               alt="Designer's Life Tracker Logo" 
               className="w-full h-full"
             />

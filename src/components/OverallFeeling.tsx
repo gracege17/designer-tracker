@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
+import FlowerProgress from './FlowerProgress'
 
 interface OverallFeelingProps {
   onComplete: (feelingScore: number) => void
@@ -98,6 +99,9 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-5 pb-32 max-w-md mx-auto w-full">
         <div className="w-full space-y-12">
+          {/* Flower Progress Tracker */}
+          <FlowerProgress filledSteps={[true, false, false, false]} />
+          
           {/* Emoji Display */}
           <div className="text-center space-y-6">
             <div 

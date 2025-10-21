@@ -4,6 +4,7 @@ import { Project } from '../types'
 import { ProjectStorage, EntryStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
 import { useTheme } from '../context/ThemeContext'
+import FlowerProgress from './FlowerProgress'
 
 interface ProjectSelectionProps {
   projects: Project[]
@@ -123,11 +124,14 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
       <main className="flex-grow px-5 pt-2 pb-4 max-w-md mx-auto w-full">
         {/* Title */}
         <div className="mb-8">
+          {/* Flower Progress Tracker */}
+          <FlowerProgress filledSteps={[true, false, false, false]} />
+          
           <h2 className="text-[32px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
             What did you work on?
           </h2>
           <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]">
-          Select one or more projects you worked on today — for example, “Website Redesign” or “Client Dashboard”.
+          Select one or more projects you worked on today — for example, "Website Redesign" or "Client Dashboard".
           </p>
         </div>
 

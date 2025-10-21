@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { ProjectStorage } from '../utils/storage'
+import FlowerProgress from './FlowerProgress'
 
 interface TaskEntryProps {
   selectedProjectIds: string[]
@@ -73,6 +74,9 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
       <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
         {/* Title Section */}
         <div className="mb-8">
+          {/* Flower Progress Tracker */}
+          <FlowerProgress filledSteps={[true, true, false, false]} />
+          
           <h2 className="text-[32px] font-normal text-slate-900 dark:text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             What did you work on for <span className="font-bold">{currentProject?.name}</span>?
           </h2>

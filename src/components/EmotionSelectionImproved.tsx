@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 import { EmotionLevel, EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { useTheme } from '../context/ThemeContext'
+import FlowerProgress from './FlowerProgress'
 
 interface EmotionSelectionProps {
   selectedProjectIds: string[]
@@ -66,6 +67,9 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
       <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
         {/* Title Section */}
         <div className="mb-8">
+          {/* Flower Progress Tracker */}
+          <FlowerProgress filledSteps={[true, true, true, false]} />
+          
           <h2 className="text-[32px] font-normal text-slate-900 dark:text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             How did it make you feel?
           </h2>
@@ -87,7 +91,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
                 className={`
                   flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border
                   ${isSelected
-                    ? 'bg-[#FFD678] dark:bg-[#FFD678] border-slate-900 dark:border-slate-900 scale-105'
+                    ? 'bg-[#FFD678] dark:bg-[#FFD678]/40 border-slate-900 dark:border-slate-900 scale-105'
                     : 'bg-white dark:bg-[#2B2930] border-slate-200 dark:border-[#3A3840] hover:border-slate-300 dark:hover:border-[#4A4850] active:scale-95'
                   }
                 `}

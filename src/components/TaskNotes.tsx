@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { ProjectStorage } from '../utils/storage'
+import { useTheme } from '../context/ThemeContext'
+import FlowerProgress from './FlowerProgress'
 
 interface TaskNotesProps {
   selectedProjectIds: string[]
@@ -20,6 +22,7 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
   isLastProject = false
 }) => {
   const [notes, setNotes] = useState('')
+  const { theme } = useTheme()
 
   // Get the first selected project for the header
   const firstProject = selectedProjectIds.length > 0 
@@ -42,20 +45,20 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
   const isMultipleProjects = selectedProjectIds.length > 1
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF9F8]">
+    <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-[#1C1B1F]">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] z-10 p-5 border-b border-slate-200">
+      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] z-10 p-5 border-b border-slate-200 dark:border-[#2B2930]">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-[#2B2930] rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
-            <ArrowLeft size={24} className="text-slate-900" />
+            <ArrowLeft size={24} className="text-slate-900 dark:text-[#E6E1E5]" />
           </button>
           
           {/* Current Project Name */}
           {firstProject && (
-            <span className="text-[16px] font-bold text-slate-900">{firstProject.name}</span>
+            <span className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">{firstProject.name}</span>
           )}
 
           <div className="w-10"></div>
@@ -66,17 +69,20 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
       <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
         {/* Title */}
         <div className="mb-8">
-          <h2 className="text-[32px] font-bold text-slate-900 mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+          {/* Flower Progress Tracker */}
+          <FlowerProgress filledSteps={[true, true, true, true]} />
+          
+          <h2 className="text-[32px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             Why did you feel that way?
           </h2>
-          <p className="text-[16px] text-slate-700">
+          <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]">
             Optional
           </p>
         </div>
 
         {/* Textarea */}
         <textarea
-          className="w-full min-h-[140px] p-4 bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-slate-400 resize-none"
+          className="w-full min-h-[140px] p-4 bg-white dark:bg-[#2B2930] border border-slate-200 dark:border-[#3A3840] text-slate-900 dark:text-[#E6E1E5] placeholder:text-slate-400 dark:placeholder:text-[#938F99] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58] resize-none"
           placeholder="e.g., The client loved the direction — felt proud!"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
@@ -85,12 +91,12 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
       </main>
 
       {/* Footer */}
-      <footer className="sticky bottom-0 bg-[#FFF9F8] p-5">
+      <footer className="sticky bottom-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] p-5">
         <div className="max-w-md mx-auto space-y-3">
           <button
             onClick={handleAddAnotherTask}
-            className="w-full py-5 px-6 text-center bg-[#FFF9F8] border text-slate-900 font-medium text-[17px] hover:bg-slate-50 transition-all active:scale-[0.99]"
-            style={{ borderColor: 'rgba(0, 0, 0, 0.6)' }}
+            className="w-full py-5 px-6 text-center bg-[#FFF9F8] dark:bg-[#2B2930] border text-slate-900 dark:text-[#E6E1E5] font-medium text-[17px] hover:bg-slate-50 dark:hover:bg-[#3A3840] transition-all active:scale-[0.99]"
+            style={{ borderColor: theme === 'dark' ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)' }}
           >
             + Add another task
           </button>
