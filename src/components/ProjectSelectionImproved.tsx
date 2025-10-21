@@ -127,7 +127,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             What did you work on?
           </h2>
           <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]">
-            Pick one or two projects — like "Website Redesign" or "Client Dashboard."
+          Select one or more projects you worked on today — for example, “Website Redesign” or “Client Dashboard”."
           </p>
         </div>
 
@@ -139,10 +139,18 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             // Dynamic styling based on selection and theme
             const getStyles = () => {
               if (isSelected) {
-                return {
-                  backgroundColor: '#FF8C42',
-                  borderColor: 'rgba(0, 0, 0, 0.6)',
-                  textColor: 'text-slate-900'
+                if (theme === 'dark') {
+                  return {
+                    backgroundColor: '#FFFFFF',
+                    borderColor: '#FD654F',
+                    textColor: 'text-black'
+                  }
+                } else {
+                  return {
+                    backgroundColor: '#FF8C42',
+                    borderColor: 'rgba(0, 0, 0, 0.6)',
+                    textColor: 'text-slate-900'
+                  }
                 }
               } else if (theme === 'dark') {
                 return {
@@ -183,7 +191,11 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
                   className="ml-3 p-1 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-all active:scale-90"
                   title="Delete project"
                 >
-                  <X size={20} className={`opacity-50 ${styles.textColor}`} strokeWidth={2.5} />
+                  <X 
+                    size={20} 
+                    className={`opacity-50 ${isSelected && theme === 'dark' ? 'text-black' : styles.textColor}`} 
+                    strokeWidth={2.5} 
+                  />
                 </button>
               </div>
             )
