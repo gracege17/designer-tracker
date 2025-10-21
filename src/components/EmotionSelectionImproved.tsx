@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { EmotionLevel, EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
+import { useTheme } from '../App'
 
 interface EmotionSelectionProps {
   selectedProjectIds: string[]
@@ -19,6 +20,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
   onBack
 }) => {
   const [selectedEmotions, setSelectedEmotions] = useState<EmotionLevel[]>(initialEmotion)
+  const { theme } = useTheme()
 
   const handleEmotionToggle = (emotion: EmotionLevel) => {
     setSelectedEmotions(prev => 
@@ -40,20 +42,20 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
     : null
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF9F8]">
+    <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-[#1C1B1F]">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] z-10 p-5 border-b border-slate-200">
+      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] z-10 p-5 border-b border-slate-200 dark:border-[#2B2930]">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-[#2B2930] rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
-            <ArrowLeft size={24} className="text-slate-900" />
+            <ArrowLeft size={24} className="text-slate-900 dark:text-[#E6E1E5]" />
           </button>
           
           {/* Current Project Name */}
           {currentProject && (
-            <span className="text-[16px] font-bold text-slate-900">{currentProject.name}</span>
+            <span className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">{currentProject.name}</span>
           )}
 
           <div className="w-10"></div>
@@ -64,10 +66,10 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
       <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
         {/* Title Section */}
         <div className="mb-8">
-          <h2 className="text-[32px] font-normal text-slate-900 mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h2 className="text-[32px] font-normal text-slate-900 dark:text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             How did it make you feel?
           </h2>
-          <p className="text-[16px] text-slate-700">
+          <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]">
             Pick as many as you'd like
           </p>
         </div>
@@ -85,8 +87,8 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
                 className={`
                   flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border
                   ${isSelected
-                    ? 'bg-[#FFD678] border-slate-900 scale-105'
-                    : 'bg-white border-slate-200 hover:border-slate-300 active:scale-95'
+                    ? 'bg-[#FFD678] dark:bg-[#FFD678] border-slate-900 dark:border-slate-900 scale-105'
+                    : 'bg-white dark:bg-[#2B2930] border-slate-200 dark:border-[#3A3840] hover:border-slate-300 dark:hover:border-[#4A4850] active:scale-95'
                   }
                 `}
                 style={{ borderRadius: '0 24px 0 0' }}
@@ -97,7 +99,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
                 </div>
 
                 {/* Label */}
-                <span className="text-[11px] font-medium text-slate-900 text-center leading-tight">
+                <span className="text-[11px] font-medium text-slate-900 dark:text-[#E6E1E5] text-center leading-tight">
                   {emotion.label}
                 </span>
               </button>
@@ -107,7 +109,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
       </main>
 
       {/* Sticky Bottom CTA */}
-      <footer className="sticky bottom-0 bg-[#FFF9F8] p-5">
+      <footer className="sticky bottom-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] p-5">
         <div className="max-w-md mx-auto">
           <button
             onClick={handleNext}

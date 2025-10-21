@@ -127,7 +127,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             What did you work on?
           </h2>
           <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]">
-          Select one or more projects you worked on today — for example, “Website Redesign” or “Client Dashboard”."
+          Select one or more projects you worked on today — for example, “Website Redesign” or “Client Dashboard”.
           </p>
         </div>
 
