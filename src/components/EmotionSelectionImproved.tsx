@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { EmotionLevel, EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
-import { useTheme } from '../App'
+import { useTheme } from '../context/ThemeContext'
 
 interface EmotionSelectionProps {
   selectedProjectIds: string[]
