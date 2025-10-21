@@ -5,8 +5,11 @@ import { DateUtils } from '../utils/dateUtils'
 import { getTodayDateString, getCurrentWeekEntries, getTotalTaskCount, getMostEnergizingTaskType } from '../utils/dataHelpers'
 import { ProjectStorage, UserProfileStorage } from '../utils/storage'
 import { generateSuggestions, getMotivationalQuote } from '../utils/suggestionEngine'
+import { generateDailySummary } from '../utils/aiSummaryService'
+import { getResourceRecommendation } from '../utils/resourceRecommendationService'
+import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
+import EmotionalRadarChart from './EmotionalRadarChart'
 import SuggestionsCard from './SuggestionsCard'
-import { fetchAiInsights, prepareTasksForAI, AIInsights } from '../utils/aiInsightsService'
 import { useTheme } from '../context/ThemeContext'
 
 interface DashboardProps {
@@ -22,25 +25,22 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   // Theme
   const { theme } = useTheme()
   
-  // AI Insights State
-  const [aiInsights, setAiInsights] = useState<AIInsights | null>(null)
-  const [isLoadingInsights, setIsLoadingInsights] = useState(false)
-  const [insightsError, setInsightsError] = useState<string | null>(null)
-  
-  // Expandable card state
-  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
-  
-  const toggleCard = (cardId: string) => {
-    setExpandedCards(prev => {
-      const newSet = new Set(prev)
-      if (newSet.has(cardId)) {
-        newSet.delete(cardId)
-      } else {
-        newSet.add(cardId)
-      }
-      return newSet
-    })
-  }
+  // AI Summary State
+  const [dailySummary, setDailySummary] = useState<string>('')
+  const [isLoadingSummary, setIsLoadingSummary] = useState(false)
+
+  // Resource Recommendation State
+  const [resourceRecommendation, setResourceRecommendation] = useState<{
+    quote?: string
+    resourceType: 'quote' | 'video' | 'article' | 'book'
+    resourceTitle: string
+    url: string
+    description?: string
+  } | null>(null)
+  const [isLoadingResource, setIsLoadingResource] = useState(false)
+
+  // Emotion Breakdown State
+  const [emotionBreakdown, setEmotionBreakdown] = useState<any>(null)
 
   // Get user profile
   const userProfile = UserProfileStorage.getUserProfile()
@@ -71,33 +71,56 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
     : 6
   const motivationalQuote = getMotivationalQuote(recentAvgEmotion)
 
-  // Fetch AI Insights on mount and when entries change
-  const loadAiInsights = async (forceRegenerate = false) => {
-    if (thisWeekEntries.length === 0) {
-      setAiInsights(null)
-      return
-    }
-
-    setIsLoadingInsights(true)
-    setInsightsError(null)
-
-    try {
-      // Prepare task data for AI (no project names - focus on task types)
-      const tasksForAI = prepareTasksForAI(thisWeekEntries)
-
-      const insights = await fetchAiInsights(tasksForAI, forceRegenerate)
-      setAiInsights(insights)
-    } catch (error) {
-      console.error('Failed to load AI insights:', error)
-      setInsightsError('Unable to generate insights right now')
-    } finally {
-      setIsLoadingInsights(false)
-    }
-  }
-
+  // Load daily summary
   useEffect(() => {
-    loadAiInsights()
-  }, [entries.length]) // Re-fetch when entries change
+    const loadDailySummary = async () => {
+      if (todayEntry && todayEntry.tasks.length > 0) {
+        setIsLoadingSummary(true)
+        try {
+          const summary = await generateDailySummary(todayEntry)
+          setDailySummary(summary)
+        } catch (error) {
+          console.error('Failed to load daily summary:', error)
+          setDailySummary("You had a productive day with a mix of creative and technical work. Keep up the great momentum!")
+        } finally {
+          setIsLoadingSummary(false)
+        }
+      } else {
+        setDailySummary("Ready to capture today's design journey? Add your first task to get a personalized summary!")
+      }
+    }
+
+    loadDailySummary()
+  }, [todayEntry])
+
+  // Load resource recommendation
+  useEffect(() => {
+    const loadResourceRecommendation = async () => {
+      setIsLoadingResource(true)
+      try {
+        const recommendation = await getResourceRecommendation(entries)
+        setResourceRecommendation(recommendation)
+      } catch (error) {
+        console.error('Failed to load resource recommendation:', error)
+        setResourceRecommendation({
+          resourceType: 'quote',
+          resourceTitle: 'Encouragement Quote',
+          url: '#',
+          quote: '"The only way to do great work is to love what you do." - Steve Jobs'
+        })
+      } finally {
+        setIsLoadingResource(false)
+      }
+    }
+
+    loadResourceRecommendation()
+  }, [entries])
+
+  // Calculate emotion breakdown
+  useEffect(() => {
+    const breakdown = calculateTodayEmotionBreakdown(todayEntry)
+    setEmotionBreakdown(breakdown)
+  }, [todayEntry])
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F] screen-transition">
@@ -112,424 +135,134 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </p>
         </div>
 
-        {/* Insight Cards - Always Show */}
-        {(() => {
-          // Get all tasks from history
-          const allTasks = entries.length > 0 ? entries.flatMap(entry => entry.tasks) : []
-          
-          // Debug logging
-          console.log('🏠 Dashboard Debug:')
-          console.log('- Total entries:', entries.length)
-          console.log('- Total tasks:', allTasks.length)
-          if (allTasks.length > 0) {
-            console.log('- Sample task:', allTasks[0])
-            console.log('- Sample task.emotion:', allTasks[0].emotion)
-            console.log('- Sample task.emotions:', allTasks[0].emotions)
-            console.log('- getEmotions result:', allTasks[0].emotions && allTasks[0].emotions.length > 0 ? allTasks[0].emotions : [allTasks[0].emotion])
-          }
-          
-          // Helper function to get emotions array from task
-          const getEmotions = (task: any): number[] => {
-            const emotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
-            // Convert to numbers in case they're stored as strings
-            return emotions.map((e: any) => typeof e === 'string' ? parseInt(e, 10) : e)
-          }
-          
-          // Group tasks by project with emotion counts
-          const projectEmotionMap = new Map<string, { projectId: string; emotions: EmotionLevel[] }>()
-          
-          allTasks.forEach(task => {
-            const taskEmotions = getEmotions(task)
-            const existing = projectEmotionMap.get(task.projectId)
-            if (existing) {
-              existing.emotions.push(...taskEmotions)
-            } else {
-              projectEmotionMap.set(task.projectId, {
-                projectId: task.projectId,
-                emotions: [...taskEmotions]
-              })
-            }
-          })
-          
-          console.log('🗂️ Project Emotion Map:', Array.from(projectEmotionMap.entries()).map(([id, data]) => ({
-            projectId: id,
-            emotionCount: data.emotions.length,
-            uniqueEmotions: [...new Set(data.emotions)]
-          })))
-          
-          // 1. What gave you energy - Happy (1), Excited (3), Energized (10), Satisfied (13), Proud (16)
-          const energyEmotions = [1, 3, 10, 13, 16]
-          console.log('⚡ Energy filter:', energyEmotions)
-          console.log('⚡ Projects with energy emotions:', Array.from(projectEmotionMap.values()).filter(p => p.emotions.some(e => energyEmotions.includes(e))).map(p => ({
-            projectId: p.projectId,
-            matchingEmotions: p.emotions.filter(e => energyEmotions.includes(e))
-          })))
-          
-          const energyProjects = Array.from(projectEmotionMap.values())
-            .filter(p => p.emotions.some(e => energyEmotions.includes(e)))
-            .sort((a, b) => {
-              const aCount = a.emotions.filter(e => energyEmotions.includes(e)).length
-              const bCount = b.emotions.filter(e => energyEmotions.includes(e)).length
-              return bCount - aCount
-            })
-            .slice(0, 3)
-          
-          // 2. What drained you - Sad (5), Anxious (6), Neutral (8), Tired (12), Annoyed (14), Drained (15)
-          const drainingEmotions = [5, 6, 8, 12, 14, 15]
-          const drainingProjects = Array.from(projectEmotionMap.values())
-            .filter(p => p.emotions.some(e => drainingEmotions.includes(e)))
-            .sort((a, b) => {
-              const aCount = a.emotions.filter(e => drainingEmotions.includes(e)).length
-              const bCount = b.emotions.filter(e => drainingEmotions.includes(e)).length
-              return bCount - aCount
-            })
-            .slice(0, 3)
-          
-          // 3. What felt meaningful - Calm (2), Nostalgic (9), Normal (11), Satisfied (13)
-          const meaningfulEmotions = [2, 9, 11, 13]
-          const meaningfulProjects = Array.from(projectEmotionMap.values())
-            .filter(p => p.emotions.some(e => meaningfulEmotions.includes(e)))
-            .sort((a, b) => {
-              const aCount = a.emotions.filter(e => meaningfulEmotions.includes(e)).length
-              const bCount = b.emotions.filter(e => meaningfulEmotions.includes(e)).length
-              return bCount - aCount
-            })
-            .slice(0, 3)
-          
-          // 4. What sparked your passion - Excited (3), Surprised (7), Energized (10), Proud (16)
-          const passionEmotions = [3, 7, 10, 16]
-          const passionProjects = Array.from(projectEmotionMap.values())
-            .filter(p => p.emotions.some(e => passionEmotions.includes(e)))
-            .sort((a, b) => {
-              const aCount = a.emotions.filter(e => passionEmotions.includes(e)).length
-              const bCount = b.emotions.filter(e => passionEmotions.includes(e)).length
-              return bCount - aCount
-            })
-            .slice(0, 3)
-          
-          // Debug logging for card data
-          console.log('📊 Card Data:')
-          console.log('- Energy projects:', energyProjects.length)
-          console.log('- Draining projects:', drainingProjects.length)
-          console.log('- Meaningful projects:', meaningfulProjects.length)
-          console.log('- Passion projects:', passionProjects.length)
-          
-          return (
-            <div className="space-y-4 mb-6">
-              {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
-              <div 
-                onClick={() => (aiInsights?.energy || energyProjects.length > 0) && toggleCard('energy')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
-                style={{ 
-                  borderRadius: '0 48px 0 0',
-                  background: theme === 'dark' 
-                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
-                    : 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
-                }}
-              >
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                    What Energized You
-                  </p>
-                  
-                  {isLoadingInsights ? (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
-                      Analyzing your week...
-                    </p>
-                  ) : aiInsights?.energy ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug italic">
-                        {aiInsights.energy.insight}
-                      </p>
-                      {expandedCards.has('energy') && aiInsights.energy.tasks.length > 0 && (
-                        <div className="space-y-1">
-                          {aiInsights.energy.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                              • {task}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                      {!expandedCards.has('energy') && aiInsights.energy.tasks.length > 0 && (
-                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
-                          See more
-                        </p>
-                      )}
-                    </>
-                  ) : energyProjects.length > 0 ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
-                        Creative tasks that involved visual thinking energized you.
-                      </p>
-                      {expandedCards.has('energy') && (
-                        <div className="space-y-1">
-                          {(() => {
-                            // Get tasks with energy emotions
-                            const energyTasks = allTasks
-                              .filter(task => {
-                                const emotions = getEmotions(task)
-                                return emotions.some(e => energyEmotions.includes(e))
-                              })
-                              .slice(0, 3)
-                            
-                            return energyTasks.map((task, index) => (
-                              <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                                • {task.description}
-                              </p>
-                            ))
-                          })()}
-                        </div>
-                      )}
-                      {!expandedCards.has('energy') && (
-                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
-                          See more
-                        </p>
-                      )}
-                    </>
-                  ) : (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
-                      Moments that energize you — hitting flow, breakthroughs, or pure fun.
-                    </p>
-                  )}
-                </div>
-              </div>
-              
-              {/* 2. What Drained You - Light Gray Gradient */}
-              <div 
-                onClick={() => (aiInsights?.drained || drainingProjects.length > 0) && toggleCard('drained')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
-                style={{ 
-                  borderRadius: '0 48px 0 0',
-                  background: theme === 'dark'
-                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
-                    : 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
-                }}
-              >
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                    What Drained You
-                  </p>
-                  
-                  {isLoadingInsights ? (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
-                      Analyzing your week...
-                    </p>
-                  ) : aiInsights?.drained ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug italic">
-                        {aiInsights.drained.insight}
-                      </p>
-                      {expandedCards.has('drained') && aiInsights.drained.tasks.length > 0 && (
-                        <div className="space-y-1">
-                          {aiInsights.drained.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                              • {task}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                      {!expandedCards.has('drained') && aiInsights.drained.tasks.length > 0 && (
-                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
-                          See more
-                        </p>
-                      )}
-                    </>
-                  ) : drainingProjects.length > 0 ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
-                        Tedious or repetitive tasks drained your creative energy.
-                      </p>
-                      {expandedCards.has('drained') && (
-                        <div className="space-y-1">
-                          {(() => {
-                            // Get tasks with draining emotions
-                            const drainingTasks = allTasks
-                              .filter(task => {
-                                const emotions = getEmotions(task)
-                                return emotions.some(e => drainingEmotions.includes(e))
-                              })
-                              .slice(0, 3)
-                            
-                            return drainingTasks.map((task, index) => (
-                              <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                                • {task.description}
-                              </p>
-                            ))
-                          })()}
-                        </div>
-                      )}
-                      {!expandedCards.has('drained') && (
-                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
-                          See more
-                        </p>
-                      )}
-                    </>
-                  ) : (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
-                      Tasks that drain you — tedious work, confusion, or feeling stuck.
-                    </p>
-                  )}
-                </div>
-              </div>
-              
-              {/* 3. What Felt Meaningful - Light Purple Gradient */}
-              <div 
-                onClick={() => (aiInsights?.meaningful || meaningfulProjects.length > 0) && toggleCard('meaningful')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
-                style={{ 
-                  borderRadius: '0 48px 0 0',
-                  background: theme === 'dark'
-                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
-                    : 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
-                }}
-              >
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                    What Felt Meaningful
-                  </p>
-                  
-                  {isLoadingInsights ? (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
-                      Analyzing your week...
-                    </p>
-                  ) : aiInsights?.meaningful ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug italic">
-                        {aiInsights.meaningful.insight}
-                      </p>
-                      {expandedCards.has('meaningful') && aiInsights.meaningful.tasks.length > 0 && (
-                        <div className="space-y-1">
-                          {aiInsights.meaningful.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                              • {task}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                      {!expandedCards.has('meaningful') && aiInsights.meaningful.tasks.length > 0 && (
-                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
-                          See more
-                        </p>
-                      )}
-                    </>
-                  ) : meaningfulProjects.length > 0 ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
-                        Work that felt purposeful and aligned with your values.
-                      </p>
-                      {expandedCards.has('meaningful') && (
-                        <div className="space-y-1">
-                          {(() => {
-                            // Get tasks with meaningful emotions
-                            const meaningfulTasks = allTasks
-                              .filter(task => {
-                                const emotions = getEmotions(task)
-                                return emotions.some(e => meaningfulEmotions.includes(e))
-                              })
-                              .slice(0, 3)
-                            
-                            return meaningfulTasks.map((task, index) => (
-                              <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                                • {task.description}
-                              </p>
-                            ))
-                          })()}
-                        </div>
-                      )}
-                      {!expandedCards.has('meaningful') && (
-                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
-                          See more
-                        </p>
-                      )}
-                    </>
-                  ) : (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
-                      Work that felt purposeful — making an impact, solving real problems, or growth.
-                    </p>
-                  )}
-                </div>
-              </div>
-              
-              {/* 4. What Sparked Passion - Orange Gradient */}
-              <div 
-                onClick={() => (aiInsights?.passion || passionProjects.length > 0) && toggleCard('passion')}
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
-                style={{ 
-                  borderRadius: '0 48px 0 0',
-                  background: theme === 'dark'
-                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
-                    : 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
-                }}
-              >
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                    What Excited You
-                  </p>
-                  
-                  {isLoadingInsights ? (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
-                      Analyzing your week...
-                    </p>
-                  ) : aiInsights?.passion ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug italic">
-                        {aiInsights.passion.insight}
-                      </p>
-                      {expandedCards.has('passion') && aiInsights.passion.tasks.length > 0 && (
-                        <div className="space-y-1">
-                          {aiInsights.passion.tasks.slice(0, 3).map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                              • {task}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                      {!expandedCards.has('passion') && aiInsights.passion.tasks.length > 0 && (
-                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
-                          See more
-                        </p>
-                      )}
-                    </>
-                  ) : passionProjects.length > 0 ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
-                        Exploratory and experimental tasks lit up your curiosity.
-                      </p>
-                      {expandedCards.has('passion') && (
-                        <div className="space-y-1">
-                          {(() => {
-                            // Get tasks with passion emotions
-                            const passionTasks = allTasks
-                              .filter(task => {
-                                const emotions = getEmotions(task)
-                                return emotions.some(e => passionEmotions.includes(e))
-                              })
-                              .slice(0, 3)
-                            
-                            return passionTasks.map((task, index) => (
-                              <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                                • {task.description}
-                              </p>
-                            ))
-                          })()}
-                        </div>
-                      )}
-                      {!expandedCards.has('passion') && (
-                        <p className="text-[13px] font-normal text-slate-900 dark:text-white underline">
-                          See more
-                        </p>
-                      )}
-                    </>
-                  ) : (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
-                      Tasks that ignited your creativity — exploring ideas, experimenting, or discovering.
-                    </p>
-                  )}
-                </div>
-              </div>
+        {/* AI Daily Summary Card */}
+        <div 
+          className="p-4 mb-6 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+          style={{ 
+            borderRadius: '0 48px 0 0',
+            background: theme === 'dark'
+              ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #A1C4FD 0%, #C2E9FB 103.78%)'
+              : 'linear-gradient(132deg, #A1C4FD 0%, #C2E9FB 103.78%)'
+          }}
+        >
+          <div className="flex flex-col items-start gap-3 w-full">
+            <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+              Today's Summary
+            </p>
+            
+            {isLoadingSummary ? (
+              <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
+                Analyzing your day...
+              </p>
+            ) : (
+              <p className="text-[18px] font-medium text-slate-900 dark:text-white leading-snug">
+                {dailySummary}
+              </p>
+            )}
+            
+            {todayEntry && todayEntry.tasks.length > 0 && (
+              <p className="text-[13px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
+                Based on {todayEntry.tasks.length} task{todayEntry.tasks.length !== 1 ? 's' : ''} logged today
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Emotional Radar Chart Card */}
+        {emotionBreakdown && (
+          <div 
+            className="p-4 mb-6 transition-all active:scale-[0.99] flex flex-col items-center self-stretch w-full" 
+            style={{ 
+              borderRadius: '0 48px 0 0',
+              background: theme === 'dark'
+                ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                : 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+            }}
+          >
+            <div className="flex flex-col items-start gap-3 w-full mb-4">
+              <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+                Today's Emotional Flow
+              </p>
+              <p className="text-[16px] font-medium text-slate-900 dark:text-white leading-snug">
+                How you felt across different moments
+              </p>
             </div>
-          )
-        })()}
+            
+            <div className="w-full h-64">
+              <EmotionalRadarChart emotionData={emotionBreakdown} />
+            </div>
+            
+            {emotionBreakdown.totalTasks > 0 && (
+              <p className="text-[13px] font-normal text-slate-900 dark:text-slate-200 opacity-70 mt-2">
+                Based on {emotionBreakdown.totalTasks} task{emotionBreakdown.totalTasks !== 1 ? 's' : ''} logged today
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Resource Recommendation Card */}
+        {resourceRecommendation && (
+          <div 
+            className="p-4 mb-6 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+            style={{ 
+              borderRadius: '0 48px 0 0',
+              background: theme === 'dark'
+                ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #FFD3A5 0%, #FD6585 103.78%)'
+                : 'linear-gradient(132deg, #FFD3A5 0%, #FD6585 103.78%)'
+            }}
+            onClick={() => {
+              if (resourceRecommendation.url && resourceRecommendation.url !== '#') {
+                window.open(resourceRecommendation.url, '_blank')
+              }
+            }}
+          >
+            <div className="flex flex-col items-start gap-3 w-full">
+              <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+                Resource Recommendation
+              </p>
+              
+              {isLoadingResource ? (
+                <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
+                  Finding the perfect resource...
+                </p>
+              ) : (
+                <>
+                  {resourceRecommendation.quote ? (
+                    <div className="w-full">
+                      <p className="text-[18px] font-medium text-slate-900 dark:text-white leading-snug italic mb-2">
+                        "{resourceRecommendation.quote}"
+                      </p>
+                      <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-80">
+                        {resourceRecommendation.resourceTitle}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="w-full">
+                      <p className="text-[18px] font-medium text-slate-900 dark:text-white leading-snug mb-2">
+                        {resourceRecommendation.resourceTitle}
+                      </p>
+                      {resourceRecommendation.description && (
+                        <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-80 mb-2">
+                          {resourceRecommendation.description}
+                        </p>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <span className="text-[12px] font-medium text-slate-900 dark:text-white bg-white dark:bg-slate-800 px-2 py-1 rounded-full">
+                          {resourceRecommendation.resourceType.toUpperCase()}
+                        </span>
+                        {resourceRecommendation.url !== '#' && (
+                          <span className="text-[12px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
+                            Tap to open
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Inspirational Quote Card */}
         {(() => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Home, Plus, BarChart2, Calendar, Settings } from 'lucide-react'
-import { Entry, EMOTIONS, TASK_TYPE_LABELS } from '../types'
+import { Entry, EMOTIONS, TASK_TYPE_LABELS, EmotionLevel } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { getCurrentWeekEntries, getCurrentMonthEntries, calculateAverageEmotion, getMostEnergizingTaskType, getMostDrainingTaskType } from '../utils/dataHelpers'
 import { useTheme } from '../context/ThemeContext'
@@ -178,56 +178,6 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   const weeklyData = getWeeklyEmotionalData()
   const monthlyData = getMonthlyCalendarData()
 
-  // Get top projects by emotion levels (from ALL history)
-  const getTopProjects = () => {
-    const projectEmotions: Record<string, number[]> = {}
-    
-    entries.forEach(entry => {
-      entry.tasks.forEach(task => {
-        if (!projectEmotions[task.projectId]) {
-          projectEmotions[task.projectId] = []
-        }
-        projectEmotions[task.projectId].push(task.emotion)
-      })
-    })
-
-    const projectAverages = Object.entries(projectEmotions).map(([projectId, emotions]) => ({
-      projectId,
-      averageEmotion: emotions.reduce((sum, emotion) => sum + emotion, 0) / emotions.length,
-      count: emotions.length
-    }))
-
-    // Sort all projects by different criteria and show top ones
-    
-    // Top Happy - just show projects with highest task count
-    const happy = [...projectAverages]
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 2)
-
-    // Top Frustrators - show projects with lowest average emotion (only if emotion is below 7)
-    const frustrators = projectAverages.length > 0
-      ? [...projectAverages]
-          .filter(p => p.averageEmotion < 7) // Only show if genuinely frustrating
-          .sort((a, b) => a.averageEmotion - b.averageEmotion)
-          .slice(0, 2)
-      : []
-
-    // Top Struggles - show middle emotion range projects
-    const struggles = projectAverages.length > 2
-      ? [...projectAverages]
-          .sort((a, b) => b.count - a.count)
-          .slice(0, 2)
-      : []
-
-    // Motivators not used anymore
-    const motivators: any[] = []
-
-    return { motivators, frustrators, struggles, happy }
-  }
-
-  const { motivators, frustrators, struggles, happy } = getTopProjects()
-
-  // No insight card needed anymore - we just show project cards
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F] screen-transition">
@@ -388,101 +338,266 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
           </div>
         )}
 
-        {/* What Sparked Passion - Orange Gradient */}
-          {happy.length > 0 && (
-            <div 
-              className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-              style={{ 
-                borderRadius: '0 48px 0 0',
-                background: theme === 'dark'
-                  ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
-                  : 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
-              }}
-            >
-              <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900 dark:text-white">What Excited You</p>
-                
-                <div className="space-y-1">
-                  {happy.slice(0, 3).map((happyMoment, index) => {
-                    const project = ProjectStorage.getProjectById(happyMoment.projectId)
-                    return (
-                      <p key={index} className="text-[20px] font-medium text-slate-900 dark:text-white leading-tight">
-                        {project?.name || 'Unknown Project'}
+        {/* Insight Cards - Moved from Dashboard */}
+        {(() => {
+          // Get all tasks from history
+          const allTasks = entries.length > 0 ? entries.flatMap(entry => entry.tasks) : []
+          
+          // Helper function to get emotions array from task
+          const getEmotions = (task: any): number[] => {
+            const emotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
+            // Convert to numbers in case they're stored as strings
+            return emotions.map((e: any) => typeof e === 'string' ? parseInt(e, 10) : e)
+          }
+          
+          // Group tasks by project with emotion counts
+          const projectEmotionMap = new Map<string, { projectId: string; emotions: EmotionLevel[] }>()
+          
+          allTasks.forEach(task => {
+            const taskEmotions = getEmotions(task)
+            const existing = projectEmotionMap.get(task.projectId)
+            if (existing) {
+              existing.emotions.push(...taskEmotions)
+            } else {
+              projectEmotionMap.set(task.projectId, {
+                projectId: task.projectId,
+                emotions: [...taskEmotions]
+              })
+            }
+          })
+          
+          // 1. What gave you energy - Happy (1), Excited (3), Energized (10), Satisfied (13), Proud (16)
+          const energyEmotions = [1, 3, 10, 13, 16]
+          const energyProjects = Array.from(projectEmotionMap.values())
+            .filter(p => p.emotions.some(e => energyEmotions.includes(e)))
+            .sort((a, b) => {
+              const aCount = a.emotions.filter(e => energyEmotions.includes(e)).length
+              const bCount = b.emotions.filter(e => energyEmotions.includes(e)).length
+              return bCount - aCount
+            })
+            .slice(0, 3)
+          
+          // 2. What drained you - Sad (5), Anxious (6), Neutral (8), Tired (12), Annoyed (14), Drained (15)
+          const drainingEmotions = [5, 6, 8, 12, 14, 15]
+          const drainingProjects = Array.from(projectEmotionMap.values())
+            .filter(p => p.emotions.some(e => drainingEmotions.includes(e)))
+            .sort((a, b) => {
+              const aCount = a.emotions.filter(e => drainingEmotions.includes(e)).length
+              const bCount = b.emotions.filter(e => drainingEmotions.includes(e)).length
+              return bCount - aCount
+            })
+            .slice(0, 3)
+          
+          // 3. What felt meaningful - Calm (2), Nostalgic (9), Normal (11), Satisfied (13)
+          const meaningfulEmotions = [2, 9, 11, 13]
+          const meaningfulProjects = Array.from(projectEmotionMap.values())
+            .filter(p => p.emotions.some(e => meaningfulEmotions.includes(e)))
+            .sort((a, b) => {
+              const aCount = a.emotions.filter(e => meaningfulEmotions.includes(e)).length
+              const bCount = b.emotions.filter(e => meaningfulEmotions.includes(e)).length
+              return bCount - aCount
+            })
+            .slice(0, 3)
+          
+          // 4. What sparked your passion - Excited (3), Surprised (7), Energized (10), Proud (16)
+          const passionEmotions = [3, 7, 10, 16]
+          const passionProjects = Array.from(projectEmotionMap.values())
+            .filter(p => p.emotions.some(e => passionEmotions.includes(e)))
+            .sort((a, b) => {
+              const aCount = a.emotions.filter(e => passionEmotions.includes(e)).length
+              const bCount = b.emotions.filter(e => passionEmotions.includes(e)).length
+              return bCount - aCount
+            })
+            .slice(0, 3)
+          
+          return (
+            <div className="space-y-4 mb-6">
+              {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
+              <div 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+                style={{ 
+                  borderRadius: '0 48px 0 0',
+                  background: theme === 'dark' 
+                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
+                    : 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
+                }}
+              >
+                <div className="flex flex-col items-start gap-3 w-full">
+                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+                    What Energized You
+                  </p>
+                  
+                  {energyProjects.length > 0 ? (
+                    <>
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
+                        Creative tasks that involved visual thinking energized you.
                       </p>
-                    )
-                  })}
+                      <div className="space-y-1">
+                        {(() => {
+                          // Get tasks with energy emotions
+                          const energyTasks = allTasks
+                            .filter(task => {
+                              const emotions = getEmotions(task)
+                              return emotions.some(e => energyEmotions.includes(e))
+                            })
+                            .slice(0, 3)
+                          
+                          return energyTasks.map((task, index) => (
+                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
+                              • {task.description}
+                            </p>
+                          ))
+                        })()}
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
+                      Moments that energize you — hitting flow, breakthroughs, or pure fun.
+                    </p>
+                  )}
                 </div>
-                
-                <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
-                  Projects that sparked excitement
-                </p>
+              </div>
+              
+              {/* 2. What Drained You - Light Gray Gradient */}
+              <div 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+                style={{ 
+                  borderRadius: '0 48px 0 0',
+                  background: theme === 'dark'
+                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                    : 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+                }}
+              >
+                <div className="flex flex-col items-start gap-3 w-full">
+                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+                    What Drained You
+                  </p>
+                  
+                  {drainingProjects.length > 0 ? (
+                    <>
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
+                        Tedious or repetitive tasks drained your creative energy.
+                      </p>
+                      <div className="space-y-1">
+                        {(() => {
+                          // Get tasks with draining emotions
+                          const drainingTasks = allTasks
+                            .filter(task => {
+                              const emotions = getEmotions(task)
+                              return emotions.some(e => drainingEmotions.includes(e))
+                            })
+                            .slice(0, 3)
+                          
+                          return drainingTasks.map((task, index) => (
+                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
+                              • {task.description}
+                            </p>
+                          ))
+                        })()}
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
+                      Tasks that drain you — tedious work, confusion, or feeling stuck.
+                    </p>
+                  )}
+                </div>
+              </div>
+              
+              {/* 3. What Felt Meaningful - Light Purple Gradient */}
+              <div 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+                style={{ 
+                  borderRadius: '0 48px 0 0',
+                  background: theme === 'dark'
+                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
+                    : 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
+                }}
+              >
+                <div className="flex flex-col items-start gap-3 w-full">
+                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+                    What Felt Meaningful
+                  </p>
+                  
+                  {meaningfulProjects.length > 0 ? (
+                    <>
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
+                        Work that felt purposeful and aligned with your values.
+                      </p>
+                      <div className="space-y-1">
+                        {(() => {
+                          // Get tasks with meaningful emotions
+                          const meaningfulTasks = allTasks
+                            .filter(task => {
+                              const emotions = getEmotions(task)
+                              return emotions.some(e => meaningfulEmotions.includes(e))
+                            })
+                            .slice(0, 3)
+                          
+                          return meaningfulTasks.map((task, index) => (
+                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
+                              • {task.description}
+                            </p>
+                          ))
+                        })()}
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
+                      Work that felt purposeful — making an impact, solving real problems, or growth.
+                    </p>
+                  )}
+                </div>
+              </div>
+              
+              {/* 4. What Sparked Passion - Orange Gradient */}
+              <div 
+                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+                style={{ 
+                  borderRadius: '0 48px 0 0',
+                  background: theme === 'dark'
+                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+                    : 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
+                }}
+              >
+                <div className="flex flex-col items-start gap-3 w-full">
+                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+                    What Excited You
+                  </p>
+                  
+                  {passionProjects.length > 0 ? (
+                    <>
+                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
+                        Exploratory and experimental tasks lit up your curiosity.
+                      </p>
+                      <div className="space-y-1">
+                        {(() => {
+                          // Get tasks with passion emotions
+                          const passionTasks = allTasks
+                            .filter(task => {
+                              const emotions = getEmotions(task)
+                              return emotions.some(e => passionEmotions.includes(e))
+                            })
+                            .slice(0, 3)
+                          
+                          return passionTasks.map((task, index) => (
+                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
+                              • {task.description}
+                            </p>
+                          ))
+                        })()}
+                      </div>
+                    </>
+                  ) : (
+                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
+                      Tasks that ignited your creativity — exploring ideas, experimenting, or discovering.
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-          )}
-
-          {/* What Felt Meaningful - Green Gradient */}
-          {frustrators.length > 0 && (
-            <div 
-              className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-              style={{ 
-                borderRadius: '0 48px 0 0',
-                background: theme === 'dark'
-                  ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%)'
-                  : 'linear-gradient(180deg, #DAE6E6 0%, #B8C6AD 100%)'
-              }}
-            >
-              <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900 dark:text-white">What Drained You</p>
-                
-                <div className="space-y-1">
-                  {frustrators.slice(0, 3).map((frustrator, index) => {
-                    const project = ProjectStorage.getProjectById(frustrator.projectId)
-                    return (
-                      <p key={index} className="text-[20px] font-medium text-slate-900 dark:text-white leading-tight">
-                        {project?.name || 'Unknown Project'}
-                      </p>
-                    )
-                  })}
-                </div>
-                
-                <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
-                  Projects that drained your energy
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* What Drained You - Light Gray Gradient */}
-          {struggles.length > 0 && (
-            <div 
-              className="p-4 mb-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full" 
-              style={{ 
-                borderRadius: '0 48px 0 0',
-                background: theme === 'dark'
-                  ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
-                  : 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
-              }}
-            >
-              <div className="flex flex-col items-start gap-3 w-full">
-                <p className="text-[12px] font-normal text-slate-900 dark:text-white">What Felt Meaningful</p>
-                
-                <div className="space-y-1">
-                  {struggles.slice(0, 3).map((struggle, index) => {
-                    const project = ProjectStorage.getProjectById(struggle.projectId)
-                    return (
-                      <p key={index} className="text-[20px] font-medium text-slate-900 dark:text-white leading-tight">
-                        {project?.name || 'Unknown Project'}
-                      </p>
-                    )
-                  })}
-                </div>
-                
-                <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
-                  Projects that made an impact
-                </p>
-              </div>
-            </div>
-          )}
+          )
+        })()}
       </main>
 
       {/* Bottom Navigation */}
