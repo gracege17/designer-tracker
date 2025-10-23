@@ -12,7 +12,9 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    host: true
+    strictPort: false,
+    // Workaround for macOS network interface error
+    host: false,
   }
 })
 

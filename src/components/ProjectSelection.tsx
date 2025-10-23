@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ArrowLeft, Plus, X } from 'lucide-react'
+import { CaretLeft, Plus, X } from 'phosphor-react'
 import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
@@ -85,10 +85,10 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
           onClick={onBack}
           className="p-2 hover:bg-slate-100 rounded-full transition-colors"
         >
-          <ArrowLeft size={20} className="text-slate-600" />
+          <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
         </button>
         <h1 className="text-xl font-semibold text-center flex-grow text-slate-900">
-          Today's Reflection
+          Week's Reflection
         </h1>
         <div className="w-8"></div>
       </header>
@@ -113,7 +113,7 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
                   className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-400 hover:bg-red-500 text-white flex items-center justify-center transition-all duration-200 hover:scale-110 z-10 shadow-sm"
                   title={`Delete ${project.name}`}
                 >
-                  <X size={12} />
+                  <X size={16} weight="bold" />
                 </button>
 
                 {isEditing ? (
@@ -173,7 +173,7 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
           onClick={onAddNewProject}
           className="flex items-center justify-center gap-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
         >
-          <Plus size={20} />
+          <Plus size={20} weight="bold" />
           <span>Add new project</span>
         </button>
       </main>

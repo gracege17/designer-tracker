@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { CaretLeft } from 'phosphor-react'
 import { ProjectStorage } from '../utils/storage'
 import FlowerProgress from './FlowerProgress'
 
@@ -8,13 +8,15 @@ interface TaskEntryProps {
   initialTaskDescription?: string
   onNext: (description: string) => void
   onBack: () => void
+  taskCount?: number
 }
 
 const TaskEntryImproved: React.FC<TaskEntryProps> = ({
   selectedProjectIds,
   initialTaskDescription = '',
   onNext,
-  onBack
+  onBack,
+  taskCount = 0
 }) => {
   const [description, setDescription] = useState(initialTaskDescription)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -50,23 +52,36 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
     : null
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-[#1C1B1F]">
+    <div className="flex flex-col min-h-screen bg-black">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] z-10 p-5 border-b border-slate-200 dark:border-[#49454F]">
-        <div className="max-w-md mx-auto flex items-center justify-between">
+      <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#49454F]">
+        <div className="max-w-md mx-auto grid grid-cols-3 items-center">
+          {/* Left: Back Button */}
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-[#2B2930] rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2 justify-self-start"
           >
-            <ArrowLeft size={24} className="text-slate-900 dark:text-[#E6E1E5]" />
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
           
-          {/* Current Project Name */}
+          {/* Center: Current Project Name */}
           {currentProject && (
-            <span className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">{currentProject.name}</span>
+            <span className="text-[16px] font-bold text-[#E6E1E5] text-center truncate px-2">{currentProject.name}</span>
           )}
 
-          <div className="w-10"></div>
+          {/* Right: Counter Badge */}
+          <div className="justify-self-end">
+            <div className="flex items-center gap-1.5">
+              <img 
+                src="/images/colored-flower.png" 
+                alt="flower" 
+                className="w-6 h-6"
+              />
+              <span className="text-sm font-medium text-[#E6E1E5]">
+                ({taskCount})
+              </span>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -77,10 +92,10 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
           {/* Flower Progress Tracker */}
           <FlowerProgress filledSteps={[true, true, false, false]} />
           
-          <h2 className="text-[32px] font-normal text-slate-900 dark:text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h2 className="text-[32px] font-normal text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             What did you work on for <span className="font-bold">{currentProject?.name}</span>?
           </h2>
-          <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]">
+          <p className="text-[16px] text-[#CAC4D0]">
             Describe what you accomplished today
           </p>
         </div>
@@ -92,12 +107,12 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder="e.g., Redesigned the homepage hero section and created 3 new component variants for the design system..."
-          className="w-full min-h-[140px] p-4 bg-white dark:bg-[#2B2930] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] placeholder:text-slate-400 dark:placeholder:text-[#938F99] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58] resize-none"
+          className="w-full min-h-[140px] p-4 bg-white/[0.04] border border-[#49454F] text-[#E6E1E5] placeholder:text-[#938F99] focus:outline-none focus:border-[#EC5429] resize-none"
         />
       </main>
 
       {/* Sticky Bottom CTA */}
-      <footer className="sticky bottom-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] p-5">
+      <footer className="sticky bottom-0 bg-black p-5">
         <div className="max-w-md mx-auto">
           <button
             onClick={handleNext}
@@ -105,8 +120,8 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
             className={`
               w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
               ${description.trim()
-                ? 'bg-[#F37E58] text-slate-900 dark:text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
-                : 'bg-slate-200 dark:bg-[#2B2930] text-slate-400 dark:text-[#938F99] cursor-not-allowed'
+                ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
+                : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed'
               }
             `}
           >

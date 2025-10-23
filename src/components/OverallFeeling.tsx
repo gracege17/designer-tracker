@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { CaretLeft } from 'phosphor-react'
 import FlowerProgress from './FlowerProgress'
 
 interface OverallFeelingProps {
@@ -10,19 +10,19 @@ interface OverallFeelingProps {
 const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) => {
   const [sliderValue, setSliderValue] = useState(50)
 
-  // Gradient colors from low to high
+  // Gradient colors from low to high (updated with new emotion colors)
   const gradientStops = [
-    { position: 0, color: '#E3E3E3' },
-    { position: 10, color: '#A69FAE' },
-    { position: 20, color: '#C7D1FF' },
-    { position: 30, color: '#BC7AFF' },
-    { position: 40, color: '#A1C4FD' },
-    { position: 50, color: '#C2E9FB' },
-    { position: 60, color: '#FFD3A5' },
-    { position: 70, color: '#FD6585' },
-    { position: 80, color: '#FFE27A' },
-    { position: 90, color: '#FF7B54' },
-    { position: 100, color: '#FA604D' }
+    { position: 0, color: '#E3E3E3' },   // Neutral
+    { position: 10, color: '#686A6C' },  // Transitioning to Drained
+    { position: 20, color: '#48484A' },  // Drained - low energy
+    { position: 30, color: '#7B6891' },  // Transitioning to Curious
+    { position: 40, color: '#AF52DE' },  // Curious - purple inspiration
+    { position: 50, color: '#C987DB' },  // Mid-tone between Curious and Meaningful
+    { position: 60, color: '#E5AB7C' },  // Transitioning to Meaningful
+    { position: 70, color: '#F4C95D' },  // Meaningful - golden purpose
+    { position: 80, color: '#F7904C' },  // Transitioning to Energized
+    { position: 90, color: '#FF2D55' },  // Energized - bright reddish-orange
+    { position: 100, color: '#EC5429' }  // Primary CTA color
   ]
 
   // Get current color based on slider value
@@ -80,17 +80,17 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
     .join(', ')
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F]">
+    <div className="min-h-screen flex flex-col bg-black">
       {/* Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] z-10 p-5 border-b border-slate-200 dark:border-[#49454F]">
+      <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#49454F]">
         <div className="max-w-md mx-auto flex items-center">
           <button 
             onClick={onBack}
-            className="mr-4 p-2 hover:bg-slate-100 dark:hover:bg-[#2B2930] rounded-full transition-colors"
+            className="mr-4 p-2 hover:bg-white/[0.04] rounded-full transition-colors"
           >
-            <ArrowLeft size={20} className="text-slate-900 dark:text-[#E6E1E5]" />
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
-          <h1 className="text-[18px] font-bold text-slate-900 dark:text-[#E6E1E5]">
+          <h1 className="text-[18px] font-bold text-[#E6E1E5]">
             How's your day so far?
           </h1>
         </div>
@@ -124,7 +124,7 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
               >
                 {label}
               </h2>
-              <p className="text-[16px] text-slate-600 dark:text-[#CAC4D0] transition-colors duration-600 ease-in-out">
+              <p className="text-[16px] text-[#CAC4D0] transition-colors duration-600 ease-in-out">
                 {description}
               </p>
             </div>
@@ -195,7 +195,7 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
             </div>
 
             {/* Range Labels */}
-            <div className="flex justify-between text-[12px] text-slate-500 dark:text-[#938F99] px-1">
+            <div className="flex justify-between text-[12px] text-[#938F99] px-1">
               <span>Low Energy</span>
               <span>High Energy</span>
             </div>
@@ -204,7 +204,7 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
           {/* Continue Button */}
           <button
             onClick={() => onComplete(sliderValue)}
-            className="w-full bg-[#F37E58] text-slate-900 dark:text-white py-5 px-6 font-medium text-[17px] hover:bg-[#E66A44] dark:hover:bg-[#AF4336] transition-all duration-200 active:scale-[0.98]"
+            className="w-full bg-[#EC5429] text-white py-5 px-6 font-medium text-[17px] hover:bg-[#F76538] transition-all duration-200 active:scale-[0.98]"
           >
             Continue
           </button>

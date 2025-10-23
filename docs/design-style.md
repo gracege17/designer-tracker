@@ -2,6 +2,8 @@
 
 *A comprehensive guide to maintain visual consistency across the app*
 
+**Theme: Dark Mode Only** - The app exclusively uses a dark theme based on Material Design 3 guidelines for a comfortable, focused experience.
+
 ---
 
 ## ✨ Design Philosophy
@@ -20,28 +22,46 @@
 
 ## 🎨 Color Palette
 
-### Primary Colors
+**Note: The app uses dark mode only, following Material Design 3 dark theme guidelines.**
+
+### Primary Colors (Dark Mode)
 ```css
-Background: #FEFBEA  /* Soft cream - main app background */
-Text: #5E5E5E       /* Gentle gray - primary text */
-CTA: #FFD678        /* Warm yellow - call-to-action buttons */
+Background: #1C1B1F  /* Main app background (Material 3 surface) */
+Text: #E6E1E5       /* Primary text (Material 3 on-surface) */
+CTA: #EC5429        /* Warm orange-red - call-to-action buttons */
+CTA Hover: #F76538  /* Lighter orange on hover */
 ```
 
-### Supporting Colors
+### Surface Colors (Material 3 Dark Theme)
 ```css
-White: #FFFFFF      /* Card backgrounds, input fields */
-Light Gray: #F5F5F5 /* Subtle backgrounds, borders */
-Medium Gray: #9E9E9E /* Secondary text, placeholders */
-Dark Gray: #3E3E3E   /* High contrast text, icons */
+Surface Base: #1C1B1F           /* Base surface */
+Surface Dim: #141218            /* Darker variant */
+Surface Container Low: #1D1B20  /* Low elevation cards */
+Surface Container: #211F26      /* Standard cards */
+Surface Container High: #2B2930 /* High elevation cards */
+Surface Container Highest: #36343B /* Highest elevation */
 ```
 
-### Emotion Colors (Soft & Cozy)
+### Text Colors (Material 3 Dark Theme)
 ```css
-Frustrated: #FFB3B3  /* Soft red - 😫 */
-Disappointed: #FFCC99 /* Soft orange - 😕 */
-Neutral: #E6E6E6     /* Light gray - 😐 */
-Satisfied: #B3E5D1   /* Soft green - 😊 */
-Energized: #FFE066   /* Soft yellow - 😍 */
+Primary Text: #E6E1E5    /* Main text, headings */
+Secondary Text: #CAC4D0  /* Supporting text, labels */
+Tertiary Text: #938F99   /* Helper text, placeholders */
+```
+
+### Border & Outline Colors
+```css
+Outline: #49454F      /* Borders, dividers */
+Outline Variant: #938F99 /* Subtle borders */
+```
+
+### Emotion Colors (Expressive & Meaningful)
+```css
+Energized:  #FF2D55  /* Bright reddish-orange - energetic and friendly ⚡ */
+Curious:    #AF52DE  /* Purple - conveys inspiration and exploration 🤔 */
+Drained:    #48484A  /* Dark grayish blue - represents low energy or fatigue 😫 */
+Meaningful: #F4C95D  /* Soft golden yellow - warm and purposeful 😍 */
+Neutral:    #E3E3E3  /* Light gray - neutral state 😐 */
 ```
 
 ### Project Colors (Warm Tones)

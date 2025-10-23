@@ -1,9 +1,0 @@
-<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Example custom settings icon - replace with your design -->
-  <circle cx="13" cy="13" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
-  <path d="M13 1V5M13 21V25M25 13H21M5 13H1M21.5 4.5L18.5 7.5M7.5 18.5L4.5 21.5M21.5 21.5L18.5 18.5M7.5 7.5L4.5 4.5" 
-        stroke="currentColor" 
-        stroke-width="2" 
-        stroke-linecap="round"/>
-</svg>
-

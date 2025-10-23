@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowLeft, Home, Plus, BarChart2, Calendar, Settings } from 'lucide-react'
+import { CaretLeft, HouseSimple, Plus, ChartBar, Notepad, GearSix } from 'phosphor-react'
 import { Entry, EMOTIONS } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { ProjectStorage } from '../utils/storage'
@@ -19,8 +19,8 @@ interface EntryDetailProps {
 const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, onDeleteTask, onNavigateHome, onNavigateAdd, onNavigateInsights, onNavigateHistory, onNavigateSettings }) => {
   if (!entry) {
     return (
-      <div className="flex items-center justify-center h-screen bg-[#FFF9F8] dark:bg-[#1C1B1F]">
-        <p className="text-slate-600 dark:text-[#CAC4D0]">No entry data available</p>
+      <div className="flex items-center justify-center h-screen bg-black">
+        <p className="text-[#CAC4D0]">No entry data available</p>
       </div>
     )
   }
@@ -30,24 +30,24 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
   
   if (!entry.tasks || entry.tasks.length === 0) {
     return (
-      <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-[#1C1B1F]">
-        <header className="sticky top-0 z-10 bg-[#FFF9F8] dark:bg-[#1C1B1F] border-b border-slate-200 dark:border-[#49454F] p-5">
+      <div className="flex flex-col min-h-screen bg-black">
+        <header className="sticky top-0 z-10 bg-black border-b border-[#49454F] p-5">
           <div className="max-w-md mx-auto flex items-center justify-between">
             <button
               onClick={onBack}
               className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
             >
-              <ArrowLeft size={24} className="text-slate-900" />
+              <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
             </button>
-            <h1 className="text-[18px] font-bold text-slate-900 dark:text-[#E6E1E5]">
+            <h1 className="text-[18px] font-bold text-[#E6E1E5]">
               Reflection Details
             </h1>
             <div className="w-10" />
           </div>
         </header>
         <div className="flex flex-col items-center justify-center flex-1 p-4">
-          <h3 className="text-xl font-semibold text-slate-900 dark:text-[#E6E1E5] mb-2">No tasks found</h3>
-          <p className="text-slate-600 dark:text-[#CAC4D0] text-center">
+          <h3 className="text-xl font-semibold text-[#E6E1E5] mb-2">No tasks found</h3>
+          <p className="text-[#CAC4D0] text-center">
             This reflection is empty.
           </p>
         </div>
@@ -65,15 +65,15 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
   })
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-[#1C1B1F]">
+    <div className="flex flex-col min-h-screen bg-black">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-10 bg-[#FFF9F8] dark:bg-[#1C1B1F] border-b border-slate-200 dark:border-[#49454F] p-5">
+      <header className="sticky top-0 z-10 bg-black border-b border-[#49454F] p-5">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button
             onClick={onBack}
             className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
-            <ArrowLeft size={24} className="text-slate-900" />
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
           <h1 className="text-[18px] font-bold text-slate-900">
             Reflection Details
@@ -86,11 +86,11 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
         {/* Date */}
         <div className="mb-6">
-          <h2 className="text-[28px] font-bold text-slate-900 dark:text-[#E6E1E5]">
+          <h2 className="text-[28px] font-bold text-[#E6E1E5]">
             {DateUtils.formatDate(DateUtils.parseLocalDate(entry.date))}
           </h2>
           {!isToday && (
-            <p className="text-[14px] text-slate-500 dark:text-[#938F99] mt-2">
+            <p className="text-[14px] text-[#938F99] mt-2">
               That day's already journaled into history. Let it chill.
             </p>
           )}
@@ -103,7 +103,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
           return (
             <div key={projectId} className="mb-6">
               {/* Project Name */}
-              <h3 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">
+              <h3 className="text-[16px] font-bold text-[#E6E1E5] mb-4">
                 {project?.name || 'Unknown Project'}
               </h3>
 
@@ -116,7 +116,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                   return (
                     <div 
                       key={task.id} 
-                      className={`bg-white dark:bg-[#2B2930] p-4 border border-slate-200 dark:border-[#49454F] transition-all ${
+                      className={`bg-white/[0.04] p-4 border border-[#49454F] transition-all ${
                         isToday 
                           ? 'cursor-pointer hover:shadow-md active:scale-[0.99]' 
                           : 'cursor-default opacity-75'
@@ -151,11 +151,11 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <p className="text-[16px] font-medium text-slate-900 dark:text-[#E6E1E5] mb-1 break-words">
+                          <p className="text-[16px] font-medium text-[#E6E1E5] mb-1 break-words">
                             {task.description}
                           </p>
                           {task.notes && (
-                            <p className="text-[14px] text-slate-600 dark:text-[#CAC4D0] italic break-words">
+                            <p className="text-[14px] text-[#CAC4D0] italic break-words">
                               "{task.notes}"
                             </p>
                           )}
@@ -171,23 +171,23 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#211F26] border-t border-slate-200 dark:border-[#49454F] z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-[#49454F] z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button 
             onClick={onNavigateHome}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <HouseSimple size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Home</p>
           </button>
 
           {/* Overview */}
           <button 
             onClick={onNavigateInsights}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <ChartBar size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Overview</p>
           </button>
 
@@ -196,26 +196,26 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white" />
+            <div className="bg-[#EC5429] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#F76538] active:scale-95 transition-all">
+              <Plus size={28} weight="bold" className="text-white" />
             </div>
           </button>
 
           {/* History */}
           <button 
             onClick={onNavigateHistory}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <Notepad size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">History</p>
           </button>
 
           {/* Settings */}
           <button 
             onClick={onNavigateSettings}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <GearSix size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>

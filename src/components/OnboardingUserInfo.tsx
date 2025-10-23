@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { User, Briefcase, Users, ArrowRight } from 'lucide-react'
+import { User, Briefcase, Users, CaretRight } from 'phosphor-react'
 import Button from './Button'
 import Input from './Input'
 
@@ -76,8 +76,8 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
       <div className="flex-grow px-6 py-8">
         {/* Icon */}
         <div className="mb-6">
-          <div className="w-16 h-16 bg-[#C7D1FF] flex items-center justify-center mx-auto" style={{ borderRadius: '0 16px 0 0' }}>
-            <User size={32} className="text-slate-900" />
+          <div className="w-16 h-16 bg-[#AF52DE] flex items-center justify-center mx-auto" style={{ borderRadius: '0 16px 0 0' }}>
+            <User size={32} weight="regular" className="text-slate-900" />
           </div>
         </div>
 
@@ -195,14 +195,14 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
         <button
           onClick={handleContinue}
           disabled={!name.trim() || !jobTitle.trim()}
-          className={`w-full bg-[#F37E58] text-slate-900 dark:text-white font-bold py-5 px-6 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 hover:bg-[#E66A44] dark:hover:bg-[#AF4336] ${
+          className={`w-full bg-[#EC5429] text-white font-bold py-5 px-6 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 hover:bg-[#F76538] ${
             !name.trim() || !jobTitle.trim()
               ? 'bg-[#999] cursor-not-allowed'
               : 'hover:bg-slate-900 active:scale-[0.98]'
           }`}
         >
           <span>Continue</span>
-          <ArrowRight size={20} />
+          <CaretRight size={20} weight="bold" />
         </button>
       </div>
     </div>

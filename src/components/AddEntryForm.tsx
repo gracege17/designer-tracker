@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { CaretLeft } from 'phosphor-react'
 import { TaskType, EmotionLevel, TASK_TYPE_LABELS, EMOTIONS, Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
 import Input from './Input'
+import FlowerFirework from './FlowerFirework'
 
 interface AddEntryFormProps {
   onSubmit: (entry: { 
@@ -32,6 +33,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
   const emotion = initialEmotion || undefined
   const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showFirework, setShowFirework] = useState(false)
 
   // Get selected projects from storage
   const selectedProjects = selectedProjectIds
@@ -56,8 +58,11 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
     if (project && taskName && taskType && emotion && !isSubmitting) {
       setIsSubmitting(true)
       
+      // Trigger firework celebration
+      setShowFirework(true)
+      
       // Add a small delay for better UX feedback
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 800))
       
       onSubmit({ 
         project, 
@@ -79,7 +84,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
             onClick={onCancel}
             className="p-2 hover:bg-slate-100 rounded-full transition-colors"
           >
-            <ArrowLeft size={20} className="text-slate-600" />
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
           <h1 className="text-2xl font-bold text-slate-900">
             Add New Reflection
@@ -206,6 +211,12 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
           className="w-full rounded-full font-bold"
         />
       </div>
+
+      {/* Flower Firework Celebration */}
+      <FlowerFirework 
+        isActive={showFirework}
+        onComplete={() => setShowFirework(false)}
+      />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { CaretLeft } from 'phosphor-react'
 import { EmotionLevel, EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
@@ -70,7 +70,7 @@ const EmotionSelection: React.FC<EmotionSelectionProps> = ({
           }}
           className="text-slate-900 p-1 hover:bg-slate-100 rounded-full transition-colors"
         >
-          <ArrowLeft size={24} />
+          <CaretLeft size={24} weight="bold" />
         </button>
         <h2 className="text-lg font-bold text-center text-slate-900 flex-1 -ml-6">
           {isMultipleProjects ? `${projectName} + ${selectedProjectIds.length - 1} more` : projectName}

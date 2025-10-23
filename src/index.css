@@ -152,6 +152,15 @@
   }
 }
 
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 @keyframes checkmark-draw {
   0% {
     stroke-dashoffset: 100;
@@ -173,29 +182,18 @@
   animation: slide-up-fade 0.4s ease-out;
 }
 
-/* Material Design 3 Dark Mode Colors */
-:root {
-  /* Light mode - Material 3 Light Theme */
-  --md-sys-color-primary: #F37E58;
-  --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-hover: #E66A44;
-  --md-sys-color-surface: #FFF9F8;
-  --md-sys-color-surface-container: #FFFFFF;
-  --md-sys-color-surface-container-low: #F5F5F5;
-  --md-sys-color-surface-container-high: #ECECEC;
-  --md-sys-color-on-surface: #1C1B1F;
-  --md-sys-color-on-surface-variant: #49454F;
-  --md-sys-color-outline: #E5E7EB;
-  --md-sys-color-outline-variant: #CAC4D0;
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
 }
 
-.dark {
+/* Material Design 3 Dark Mode Colors (Dark Mode Only) */
+:root {
   /* Dark mode - Material 3 Dark Theme */
   /* Reference: https://m3.material.io/styles/color/the-color-system/tokens */
-  --md-sys-color-primary: #F37E58;
+  --md-sys-color-primary: #EC5429;
   --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-hover: #FF9274;
-  --md-sys-color-surface: #1C1B1F;
+  --md-sys-color-primary-hover: #F76538;
+  --md-sys-color-surface: #000000;
   --md-sys-color-surface-dim: #141218;
   --md-sys-color-surface-bright: #3B383E;
   --md-sys-color-surface-container-lowest: #0F0D13;
@@ -207,50 +205,46 @@
   --md-sys-color-on-surface-variant: #CAC4D0;
   --md-sys-color-outline: #49454F;
   --md-sys-color-outline-variant: #938F99;
-  --md-sys-elevation-level1: rgba(243, 126, 88, 0.05);
-  --md-sys-elevation-level2: rgba(243, 126, 88, 0.08);
-  --md-sys-elevation-level3: rgba(243, 126, 88, 0.11);
+  --md-sys-elevation-level1: rgba(236, 84, 41, 0.05);
+  --md-sys-elevation-level2: rgba(236, 84, 41, 0.08);
+  --md-sys-elevation-level3: rgba(236, 84, 41, 0.11);
 }
 
-/* Custom styles for web app */
+/* Custom styles for web app (Dark Mode Only) */
 @layer base {
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
   
   body {
-    @apply bg-mono-50 text-mono-900;
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
     margin: 0;
     padding: 0;
     min-height: 100vh;
   }
 
-  body.dark {
-    background-color: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
-  }
-
   #root {
-    @apply min-h-screen flex justify-center bg-mono-50;
-  }
-  
-  .dark #root {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
     background-color: var(--md-sys-color-surface);
   }
 }
 
-/* App container styles */
+/* App container styles (Dark Mode Only) */
 @layer components {
   .app-container {
-    @apply w-full max-w-md mx-auto bg-mono-50 min-h-screen;
+    width: 100%;
+    max-width: 28rem;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--md-sys-color-surface);
+    min-height: 100vh;
   }
   
+  /* Material 3 Elevation Shadows - Dark Mode */
   .soft-shadow {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  }
-  
-  /* Material 3 Elevation Shadows */
-  .dark .soft-shadow {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 
                 0 1px 3px 1px rgba(0, 0, 0, 0.15);
   }

@@ -1,15 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { TodayEmotionData, getEmotionColor } from '../utils/emotionBreakdownService'
-import { useTheme } from '../context/ThemeContext'
+import { TodayEmotionData } from '../utils/emotionBreakdownService'
 
 interface TodayEmotionRadarBlobProps {
   emotionData: TodayEmotionData
+  showLabels?: boolean // Show grid, axis, and labels (default: true)
+  taskCount?: number // Number of tasks contributing to this data
+  view?: 'today' | 'weekly' | 'monthly' // Time period view
 }
 
-const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ emotionData }) => {
-  const { theme } = useTheme()
+const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ 
+  emotionData, 
+  showLabels = true,
+  taskCount = 10, // Default to medium count
+  view = 'today' // Default to today view
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [isHovered, setIsHovered] = useState(false)
   
   // Animation state for subtle breathing
   const [breathingScale, setBreathingScale] = useState(1)
@@ -18,14 +23,58 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ emotionDa
   // Emotion labels
   const emotionLabels = ['Calm', 'Happy', 'Excited', 'Frustrated', 'Anxious']
   
-  // Emotion colors with gradients
+  // Emotion colors with gradients (matching app design)
   const emotionColors = {
-    calm: { primary: '#4A90E2', secondary: '#87CEEB' },      // Soft blue gradient
-    happy: { primary: '#F5A623', secondary: '#FFD700' },     // Warm orange gradient
-    excited: { primary: '#E91E63', secondary: '#FF69B4' },  // Pink gradient
-    frustrated: { primary: '#D32F2F', secondary: '#FF6B6B' }, // Muted red gradient
-    anxious: { primary: '#9C27B0', secondary: '#BA68C8' },   // Purple gradient
-    neutral: { primary: '#757575', secondary: '#9E9E9E' }   // Gray gradient
+    calm: { primary: '#AF52DE', secondary: '#C77FE8' },      // Curious purple
+    happy: { primary: '#F4C95D', secondary: '#F7D87F' },     // Meaningful golden
+    excited: { primary: '#FF2D55', secondary: '#FF5A7A' },  // Energized pink/red
+    frustrated: { primary: '#48484A', secondary: '#6B6B6D' }, // Drained gray
+    anxious: { primary: '#AF52DE', secondary: '#C77FE8' },   // Curious purple
+    neutral: { primary: '#938F99', secondary: '#B0ACB6' }   // Outline variant gray
+  }
+
+  /**
+   * Calculate visual scale factor based on task count and view period.
+   * 
+   * Strategy:
+   * - Low task counts (1-10): Apply significant boost for visual presence
+   * - Medium counts (10-30): Gradual transition to accurate representation
+   * - High counts (30+): Minimal boost, show accurate proportions
+   * 
+   * Different thresholds for different views:
+   * - Today: Boost up to 5-10 tasks
+   * - Weekly: Boost up to 15-20 tasks
+   * - Monthly: Boost up to 25-35 tasks
+   */
+  const getVisualScaleFactor = (taskCount: number, view: 'today' | 'weekly' | 'monthly'): number => {
+    // Define thresholds based on view
+    const thresholds = {
+      today: { low: 5, medium: 15, high: 25 },
+      weekly: { low: 10, medium: 25, high: 40 },
+      monthly: { low: 20, medium: 40, high: 60 }
+    }
+    
+    const t = thresholds[view]
+    
+    // Base scale factor (minimum boost for visual presence)
+    const minScale = 1.5  // 50% boost for very sparse data
+    const maxScale = 1.0  // No boost for abundant data
+    
+    if (taskCount <= t.low) {
+      // Very sparse: significant boost (1.5x - 1.3x)
+      return minScale - (minScale - 1.3) * (taskCount / t.low)
+    } else if (taskCount <= t.medium) {
+      // Transitioning: gradual reduction (1.3x - 1.1x)
+      const progress = (taskCount - t.low) / (t.medium - t.low)
+      return 1.3 - 0.2 * progress
+    } else if (taskCount <= t.high) {
+      // Approaching accurate: minimal boost (1.1x - 1.0x)
+      const progress = (taskCount - t.medium) / (t.high - t.medium)
+      return 1.1 - 0.1 * progress
+    } else {
+      // Abundant data: show accurate proportions
+      return maxScale
+    }
   }
 
   // Subtle breathing animation for blob only
@@ -80,7 +129,7 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ emotionDa
   }
 
   // Draw contour lines for depth
-  const drawContourLines = (ctx: CanvasRenderingContext2D, points: { x: number; y: number }[], maxRadius: number) => {
+  const drawContourLines = (ctx: CanvasRenderingContext2D, points: { x: number; y: number }[]) => {
     const colors = emotionColors[emotionData.mainEmotion as keyof typeof emotionColors] || emotionColors.neutral
     
     // Draw 3 contour lines at different scales
@@ -101,44 +150,6 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ emotionDa
     }
   }
 
-  // Draw polygon with slightly rounded corners
-  const drawRoundedPolygon = (ctx: CanvasRenderingContext2D, points: { x: number; y: number }[]) => {
-    if (points.length < 3) return
-
-    ctx.beginPath()
-    
-    // Start with the first point
-    ctx.moveTo(points[0].x, points[0].y)
-    
-    // Draw lines between points with slight rounding
-    for (let i = 0; i < points.length; i++) {
-      const current = points[i]
-      const next = points[(i + 1) % points.length]
-      
-      // Add slight rounding at corners
-      const cornerRadius = 3
-      const dx = next.x - current.x
-      const dy = next.y - current.y
-      const distance = Math.sqrt(dx * dx + dy * dy)
-      
-      if (distance > cornerRadius * 2) {
-        const ratio = cornerRadius / distance
-        const x1 = current.x + dx * ratio
-        const y1 = current.y + dy * ratio
-        const x2 = next.x - dx * ratio
-        const y2 = next.y - dy * ratio
-        
-        ctx.lineTo(x1, y1)
-        ctx.quadraticCurveTo(next.x, next.y, x2, y2)
-      } else {
-        ctx.lineTo(next.x, next.y)
-      }
-    }
-    
-    // Close the path
-    ctx.closePath()
-  }
-
   // Draw the organic emotion blob
   const drawChart = () => {
     const canvas = canvasRef.current
@@ -150,7 +161,7 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ emotionDa
     const { width, height } = canvas
     const centerX = width / 2
     const centerY = height / 2
-    const maxRadius = Math.min(width, height) * 0.35
+    const maxRadius = Math.min(width, height) * 0.7
     
     // Clear canvas (transparent background)
     ctx.clearRect(0, 0, width, height)
@@ -159,7 +170,7 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ emotionDa
     ctx.save()
     ctx.translate(centerX, centerY)
 
-    // Calculate points for each emotion
+    // Calculate points for each emotion with dynamic scaling
     const points: { x: number; y: number }[] = []
     const data = [
       emotionData.breakdown.calm,
@@ -169,53 +180,79 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ emotionDa
       emotionData.breakdown.anxious
     ]
 
+    // Get visual scale factor based on task count and view
+    const scaleFactor = getVisualScaleFactor(taskCount, view)
+    
+    // Minimum visual value for zero or very small emotions (for visibility)
+    const MIN_VISUAL_VALUE = 0.08
+    
+    // Optional: For normalized view, calculate: const maxEmotionValue = Math.max(...data, 0.01)
+    // Then normalize each value: rawValue / maxEmotionValue
+    
     for (let i = 0; i < 5; i++) {
       const angle = (i * Math.PI * 2) / 5 - Math.PI / 2 // Start from top
-      const radius = data[i] * maxRadius
+      
+      // Get raw emotion value
+      const rawValue = data[i]
+      
+      // Apply minimum for zero/very small values, otherwise use actual value
+      let visualValue = rawValue < MIN_VISUAL_VALUE ? MIN_VISUAL_VALUE : rawValue
+      
+      // Apply scale factor to amplify sparse data (affects all values proportionally)
+      visualValue = Math.min(visualValue * scaleFactor, 1.0)
+      
+      // Calculate radius
+      const radius = visualValue * maxRadius
+
       const x = Math.cos(angle) * radius
       const y = Math.sin(angle) * radius
       points.push({ x, y })
     }
 
-    // Draw static grid (very light) - NO ANIMATION
-    ctx.strokeStyle = theme === 'dark' ? '#2A2A2A' : '#F0F0F0'
-    ctx.lineWidth = 0.3
-    for (let i = 1; i <= 4; i++) {
-      ctx.beginPath()
-      ctx.arc(0, 0, (maxRadius * i) / 4, 0, Math.PI * 2)
-      ctx.stroke()
-    }
+    // Draw static grid, axis, and labels only if showLabels is true
+    if (showLabels) {
+      // Draw static grid (very light) - NO ANIMATION (Dark mode only)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)' // Subtle white lines
+      ctx.lineWidth = 0.5
+      for (let i = 1; i <= 4; i++) {
+        ctx.beginPath()
+        ctx.arc(0, 0, (maxRadius * i) / 4, 0, Math.PI * 2)
+        ctx.stroke()
+      }
 
-    // Draw static axis lines - NO ANIMATION
-    for (let i = 0; i < 5; i++) {
-      const angle = (i * Math.PI * 2) / 5 - Math.PI / 2
-      ctx.beginPath()
-      ctx.moveTo(0, 0)
-      ctx.lineTo(Math.cos(angle) * maxRadius, Math.sin(angle) * maxRadius)
-      ctx.stroke()
-    }
+      // Draw static axis lines - NO ANIMATION
+      for (let i = 0; i < 5; i++) {
+        const angle = (i * Math.PI * 2) / 5 - Math.PI / 2
+        ctx.beginPath()
+        ctx.moveTo(0, 0)
+        ctx.lineTo(Math.cos(angle) * maxRadius, Math.sin(angle) * maxRadius)
+        ctx.stroke()
+      }
 
-    // Draw static emotion labels - NO ANIMATION
-    ctx.fillStyle = theme === 'dark' ? '#888888' : '#666666'
-    ctx.font = '10px Inter, sans-serif'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    
-    for (let i = 0; i < 5; i++) {
-      const angle = (i * Math.PI * 2) / 5 - Math.PI / 2
-      const labelRadius = maxRadius + 20
-      const x = Math.cos(angle) * labelRadius
-      const y = Math.sin(angle) * labelRadius
+      // Draw static emotion labels - NO ANIMATION (Dark mode only)
+      ctx.fillStyle = '#CAC4D0' // Material Design 3 on-surface-variant
+      ctx.font = '11px Inter, sans-serif'
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
       
-      ctx.fillText(emotionLabels[i], x, y)
+      for (let i = 0; i < 5; i++) {
+        const angle = (i * Math.PI * 2) / 5 - Math.PI / 2
+        const labelRadius = maxRadius + 20
+        const x = Math.cos(angle) * labelRadius
+        const y = Math.sin(angle) * labelRadius
+        
+        ctx.fillText(emotionLabels[i], x, y)
+      }
     }
 
     // Draw animated blob with breathing effect
     ctx.save()
     ctx.scale(breathingScale, breathingScale) // Apply breathing animation only to blob
     
-    // Draw contour lines for depth (animated with blob)
-    drawContourLines(ctx, points, maxRadius)
+    // Draw contour lines for depth (animated with blob) - only if showLabels is true
+    if (showLabels) {
+      drawContourLines(ctx, points)
+    }
 
     // Draw main organic blob with gradient fill (animated)
     const colors = emotionColors[emotionData.mainEmotion as keyof typeof emotionColors] || emotionColors.neutral
@@ -243,17 +280,18 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ emotionDa
   // Redraw chart when data or animation changes
   useEffect(() => {
     drawChart()
-  }, [emotionData, breathingScale, ripplePhase, theme])
+  }, [emotionData, breathingScale, ripplePhase, showLabels, taskCount, view])
+
+  // Use smaller dimensions when labels are hidden for compact view
+  const canvasSize = showLabels ? 300 : 160
+  const containerHeight = showLabels ? 'h-64' : 'h-full'
 
   return (
-    <div className="relative w-full h-64 flex items-center justify-center">
+    <div className={`relative w-full ${containerHeight} flex items-center justify-center`}>
       <canvas
         ref={canvasRef}
-        width={300}
-        height={300}
-        className="cursor-pointer"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        width={canvasSize}
+        height={canvasSize}
       />
     </div>
   )

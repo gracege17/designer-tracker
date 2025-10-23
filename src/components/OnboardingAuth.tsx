@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mail, Chrome, Facebook } from 'lucide-react'
+import { EnvelopeSimple, GoogleChromeLogo, FacebookLogo } from 'phosphor-react'
 import Button from './Button'
 
 interface OnboardingAuthProps {
@@ -46,7 +46,7 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
             onClick={onContinueWithGoogle}
             className="w-full bg-white text-slate-900 font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 border border-slate-200 hover:bg-slate-50 active:scale-[0.98]"
           >
-            <Chrome size={24} className="text-blue-600" />
+            <GoogleChromeLogo size={24} weight="regular" className="text-blue-600" />
             <span>Continue with Google</span>
           </button>
 
@@ -55,16 +55,16 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
             onClick={onContinueWithFacebook}
             className="w-full bg-[#1877F2] text-white font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-[#1565D8] active:scale-[0.98]"
           >
-            <Facebook size={24} fill="white" />
+            <FacebookLogo size={24} weight="fill" className="text-white" />
             <span>Continue with Facebook</span>
           </button>
 
           {/* Email Sign In */}
           <button
             onClick={onContinueWithEmail}
-            className="w-full bg-[#F37E58] text-slate-900 dark:text-white font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]"
+            className="w-full bg-[#EC5429] text-white font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-[#F76538] active:scale-[0.98]"
           >
-            <Mail size={24} />
+            <EnvelopeSimple size={24} weight="regular" />
             <span>Continue with Email</span>
           </button>
         </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Sparkles } from 'lucide-react';
+import { CheckCircle, Sparkle } from 'phosphor-react';
 
 interface SuccessToastProps {
   message: string;
@@ -39,9 +39,9 @@ export const SuccessToast: React.FC<SuccessToastProps> = ({
           transition-opacity duration-400
         `}
       >
-        <CheckCircle className="w-6 h-6 text-mono-50 flex-shrink-0" />
+        <CheckCircle className="w-6 h-6 text-mono-50 flex-shrink-0" weight="regular" />
         <p className="font-normal text-base flex-1">{message}</p>
-        <Sparkles className="w-5 h-5 text-mono-50 flex-shrink-0 animate-pulse" />
+        <Sparkle className="w-5 h-5 text-mono-50 flex-shrink-0 animate-pulse" weight="fill" />
       </div>
     </div>
   );
@@ -97,7 +97,7 @@ export const SuccessCheckmark: React.FC<{ show: boolean }> = ({ show }) => {
   return (
     <div className="inline-flex items-center justify-center success-pop">
       <div className="relative">
-        <CheckCircle className="w-16 h-16 text-mono-900" strokeWidth={2} />
+        <CheckCircle className="w-16 h-16 text-mono-900" weight="regular" />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-12 h-12 rounded-full bg-mono-900/10 animate-ping" />
         </div>

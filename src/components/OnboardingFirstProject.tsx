@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Palette, ArrowRight, Plus, X, Send } from 'lucide-react'
+import { Palette, CaretRight, Plus, X, PaperPlaneRight } from 'phosphor-react'
 import Button from './Button'
 import Input from './Input'
 import { PROJECT_COLORS } from '../types'
@@ -248,7 +248,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
             style={{ borderRadius: '50%' }}
             aria-label="Send message"
           >
-            <Send size={20} />
+            <PaperPlaneRight size={20} weight="bold" />
           </button>
         </div>
       </div>

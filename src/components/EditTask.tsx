@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { CaretLeft } from 'phosphor-react'
 import { Task, EmotionLevel, EMOTIONS, Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
@@ -59,7 +59,7 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
             onClick={onCancel}
             className="p-2 hover:bg-slate-100 rounded-full transition-colors"
           >
-            <ArrowLeft size={24} className="text-slate-900" />
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
           <h1 className="text-lg font-bold text-slate-900 flex-1 text-center">
             Edit Task

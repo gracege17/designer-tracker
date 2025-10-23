@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { ArrowLeft, Download, Trash2, Mail, Moon, Sun, Home, Plus, BarChart2, Calendar, Settings as SettingsIcon } from 'lucide-react'
+import { CaretLeft, DownloadSimple, Trash, EnvelopeSimple, HouseSimple, Plus, ChartBar, Notepad, GearSix } from 'phosphor-react'
 import { UserProfileStorage, EntryStorage, ProjectStorage } from '../utils/storage'
-import { useTheme } from '../context/ThemeContext'
 
 interface SettingsProps {
   onBack: () => void
@@ -18,13 +17,10 @@ const Settings: React.FC<SettingsProps> = ({
   onNavigateInsights,
   onNavigateHistory
 }) => {
-  const { theme, toggleTheme } = useTheme()
   const userProfile = UserProfileStorage.getUserProfile()
   const [name, setName] = useState(userProfile?.name || '')
   const [reminderTime, setReminderTime] = useState('19:00')
   const [isEditingName, setIsEditingName] = useState(false)
-  
-  const isDarkMode = theme === 'dark'
 
   const handleSaveName = () => {
     if (name.trim() && userProfile) {
@@ -150,13 +146,20 @@ const Settings: React.FC<SettingsProps> = ({
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F]">
+    <div className="min-h-screen flex flex-col bg-black">
       {/* Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] z-10 p-5 border-b border-slate-200 dark:border-[#49454F]">
-        <div className="max-w-md mx-auto flex items-center justify-center">
-          <h1 className="text-[18px] font-bold text-slate-900 dark:text-[#E6E1E5]">
+      <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#49454F]">
+        <div className="max-w-md mx-auto flex items-center justify-between">
+          <button 
+            onClick={onBack}
+            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2"
+          >
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
+          </button>
+          <h1 className="text-[18px] font-bold text-[#E6E1E5]">
             Settings
           </h1>
+          <div className="w-10"></div>
         </div>
       </header>
 
@@ -164,21 +167,21 @@ const Settings: React.FC<SettingsProps> = ({
       <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
         {/* Daily Reminder Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">Daily Reminder</h2>
-          <div className="p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
+          <h2 className="text-[16px] font-bold text-[#E6E1E5] mb-4">Daily Reminder</h2>
+          <div className="p-5 border border-[#49454F] bg-white/[0.04]" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block mb-3">
-              <span className="text-[14px] font-medium text-slate-700 dark:text-[#CAC4D0] mb-2 block">
+              <span className="text-[14px] font-medium text-[#CAC4D0] mb-2 block">
                 Reminder Time
               </span>
               <input
                 type="time"
                 value={reminderTime}
                 onChange={(e) => setReminderTime(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 dark:bg-[#211F26] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58]"
+                className="w-full px-4 py-3 bg-[#211F26] border border-[#49454F] text-[#E6E1E5] focus:outline-none focus:border-[#EC5429]"
                 style={{ borderRadius: '0 12px 0 0' }}
               />
             </label>
-            <p className="text-[13px] text-slate-600 dark:text-[#938F99]">
+            <p className="text-[13px] text-[#938F99]">
               Remind me to reflect at {reminderTime}
             </p>
           </div>
@@ -186,10 +189,10 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* Account Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">Account</h2>
-          <div className="p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
+          <h2 className="text-[16px] font-bold text-[#E6E1E5] mb-4">Account</h2>
+          <div className="p-5 border border-[#49454F] bg-white/[0.04]" style={{ borderRadius: '0 24px 0 0' }}>
             <label className="block">
-              <span className="text-[14px] font-medium text-slate-700 dark:text-[#CAC4D0] mb-2 block">
+              <span className="text-[14px] font-medium text-[#CAC4D0] mb-2 block">
                 Your Name
               </span>
               {isEditingName ? (
@@ -207,21 +210,21 @@ const Settings: React.FC<SettingsProps> = ({
                       }
                     }}
                     autoFocus
-                    className="flex-1 px-4 py-3 bg-slate-50 dark:bg-[#211F26] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] focus:outline-none focus:border-slate-400 dark:focus:border-[#F37E58]"
+                    className="flex-1 px-4 py-3 bg-[#211F26] border border-[#49454F] text-[#E6E1E5] focus:outline-none focus:border-[#EC5429]"
                     style={{ borderRadius: '0 12px 0 0' }}
                   />
                 </div>
               ) : (
                 <div 
                   onClick={() => setIsEditingName(true)}
-                  className="px-4 py-3 bg-slate-50 dark:bg-[#211F26] border border-slate-200 dark:border-[#49454F] text-slate-900 dark:text-[#E6E1E5] cursor-pointer hover:bg-slate-100 dark:hover:bg-[#2B2930] transition-colors"
+                  className="px-4 py-3 bg-[#211F26] border border-[#49454F] text-[#E6E1E5] cursor-pointer hover:bg-white/[0.04] transition-colors"
                   style={{ borderRadius: '0 12px 0 0' }}
                 >
                   {name || 'Tap to set your name'}
                 </div>
               )}
             </label>
-            <p className="text-[13px] text-slate-600 dark:text-[#938F99] mt-3">
+            <p className="text-[13px] text-[#938F99] mt-3">
               Used for personalized greetings
             </p>
           </div>
@@ -229,22 +232,22 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* Data Control Section */}
         <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">Data Control</h2>
+          <h2 className="text-[16px] font-bold text-[#E6E1E5] mb-4">Data Control</h2>
           
           {/* Export Data */}
           <button
             onClick={handleExportData}
-            className="w-full p-5 mb-3 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 mb-3 border border-[#49454F] bg-white/[0.04] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#211F26] flex items-center justify-center">
-                  <Download size={20} className="text-slate-700 dark:text-[#CAC4D0]" />
+                <div className="w-10 h-10 rounded-full bg-[#211F26] flex items-center justify-center">
+                  <DownloadSimple size={20} weight="regular" className="text-[#CAC4D0]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Export data</p>
-                  <p className="text-[13px] text-slate-600 dark:text-[#938F99]">Download as JSON</p>
+                  <p className="text-[16px] font-bold text-[#E6E1E5]">Export data</p>
+                  <p className="text-[13px] text-[#938F99]">Download as JSON</p>
                 </div>
               </div>
             </div>
@@ -253,17 +256,17 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Check Data Integrity */}
           <button
             onClick={handleCheckDataIntegrity}
-            className="w-full p-5 mb-3 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 mb-3 border border-[#49454F] bg-white/[0.04] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-[#211F26] flex items-center justify-center">
-                  <SettingsIcon size={20} className="text-blue-600 dark:text-[#A1C4FD]" />
+                <div className="w-10 h-10 rounded-full bg-[#211F26] flex items-center justify-center">
+                  <GearSix size={20} weight="regular" className="text-[#AF52DE]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Check for Issues</p>
-                  <p className="text-[13px] text-slate-600 dark:text-[#938F99]">Scan and repair broken links</p>
+                  <p className="text-[16px] font-bold text-[#E6E1E5]">Check for Issues</p>
+                  <p className="text-[13px] text-[#938F99]">Scan and repair broken links</p>
                 </div>
               </div>
             </div>
@@ -272,67 +275,37 @@ const Settings: React.FC<SettingsProps> = ({
           {/* Delete All Data */}
           <button
             onClick={handleDeleteAllData}
-            className="w-full p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 border border-[#49454F] bg-white/[0.04] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-red-50 dark:bg-[#211F26] flex items-center justify-center">
-                  <Trash2 size={20} className="text-red-600 dark:text-[#FF6B6B]" />
+                <div className="w-10 h-10 rounded-full bg-[#211F26] flex items-center justify-center">
+                  <Trash size={20} weight="regular" className="text-[#FF6B6B]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-red-600 dark:text-[#FF6B6B]">Delete all my data</p>
-                  <p className="text-[13px] text-slate-600 dark:text-[#938F99]">Permanently remove everything</p>
+                  <p className="text-[16px] font-bold text-[#FF6B6B]">Delete all my data</p>
+                  <p className="text-[13px] text-[#938F99]">Permanently remove everything</p>
                 </div>
               </div>
             </div>
           </button>
         </div>
 
-        {/* App Theme Section */}
-        <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5] mb-4">App Theme</h2>
-          <div className="p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930]" style={{ borderRadius: '0 24px 0 0' }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#211F26] flex items-center justify-center">
-                  {isDarkMode ? <Moon size={20} className="text-slate-700 dark:text-[#F37E58]" /> : <Sun size={20} className="text-slate-700 dark:text-[#F37E58]" />}
-                </div>
-                <div>
-                  <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Dark Mode</p>
-                  <p className="text-[13px] text-slate-600 dark:text-[#938F99]">{isDarkMode ? 'Enabled' : 'Disabled'}</p>
-                </div>
-              </div>
-              <button
-                onClick={toggleTheme}
-                className={`
-                  relative w-14 h-8 rounded-full transition-all cursor-pointer
-                  ${isDarkMode ? 'bg-[#F37E58]' : 'bg-slate-300'}
-                `}
-              >
-                <div className={`
-                  absolute top-1 w-6 h-6 rounded-full transition-transform
-                  ${isDarkMode ? 'bg-white translate-x-7' : 'bg-white translate-x-1'}
-                `}></div>
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Feedback Section */}
         <div className="mb-8">
           <button
             onClick={handleSendFeedback}
-            className="w-full p-5 border border-slate-200 dark:border-[#49454F] bg-white dark:bg-[#2B2930] text-left transition-all active:scale-[0.99]"
+            className="w-full p-5 border border-[#49454F] bg-white/[0.04] text-left transition-all active:scale-[0.99]"
             style={{ borderRadius: '0 24px 0 0' }}
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-[#211F26] flex items-center justify-center">
-                <Mail size={20} className="text-slate-700 dark:text-[#CAC4D0]" />
+              <div className="w-10 h-10 rounded-full bg-[#211F26] flex items-center justify-center">
+                <EnvelopeSimple size={20} weight="regular" className="text-[#CAC4D0]" />
               </div>
               <div>
-                <p className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">Send Feedback</p>
-                <p className="text-[13px] text-slate-600 dark:text-[#938F99]">Help us improve the app</p>
+                <p className="text-[16px] font-bold text-[#E6E1E5]">Send Feedback</p>
+                <p className="text-[13px] text-[#938F99]">Help us improve the app</p>
               </div>
             </div>
           </button>
@@ -340,30 +313,30 @@ const Settings: React.FC<SettingsProps> = ({
 
         {/* App Version */}
         <div className="text-center py-8">
-          <p className="text-[13px] text-slate-500 dark:text-[#938F99]">
+          <p className="text-[13px] text-[#938F99]">
             Designer's Life Tracker v1.0.0
           </p>
         </div>
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#211F26] border-t border-slate-200 dark:border-[#49454F] z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-[#49454F] z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button 
             onClick={onNavigateHome}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <HouseSimple size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Home</p>
           </button>
 
           {/* Overview */}
           <button 
             onClick={onNavigateInsights}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <ChartBar size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Overview</p>
           </button>
 
@@ -372,23 +345,23 @@ const Settings: React.FC<SettingsProps> = ({
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white" />
+            <div className="bg-[#EC5429] rounded-[18px] px-6 py-3 hover:bg-[#F76538] active:scale-95 transition-all">
+              <Plus size={28} weight="bold" className="text-white" />
             </div>
           </button>
 
           {/* History */}
           <button 
             onClick={onNavigateHistory}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <Notepad size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">History</p>
           </button>
 
           {/* Setting */}
-          <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 dark:text-[#E6E1E5] min-w-[64px] py-1">
-            <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] dark:invert dark:brightness-200" />
+          <button className="flex flex-col items-center justify-center gap-1.5 text-[#E6E1E5] min-w-[64px] py-1">
+            <GearSix size={26} weight="regular" className="text-[#E6E1E5]" />
             <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>

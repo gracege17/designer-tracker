@@ -1,5 +1,5 @@
 import React from 'react'
-import { CheckCircle2, Smile, FileText, MessageSquare } from 'lucide-react'
+import { CheckCircle, Smiley, FileText, ChatCircle } from 'phosphor-react'
 import Button from './Button'
 
 interface OnboardingFirstEntryProps {
@@ -24,7 +24,7 @@ const OnboardingFirstEntry: React.FC<OnboardingFirstEntryProps> = ({ onStartEntr
         {/* Icon */}
         <div className="mb-6">
           <div className="w-16 h-16 bg-[#B3E5D1] flex items-center justify-center mx-auto" style={{ borderRadius: '0 16px 0 0' }}>
-            <CheckCircle2 size={32} className="text-slate-900" />
+            <CheckCircle size={32} weight="regular" className="text-slate-900" />
           </div>
         </div>
 
@@ -40,8 +40,8 @@ const OnboardingFirstEntry: React.FC<OnboardingFirstEntryProps> = ({ onStartEntr
         <div className="space-y-4 mb-8">
           <div className="bg-white p-5 border border-slate-200" style={{ borderRadius: '0 32px 0 0' }}>
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-[#C7D1FF] flex items-center justify-center flex-shrink-0" style={{ borderRadius: '0 12px 0 0' }}>
-                <FileText size={20} className="text-slate-900" />
+              <div className="w-10 h-10 bg-[#AF52DE] flex items-center justify-center flex-shrink-0" style={{ borderRadius: '0 12px 0 0' }}>
+                <FileText size={20} weight="regular" className="text-slate-900" />
               </div>
               <div>
                 <h3 className="font-bold text-slate-900 mb-1">1. Describe Your Task</h3>
@@ -55,7 +55,7 @@ const OnboardingFirstEntry: React.FC<OnboardingFirstEntryProps> = ({ onStartEntr
           <div className="bg-white p-5 border border-slate-200" style={{ borderRadius: '0 32px 0 0' }}>
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-[#FFD678] flex items-center justify-center flex-shrink-0" style={{ borderRadius: '0 12px 0 0' }}>
-                <Smile size={20} className="text-slate-900" />
+                <Smiley size={20} weight="regular" className="text-slate-900" />
               </div>
               <div>
                 <h3 className="font-bold text-slate-900 mb-1">2. Pick Your Emotions</h3>
@@ -69,7 +69,7 @@ const OnboardingFirstEntry: React.FC<OnboardingFirstEntryProps> = ({ onStartEntr
           <div className="bg-white p-5 border border-slate-200" style={{ borderRadius: '0 32px 0 0' }}>
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-[#B3E5D1] flex items-center justify-center flex-shrink-0" style={{ borderRadius: '0 12px 0 0' }}>
-                <MessageSquare size={20} className="text-slate-900" />
+                <ChatCircle size={20} weight="regular" className="text-slate-900" />
               </div>
               <div>
                 <h3 className="font-bold text-slate-900 mb-1">3. Add Notes (Optional)</h3>
@@ -94,7 +94,7 @@ const OnboardingFirstEntry: React.FC<OnboardingFirstEntryProps> = ({ onStartEntr
       <div className="px-6 pb-8">
         <button
           onClick={onStartEntry}
-          className="w-full bg-[#F37E58] text-slate-900 dark:text-white font-bold py-5 px-6 text-[17px] transition-all duration-200 hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98] flex items-center justify-center gap-2"
+          className="w-full bg-[#EC5429] text-white font-bold py-5 px-6 text-[17px] transition-all duration-200 hover:bg-[#F76538] active:scale-[0.98] flex items-center justify-center gap-2"
         >
           <span>Start My First Reflection</span>
           <span>✨</span>

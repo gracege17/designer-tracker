@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { CaretLeft } from 'phosphor-react'
 import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
@@ -40,7 +40,7 @@ const TaskEntry: React.FC<TaskEntryProps> = ({
             onClick={onBack}
             className="p-2 rounded-full hover:bg-primary/20 transition-colors"
           >
-            <ArrowLeft size={20} className="text-slate-900" />
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
           <h1 className="text-lg font-bold text-slate-900 flex-grow text-center">
             {isMultipleProjects ? `${projectName} + ${selectedProjectIds.length - 1} more` : projectName}

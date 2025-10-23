@@ -1,15 +1,26 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 
 interface FlowerProgressProps {
   filledSteps: boolean[] // Array of 4 booleans for each petal
   className?: string
+  isAnimating?: boolean
+  onAnimationComplete?: () => void
 }
 
 const FlowerProgress: React.FC<FlowerProgressProps> = ({ 
   filledSteps, 
-  className = '' 
+  className = '',
+  isAnimating = false,
+  onAnimationComplete
 }) => {
   const isFullyBloomed = filledSteps.every(step => step)
+  
+  // Calculate target position for animation: top-right badge area
+  const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 400
+  const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 800
+  const targetX = (windowWidth - 100) - (windowWidth / 2) // 100px from right edge
+  const targetY = 40 - (windowHeight / 2) // 40px from top
 
   // Define petal data based on the SVG structure
   const petals = [
@@ -47,7 +58,7 @@ const FlowerProgress: React.FC<FlowerProgressProps> = ({
         x1: "30.6816", y1: "13.0889", x2: "22.2861", y2: "21.663",
         stops: [
           { offset: "0%", color: "#FDA07A" },
-          { offset: "100%", color: "#F37E58" }
+          { offset: "100%", color: "#EC5429" }
         ]
       },
       label: "Task details"
@@ -70,18 +81,26 @@ const FlowerProgress: React.FC<FlowerProgressProps> = ({
   return (
     <div className={`flex justify-center mb-6 ${className}`}>
       <div className={`relative w-16 h-16 transition-all duration-500 ${isFullyBloomed ? 'scale-110' : 'scale-100'}`}>
-        {/* Bloom glow effect */}
-        {isFullyBloomed && (
-          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-200 via-yellow-200 via-orange-200 to-green-200 opacity-40 blur-sm animate-pulse" />
-        )}
-        
-        <svg 
+        <motion.svg 
           width="64" 
           height="64" 
           viewBox="0 0 35 35" 
           fill="none" 
           xmlns="http://www.w3.org/2000/svg"
           className="transition-all duration-500"
+          animate={isAnimating ? {
+            scale: [1, 1.8, 0.6],
+            x: [0, 0, targetX],
+            y: [0, 0, targetY],
+            opacity: [1, 1, 0],
+            rotate: [0, 360, 360],
+          } : {}}
+          transition={{
+            duration: 1.2,
+            times: [0, 0.4, 1],
+            ease: 'easeInOut',
+          }}
+          onAnimationComplete={onAnimationComplete}
         >
           <defs>
             {/* Define gradients for each petal */}
@@ -117,12 +136,13 @@ const FlowerProgress: React.FC<FlowerProgressProps> = ({
                 fill={isFilled ? `url(#${petal.gradientId})` : '#4B4B4B'}
                 className="transition-all duration-500 ease-out"
                 style={{
-                  filter: isFilled ? 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))' : 'none'
+                  filter: isFilled ? 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))' : 'none',
+                  opacity: isFilled ? 1 : 0.2
                 }}
               />
             )
           })}
-        </svg>
+        </motion.svg>
       </div>
     </div>
   )

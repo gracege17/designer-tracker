@@ -1,8 +1,37 @@
 # Card Design System
 
+**Note: The app uses dark mode only. All colors and styles are optimized for the Material Design 3 dark theme.**
+
+---
+
+## Card Variants Overview
+
+The card system supports three main variants:
+
+1. **Asymmetric Corner Card** - Primary card style with signature rounded corner
+   - Distinctive visual identity
+   - Top-right corner: 47px rounded
+   - No colored borders - clean, minimal design
+   - Glass background: `rgba(255, 255, 255, 0.04)`
+   - Best for: Primary content, insights, featured information
+
+2. **Glass Card** - Subtle translucent style for secondary content
+   - Minimal visual weight
+   - Background: `rgba(255, 255, 255, 0.04)`
+   - Border radius: 8px uniform
+   - Best for: Subtle separators, emotion cards, secondary information
+
+3. **Default Card** - Standard card style for general content
+   - Classic rounded corners (16px)
+   - Soft shadow
+   - Border: 1px solid
+   - Best for: Standard content, forms, general layouts
+
+---
+
 ## **Asymmetric Corner Card** (Primary Card Style)
 
-A distinctive, minimal card design with a single rounded corner for visual interest and brand personality.
+A distinctive, minimal card design with a single rounded corner and accent border for visual interest and brand personality.
 
 ---
 
@@ -10,40 +39,214 @@ A distinctive, minimal card design with a single rounded corner for visual inter
 
 ### **Border Radius**
 ```css
-border-radius: 0 48px 0 0;
+border-radius: 4px 47px 4px 4px;
 ```
-- Top-left: **0** (square)
-- Top-right: **48px** (very rounded)
-- Bottom-right: **0** (square)
-- Bottom-left: **0** (square)
+- Top-left: **4px** (small rounded)
+- Top-right: **47px** (very rounded - signature corner)
+- Bottom-right: **4px** (small rounded)
+- Bottom-left: **4px** (small rounded)
 
 **Variants:**
-- **Large cards:** `0 48px 0 0` (energy cards, quote cards, overview cards)
-- **Medium cards:** `0 32px 0 0` (CTA buttons)
-- **Small cards:** `0 24px 0 0` (settings cards, input fields)
-- **Compact cards:** `0 20px 0 0` (task cards, review cards)
-- **Tiny elements:** `0 16px 0 0` (project pills, small buttons)
+- **Large cards:** `4px 47px 4px 4px` (primary asymmetric cards)
+- **Medium cards:** `4px 32px 4px 4px` (CTA buttons)
+- **Small cards:** `4px 24px 4px 4px` (settings cards, input fields)
+- **Compact cards:** `4px 20px 4px 4px` (task cards, review cards)
+- **Tiny elements:** `4px 16px 4px 4px` (project pills, small buttons)
 
 ### **Shadow**
 ```css
 box-shadow: none;
 ```
-- ❌ No shadows
+- ❌ No shadows for asymmetric variant
 - ✅ Flat, clean design
-- Depth created through color contrast instead
+- Depth created through color contrast and accent border
 
 ### **Border**
+
+**Asymmetric Variant (Primary):**
+```css
+border: none;
+background: rgba(255, 255, 255, 0.04); /* Glass effect */
+```
+- **No colored borders** - Clean, minimal design
+- Uses translucent glass background for subtle separation
+- Relies on border-radius and content for visual hierarchy
+
+**Default Variant:**
 ```css
 border: 1px solid #F6F1EB; /* slate-200 */
 ```
-- Only used on white/light cards
-- Not used on colored cards (orange, gray, cyan, etc.)
+- Only used on standard white/light cards
+- Not used on colored cards or asymmetric variants
 
 ### **Padding**
 ```css
 padding: 16px; /* p-4 for most cards */
 padding: 24px; /* p-6 for larger cards */
 ```
+
+---
+
+## Usage Examples
+
+### **Asymmetric Card (React/Tailwind)**
+
+```jsx
+// Using the Card component with asymmetric variant (no border)
+<Card 
+  variant="asymmetric" 
+  padding="medium" 
+  shadow="none" 
+  background="white"
+>
+  <h3 className="text-sm font-normal text-slate-900 mb-2">Featured Insight</h3>
+  <p className="text-xl font-black text-slate-900">
+    Your design work brought you joy
+  </p>
+  <p className="text-xs font-medium text-slate-700 mt-2">
+    Based on 5 reflections
+  </p>
+</Card>
+
+// Asymmetric card with custom padding
+<Card 
+  variant="asymmetric" 
+  padding="large" 
+  background="white"
+>
+  <h3 className="text-sm font-normal text-slate-900 mb-2">What Felt Meaningful</h3>
+  <p className="text-xl font-black text-slate-900">
+    Solving complex design problems
+  </p>
+</Card>
+
+// Manual implementation
+<div 
+  className="p-6"
+  style={{
+    borderRadius: '4px 47px 4px 4px',
+    background: 'rgba(255, 255, 255, 0.04)'
+  }}
+>
+  {/* Card content */}
+</div>
+```
+
+### **Default Card (React/Tailwind)**
+
+```jsx
+// Using the Card component with default variant
+<Card variant="default" padding="medium" shadow="soft" background="white">
+  <p className="text-slate-900">Standard card content</p>
+</Card>
+
+// Manual implementation
+<div className="bg-white rounded-soft border border-gray-light p-6 shadow-soft">
+  {/* Card content */}
+</div>
+```
+
+---
+
+## **Glass Card** (Subtle Translucent Style)
+
+A minimal, subtle card design with a translucent background for subtle visual separation without overwhelming the interface.
+
+### Visual Properties
+
+**Border Radius:**
+```css
+border-radius: 8px;
+```
+- All corners: **8px** (uniform, slightly rounded)
+
+**Background:**
+```css
+background: rgba(255, 255, 255, 0.04);
+```
+- Translucent white with 4% opacity
+- Creates a subtle glass-like effect
+- Works well on dark backgrounds
+- Minimal visual weight
+
+**Shadow:**
+```css
+box-shadow: none;
+```
+- No shadows for glass variant
+- Relies on subtle background tint for separation
+
+**Padding:**
+```css
+padding: 14px; /* Custom padding for glass cards */
+```
+
+---
+
+### Usage Examples
+
+#### Using the Card Component with Glass Variant
+
+```jsx
+// Basic glass card (14px padding)
+<Card 
+  variant="glass" 
+  padding="small"
+  className="!p-[14px]"
+>
+  <h3 className="text-[14px] font-semibold text-[#E6E1E5] mb-2">Energized</h3>
+  <p className="text-2xl font-bold text-[#FF2D55]">
+    Creative Tasks
+  </p>
+</Card>
+
+// Glass card with custom padding
+<Card 
+  variant="glass" 
+  padding="medium"
+  className="hover:bg-white/8 transition-all"
+>
+  <div className="flex items-center justify-between">
+    <span className="text-sm text-[#E6E1E5]">Today</span>
+    <span className="text-xl font-bold text-[#EC5429]">🎨</span>
+  </div>
+</Card>
+```
+
+#### Manual Implementation (if not using Card component)
+
+```jsx
+<div 
+  style={{
+    borderRadius: '8px',
+    background: 'rgba(255, 255, 255, 0.04)',
+    padding: '14px'
+  }}
+>
+  <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
+    Energized
+  </h3>
+  <p className="text-xl font-bold text-[#FF2D55]">
+    Creative Tasks
+  </p>
+</div>
+```
+
+---
+
+### Use Cases
+
+**Best for:**
+- Insight cards on dark backgrounds
+- Summary cards that need to be subtle
+- Secondary information displays
+- Emotion/mood cards
+- List items that need minimal visual weight
+
+**Avoid using for:**
+- Primary CTA cards (use asymmetric variant instead)
+- High-importance content that needs strong visual emphasis
+- Cards that need clear boundaries
 
 ---
 

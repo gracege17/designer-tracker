@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Settings, Home, PlusCircle, BarChart2, Calendar } from 'lucide-react'
+import { Plus, GearSix, HouseSimple, PlusCircle, ChartBar, Notepad } from 'phosphor-react'
 import { Entry, EMOTIONS, EmotionLevel } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { getTodayDateString, getCurrentWeekEntries, getTotalTaskCount, getMostEnergizingTaskType } from '../utils/dataHelpers'
@@ -10,7 +10,6 @@ import { getResourceRecommendation } from '../utils/resourceRecommendationServic
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
 import EmotionalRadarChart from './EmotionalRadarChart'
 import SuggestionsCard from './SuggestionsCard'
-import { useTheme } from '../context/ThemeContext'
 
 interface DashboardProps {
   entries: Entry[]
@@ -23,7 +22,6 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntries, onViewInsights, onViewSettings, isLoading = false }) => {
   // Theme
-  const { theme } = useTheme()
   
   // AI Summary State
   const [dailySummary, setDailySummary] = useState<string>('')
@@ -123,92 +121,108 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   }, [todayEntry])
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F] screen-transition">
+    <div className="min-h-screen flex flex-col bg-black screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
         {/* Greeting - Clean and Simple */}
         <div className="mb-6">
-          <h1 className="text-[32px] leading-tight font-bold text-slate-900 dark:text-[#E6E1E5] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h1 className="text-[32px] leading-tight font-bold text-[#E6E1E5] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
             Hey {userName}
           </h1>
-          <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.02em' }}>
+          <p className="text-[16px] text-[#CAC4D0]" style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.02em' }}>
             What did you work on today?
           </p>
         </div>
 
-        {/* AI Daily Summary Card */}
+        {/* AI Daily Summary Card - Cyan accent */}
         <div 
-          className="p-4 mb-6 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+          className="p-4 mb-6 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer bg-white/[0.04]" 
           style={{ 
-            borderRadius: '0 48px 0 0',
-            background: theme === 'dark'
-              ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #A1C4FD 0%, #C2E9FB 103.78%)'
-              : 'linear-gradient(132deg, #A1C4FD 0%, #C2E9FB 103.78%)'
+            borderRadius: '4px 47px 4px 4px'
           }}
         >
           <div className="flex flex-col items-start gap-3 w-full">
-            <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+            <p className="text-[12px] font-normal text-white">
               Today's Summary
             </p>
             
             {isLoadingSummary ? (
-              <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
+              <p className="text-[16px] font-medium text-slate-200 leading-snug italic animate-pulse">
                 Analyzing your day...
               </p>
             ) : (
-              <p className="text-[18px] font-medium text-slate-900 dark:text-white leading-snug">
+              <p className="text-[18px] font-medium text-white leading-snug">
                 {dailySummary}
               </p>
             )}
             
             {todayEntry && todayEntry.tasks.length > 0 && (
-              <p className="text-[13px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
+              <p className="text-[13px] font-normal text-slate-200 opacity-70">
                 Based on {todayEntry.tasks.length} task{todayEntry.tasks.length !== 1 ? 's' : ''} logged today
               </p>
             )}
           </div>
         </div>
 
-        {/* Emotional Radar Chart Card */}
+        {/* Emotional Highlights Card - Horizontal Two-Column Layout */}
         {emotionBreakdown && (
           <div 
-            className="p-4 mb-6 transition-all active:scale-[0.99] flex flex-col items-center self-stretch w-full" 
+            className="w-full bg-white/[0.04] mb-6"
             style={{ 
-              borderRadius: '0 48px 0 0',
-              background: theme === 'dark'
-                ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
-                : 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
+              borderRadius: '16px 16px 0px 0px',
+              padding: '24px'
             }}
           >
-            <div className="flex flex-col items-start gap-3 w-full mb-4">
-              <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                Today's Emotional Flow
-              </p>
-              <p className="text-[16px] font-medium text-slate-900 dark:text-white leading-snug">
-                How you felt across different moments
-              </p>
+            {/* Horizontal flex-row layout */}
+            <div className="flex flex-row items-center gap-6">
+              
+              {/* LEFT COLUMN: Emotion Blob Canvas (80x80, vertically centered) */}
+              <div 
+                className="flex-shrink-0"
+                style={{ width: '80px', height: '80px' }}
+              >
+                <EmotionalRadarChart 
+                  emotionData={emotionBreakdown} 
+                  showLabels={false}
+                  taskCount={emotionBreakdown.totalTasks}
+                  view="today"
+                />
+              </div>
+
+              {/* RIGHT COLUMN: Text Block */}
+              <div className="flex-1 flex flex-col gap-3">
+                
+                {/* Section Subtitle */}
+                <p className="text-[12px] font-normal text-[#CAC4D0]">
+                  Today's Emotional Flow
+                </p>
+                
+                {/* Section Title */}
+                <h3 className="text-[16px] font-semibold text-[#E6E1E5]">
+                  Emotional Highlights
+                </h3>
+                
+                {/* Thin divider line */}
+                <div 
+                  className="bg-white/[0.08]"
+                  style={{ height: '1px', width: '100%' }}
+                ></div>
+                
+                {/* Description */}
+                <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+                  Based on {emotionBreakdown.totalTasks} task{emotionBreakdown.totalTasks !== 1 ? 's' : ''} logged today
+                </p>
+                
+              </div>
             </div>
-            
-            <div className="w-full h-64">
-              <EmotionalRadarChart emotionData={emotionBreakdown} />
-            </div>
-            
-            {emotionBreakdown.totalTasks > 0 && (
-              <p className="text-[13px] font-normal text-slate-900 dark:text-slate-200 opacity-70 mt-2">
-                Based on {emotionBreakdown.totalTasks} task{emotionBreakdown.totalTasks !== 1 ? 's' : ''} logged today
-              </p>
-            )}
           </div>
         )}
 
-        {/* Resource Recommendation Card */}
+        {/* Resource Recommendation Card - Orange accent */}
         {resourceRecommendation && (
           <div 
-            className="p-4 mb-6 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
+            className="p-4 mb-6 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer bg-white/[0.04]" 
             style={{ 
-              borderRadius: '0 48px 0 0',
-              background: theme === 'dark'
-                ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #FFD3A5 0%, #FD6585 103.78%)'
-                : 'linear-gradient(132deg, #FFD3A5 0%, #FD6585 103.78%)'
+              borderRadius: '4px 47px 4px 4px'
             }}
             onClick={() => {
               if (resourceRecommendation.url && resourceRecommendation.url !== '#') {
@@ -217,44 +231,39 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             }}
           >
             <div className="flex flex-col items-start gap-3 w-full">
-              <p className="text-[12px] font-normal text-slate-900 dark:text-white">
+              <p className="text-[12px] font-normal text-white">
                 Resource Recommendation
               </p>
               
               {isLoadingResource ? (
-                <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic animate-pulse">
+                <p className="text-[16px] font-medium text-slate-200 leading-snug italic animate-pulse">
                   Finding the perfect resource...
                 </p>
               ) : (
                 <>
                   {resourceRecommendation.quote ? (
                     <div className="w-full">
-                      <p className="text-[18px] font-medium text-slate-900 dark:text-white leading-snug italic mb-2">
+                      <p className="text-[18px] font-medium text-white leading-snug italic mb-2">
                         "{resourceRecommendation.quote}"
                       </p>
-                      <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-80">
+                      <p className="text-[14px] font-normal text-slate-200 opacity-80">
                         {resourceRecommendation.resourceTitle}
                       </p>
                     </div>
                   ) : (
                     <div className="w-full">
-                      <p className="text-[18px] font-medium text-slate-900 dark:text-white leading-snug mb-2">
+                      <p className="text-[18px] font-medium text-white leading-snug mb-2">
                         {resourceRecommendation.resourceTitle}
                       </p>
                       {resourceRecommendation.description && (
-                        <p className="text-[14px] font-normal text-slate-900 dark:text-slate-200 opacity-80 mb-2">
+                        <p className="text-[14px] font-normal text-slate-200 opacity-80 mb-2">
                           {resourceRecommendation.description}
                         </p>
                       )}
                       <div className="flex items-center gap-2">
-                        <span className="text-[12px] font-medium text-slate-900 dark:text-white bg-white dark:bg-slate-800 px-2 py-1 rounded-full">
+                        <span className="text-[12px] font-medium text-white bg-slate-800 px-2 py-1 rounded-full">
                           {resourceRecommendation.resourceType.toUpperCase()}
                         </span>
-                        {resourceRecommendation.url !== '#' && (
-                          <span className="text-[12px] font-normal text-slate-900 dark:text-slate-200 opacity-70">
-                            Tap to open
-                          </span>
-                        )}
                       </div>
                     </div>
                   )}
@@ -276,7 +285,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
           
           return (
-            <div className="bg-white dark:bg-[#2B2930] p-6 mb-6 border border-slate-200 dark:border-[#49454F]" style={{ borderRadius: '0 48px 0 0' }}>
+            <div className="bg-white/[0.04] p-6 mb-6" style={{ borderRadius: '4px 47px 4px 4px' }}>
               {/* Custom Illustration */}
               <div className="h-48 mb-4 flex items-center justify-center overflow-hidden" style={{ borderRadius: '0 36px 0 0' }}>
                 <img 
@@ -286,7 +295,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 />
               </div>
               
-              <p className="text-[17px] text-slate-700 dark:text-[#E6E1E5] italic leading-relaxed text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
+              <p className="text-[17px] text-[#E6E1E5] italic leading-relaxed text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
                 "{randomQuote}"
               </p>
             </div>
@@ -295,20 +304,20 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#211F26] border-t border-slate-200 dark:border-[#49454F] z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-[#49454F] z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
-          <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 dark:text-[#E6E1E5] min-w-[64px] py-1">
-            <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] dark:invert dark:brightness-200" />
+          <button className="flex flex-col items-center justify-center gap-1.5 text-[#E6E1E5] min-w-[64px] py-1">
+            <HouseSimple size={26} weight="regular" className="text-[#E6E1E5]" />
             <p className="text-[11px] font-medium">Home</p>
           </button>
 
           {/* Overview */}
           <button 
             onClick={onViewInsights}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <ChartBar size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Overview</p>
           </button>
 
@@ -317,26 +326,26 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             onClick={onAddEntry}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white" />
+            <div className="bg-[#EC5429] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#F76538] active:scale-95 transition-all">
+              <Plus size={28} weight="bold" className="text-white" />
             </div>
           </button>
 
           {/* History */}
           <button 
             onClick={onViewEntries}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <Notepad size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">History</p>
           </button>
 
           {/* Setting */}
           <button 
             onClick={onViewSettings}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <GearSix size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>

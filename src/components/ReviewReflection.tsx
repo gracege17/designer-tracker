@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { CaretLeft } from 'phosphor-react'
 import { EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
 
@@ -44,7 +44,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
             onClick={onBack}
             className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
-            <ArrowLeft size={24} className="text-slate-900" />
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
           <h1 className="text-[18px] font-bold text-slate-900">
             Today's Tasks
@@ -135,7 +135,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
             className={`
               w-full py-5 px-6 font-bold text-[17px] transition-all duration-200
               ${tasks.length > 0
-                ? 'bg-[#F37E58] text-slate-900 dark:text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
+                ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
                 : 'bg-[#999] text-white cursor-not-allowed'
               }
             `}

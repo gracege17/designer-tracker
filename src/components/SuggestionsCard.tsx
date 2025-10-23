@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sparkles, TrendingUp, Heart, Lightbulb, Award, Info } from 'lucide-react'
+import { Sparkle, TrendUp, Heart, Lightbulb, Medal, Info } from 'phosphor-react'
 import { Suggestion } from '../utils/suggestionEngine'
 
 interface SuggestionsCardProps {
@@ -15,17 +15,17 @@ const SuggestionsCard: React.FC<SuggestionsCardProps> = ({ suggestions, maxDispl
   const getTypeIcon = (type: Suggestion['type']) => {
     switch (type) {
       case 'celebration':
-        return <Award size={20} className="text-yellow-600" />
+        return <Medal size={20} weight="fill" className="text-yellow-600" />
       case 'insight':
-        return <Lightbulb size={20} className="text-blue-600" />
+        return <Lightbulb size={20} weight="regular" className="text-blue-600" />
       case 'encouragement':
-        return <Heart size={20} className="text-pink-600" />
+        return <Heart size={20} weight="fill" className="text-pink-600" />
       case 'tip':
-        return <Info size={20} className="text-purple-600" />
+        return <Info size={20} weight="regular" className="text-purple-600" />
       case 'pattern':
-        return <TrendingUp size={20} className="text-green-600" />
+        return <TrendUp size={20} weight="regular" className="text-green-600" />
       default:
-        return <Sparkles size={20} className="text-slate-600" />
+        return <Sparkle size={20} weight="fill" className="text-slate-600" />
     }
   }
 

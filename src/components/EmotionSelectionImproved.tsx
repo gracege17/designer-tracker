@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { CaretLeft } from 'phosphor-react'
 import { EmotionLevel, EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
-import { useTheme } from '../context/ThemeContext'
 import FlowerProgress from './FlowerProgress'
 
 interface EmotionSelectionProps {
@@ -11,6 +10,7 @@ interface EmotionSelectionProps {
   initialEmotion?: EmotionLevel[]
   onNext: (emotions: EmotionLevel[]) => void
   onBack: () => void
+  taskCount?: number
 }
 
 const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
@@ -18,10 +18,10 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
   initialTaskDescription,
   initialEmotion = [],
   onNext,
-  onBack
+  onBack,
+  taskCount = 0
 }) => {
   const [selectedEmotions, setSelectedEmotions] = useState<EmotionLevel[]>(initialEmotion)
-  const { theme } = useTheme()
 
   const handleEmotionToggle = (emotion: EmotionLevel) => {
     setSelectedEmotions(prev => 
@@ -43,23 +43,36 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
     : null
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FFF9F8] dark:bg-[#1C1B1F]">
+    <div className="flex flex-col min-h-screen bg-black">
       {/* Sticky Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] z-10 p-5 border-b border-slate-200 dark:border-[#2B2930]">
-        <div className="max-w-md mx-auto flex items-center justify-between">
+      <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#2B2930]">
+        <div className="max-w-md mx-auto grid grid-cols-3 items-center">
+          {/* Left: Back Button */}
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-[#2B2930] rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2 justify-self-start"
           >
-            <ArrowLeft size={24} className="text-slate-900 dark:text-[#E6E1E5]" />
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
           
-          {/* Current Project Name */}
+          {/* Center: Current Project Name */}
           {currentProject && (
-            <span className="text-[16px] font-bold text-slate-900 dark:text-[#E6E1E5]">{currentProject.name}</span>
+            <span className="text-[16px] font-bold text-[#E6E1E5] text-center truncate px-2">{currentProject.name}</span>
           )}
 
-          <div className="w-10"></div>
+          {/* Right: Counter Badge */}
+          <div className="justify-self-end">
+            <div className="flex items-center gap-1.5">
+              <img 
+                src="/images/colored-flower.png" 
+                alt="flower" 
+                className="w-6 h-6"
+              />
+              <span className="text-sm font-medium text-[#E6E1E5]">
+                ({taskCount})
+              </span>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -70,10 +83,10 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
           {/* Flower Progress Tracker */}
           <FlowerProgress filledSteps={[true, true, true, false]} />
           
-          <h2 className="text-[32px] font-normal text-slate-900 dark:text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h2 className="text-[32px] font-normal text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             How did it make you feel?
           </h2>
-          <p className="text-[16px] text-slate-700 dark:text-[#CAC4D0]">
+          <p className="text-[16px] text-[#CAC4D0]">
             Pick as many as you'd like
           </p>
         </div>
@@ -91,8 +104,8 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
                 className={`
                   flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border
                   ${isSelected
-                    ? 'bg-[#FFD678] dark:bg-[#FFD678]/40 border-slate-900 dark:border-slate-900 scale-105'
-                    : 'bg-white dark:bg-[#2B2930] border-slate-200 dark:border-[#3A3840] hover:border-slate-300 dark:hover:border-[#4A4850] active:scale-95'
+                    ? 'bg-[#FFD678]/40 border-slate-900 scale-105'
+                    : 'bg-white/[0.04] border-[#3A3840] hover:border-[#4A4850] active:scale-95'
                   }
                 `}
                 style={{ borderRadius: '0 24px 0 0' }}
@@ -103,7 +116,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
                 </div>
 
                 {/* Label */}
-                <span className="text-[11px] font-medium text-slate-900 dark:text-[#E6E1E5] text-center leading-tight">
+                <span className="text-[11px] font-medium text-[#E6E1E5] text-center leading-tight">
                   {emotion.label}
                 </span>
               </button>
@@ -113,7 +126,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
       </main>
 
       {/* Sticky Bottom CTA */}
-      <footer className="sticky bottom-0 bg-[#FFF9F8] dark:bg-[#1C1B1F] p-5">
+      <footer className="sticky bottom-0 bg-black p-5">
         <div className="max-w-md mx-auto">
           <button
             onClick={handleNext}
@@ -121,7 +134,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
             className={`
               w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
               ${selectedEmotions.length > 0
-                ? 'bg-[#F37E58] text-slate-900 dark:text-white hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-[0.98]'
+                ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
                 : 'bg-[#999] text-white cursor-not-allowed'
               }
             `}

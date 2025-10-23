@@ -6,6 +6,7 @@ interface CardProps {
   padding?: 'none' | 'small' | 'medium' | 'large';
   shadow?: 'none' | 'soft' | 'gentle' | 'cozy';
   background?: 'white' | 'cream';
+  variant?: 'default' | 'asymmetric' | 'glass';
 }
 
 export default function Card({
@@ -14,6 +15,7 @@ export default function Card({
   padding = 'medium',
   shadow = 'soft',
   background = 'white',
+  variant = 'default',
 }: CardProps) {
   const getPaddingStyles = () => {
     switch (padding) {
@@ -46,19 +48,49 @@ export default function Card({
   };
 
   const getBackgroundStyles = () => {
-    return background === 'cream' ? 'bg-cream' : 'bg-white';
+    // Dark mode only: use dark theme colors
+    if (variant === 'glass') {
+      return ''; // Glass variant uses inline style for background
+    }
+    return background === 'cream' ? 'bg-[#211F26]' : 'bg-white/[0.04]';
+  };
+
+  const getBorderRadiusStyles = () => {
+    if (variant === 'asymmetric') {
+      return ''; // Will use inline style for custom border-radius
+    }
+    if (variant === 'glass') {
+      return 'rounded-lg'; // 8px border-radius
+    }
+    return 'rounded-soft';
+  };
+
+  const getVariantStyles = () => {
+    if (variant === 'asymmetric') {
+      return {
+        borderRadius: '4px 47px 4px 4px',
+      };
+    }
+    if (variant === 'glass') {
+      return {
+        borderRadius: '8px',
+        background: 'rgba(255, 255, 255, 0.04)',
+      };
+    }
+    return {};
   };
 
   return (
     <div
       className={`
         ${getBackgroundStyles()}
-        rounded-soft
-        border border-gray-light
+        ${getBorderRadiusStyles()}
+        ${variant === 'default' ? 'border border-gray-light' : ''}
         ${getPaddingStyles()}
-        ${getShadowStyles()}
+        ${variant === 'default' ? getShadowStyles() : ''}
         ${className}
       `}
+      style={getVariantStyles()}
     >
       {children}
     </div>

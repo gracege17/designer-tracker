@@ -171,7 +171,12 @@ function App() {
         emotions: selectedEmotions, // Store all emotions
         notes
       }
-      setCollectedTasks(prev => [...prev, newTask])
+      console.log('💾 Saving task:', newTask.description, 'Previous count:', collectedTasks.length)
+      setCollectedTasks(prev => {
+        const updated = [...prev, newTask]
+        console.log('📊 New total count:', updated.length)
+        return updated
+      })
       
       // Reset for next task
       setTaskDescription('')
@@ -620,15 +625,23 @@ function App() {
           />
         )
       case 'taskEntry':
+        // Show count of COMPLETED tasks only (increments after animation)
+        const currentProjectId = selectedProjectIds[currentProjectIndex]
+        const completedForProject = collectedTasks.filter(t => t.projectId === currentProjectId).length
+        const taskEntryCount = completedForProject // No +1!
+        console.log('📝 TaskEntry - ProjectId:', currentProjectId, 'Completed tasks:', completedForProject, 'Badge showing:', taskEntryCount)
         return (
           <TaskEntry
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
             initialTaskDescription={taskDescription}
             onNext={handleTaskDescriptionNext}
             onBack={() => setCurrentView('projectSelection')}
+            taskCount={taskEntryCount}
           />
         )
       case 'emotionSelection':
+        // Show count of COMPLETED tasks only
+        const emotionSelectionCount = collectedTasks.filter(t => t.projectId === selectedProjectIds[currentProjectIndex]).length
         return (
           <EmotionSelection
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
@@ -639,10 +652,13 @@ function App() {
               console.log('Going back from emotionSelection to taskEntry')
               setCurrentView('taskEntry')
             }}
+            taskCount={emotionSelectionCount}
           />
         )
       case 'taskNotes':
+        // Show count of COMPLETED tasks only
         const isLastProject = currentProjectIndex === selectedProjectIds.length - 1
+        const taskNotesCount = collectedTasks.filter(t => t.projectId === selectedProjectIds[currentProjectIndex]).length
         return (
           <TaskNotes
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
@@ -651,6 +667,7 @@ function App() {
             onDoneReflecting={handleDoneReflecting}
             onBack={() => setCurrentView('emotionSelection')}
             isLastProject={isLastProject}
+            taskCount={taskNotesCount}
           />
         )
       case 'reviewReflection':

@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Home, Plus, BarChart2, Calendar, Settings } from 'lucide-react'
+import { HouseSimple, Plus, ChartBar, Notepad, GearSix, CalendarBlank, X, CaretRight, DotsThree } from 'phosphor-react'
 import { Entry, EMOTIONS, TASK_TYPE_LABELS, EmotionLevel } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { getCurrentWeekEntries, getCurrentMonthEntries, calculateAverageEmotion, getMostEnergizingTaskType, getMostDrainingTaskType } from '../utils/dataHelpers'
-import { useTheme } from '../context/ThemeContext'
+import Card from './Card'
+import EmotionalRadarChart from './EmotionalRadarChart'
+import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
 
 interface InsightsScreenProps {
   entries: Entry[]
@@ -24,8 +26,22 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   onNavigateSettings,
   onViewEntry
 }) => {
-  const { theme } = useTheme()
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('week')
+  const [showFullCalendar, setShowFullCalendar] = useState(false)
+
+  // Prevent body scroll when calendar is open
+  React.useEffect(() => {
+    if (showFullCalendar) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [showFullCalendar])
 
   // Get data based on selected time range (for calendar only)
   const currentEntries = selectedTimeRange === 'week' 
@@ -98,11 +114,12 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
     return calendarData
   }
 
-  // Get monthly calendar data (current month grid)
-  const getMonthlyCalendarData = () => {
+  // Get calendar data for a specific month
+  const getMonthCalendarData = (monthOffset: number = 0) => {
     const today = new Date()
-    const year = today.getFullYear()
-    const month = today.getMonth()
+    const targetDate = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1)
+    const year = targetDate.getFullYear()
+    const month = targetDate.getMonth()
     
     // Get first day of month and last day of month
     const firstDay = new Date(year, month, 1)
@@ -176,51 +193,47 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   }
 
   const weeklyData = getWeeklyEmotionalData()
-  const monthlyData = getMonthlyCalendarData()
+  const currentMonthData = getMonthCalendarData(0) // October
+  const nextMonthData = getMonthCalendarData(1) // November
 
+  // Get current date formatted
+  const getCurrentDate = () => {
+    const today = new Date()
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    const month = months[today.getMonth()]
+    const day = today.getDate()
+    const year = today.getFullYear()
+    return `Today, ${month} ${day}, ${year}`
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8] dark:bg-[#1C1B1F] screen-transition">
+    <div className="min-h-screen flex flex-col bg-black screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
-        {/* Time Range Toggle */}
-        <div className="mb-6 flex gap-6 items-baseline">
+        {/* Header with Date and Calendar Icon */}
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-[18px] font-semibold text-[#E6E1E5]">
+            {getCurrentDate()}
+          </h1>
           <button
-            onClick={() => setSelectedTimeRange('week')}
-            className={`text-[28px] transition-all ${
-              selectedTimeRange === 'week' 
-                ? 'font-bold text-slate-900 dark:text-[#E6E1E5]' 
-                : 'font-normal text-slate-400 dark:text-[#938F99]'
-            }`}
-            style={{ fontFamily: 'Playfair Display, serif' }}
+            onClick={() => setShowFullCalendar(true)}
+            className="p-2 hover:bg-white/[0.04] rounded-lg transition-all active:scale-95"
           >
-            Week
-          </button>
-          <button
-            onClick={() => setSelectedTimeRange('month')}
-            className={`text-[28px] transition-all ${
-              selectedTimeRange === 'month' 
-                ? 'font-bold text-slate-900 dark:text-[#E6E1E5]' 
-                : 'font-normal text-slate-400 dark:text-[#938F99]'
-            }`}
-            style={{ fontFamily: 'Playfair Display, serif' }}
-          >
-            Month
+            <CalendarBlank size={24} weight="regular" className="text-[#EC5429]" />
           </button>
         </div>
 
-        {/* Emotional Calendar */}
+        {/* Emotional Calendar - Weekly View */}
         <div className="mb-6">
-          {selectedTimeRange === 'week' ? (
-            /* Weekly View - Colored Circles */
-            <div>
-              {/* Week day headers */}
-              <div className="grid grid-cols-7 gap-1 mb-2">
-                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((dayName) => (
-                  <div key={dayName} className="text-center text-xs font-medium text-slate-500 dark:text-[#938F99] py-2">
-                    {dayName}
-                  </div>
-                ))}
-              </div>
+          {/* Weekly View - Emojis with day labels */}
+          <div>
+            {/* Week day headers (M T W T F S S) */}
+            <div className="grid grid-cols-7 gap-2 mb-3">
+              {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((dayName, idx) => (
+                <div key={idx} className="text-center text-sm font-medium text-[#938F99]">
+                  {dayName}
+                </div>
+              ))}
+            </div>
               
               {/* Week emojis */}
               <div className="grid grid-cols-7 gap-2">
@@ -242,10 +255,10 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   return (
                     <div 
                       key={index} 
-                      className="flex flex-col items-center gap-0"
+                      className="flex flex-col items-center gap-1"
                     >
                       <div 
-                        className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'dark:opacity-30'}`}
+                        className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'opacity-30'}`}
                         onClick={() => {
                           if (day.hasData && day.entry) {
                             onViewEntry(day.entry)
@@ -254,7 +267,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                       >
                         {getEmotionEmoji()}
                       </div>
-                      <span className="text-[10px] font-medium text-slate-900 dark:text-[#E6E1E5] -mt-1">
+                      <span className="text-[10px] font-medium text-[#E6E1E5]">
                         {day.date}
                       </span>
                     </div>
@@ -262,79 +275,13 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 })}
               </div>
             </div>
-          ) : (
-              /* Monthly View - Calendar Grid */
-              <div>
-                {/* Calendar Header */}
-                <div className="grid grid-cols-7 gap-1 mb-2">
-                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((dayName) => (
-                    <div key={dayName} className="text-center text-xs font-medium text-slate-500 py-2">
-                      {dayName}
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Calendar Grid */}
-                <div className="grid grid-cols-7 gap-2">
-                  {monthlyData.map((day, index) => {
-                    // Get emoji based on emotion
-                    const getEmotionEmoji = () => {
-                      if (day.isEmpty || !day.hasData) return '⚪'
-                      const firstTask = day.entry?.tasks[0]
-                      if (!firstTask) return '⚪'
-                      
-                      const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
-                        ? firstTask.emotions[0] 
-                        : firstTask.emotion
-                      
-                      const emotion = EMOTIONS[emotionLevel]
-                      return emotion?.emoji || '😐'
-                    }
-                    
-                    return (
-                      <div key={index} className="aspect-square">
-                        {day.isEmpty ? (
-                          <div className="w-full h-full"></div>
-                        ) : (
-                          <div 
-                            className="w-full h-full flex flex-col items-center justify-center gap-0 transition-all relative"
-                            onClick={() => {
-                              if (day.hasData && day.entry) {
-                                onViewEntry(day.entry)
-                              }
-                            }}
-                          >
-                            {/* Emoji */}
-                            <div 
-                              className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'dark:opacity-30'}`}
-                            >
-                              {getEmotionEmoji()}
-                            </div>
-                            
-                            {/* Date number */}
-                            <span className="text-[10px] font-medium text-slate-900 dark:text-[#E6E1E5] -mt-1">
-                              {day.date}
-                            </span>
-                            
-                            {/* Today indicator */}
-                            {day.isToday && (
-                              <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-slate-900 rounded-full"></div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
         </div>
 
         {/* No data message */}
         {entries.length === 0 && (
-          <div className="bg-white dark:bg-[#2B2930] p-6 mb-6 border border-slate-200 dark:border-[#49454F] text-center" style={{ borderRadius: '0 48px 0 0' }}>
-            <p className="text-[16px] font-medium text-slate-900 dark:text-[#E6E1E5] mb-2">No data yet</p>
-            <p className="text-[14px] text-slate-600 dark:text-[#CAC4D0]">Add some reflections to see insights here.</p>
+          <div className="bg-white/[0.04] p-6 mb-6 text-center" style={{ borderRadius: '4px 47px 4px 4px' }}>
+            <p className="text-[16px] font-medium text-[#E6E1E5] mb-2">No data yet</p>
+            <p className="text-[14px] text-[#CAC4D0]">Add some reflections to see insights here.</p>
           </div>
         )}
 
@@ -411,210 +358,281 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             .slice(0, 3)
           
           return (
-            <div className="space-y-4 mb-6">
-              {/* 1. What Gave You Energy - Yellow/Orange Gradient */}
-              <div 
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
-                style={{ 
-                  borderRadius: '0 48px 0 0',
-                  background: theme === 'dark' 
-                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
-                    : 'linear-gradient(132deg, #FFE27A 0%, #FF7B54 103.78%)'
-                }}
+            <>
+              {/* Week's Reflection Card */}
+              <Card 
+                variant="glass" 
+                padding="small"
+                className="mb-4 !p-[20px]"
               >
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                    What Energized You
+                <div className="flex flex-col gap-3">
+                  <h2 className="text-[20px] font-bold text-[#E6E1E5]">
+                    Week's Reflection
+                  </h2>
+                  <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+                    You completed {entries.filter(e => e.date === new Date().toISOString().split('T')[0])[0]?.tasks?.length || 0} tasks today but felt low on energy. Take a moment to rest.
+                  </p>
+                </div>
+              </Card>
+
+              {/* Emotional Radar Chart */}
+              {(() => {
+                // Use time-filtered entries for the radar chart
+                const filteredEntries = selectedTimeRange === 'week' 
+                  ? getCurrentWeekEntries(entries)
+                  : getCurrentMonthEntries(entries)
+                const emotionBreakdown = getEmotionBreakdown(filteredEntries)
+                
+                if (emotionBreakdown) {
+                  return (
+                    <Card 
+                      variant="glass" 
+                      padding="small"
+                      className="mb-4 !p-[20px]"
+                    >
+                      <div className="flex flex-col items-center">
+                        <EmotionalRadarChart 
+                          emotionData={emotionBreakdown}
+                          taskCount={emotionBreakdown.totalTasks}
+                          view={selectedTimeRange === 'week' ? 'weekly' : 'monthly'}
+                          showLabels={true}
+                        />
+                      </div>
+                    </Card>
+                  )
+                }
+                return null
+              })()}
+
+              <div className="grid grid-cols-2 gap-3 mb-6">
+              {/* 1. Energized */}
+              <Card 
+                variant="glass" 
+                padding="small"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
+              >
+                <div className="flex flex-col gap-3">
+                  {/* Header with title and chevron */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-between">
+                      <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
+                        Energized
+                      </h3>
+                      <CaretRight size={20} weight="bold" className="text-[#EC5429] mt-1" />
+                    </div>
+                    <div className="w-full h-[1px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}></div>
+                  </div>
+                  
+                  {/* Today subtitle */}
+                  <p className="text-[11px] font-normal text-[#938F99]">
+                    Today
                   </p>
                   
+                  {/* Tasks */}
                   {energyProjects.length > 0 ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
-                        Creative tasks that involved visual thinking energized you.
-                      </p>
-                      <div className="space-y-1">
-                        {(() => {
-                          // Get tasks with energy emotions
-                          const energyTasks = allTasks
-                            .filter(task => {
-                              const emotions = getEmotions(task)
-                              return emotions.some(e => energyEmotions.includes(e))
-                            })
-                            .slice(0, 3)
-                          
-                          return energyTasks.map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                              • {task.description}
-                            </p>
-                          ))
-                        })()}
-                      </div>
-                    </>
+                    <div className="space-y-2">
+                      {(() => {
+                        const energyTasks = allTasks
+                          .filter(task => {
+                            const emotions = getEmotions(task)
+                            return emotions.some(e => energyEmotions.includes(e))
+                          })
+                          .slice(0, 2)
+                        
+                        return energyTasks.map((task, index) => (
+                          <p key={index} className="text-[18px] font-bold text-[#FF2D55] leading-tight">
+                            {task.description}
+                          </p>
+                        ))
+                      })()}
+                    </div>
                   ) : (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
-                      Moments that energize you — hitting flow, breakthroughs, or pure fun.
+                    <p className="text-[18px] font-bold text-[#FF2D55]/50 leading-tight italic">
+                      No energizing tasks yet
                     </p>
                   )}
+                  
+                  {/* Three dots */}
+                  <DotsThree size={24} weight="bold" className="text-[#938F99]" />
                 </div>
-              </div>
+              </Card>
               
-              {/* 2. What Drained You - Light Gray Gradient */}
-              <div 
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
-                style={{ 
-                  borderRadius: '0 48px 0 0',
-                  background: theme === 'dark'
-                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
-                    : 'linear-gradient(132deg, #E3E3E3 0%, #A69FAE 103.78%)'
-                }}
+              {/* 2. Drained */}
+              <Card 
+                variant="glass" 
+                padding="small"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
               >
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                    What Drained You
+                <div className="flex flex-col gap-3">
+                  {/* Header with title and chevron */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-between">
+                      <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
+                        Drained
+                      </h3>
+                      <CaretRight size={20} weight="bold" className="text-[#EC5429] mt-1" />
+                    </div>
+                    <div className="w-full h-[1px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}></div>
+                  </div>
+                  
+                  {/* Today subtitle */}
+                  <p className="text-[11px] font-normal text-[#938F99]">
+                    Today
                   </p>
                   
+                  {/* Tasks */}
                   {drainingProjects.length > 0 ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
-                        Tedious or repetitive tasks drained your creative energy.
-                      </p>
-                      <div className="space-y-1">
-                        {(() => {
-                          // Get tasks with draining emotions
-                          const drainingTasks = allTasks
-                            .filter(task => {
-                              const emotions = getEmotions(task)
-                              return emotions.some(e => drainingEmotions.includes(e))
-                            })
-                            .slice(0, 3)
-                          
-                          return drainingTasks.map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                              • {task.description}
-                            </p>
-                          ))
-                        })()}
-                      </div>
-                    </>
+                    <div className="space-y-2">
+                      {(() => {
+                        const drainingTasks = allTasks
+                          .filter(task => {
+                            const emotions = getEmotions(task)
+                            return emotions.some(e => drainingEmotions.includes(e))
+                          })
+                          .slice(0, 2)
+                        
+                        return drainingTasks.map((task, index) => (
+                          <p key={index} className="text-[18px] font-bold text-[#938F99] leading-tight">
+                            {task.description}
+                          </p>
+                        ))
+                      })()}
+                    </div>
                   ) : (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
-                      Tasks that drain you — tedious work, confusion, or feeling stuck.
+                    <p className="text-[18px] font-bold text-[#938F99]/50 leading-tight italic">
+                      No draining tasks yet
                     </p>
                   )}
+                  
+                  {/* Three dots */}
+                  <DotsThree size={24} weight="bold" className="text-[#938F99]" />
                 </div>
-              </div>
+              </Card>
               
-              {/* 3. What Felt Meaningful - Light Purple Gradient */}
-              <div 
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
-                style={{ 
-                  borderRadius: '0 48px 0 0',
-                  background: theme === 'dark'
-                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
-                    : 'linear-gradient(132deg, #C7D1FF 0%, #BC7AFF 103.78%)'
-                }}
+              {/* 3. Meaningful */}
+              <Card 
+                variant="glass" 
+                padding="small"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
               >
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                    What Felt Meaningful
+                <div className="flex flex-col gap-3">
+                  {/* Header with title and chevron */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-between">
+                      <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
+                        Meaningful
+                      </h3>
+                      <CaretRight size={20} weight="bold" className="text-[#EC5429] mt-1" />
+                    </div>
+                    <div className="w-full h-[1px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}></div>
+                  </div>
+                  
+                  {/* Today subtitle */}
+                  <p className="text-[11px] font-normal text-[#938F99]">
+                    Today
                   </p>
                   
+                  {/* Tasks */}
                   {meaningfulProjects.length > 0 ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
-                        Work that felt purposeful and aligned with your values.
-                      </p>
-                      <div className="space-y-1">
-                        {(() => {
-                          // Get tasks with meaningful emotions
-                          const meaningfulTasks = allTasks
-                            .filter(task => {
-                              const emotions = getEmotions(task)
-                              return emotions.some(e => meaningfulEmotions.includes(e))
-                            })
-                            .slice(0, 3)
-                          
-                          return meaningfulTasks.map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                              • {task.description}
-                            </p>
-                          ))
-                        })()}
-                      </div>
-                    </>
+                    <div className="space-y-2">
+                      {(() => {
+                        const meaningfulTasks = allTasks
+                          .filter(task => {
+                            const emotions = getEmotions(task)
+                            return emotions.some(e => meaningfulEmotions.includes(e))
+                          })
+                          .slice(0, 2)
+                        
+                        return meaningfulTasks.map((task, index) => (
+                          <p key={index} className="text-[18px] font-bold text-[#F4C95D] leading-tight">
+                            {task.description}
+                          </p>
+                        ))
+                      })()}
+                    </div>
                   ) : (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
-                      Work that felt purposeful — making an impact, solving real problems, or growth.
+                    <p className="text-[18px] font-bold text-[#F4C95D]/50 leading-tight italic">
+                      No meaningful tasks yet
                     </p>
                   )}
+                  
+                  {/* Three dots */}
+                  <DotsThree size={24} weight="bold" className="text-[#938F99]" />
                 </div>
-              </div>
+              </Card>
               
-              {/* 4. What Sparked Passion - Orange Gradient */}
-              <div 
-                className="p-4 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer" 
-                style={{ 
-                  borderRadius: '0 48px 0 0',
-                  background: theme === 'dark'
-                    ? 'linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 100%), linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
-                    : 'linear-gradient(180deg, #FA604D 0%, #F37E58 100%)'
-                }}
+              {/* 4. Curious */}
+              <Card 
+                variant="glass" 
+                padding="small"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
               >
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <p className="text-[12px] font-normal text-slate-900 dark:text-white">
-                    What Excited You
+                <div className="flex flex-col gap-3">
+                  {/* Header with title and chevron */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-between">
+                      <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
+                        Curious
+                      </h3>
+                      <CaretRight size={20} weight="bold" className="text-[#EC5429] mt-1" />
+                    </div>
+                    <div className="w-full h-[1px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}></div>
+                  </div>
+                  
+                  {/* Today subtitle */}
+                  <p className="text-[11px] font-normal text-[#938F99]">
+                    Today
                   </p>
                   
+                  {/* Tasks */}
                   {passionProjects.length > 0 ? (
-                    <>
-                      <p className="text-[20px] font-medium text-slate-900 dark:text-white leading-snug">
-                        Exploratory and experimental tasks lit up your curiosity.
-                      </p>
-                      <div className="space-y-1">
-                        {(() => {
-                          // Get tasks with passion emotions
-                          const passionTasks = allTasks
-                            .filter(task => {
-                              const emotions = getEmotions(task)
-                              return emotions.some(e => passionEmotions.includes(e))
-                            })
-                            .slice(0, 3)
-                          
-                          return passionTasks.map((task, index) => (
-                            <p key={index} className="text-[14px] font-normal text-slate-900 dark:text-white leading-tight">
-                              • {task.description}
-                            </p>
-                          ))
-                        })()}
-                      </div>
-                    </>
+                    <div className="space-y-2">
+                      {(() => {
+                        const passionTasks = allTasks
+                          .filter(task => {
+                            const emotions = getEmotions(task)
+                            return emotions.some(e => passionEmotions.includes(e))
+                          })
+                          .slice(0, 2)
+                        
+                        return passionTasks.map((task, index) => (
+                          <p key={index} className="text-[18px] font-bold text-[#AF52DE] leading-tight">
+                            {task.description}
+                          </p>
+                        ))
+                      })()}
+                    </div>
                   ) : (
-                    <p className="text-[16px] font-medium text-slate-700 dark:text-slate-200 leading-snug italic">
-                      Tasks that ignited your creativity — exploring ideas, experimenting, or discovering.
+                    <p className="text-[18px] font-bold text-[#AF52DE]/50 leading-tight italic">
+                      No curious tasks yet
                     </p>
                   )}
+                  
+                  {/* Three dots */}
+                  <DotsThree size={24} weight="bold" className="text-[#938F99]" />
                 </div>
-              </div>
+              </Card>
             </div>
+            </>
           )
         })()}
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#211F26] border-t border-slate-200 dark:border-[#49454F] z-50">
+      <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-[#49454F] z-50">
         <div className="relative flex items-end justify-around px-4 py-3">
           {/* Home */}
           <button 
             onClick={onNavigateHome}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/material-symbols_home-outline-rounded.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <HouseSimple size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Home</p>
           </button>
 
           {/* Overview */}
-          <button className="flex flex-col items-center justify-center gap-1.5 text-slate-900 dark:text-[#E6E1E5] min-w-[64px] py-1">
-            <img src="/icons/material-symbols_overview-outline-rounded.svg" alt="" className="w-[26px] h-[26px] dark:invert dark:brightness-200" />
+          <button className="flex flex-col items-center justify-center gap-1.5 text-[#E6E1E5] min-w-[64px] py-1">
+            <ChartBar size={26} weight="regular" className="text-[#E6E1E5]" />
             <p className="text-[11px] font-medium">Overview</p>
           </button>
 
@@ -623,30 +641,206 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-[#F37E58] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#E66A44] dark:hover:bg-[#AF4336] active:scale-95 transition-all">
-              <Plus size={28} strokeWidth={2.5} className="text-white" />
+            <div className="bg-[#EC5429] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#F76538] active:scale-95 transition-all">
+              <Plus size={28} weight="bold" className="text-white" />
             </div>
           </button>
 
           {/* History */}
           <button 
             onClick={onNavigateHistory}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/ic_round-history.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <Notepad size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">History</p>
           </button>
 
           {/* Setting */}
           <button 
             onClick={onNavigateSettings}
-            className="flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-[#938F99] hover:text-slate-900 dark:hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
+            className="flex flex-col items-center justify-center gap-1.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
           >
-            <img src="/icons/uil_setting.svg" alt="" className="w-[26px] h-[26px] opacity-40 hover:opacity-100 transition-opacity dark:invert dark:brightness-200" />
+            <GearSix size={26} weight="light" className="opacity-40 hover:opacity-100 transition-opacity" />
             <p className="text-[11px] font-medium">Settings</p>
           </button>
         </div>
       </footer>
+
+      {/* Full Calendar Bottom Sheet */}
+      {showFullCalendar && (
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/60 z-50 transition-opacity overflow-hidden"
+            onClick={() => setShowFullCalendar(false)}
+          />
+          
+          {/* Bottom Sheet */}
+          <div className="fixed inset-x-0 top-12 bottom-0 z-50 bg-black rounded-t-3xl overflow-hidden animate-slide-up shadow-2xl">
+            {/* Pull Indicator */}
+            <div className="flex justify-center pt-2 pb-1">
+              <div className="w-10 h-1 bg-[#49454F] rounded-full"></div>
+            </div>
+            
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-black z-10">
+              <div className="px-5 py-3 flex items-center justify-between">
+                <button
+                  onClick={() => setShowFullCalendar(false)}
+                  className="text-[#EC5429] text-[16px] font-medium"
+                >
+                  Cancel
+                </button>
+                <h2 className="text-[18px] font-semibold text-[#E6E1E5]">
+                  {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                </h2>
+                <div className="w-16"></div> {/* Spacer for centering */}
+              </div>
+
+              {/* Calendar Header - Day Labels */}
+              <div className="px-5 pt-4 pb-3 grid grid-cols-7 gap-1">
+                {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((dayName, idx) => (
+                  <div key={idx} className="text-center text-sm font-medium text-[#938F99]">
+                    {dayName}
+                  </div>
+                ))}
+              </div>
+
+              {/* Border line below day labels */}
+              <div className="border-b border-[#49454F]"></div>
+            </div>
+
+            {/* Scrollable Calendar Content */}
+            <div className="overflow-y-auto h-[calc(100vh-200px)] px-5 pb-6">
+              {/* Current Month (October) */}
+              <h3 className="text-[20px] font-semibold text-[#E6E1E5] mb-4">
+                {new Date().toLocaleDateString('en-US', { month: 'short' })}
+              </h3>
+              
+              {/* October Calendar Grid */}
+              <div className="grid grid-cols-7 gap-3 mb-8">
+                {currentMonthData.map((day, index) => {
+                  // Get emoji based on emotion
+                  const getEmotionEmoji = () => {
+                    if (day.isEmpty || !day.hasData) return '⚪'
+                    const firstTask = day.entry?.tasks[0]
+                    if (!firstTask) return '⚪'
+                    
+                    const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
+                      ? firstTask.emotions[0] 
+                      : firstTask.emotion
+                    
+                    const emotion = EMOTIONS[emotionLevel]
+                    return emotion?.emoji || '😐'
+                  }
+                  
+                  return (
+                    <div key={index} className="w-full">
+                      {day.isEmpty ? (
+                        <div className="w-full h-16"></div>
+                      ) : (
+                        <div 
+                          className="flex flex-col items-center justify-start gap-1 py-2 min-h-[64px] transition-all relative"
+                          onClick={() => {
+                            if (day.hasData && day.entry) {
+                              setShowFullCalendar(false)
+                              onViewEntry(day.entry)
+                            }
+                          }}
+                        >
+                          {/* Date number */}
+                          <span className="text-[14px] font-medium text-[#E6E1E5]">
+                            {day.date}
+                          </span>
+                          
+                          {/* Emoji */}
+                          {day.hasData ? (
+                            <div className="text-2xl transition-all cursor-pointer hover:scale-110">
+                              {getEmotionEmoji()}
+                            </div>
+                          ) : (
+                            <div className="text-2xl transition-all opacity-30">
+                              ⚪
+                            </div>
+                          )}
+                          
+                          {/* Today indicator */}
+                          {day.isToday && (
+                            <div className="absolute top-1 right-1 w-2 h-2 bg-[#EC5429] rounded-full"></div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Next Month (November) */}
+              <h3 className="text-[20px] font-semibold text-[#E6E1E5] mb-4">
+                {new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toLocaleDateString('en-US', { month: 'short' })}
+              </h3>
+              
+              {/* November Calendar Grid */}
+              <div className="grid grid-cols-7 gap-3 mb-8">
+                {nextMonthData.map((day, index) => {
+                  // Get emoji based on emotion
+                  const getEmotionEmoji = () => {
+                    if (day.isEmpty || !day.hasData) return '⚪'
+                    const firstTask = day.entry?.tasks[0]
+                    if (!firstTask) return '⚪'
+                    
+                    const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
+                      ? firstTask.emotions[0] 
+                      : firstTask.emotion
+                    
+                    const emotion = EMOTIONS[emotionLevel]
+                    return emotion?.emoji || '😐'
+                  }
+                  
+                  return (
+                    <div key={index} className="w-full">
+                      {day.isEmpty ? (
+                        <div className="w-full h-16"></div>
+                      ) : (
+                        <div 
+                          className="flex flex-col items-center justify-start gap-1 py-2 min-h-[64px] transition-all relative"
+                          onClick={() => {
+                            if (day.hasData && day.entry) {
+                              setShowFullCalendar(false)
+                              onViewEntry(day.entry)
+                            }
+                          }}
+                        >
+                          {/* Date number */}
+                          <span className="text-[14px] font-medium text-[#E6E1E5]">
+                            {day.date}
+                          </span>
+                          
+                          {/* Emoji */}
+                          {day.hasData ? (
+                            <div className="text-2xl transition-all cursor-pointer hover:scale-110">
+                              {getEmotionEmoji()}
+                            </div>
+                          ) : (
+                            <div className="text-2xl transition-all opacity-30">
+                              ⚪
+                            </div>
+                          )}
+                          
+                          {/* Today indicator */}
+                          {day.isToday && (
+                            <div className="absolute top-1 right-1 w-2 h-2 bg-[#EC5429] rounded-full"></div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

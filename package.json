@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "chart.js": "^4.5.1",
+    "framer-motion": "^12.23.24",
     "lucide-react": "^0.263.1",
+    "phosphor-react": "^1.4.1",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^18.3.1"
