@@ -51,12 +51,12 @@ export function generateEmotionalSummary(input: EmotionSummaryInput): string {
   // Pattern 1: Very low activity (1-2 tasks)
   if (taskCount <= 2) {
     if (dominant.value < 0.3) {
-      return `You logged ${taskCount} task${taskCount > 1 ? 's' : ''} today. Your energy feels scattered—take a moment to center yourself.`
+      return `Your energy feels scattered today. Take a moment to center yourself.`
     }
     if (dominant.positivity === 'positive') {
-      return `You logged ${taskCount} task${taskCount > 1 ? 's' : ''} today and felt mostly ${dominant.label}. A gentle start to the day.`
+      return `You felt mostly ${dominant.label}. A gentle start to the day.`
     } else {
-      return `You logged ${taskCount} task${taskCount > 1 ? 's' : ''} today but felt ${dominant.label}. Remember to be kind to yourself.`
+      return `You felt ${dominant.label} today. Remember to be kind to yourself.`
     }
   }
 
@@ -64,17 +64,17 @@ export function generateEmotionalSummary(input: EmotionSummaryInput): string {
   if (taskCount <= 5) {
     if (overallTone === 'positive') {
       if (secondary.value > 0.2) {
-        return `You felt mostly ${dominant.label} today with moments of ${secondary.label}. You're finding your rhythm.`
+        return `You felt mostly ${dominant.label} with moments of ${secondary.label}. You're finding your rhythm.`
       }
-      return `You felt ${dominant.label} as you worked through ${taskCount} tasks today. Keep this momentum going.`
+      return `You felt ${dominant.label} today. Keep this momentum going.`
     } else {
       if (breakdown.frustrated > 0.4) {
-        return `Today felt challenging with ${taskCount} tasks. The frustration is real, but you're making progress.`
+        return `Today felt challenging. The frustration is real, but you're making progress.`
       }
       if (breakdown.anxious > 0.4) {
-        return `You felt anxious while working on ${taskCount} tasks today. Take a deep breath—you're doing more than enough.`
+        return `You felt anxious today. Take a deep breath—you're doing more than enough.`
       }
-      return `You navigated ${taskCount} tasks today while feeling ${dominant.label}. That takes courage.`
+      return `You felt ${dominant.label} today. That takes courage.`
     }
   }
 
@@ -82,23 +82,23 @@ export function generateEmotionalSummary(input: EmotionSummaryInput): string {
   if (taskCount >= 6) {
     if (overallTone === 'positive') {
       if (breakdown.excited > 0.5) {
-        return `You powered through ${taskCount} tasks with excitement and energy today! You're on fire.`
+        return `You felt excited and energized today! You're on fire.`
       }
       if (breakdown.happy > 0.5) {
-        return `You completed ${taskCount} tasks today and felt genuinely happy. That's the sweet spot.`
+        return `You felt genuinely happy today. That's the sweet spot.`
       }
       if (breakdown.calm > 0.5) {
-        return `You moved through ${taskCount} tasks with calm and focus today. Beautiful flow state.`
+        return `You moved through your day with calm and focus. Beautiful flow state.`
       }
-      return `You felt ${dominant.label} while completing ${taskCount} tasks. You're in a good rhythm.`
+      return `You felt ${dominant.label} today. You're in a good rhythm.`
     } else {
       if (breakdown.frustrated > 0.5) {
-        return `You pushed through ${taskCount} tasks despite feeling frustrated. That's resilience. Take a break if you need it.`
+        return `You felt frustrated today. That's resilience showing up. Take a break if you need it.`
       }
       if (breakdown.anxious > 0.5) {
-        return `You completed ${taskCount} tasks while managing anxiety. That takes real strength. Be proud of yourself.`
+        return `You managed anxiety today. That takes real strength. Be proud of yourself.`
       }
-      return `You worked through ${taskCount} tasks today while feeling ${dominant.label}. Remember to pause and breathe.`
+      return `You felt ${dominant.label} today. Remember to pause and breathe.`
     }
   }
 
@@ -110,7 +110,7 @@ export function generateEmotionalSummary(input: EmotionSummaryInput): string {
   }
 
   // Default fallback
-  return `You completed ${taskCount} task${taskCount !== 1 ? 's' : ''} today and felt mostly ${dominant.label}.`
+  return `You felt mostly ${dominant.label} today.`
 }
 
 /**
