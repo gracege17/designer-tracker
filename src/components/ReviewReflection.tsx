@@ -74,7 +74,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
                   return (
                     <div 
                       key={task.id} 
-                      className="bg-white/[0.04] p-4 border border-[#49454F] cursor-pointer transition-all active:scale-[0.99] hover:bg-white/[0.08]"
+                      className="bg-white/[0.04] p-4 cursor-pointer transition-all active:scale-[0.99] hover:bg-white/[0.08]"
                       style={{ borderRadius: '12px' }}
                       onClick={() => {
                         const action = window.confirm('What would you like to do with this task?\n\nPress OK to edit, or Cancel to delete.')
