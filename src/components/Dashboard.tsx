@@ -207,11 +207,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   style={{ height: '1px', width: '100%' }}
                 ></div>
                 
-                {/* Description */}
-                <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
-                  Based on {emotionBreakdown.totalTasks} task{emotionBreakdown.totalTasks !== 1 ? 's' : ''} logged today
-                </p>
-                
               </div>
             </div>
           </div>
