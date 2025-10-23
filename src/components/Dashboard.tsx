@@ -201,12 +201,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   Emotional Highlights
                 </h3>
                 
-                {/* Thin divider line */}
-                <div 
-                  className="bg-white/[0.08]"
-                  style={{ height: '1px', width: '100%' }}
-                ></div>
-                
               </div>
             </div>
           </div>
