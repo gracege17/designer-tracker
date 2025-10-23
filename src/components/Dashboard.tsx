@@ -197,18 +197,13 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   Today's Emotional Flow
                 </p>
                 
-                {/* Section Title */}
-                <h3 className="text-[16px] font-semibold text-[#E6E1E5]">
-                  Emotional Highlights
-                </h3>
-                
-                {/* AI-Generated Emotional Summary */}
-                <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+                {/* AI-Generated Emotional Summary as Heading */}
+                <h3 className="text-[16px] font-semibold text-[#E6E1E5] leading-relaxed">
                   {generateEmotionalSummary({
                     breakdown: emotionBreakdown.breakdown,
                     taskCount: emotionBreakdown.totalTasks
                   })}
-                </p>
+                </h3>
                 
               </div>
             </div>
