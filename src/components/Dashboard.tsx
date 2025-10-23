@@ -8,6 +8,7 @@ import { generateSuggestions, getMotivationalQuote } from '../utils/suggestionEn
 import { generateDailySummary } from '../utils/aiSummaryService'
 import { getResourceRecommendation } from '../utils/resourceRecommendationService'
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
+import { generateEmotionalSummary } from '../utils/emotionalSummaryService'
 import EmotionalRadarChart from './EmotionalRadarChart'
 import SuggestionsCard from './SuggestionsCard'
 
@@ -200,6 +201,14 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 <h3 className="text-[16px] font-semibold text-[#E6E1E5]">
                   Emotional Highlights
                 </h3>
+                
+                {/* AI-Generated Emotional Summary */}
+                <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+                  {generateEmotionalSummary({
+                    breakdown: emotionBreakdown.breakdown,
+                    taskCount: emotionBreakdown.totalTasks
+                  })}
+                </p>
                 
               </div>
             </div>
