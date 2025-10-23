@@ -36,17 +36,17 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
   }, {} as Record<string, TaskReview[]>)
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8]">
+    <div className="min-h-screen flex flex-col bg-black">
       {/* Header */}
-      <header className="sticky top-0 bg-[#FFF9F8] z-10 p-5 border-b border-slate-200">
+      <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#49454F]">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="p-2 hover:bg-white/[0.08] rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
-          <h1 className="text-[18px] font-bold text-slate-900">
+          <h1 className="text-[18px] font-bold text-[#E6E1E5]">
             Today's Tasks
           </h1>
           <div className="w-10"></div>
@@ -61,7 +61,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
           return (
             <div key={projectId} className="mb-6">
               {/* Project Name */}
-              <h2 className="text-[18px] font-bold text-slate-900 mb-4">
+              <h2 className="text-[18px] font-bold text-[#E6E1E5] mb-4">
                 {project?.name || 'Unknown Project'}
               </h2>
 
@@ -74,7 +74,8 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
                   return (
                     <div 
                       key={task.id} 
-                      className="bg-white p-4 border border-slate-200 cursor-pointer transition-all active:scale-[0.99]"
+                      className="bg-white/[0.04] p-4 border border-[#49454F] cursor-pointer transition-all active:scale-[0.99] hover:bg-white/[0.08]"
+                      style={{ borderRadius: '12px' }}
                       onClick={() => {
                         const action = window.confirm('What would you like to do with this task?\n\nPress OK to edit, or Cancel to delete.')
                         if (action) {
@@ -100,9 +101,9 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
                         </div>
                         
                         <div className="flex-1">
-                          <p className="text-[16px] font-medium text-slate-900 mb-1">{task.description}</p>
+                          <p className="text-[16px] font-medium text-[#E6E1E5] mb-1">{task.description}</p>
                           {task.notes && (
-                            <p className="text-[14px] text-slate-600 italic">"{task.notes}"</p>
+                            <p className="text-[14px] text-[#938F99] italic">"{task.notes}"</p>
                           )}
                         </div>
                       </div>
@@ -116,10 +117,10 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
 
         {tasks.length === 0 && (
           <div className="text-center py-12">
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">
+            <h3 className="text-xl font-semibold text-[#E6E1E5] mb-2">
               No tasks yet
             </h3>
-            <p className="text-slate-600">
+            <p className="text-[#938F99]">
               Start by capturing a moment from your day.
             </p>
           </div>
@@ -127,16 +128,16 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
       </main>
 
       {/* Footer */}
-      <footer className="sticky bottom-0 bg-[#FFF9F8] p-5">
+      <footer className="sticky bottom-0 bg-black p-5 border-t border-[#49454F]">
         <div className="max-w-md mx-auto">
           <button
             onClick={onSaveReflection}
             disabled={tasks.length === 0}
             className={`
-              w-full py-5 px-6 font-bold text-[17px] transition-all duration-200
+              w-full py-5 px-6 font-bold text-[17px] transition-all duration-200 rounded-full
               ${tasks.length > 0
                 ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
-                : 'bg-[#999] text-white cursor-not-allowed'
+                : 'bg-[#49454F] text-[#938F99] cursor-not-allowed'
               }
             `}
           >
