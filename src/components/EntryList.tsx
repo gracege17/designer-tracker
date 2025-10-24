@@ -183,7 +183,7 @@ const EntryList: React.FC<EntryListProps> = ({
             onClick={onNavigateAdd}
             className="flex flex-col items-center justify-center -mt-6"
           >
-            <div className="bg-[#EC5429] rounded-[18px] px-6 py-3 shadow-xl hover:bg-[#F76538] active:scale-95 transition-all">
+            <div className="bg-[#EC5429] rounded-[18px] px-4 py-2.5 shadow-xl hover:bg-[#F76538] active:scale-95 transition-all">
               <Plus size={26} weight="bold" className="text-white" />
             </div>
           </button>
