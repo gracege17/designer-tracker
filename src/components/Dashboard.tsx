@@ -179,6 +179,14 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </div>
         )}
 
+        {/* What Might Help Today Section */}
+        <div className="w-full bg-white/[0.04] mb-6" style={{ borderRadius: '16px', padding: '24px' }}>
+          <h2 className="text-[24px] font-bold text-white mb-3">What Might Help Today</h2>
+          <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+            Rest is also growth. Here's something gentle to recharge your energy.
+          </p>
+        </div>
+
         {/* Helpful Resources Section - AI-Ready */}
         {emotionBreakdown && (
           <HelpfulResourcesCard 
@@ -188,14 +196,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             )}
           />
         )}
-
-        {/* What Might Help Today Section */}
-        <div className="w-full bg-white/[0.04] mb-6" style={{ borderRadius: '16px', padding: '24px' }}>
-          <h2 className="text-[24px] font-bold text-white mb-3">What Might Help Today</h2>
-          <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
-            Rest is also growth. Here's something gentle to recharge your energy.
-          </p>
-        </div>
 
         {/* Inspirational Quote Card */}
         {(() => {
