@@ -6,6 +6,7 @@ import { getCurrentWeekEntries, getCurrentMonthEntries, calculateAverageEmotion,
 import Card from './Card'
 import EmotionalRadarChart from './EmotionalRadarChart'
 import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
+import { generateWeeklyInsights } from '../utils/weeklyInsightsService'
 
 interface InsightsScreenProps {
   entries: Entry[]
@@ -360,20 +361,37 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
           return (
             <>
               {/* Week's Reflection Card */}
-              <Card 
-                variant="glass" 
-                padding="small"
-                className="mb-4 !p-[20px]"
-              >
-                <div className="flex flex-col gap-3">
-                  <h2 className="text-[20px] font-bold text-[#E6E1E5]">
-                    Week's Reflection
-                  </h2>
-                  <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
-                    You completed {entries.filter(e => e.date === new Date().toISOString().split('T')[0])[0]?.tasks?.length || 0} tasks today but felt low on energy. Take a moment to rest.
-                  </p>
-                </div>
-              </Card>
+              {(() => {
+                // Use time-filtered entries for insights
+                const filteredEntries = selectedTimeRange === 'week' 
+                  ? getCurrentWeekEntries(entries)
+                  : getCurrentMonthEntries(entries)
+                const emotionBreakdown = getEmotionBreakdown(filteredEntries)
+                const taskCount = filteredEntries.reduce((sum, entry) => sum + entry.tasks.length, 0)
+                
+                const insights = generateWeeklyInsights({
+                  taskCount,
+                  emotionBreakdown: emotionBreakdown?.breakdown,
+                  timeRange: selectedTimeRange
+                })
+
+                return (
+                  <Card 
+                    variant="glass" 
+                    padding="small"
+                    className="mb-4 !p-[20px]"
+                  >
+                    <div className="flex flex-col gap-3">
+                      <h2 className="text-[20px] font-bold text-[#E6E1E5]">
+                        {selectedTimeRange === 'week' ? "Week's Reflection" : "Month's Reflection"}
+                      </h2>
+                      <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+                        {insights}
+                      </p>
+                    </div>
+                  </Card>
+                )
+              })()}
 
               {/* Emotional Radar Chart */}
               {(() => {
