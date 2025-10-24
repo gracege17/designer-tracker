@@ -44,24 +44,6 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
     }
   }
 
-  /**
-   * Get category label for display
-   */
-  const getCategoryLabel = (category: ResourceCategory): string => {
-    switch (category) {
-      case 'tools':
-        return 'Tools'
-      case 'read':
-        return 'Read'
-      case 'podcast':
-        return 'Podcast'
-      case 'video':
-        return 'Video'
-      default:
-        return 'Resource'
-    }
-  }
-
   return (
     <div 
       className="w-full bg-white/[0.04] mb-6"
@@ -88,11 +70,8 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
             className="flex items-start gap-4 p-4 bg-white/[0.02] hover:bg-white/[0.04] rounded-xl transition-all cursor-pointer active:scale-[0.99]"
           >
             {/* Icon Section */}
-            <div className="flex-shrink-0 flex flex-col items-center gap-2 pt-1">
+            <div className="flex-shrink-0 pt-1">
               {getCategoryIcon(resource.category)}
-              <span className="text-[11px] font-medium text-[#938F99]">
-                {getCategoryLabel(resource.category)}
-              </span>
             </div>
 
             {/* Content Section */}
