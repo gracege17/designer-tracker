@@ -132,7 +132,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
             onClick={handleNext}
             disabled={selectedEmotions.length === 0}
             className={`
-              w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
+              w-full py-2.5 px-4 font-medium text-[17px] transition-all duration-200
               ${selectedEmotions.length > 0
                 ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
                 : 'bg-[#999] text-white cursor-not-allowed'

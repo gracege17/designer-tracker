@@ -204,7 +204,7 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
           {/* Continue Button */}
           <button
             onClick={() => onComplete(sliderValue)}
-            className="w-full bg-[#EC5429] text-white py-5 px-6 font-medium text-[17px] hover:bg-[#F76538] transition-all duration-200 active:scale-[0.98]"
+            className="w-full bg-[#EC5429] text-white py-2.5 px-4 font-medium text-[17px] hover:bg-[#F76538] transition-all duration-200 active:scale-[0.98]"
           >
             Continue
           </button>

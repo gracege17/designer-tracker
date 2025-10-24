@@ -242,7 +242,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             onClick={handleNext}
             disabled={selectedProjects.length === 0}
             className={`
-              w-full py-5 px-6 font-medium text-[17px] transition-all duration-200
+              w-full py-2.5 px-4 font-medium text-[17px] transition-all duration-200
               ${selectedProjects.length > 0
                 ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
                 : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed'

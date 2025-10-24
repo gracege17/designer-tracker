@@ -195,7 +195,7 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
         <button
           onClick={handleContinue}
           disabled={!name.trim() || !jobTitle.trim()}
-          className={`w-full bg-[#EC5429] text-white font-bold py-5 px-6 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 hover:bg-[#F76538] ${
+          className={`w-full bg-[#EC5429] text-white font-bold py-2.5 px-4 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 hover:bg-[#F76538] ${
             !name.trim() || !jobTitle.trim()
               ? 'bg-[#999] cursor-not-allowed'
               : 'hover:bg-slate-900 active:scale-[0.98]'

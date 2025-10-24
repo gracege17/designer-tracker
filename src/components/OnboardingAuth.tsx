@@ -62,7 +62,7 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
           {/* Email Sign In */}
           <button
             onClick={onContinueWithEmail}
-            className="w-full bg-[#EC5429] text-white font-medium py-5 px-6 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-[#F76538] active:scale-[0.98]"
+            className="w-full bg-[#EC5429] text-white font-medium py-2.5 px-4 transition-all duration-200 flex items-center justify-center gap-3 hover:bg-[#F76538] active:scale-[0.98]"
           >
             <EnvelopeSimple size={24} weight="regular" />
             <span>Continue with Email</span>
