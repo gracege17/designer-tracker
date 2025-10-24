@@ -9,8 +9,10 @@ import { generateDailySummary } from '../utils/aiSummaryService'
 import { getResourceRecommendation } from '../utils/resourceRecommendationService'
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { generateEmotionalSummary } from '../utils/emotionalSummaryService'
+import { getHelpfulResources } from '../utils/helpfulResourcesService'
 import EmotionalRadarChart from './EmotionalRadarChart'
 import SuggestionsCard from './SuggestionsCard'
+import HelpfulResourcesCard from './HelpfulResourcesCard'
 
 interface DashboardProps {
   entries: Entry[]
@@ -208,6 +210,16 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               </div>
             </div>
           </div>
+        )}
+
+        {/* Helpful Resources Section - AI-Ready */}
+        {emotionBreakdown && (
+          <HelpfulResourcesCard 
+            resources={getHelpfulResources(
+              emotionBreakdown.breakdown,
+              emotionBreakdown.totalTasks
+            )}
+          />
         )}
 
         {/* Resource Recommendation Card - Orange accent */}
