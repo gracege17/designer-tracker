@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Plus, GearSix, HouseSimple, PlusCircle, ChartBar, Notepad } from 'phosphor-react'
+import BottomNav from './BottomNav'
 import { Entry, EMOTIONS, EmotionLevel } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { getTodayDateString, getCurrentWeekEntries, getTotalTaskCount, getMostEnergizingTaskType } from '../utils/dataHelpers'
@@ -220,52 +221,14 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-[#49454F] z-50">
-        <div className="relative flex items-end justify-around px-4 py-2 bg-[#1C1B1F]/80 backdrop-blur-md border-t border-white/10">
-          {/* Home (Active) */}
-          <button className="flex flex-col items-center justify-center gap-0.5 text-[#E6E1E5] min-w-[64px] py-1">
-            <HouseSimple size={22} weight="regular" className="text-[#E6E1E5]" />
-            <p className="text-[11px] font-medium">Home</p>
-          </button>
-
-          {/* Overview */}
-          <button 
-            onClick={onViewInsights}
-            className="flex flex-col items-center justify-center gap-0.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
-          >
-            <ChartBar size={22} weight="light" className="opacity-60 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Overview</p>
-          </button>
-
-          {/* Add Button - Center & Elevated */}
-          <button
-            onClick={onAddEntry}
-            className="flex flex-col items-center justify-center -mt-5"
-          >
-            <div className="bg-[#EC5429] rounded-full p-3 shadow-lg hover:bg-[#F76538] active:scale-95 transition-all">
-              <Plus size={22} weight="bold" className="text-white" />
-            </div>
-          </button>
-
-          {/* History */}
-          <button 
-            onClick={onViewEntries}
-            className="flex flex-col items-center justify-center gap-0.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
-          >
-            <Notepad size={22} weight="light" className="opacity-60 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">History</p>
-          </button>
-
-          {/* Settings */}
-          <button 
-            onClick={onViewSettings}
-            className="flex flex-col items-center justify-center gap-0.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
-          >
-            <GearSix size={22} weight="light" className="opacity-60 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Settings</p>
-          </button>
-        </div>
-      </footer>
+      <BottomNav
+        activeTab="home"
+        onNavigateHome={() => {}} // Dashboard is already the home page
+        onNavigateInsights={onViewInsights}
+        onNavigateAdd={onAddEntry}
+        onNavigateHistory={onViewEntries}
+        onNavigateSettings={onViewSettings || (() => {})}
+      />
     </div>
   )
 }

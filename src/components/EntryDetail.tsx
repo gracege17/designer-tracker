@@ -1,5 +1,5 @@
 import React from 'react'
-import { CaretLeft, HouseSimple, Plus, ChartBar, Notepad, GearSix } from 'phosphor-react'
+import BottomNav from './BottomNav'
 import { Entry, EMOTIONS } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { ProjectStorage } from '../utils/storage'
@@ -171,55 +171,14 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       </main>
 
       {/* Bottom Navigation */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-[#49454F] z-50">
-        <div className="relative flex items-end justify-around px-4 py-2 bg-[#1C1B1F]/80 backdrop-blur-md border-t border-white/10">
-          {/* Home */}
-          <button 
-            onClick={onNavigateHome}
-            className="flex flex-col items-center justify-center gap-0.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
-          >
-            <HouseSimple size={22} weight="light" className="opacity-60 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Home</p>
-          </button>
-
-          {/* Overview */}
-          <button 
-            onClick={onNavigateInsights}
-            className="flex flex-col items-center justify-center gap-0.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
-          >
-            <ChartBar size={22} weight="light" className="opacity-60 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Overview</p>
-          </button>
-
-          {/* Add Button - Center & Elevated */}
-          <button
-            onClick={onNavigateAdd}
-            className="flex flex-col items-center justify-center -mt-5"
-          >
-            <div className="bg-[#EC5429] rounded-full p-3 shadow-lg hover:bg-[#F76538] active:scale-95 transition-all">
-              <Plus size={22} weight="bold" className="text-white" />
-            </div>
-          </button>
-
-          {/* History */}
-          <button 
-            onClick={onNavigateHistory}
-            className="flex flex-col items-center justify-center gap-0.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
-          >
-            <Notepad size={22} weight="light" className="opacity-60 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">History</p>
-          </button>
-
-          {/* Settings */}
-          <button 
-            onClick={onNavigateSettings}
-            className="flex flex-col items-center justify-center gap-0.5 text-[#938F99] hover:text-[#E6E1E5] transition-colors min-w-[64px] py-1"
-          >
-            <GearSix size={22} weight="light" className="opacity-60 hover:opacity-100 transition-opacity" />
-            <p className="text-[11px] font-medium">Settings</p>
-          </button>
-        </div>
-      </footer>
+      <BottomNav
+        activeTab="history"
+        onNavigateHome={onNavigateHome}
+        onNavigateInsights={onNavigateInsights}
+        onNavigateAdd={onNavigateAdd}
+        onNavigateHistory={() => {}}
+        onNavigateSettings={onNavigateSettings}
+      />
     </div>
   )
 }
