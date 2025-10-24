@@ -1,4 +1,5 @@
 import React from 'react'
+import { CaretLeft } from 'phosphor-react'
 import BottomNav from './BottomNav'
 import { Entry, EMOTIONS } from '../types'
 import { DateUtils } from '../utils/dateUtils'
@@ -173,11 +174,11 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       {/* Bottom Navigation */}
       <BottomNav
         activeTab="history"
-        onNavigateHome={onNavigateHome}
-        onNavigateInsights={onNavigateInsights}
-        onNavigateAdd={onNavigateAdd}
+        onNavigateHome={onNavigateHome || (() => {})}
+        onNavigateInsights={onNavigateInsights || (() => {})}
+        onNavigateAdd={onNavigateAdd || (() => {})}
         onNavigateHistory={() => {}}
-        onNavigateSettings={onNavigateSettings}
+        onNavigateSettings={onNavigateSettings || (() => {})}
       />
     </div>
   )

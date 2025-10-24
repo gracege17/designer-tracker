@@ -165,7 +165,7 @@ const EntryList: React.FC<EntryListProps> = ({
         onNavigateInsights={onNavigateInsights}
         onNavigateAdd={onNavigateAdd}
         onNavigateHistory={() => {}}
-        onNavigateSettings={onNavigateSettings}
+        onNavigateSettings={onNavigateSettings || (() => {})}
       />
     </div>
   )

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { HouseSimple, ChartBar, Plus, Notepad, GearSix } from "@phosphor-icons/react";
+import { HouseSimple, ChartBar, Plus, Notepad, GearSix } from "phosphor-react";
 
 interface BottomNavProps {
   activeTab: 'home' | 'overview' | 'history' | 'settings';

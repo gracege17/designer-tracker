@@ -645,7 +645,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
         onNavigateInsights={() => {}}
         onNavigateAdd={onNavigateAdd}
         onNavigateHistory={onNavigateHistory}
-        onNavigateSettings={onNavigateSettings}
+        onNavigateSettings={onNavigateSettings || (() => {})}
       />
 
       {/* Full Calendar Bottom Sheet */}
