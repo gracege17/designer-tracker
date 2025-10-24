@@ -165,156 +165,148 @@ const Settings: React.FC<SettingsProps> = ({
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
+      <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto space-y-8">
         {/* Daily Reminder Section */}
-        <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-[#E6E1E5] mb-4">Daily Reminder</h2>
-          <div className="p-5 border border-[#49454F] bg-white/[0.04]" style={{ borderRadius: '0 24px 0 0' }}>
-            <label className="block mb-3">
-              <span className="text-[14px] font-medium text-[#CAC4D0] mb-2 block">
+        <section>
+          <h3 className="text-xs uppercase text-[#A6A6A6] mb-3 tracking-wide">DAILY REMINDER</h3>
+          <div className="p-4 bg-white/[0.04] rounded-xl">
+            <label className="block">
+              <span className="text-sm text-white mb-2 block">
                 Reminder Time
               </span>
               <input
                 type="time"
                 value={reminderTime}
                 onChange={(e) => setReminderTime(e.target.value)}
-                className="w-full px-4 py-3 bg-[#211F26] border border-[#49454F] text-[#E6E1E5] focus:outline-none focus:border-[#EC5429]"
-                style={{ borderRadius: '0 12px 0 0' }}
+                className="bg-white/[0.06] rounded-md p-2 w-full text-white focus:outline-none focus:ring-2 focus:ring-[#EC5429]"
               />
             </label>
-            <p className="text-[13px] text-[#938F99]">
-              Remind me to reflect at {reminderTime}
+            <p className="text-xs text-[#938F99] mt-2">
+              Evening reflection reminder at {reminderTime.replace(/^(\d{2}):(\d{2})$/, (_, h, m) => {
+                const hour = parseInt(h);
+                const period = hour >= 12 ? 'PM' : 'AM';
+                const displayHour = hour % 12 || 12;
+                return `${displayHour}:${m} ${period}`;
+              })} 🌙
             </p>
           </div>
-        </div>
+        </section>
 
         {/* Account Section */}
-        <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-[#E6E1E5] mb-4">Account</h2>
-          <div className="p-5 border border-[#49454F] bg-white/[0.04]" style={{ borderRadius: '0 24px 0 0' }}>
+        <section>
+          <h3 className="text-xs uppercase text-[#A6A6A6] mb-3 tracking-wide">ACCOUNT</h3>
+          <div className="p-4 bg-white/[0.04] rounded-xl">
             <label className="block">
-              <span className="text-[14px] font-medium text-[#CAC4D0] mb-2 block">
+              <span className="text-sm text-white mb-2 block">
                 Your Name
               </span>
               {isEditingName ? (
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    onBlur={handleSaveName}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleSaveName()
-                      if (e.key === 'Escape') {
-                        setName(userProfile?.name || '')
-                        setIsEditingName(false)
-                      }
-                    }}
-                    autoFocus
-                    className="flex-1 px-4 py-3 bg-[#211F26] border border-[#49454F] text-[#E6E1E5] focus:outline-none focus:border-[#EC5429]"
-                    style={{ borderRadius: '0 12px 0 0' }}
-                  />
-                </div>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onBlur={handleSaveName}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') handleSaveName()
+                    if (e.key === 'Escape') {
+                      setName(userProfile?.name || '')
+                      setIsEditingName(false)
+                    }
+                  }}
+                  autoFocus
+                  className="bg-white/[0.06] rounded-md p-2 w-full text-white focus:outline-none focus:ring-2 focus:ring-[#EC5429]"
+                />
               ) : (
                 <div 
                   onClick={() => setIsEditingName(true)}
-                  className="px-4 py-3 bg-[#211F26] border border-[#49454F] text-[#E6E1E5] cursor-pointer hover:bg-white/[0.04] transition-colors"
-                  style={{ borderRadius: '0 12px 0 0' }}
+                  className="bg-white/[0.06] rounded-md p-2 w-full text-white cursor-pointer hover:bg-white/[0.08] transition-colors"
                 >
                   {name || 'Tap to set your name'}
                 </div>
               )}
             </label>
-            <p className="text-[13px] text-[#938F99] mt-3">
-              Used for personalized greetings
+            <p className="text-xs text-[#938F99] mt-2">
+              Appears in your daily greeting ✨
             </p>
           </div>
-        </div>
+        </section>
 
         {/* Data Control Section */}
-        <div className="mb-8">
-          <h2 className="text-[16px] font-bold text-[#E6E1E5] mb-4">Data Control</h2>
-          
-          {/* Export Data */}
-          <button
-            onClick={handleExportData}
-            className="w-full p-5 mb-3 border border-[#49454F] bg-white/[0.04] text-left transition-all active:scale-[0.99]"
-            style={{ borderRadius: '0 24px 0 0' }}
-          >
-            <div className="flex items-center justify-between">
+        <section>
+          <h3 className="text-xs uppercase text-[#A6A6A6] mb-3 tracking-wide">DATA CONTROL</h3>
+          <div className="space-y-3">
+            {/* Export Data */}
+            <button
+              onClick={handleExportData}
+              className="w-full p-4 bg-white/[0.04] rounded-xl text-left transition-all active:scale-[0.98] hover:bg-white/[0.06]"
+            >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#211F26] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
                   <DownloadSimple size={20} weight="regular" className="text-[#CAC4D0]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-[#E6E1E5]">Export data</p>
-                  <p className="text-[13px] text-[#938F99]">Download as JSON</p>
+                  <p className="text-sm font-medium text-white">Export Data</p>
+                  <p className="text-xs text-[#938F99]">Save your reflections as backup</p>
                 </div>
               </div>
-            </div>
-          </button>
+            </button>
 
-          {/* Check Data Integrity */}
-          <button
-            onClick={handleCheckDataIntegrity}
-            className="w-full p-5 mb-3 border border-[#49454F] bg-white/[0.04] text-left transition-all active:scale-[0.99]"
-            style={{ borderRadius: '0 24px 0 0' }}
-          >
-            <div className="flex items-center justify-between">
+            {/* Check Data Integrity */}
+            <button
+              onClick={handleCheckDataIntegrity}
+              className="w-full p-4 bg-white/[0.04] rounded-xl text-left transition-all active:scale-[0.98] hover:bg-white/[0.06]"
+            >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#211F26] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
                   <GearSix size={20} weight="regular" className="text-[#AF52DE]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-[#E6E1E5]">Check for Issues</p>
-                  <p className="text-[13px] text-[#938F99]">Scan and repair broken links</p>
+                  <p className="text-sm font-medium text-white">Check for Issues</p>
+                  <p className="text-xs text-[#938F99]">Scan and fix any broken links</p>
                 </div>
               </div>
-            </div>
-          </button>
+            </button>
 
-          {/* Delete All Data */}
-          <button
-            onClick={handleDeleteAllData}
-            className="w-full p-5 border border-[#49454F] bg-white/[0.04] text-left transition-all active:scale-[0.99]"
-            style={{ borderRadius: '0 24px 0 0' }}
-          >
-            <div className="flex items-center justify-between">
+            {/* Delete All Data */}
+            <button
+              onClick={handleDeleteAllData}
+              className="w-full p-4 bg-white/[0.04] rounded-xl text-left transition-all active:scale-[0.98] hover:bg-white/[0.06]"
+            >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#211F26] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
                   <Trash size={20} weight="regular" className="text-[#FF6B6B]" />
                 </div>
                 <div>
-                  <p className="text-[16px] font-bold text-[#FF6B6B]">Delete all my data</p>
-                  <p className="text-[13px] text-[#938F99]">Permanently remove everything</p>
+                  <p className="text-sm font-medium text-[#FF6B6B]">Delete All Data</p>
+                  <p className="text-xs text-[#938F99]">Removes everything permanently</p>
                 </div>
               </div>
-            </div>
-          </button>
-        </div>
+            </button>
+          </div>
+        </section>
 
         {/* Feedback Section */}
-        <div className="mb-8">
+        <section>
+          <h3 className="text-xs uppercase text-[#A6A6A6] mb-3 tracking-wide">FEEDBACK</h3>
           <button
             onClick={handleSendFeedback}
-            className="w-full p-5 border border-[#49454F] bg-white/[0.04] text-left transition-all active:scale-[0.99]"
-            style={{ borderRadius: '0 24px 0 0' }}
+            className="w-full p-4 bg-white/[0.04] rounded-xl text-left transition-all active:scale-[0.98] hover:bg-white/[0.06]"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#211F26] flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
                 <EnvelopeSimple size={20} weight="regular" className="text-[#CAC4D0]" />
               </div>
               <div>
-                <p className="text-[16px] font-bold text-[#E6E1E5]">Send Feedback</p>
-                <p className="text-[13px] text-[#938F99]">Help us improve the app</p>
+                <p className="text-sm font-medium text-white">Send Feedback</p>
+                <p className="text-xs text-[#938F99]">Share your thoughts with us 💭</p>
               </div>
             </div>
           </button>
-        </div>
+        </section>
 
         {/* App Version */}
         <div className="text-center py-8">
-          <p className="text-[13px] text-[#938F99]">
+          <p className="text-xs text-[#938F99]">
             Designer's Life Tracker v1.0.0
           </p>
         </div>
