@@ -39,7 +39,7 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
    * Calculate visual scale factor based on task count and view period.
    * 
    * Strategy:
-   * - Low task counts (1-10): Apply significant boost for visual presence
+   * - Low task counts (1-10): Apply boost for visual presence
    * - Medium counts (10-30): Gradual transition to accurate representation
    * - High counts (30+): Minimal boost, show accurate proportions
    * 
@@ -47,6 +47,8 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
    * - Today: Boost up to 5-10 tasks
    * - Weekly: Boost up to 15-20 tasks
    * - Monthly: Boost up to 25-35 tasks
+   * 
+   * MAX_SCALE_FACTOR is capped at 1.2 to prevent overflow
    */
   const getVisualScaleFactor = (taskCount: number, view: 'today' | 'weekly' | 'monthly'): number => {
     // Define thresholds based on view
@@ -58,21 +60,21 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
     
     const t = thresholds[view]
     
-    // Base scale factor (minimum boost for visual presence)
-    const minScale = 1.5  // 50% boost for very sparse data
+    // Base scale factor (reduced maximum to prevent overflow)
+    const minScale = 1.2  // 20% boost for very sparse data (was 1.5)
     const maxScale = 1.0  // No boost for abundant data
     
     if (taskCount <= t.low) {
-      // Very sparse: significant boost (1.5x - 1.3x)
-      return minScale - (minScale - 1.3) * (taskCount / t.low)
+      // Very sparse: moderate boost (1.2x - 1.15x)
+      return minScale - (minScale - 1.15) * (taskCount / t.low)
     } else if (taskCount <= t.medium) {
-      // Transitioning: gradual reduction (1.3x - 1.1x)
+      // Transitioning: gradual reduction (1.15x - 1.05x)
       const progress = (taskCount - t.low) / (t.medium - t.low)
-      return 1.3 - 0.2 * progress
+      return 1.15 - 0.1 * progress
     } else if (taskCount <= t.high) {
-      // Approaching accurate: minimal boost (1.1x - 1.0x)
+      // Approaching accurate: minimal boost (1.05x - 1.0x)
       const progress = (taskCount - t.medium) / (t.high - t.medium)
-      return 1.1 - 0.1 * progress
+      return 1.05 - 0.05 * progress
     } else {
       // Abundant data: show accurate proportions
       return maxScale
@@ -163,7 +165,11 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
     const { width, height } = canvas
     const centerX = width / 2
     const centerY = height / 2
-    const maxRadius = Math.min(width, height) * 0.7
+    
+    // Calculate maxRadius with proper padding to prevent overflow
+    // Padding accounts for: labels (20px), breathing animation (~2%), and safety margin
+    const EDGE_PADDING = showLabels ? 32 : 16 // More padding when labels are shown
+    const maxRadius = Math.min(width, height) / 2 - EDGE_PADDING
     
     // Clear canvas (transparent background)
     ctx.clearRect(0, 0, width, height)
@@ -171,6 +177,11 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
     // Set up coordinate system (static)
     ctx.save()
     ctx.translate(centerX, centerY)
+    
+    // Apply overall scale reduction to ensure chart never overflows
+    // This provides additional safety margin beyond the padding
+    const OVERALL_SCALE = 0.9 // 90% scale for comfortable fit
+    ctx.scale(OVERALL_SCALE, OVERALL_SCALE)
 
     // Calculate points for each emotion with dynamic scaling
     const points: { x: number; y: number }[] = []
