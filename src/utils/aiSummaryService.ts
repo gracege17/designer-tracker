@@ -10,7 +10,7 @@ const summaryCache = new Map<string, DailySummary>()
 
 export const generateDailySummary = async (todayEntry: Entry | undefined): Promise<string> => {
   if (!todayEntry || todayEntry.tasks.length === 0) {
-    return "Ready to capture today's design journey? Add your first task to get a personalized summary!"
+    return "Add your first task to see today's summary."
   }
 
   const cacheKey = `${todayEntry.date}-${todayEntry.tasks.length}`

@@ -77,7 +77,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           setIsLoadingSummary(false)
         }
       } else {
-        setDailySummary("Ready to capture today's design journey? Add your first task to get a personalized summary!")
+        setDailySummary("Add your first task to see today's summary.")
       }
     }
 
