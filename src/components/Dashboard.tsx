@@ -6,7 +6,6 @@ import { getTodayDateString, getCurrentWeekEntries, getTotalTaskCount, getMostEn
 import { ProjectStorage, UserProfileStorage } from '../utils/storage'
 import { generateSuggestions, getMotivationalQuote } from '../utils/suggestionEngine'
 import { generateDailySummary } from '../utils/aiSummaryService'
-import { getResourceRecommendation } from '../utils/resourceRecommendationService'
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { generateEmotionalSummary } from '../utils/emotionalSummaryService'
 import { getHelpfulResources } from '../utils/helpfulResourcesService'
@@ -29,16 +28,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   // AI Summary State
   const [dailySummary, setDailySummary] = useState<string>('')
   const [isLoadingSummary, setIsLoadingSummary] = useState(false)
-
-  // Resource Recommendation State
-  const [resourceRecommendation, setResourceRecommendation] = useState<{
-    quote?: string
-    resourceType: 'quote' | 'video' | 'article' | 'book'
-    resourceTitle: string
-    url: string
-    description?: string
-  } | null>(null)
-  const [isLoadingResource, setIsLoadingResource] = useState(false)
 
   // Emotion Breakdown State
   const [emotionBreakdown, setEmotionBreakdown] = useState<any>(null)
@@ -93,29 +82,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
 
     loadDailySummary()
   }, [todayEntry])
-
-  // Load resource recommendation
-  useEffect(() => {
-    const loadResourceRecommendation = async () => {
-      setIsLoadingResource(true)
-      try {
-        const recommendation = await getResourceRecommendation(entries)
-        setResourceRecommendation(recommendation)
-      } catch (error) {
-        console.error('Failed to load resource recommendation:', error)
-        setResourceRecommendation({
-          resourceType: 'quote',
-          resourceTitle: 'Encouragement Quote',
-          url: '#',
-          quote: '"The only way to do great work is to love what you do." - Steve Jobs'
-        })
-      } finally {
-        setIsLoadingResource(false)
-      }
-    }
-
-    loadResourceRecommendation()
-  }, [entries])
 
   // Calculate emotion breakdown
   useEffect(() => {
@@ -222,61 +188,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           />
         )}
 
-        {/* Resource Recommendation Card - Orange accent */}
-        {resourceRecommendation && (
-          <div 
-            className="p-4 mb-6 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer bg-white/[0.04]" 
-            style={{ 
-              borderRadius: '4px 47px 4px 4px'
-            }}
-            onClick={() => {
-              if (resourceRecommendation.url && resourceRecommendation.url !== '#') {
-                window.open(resourceRecommendation.url, '_blank')
-              }
-            }}
-          >
-            <div className="flex flex-col items-start gap-3 w-full">
-              <p className="text-[12px] font-normal text-white">
-                Resource Recommendation
-              </p>
-              
-              {isLoadingResource ? (
-                <p className="text-[16px] font-medium text-slate-200 leading-snug italic animate-pulse">
-                  Finding the perfect resource...
-                </p>
-              ) : (
-                <>
-                  {resourceRecommendation.quote ? (
-                    <div className="w-full">
-                      <p className="text-[18px] font-medium text-white leading-snug italic mb-2">
-                        "{resourceRecommendation.quote}"
-                      </p>
-                      <p className="text-[14px] font-normal text-slate-200 opacity-80">
-                        {resourceRecommendation.resourceTitle}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="w-full">
-                      <p className="text-[18px] font-medium text-white leading-snug mb-2">
-                        {resourceRecommendation.resourceTitle}
-                      </p>
-                      {resourceRecommendation.description && (
-                        <p className="text-[14px] font-normal text-slate-200 opacity-80 mb-2">
-                          {resourceRecommendation.description}
-                        </p>
-                      )}
-                      <div className="flex items-center gap-2">
-                        <span className="text-[12px] font-medium text-white bg-slate-800 px-2 py-1 rounded-full">
-                          {resourceRecommendation.resourceType.toUpperCase()}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* Inspirational Quote Card */}
         {(() => {
