@@ -414,6 +414,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           taskCount={emotionBreakdown.totalTasks}
                           view={selectedTimeRange === 'week' ? 'weekly' : 'monthly'}
                           showLabels={true}
+                          size={240}
                         />
                       </div>
                     </Card>

@@ -6,13 +6,15 @@ interface TodayEmotionRadarBlobProps {
   showLabels?: boolean // Show grid, axis, and labels (default: true)
   taskCount?: number // Number of tasks contributing to this data
   view?: 'today' | 'weekly' | 'monthly' // Time period view
+  size?: number // Canvas size in pixels (default: auto based on showLabels)
 }
 
 const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({ 
   emotionData, 
   showLabels = true,
   taskCount = 10, // Default to medium count
-  view = 'today' // Default to today view
+  view = 'today', // Default to today view
+  size // Optional custom size
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   
@@ -283,7 +285,8 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
   }, [emotionData, breathingScale, ripplePhase, showLabels, taskCount, view])
 
   // Use smaller dimensions when labels are hidden for compact view
-  const canvasSize = showLabels ? 300 : 160
+  // If custom size is provided, use it; otherwise use defaults
+  const canvasSize = size ?? (showLabels ? 300 : 160)
   const containerHeight = showLabels ? 'h-64' : 'h-full'
 
   return (
