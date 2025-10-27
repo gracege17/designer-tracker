@@ -241,18 +241,19 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               <div className="grid grid-cols-7 gap-2">
                 {weeklyData.map((day, index) => {
                   // Get emoji based on emotion
-                  const getEmotionEmoji = () => {
-                    if (!day.hasData) return '⚪'
+                  const getEmotion = () => {
+                    if (!day.hasData) return { emoji: '⚪', label: 'No data', iconPath: undefined }
                     const firstTask = day.entry?.tasks[0]
-                    if (!firstTask) return '⚪'
+                    if (!firstTask) return { emoji: '⚪', label: 'No data', iconPath: undefined }
                     
                     const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
                       ? firstTask.emotions[0] 
                       : firstTask.emotion
                     
-                    const emotion = EMOTIONS[emotionLevel]
-                    return emotion?.emoji || '😐'
+                    return EMOTIONS[emotionLevel] || { emoji: '😐', label: 'Neutral', iconPath: undefined }
                   }
+                  
+                  const emotion = getEmotion()
                   
                   return (
                     <div 
@@ -260,14 +261,22 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                       className="flex flex-col items-center gap-1"
                     >
                       <div 
-                        className={`text-3xl transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'opacity-30'}`}
+                        className={`transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'opacity-30'}`}
                         onClick={() => {
                           if (day.hasData && day.entry) {
                             onViewEntry(day.entry)
                           }
                         }}
                       >
-                        {getEmotionEmoji()}
+                        {emotion.iconPath ? (
+                          <img 
+                            src={emotion.iconPath} 
+                            alt={emotion.label}
+                            className="w-8 h-8"
+                          />
+                        ) : (
+                          <span className="text-3xl">{emotion.emoji}</span>
+                        )}
                       </div>
                       <span className="text-[10px] font-medium text-[#E6E1E5]">
                         {day.date}
@@ -702,19 +711,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               {/* October Calendar Grid */}
               <div className="grid grid-cols-7 gap-3 mb-8">
                 {currentMonthData.map((day, index) => {
-                  // Get emoji based on emotion
-                  const getEmotionEmoji = () => {
-                    if (day.isEmpty || !day.hasData) return '⚪'
+                  // Get emotion data
+                  const getEmotion = () => {
+                    if (day.isEmpty || !day.hasData) return { emoji: '⚪', label: 'No data', iconPath: undefined }
                     const firstTask = day.entry?.tasks[0]
-                    if (!firstTask) return '⚪'
+                    if (!firstTask) return { emoji: '⚪', label: 'No data', iconPath: undefined }
                     
                     const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
                       ? firstTask.emotions[0] 
                       : firstTask.emotion
                     
-                    const emotion = EMOTIONS[emotionLevel]
-                    return emotion?.emoji || '😐'
+                    return EMOTIONS[emotionLevel] || { emoji: '😐', label: 'Neutral', iconPath: undefined }
                   }
+                  
+                  const emotion = getEmotion()
                   
                   return (
                     <div key={index} className="w-full">
@@ -737,8 +747,16 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           
                           {/* Emoji */}
                           {day.hasData ? (
-                            <div className="text-2xl transition-all cursor-pointer hover:scale-110">
-                              {getEmotionEmoji()}
+                            <div className="transition-all cursor-pointer hover:scale-110">
+                              {emotion.iconPath ? (
+                                <img 
+                                  src={emotion.iconPath} 
+                                  alt={emotion.label}
+                                  className="w-6 h-6"
+                                />
+                              ) : (
+                                <span className="text-2xl">{emotion.emoji}</span>
+                              )}
                             </div>
                           ) : (
                             <div className="text-2xl transition-all opacity-30">
@@ -765,19 +783,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               {/* November Calendar Grid */}
               <div className="grid grid-cols-7 gap-3 mb-8">
                 {nextMonthData.map((day, index) => {
-                  // Get emoji based on emotion
-                  const getEmotionEmoji = () => {
-                    if (day.isEmpty || !day.hasData) return '⚪'
+                  // Get emotion data
+                  const getEmotion = () => {
+                    if (day.isEmpty || !day.hasData) return { emoji: '⚪', label: 'No data', iconPath: undefined }
                     const firstTask = day.entry?.tasks[0]
-                    if (!firstTask) return '⚪'
+                    if (!firstTask) return { emoji: '⚪', label: 'No data', iconPath: undefined }
                     
                     const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
                       ? firstTask.emotions[0] 
                       : firstTask.emotion
                     
-                    const emotion = EMOTIONS[emotionLevel]
-                    return emotion?.emoji || '😐'
+                    return EMOTIONS[emotionLevel] || { emoji: '😐', label: 'Neutral', iconPath: undefined }
                   }
+                  
+                  const emotion = getEmotion()
                   
                   return (
                     <div key={index} className="w-full">
@@ -800,8 +819,16 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           
                           {/* Emoji */}
                           {day.hasData ? (
-                            <div className="text-2xl transition-all cursor-pointer hover:scale-110">
-                              {getEmotionEmoji()}
+                            <div className="transition-all cursor-pointer hover:scale-110">
+                              {emotion.iconPath ? (
+                                <img 
+                                  src={emotion.iconPath} 
+                                  alt={emotion.label}
+                                  className="w-6 h-6"
+                                />
+                              ) : (
+                                <span className="text-2xl">{emotion.emoji}</span>
+                              )}
                             </div>
                           ) : (
                             <div className="text-2xl transition-all opacity-30">

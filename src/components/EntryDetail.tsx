@@ -144,9 +144,17 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                           {uniqueEmotions.map((emotionLevel, index) => {
                             const emotion = EMOTIONS[emotionLevel]
                             return (
-                              <span key={`${emotionLevel}-${index}`} className="text-2xl">
-                                {emotion?.emoji || '😐'}
-                              </span>
+                              <div key={`${emotionLevel}-${index}`} className="flex items-center justify-center">
+                                {emotion?.iconPath ? (
+                                  <img 
+                                    src={emotion.iconPath} 
+                                    alt={emotion.label}
+                                    className="w-6 h-6"
+                                  />
+                                ) : (
+                                  <span className="text-2xl">{emotion?.emoji || '😐'}</span>
+                                )}
+                              </div>
                             )
                           })}
                         </div>

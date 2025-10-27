@@ -170,22 +170,22 @@ export interface LoadingState {
 
 // Constants for emotion system
 export const EMOTIONS: Record<EmotionLevel, EmotionData> = {
-  1: { level: 1, emoji: '😀', label: 'Happy' },
-  2: { level: 2, emoji: '😌', label: 'Calm' },
-  3: { level: 3, emoji: '🤩', label: 'Excited' },
-  4: { level: 4, emoji: '😠', label: 'Frustrated' },
-  5: { level: 5, emoji: '😢', label: 'Sad' },
-  6: { level: 6, emoji: '😰', label: 'Anxious' },
-  7: { level: 7, emoji: '😮', label: 'Surprised' },
-  8: { level: 8, emoji: '😐', label: 'Neutral' },
-  9: { level: 9, emoji: '🥹', label: 'Nostalgic' },
-  10: { level: 10, emoji: '⚡', label: 'Energized' },
-  11: { level: 11, emoji: '🙂', label: 'Normal' },
-  12: { level: 12, emoji: '😴', label: 'Tired' },
-  13: { level: 13, emoji: '😊', label: 'Satisfied' },
+  1: { level: 1, emoji: '😀', label: 'Happy', iconPath: '/icons/32px-png/32px-Happy.png' },
+  2: { level: 2, emoji: '😌', label: 'Calm', iconPath: '/icons/32px-png/32px-joy.png' },
+  3: { level: 3, emoji: '🤩', label: 'Excited', iconPath: '/icons/32px-png/32px-Excited.png' },
+  4: { level: 4, emoji: '😠', label: 'Frustrated', iconPath: '/icons/32px-png/32px-Frustrated.png' },
+  5: { level: 5, emoji: '😢', label: 'Sad', iconPath: '/icons/32px-png/32px-Sad.png' },
+  6: { level: 6, emoji: '😰', label: 'Anxious', iconPath: '/icons/32px-png/32px-Anxious.png' },
+  7: { level: 7, emoji: '😮', label: 'Surprised', iconPath: '/icons/32px-png/32px-Surprised.png' },
+  8: { level: 8, emoji: '😐', label: 'Neutral', iconPath: '/icons/32px-png/32px-Neutral.png' },
+  9: { level: 9, emoji: '🥹', label: 'Nostalgic', iconPath: '/icons/32px-png/32px-Nostalgic.png' },
+  10: { level: 10, emoji: '⚡', label: 'Energized', iconPath: '/icons/32px-png/32px-Energized.png' },
+  11: { level: 11, emoji: '🙂', label: 'Normal', iconPath: '/icons/32px-png/32px-Neutral.png' },
+  12: { level: 12, emoji: '😴', label: 'Tired', iconPath: '/icons/32px-png/32px-Tired.png' },
+  13: { level: 13, emoji: '😊', label: 'Satisfied', iconPath: '/icons/32px-png/32px-Satisfied.png' },
   14: { level: 14, emoji: '😖', label: 'Annoyed', iconPath: '/icons/32px-png/32px-Annoyed.png' },
-  15: { level: 15, emoji: '😫', label: 'Drained' },
-  16: { level: 16, emoji: '😍', label: 'Proud' },
+  15: { level: 15, emoji: '😫', label: 'Drained', iconPath: '/icons/32px-png/32px-Drained.png' },
+  16: { level: 16, emoji: '😍', label: 'Proud', iconPath: '/icons/32px-png/32px-Proud.png' },
 };
 
 // Task type labels for UI

@@ -68,9 +68,17 @@ export default function EmotionPicker({
                 }
               `}
             >
-              <span className={getEmojiSize()}>
-                {emotion.emoji}
-              </span>
+              {emotion.iconPath ? (
+                <img 
+                  src={emotion.iconPath} 
+                  alt={emotion.label}
+                  className={size === 'small' ? 'w-6 h-6' : size === 'large' ? 'w-12 h-12' : 'w-8 h-8'}
+                />
+              ) : (
+                <span className={getEmojiSize()}>
+                  {emotion.emoji}
+                </span>
+              )}
             </button>
           );
         })}
