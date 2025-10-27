@@ -7,6 +7,7 @@ export interface EmotionData {
   level: EmotionLevel;
   emoji: string;
   label: string;
+  iconPath?: string; // Optional custom icon path
 }
 
 // Task and project types for reflection logging
@@ -182,7 +183,7 @@ export const EMOTIONS: Record<EmotionLevel, EmotionData> = {
   11: { level: 11, emoji: '🙂', label: 'Normal' },
   12: { level: 12, emoji: '😴', label: 'Tired' },
   13: { level: 13, emoji: '😊', label: 'Satisfied' },
-  14: { level: 14, emoji: '😖', label: 'Annoyed' },
+  14: { level: 14, emoji: '😖', label: 'Annoyed', iconPath: '/icons/32px-png/32px-Annoyed.png' },
   15: { level: 15, emoji: '😫', label: 'Drained' },
   16: { level: 16, emoji: '😍', label: 'Proud' },
 };

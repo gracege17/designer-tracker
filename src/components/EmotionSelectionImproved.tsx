@@ -112,7 +112,15 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
               >
                 {/* Emoji */}
                 <div className="mb-2 flex items-center justify-center">
-                  <span className="text-3xl">{emotion.emoji}</span>
+                  {emotion.iconPath ? (
+                    <img 
+                      src={emotion.iconPath} 
+                      alt={emotion.label}
+                      className="w-8 h-8"
+                    />
+                  ) : (
+                    <span className="text-3xl">{emotion.emoji}</span>
+                  )}
                 </div>
 
                 {/* Label */}
