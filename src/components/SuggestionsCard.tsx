@@ -15,76 +15,46 @@ const SuggestionsCard: React.FC<SuggestionsCardProps> = ({ suggestions, maxDispl
   const getTypeIcon = (type: Suggestion['type']) => {
     switch (type) {
       case 'celebration':
-        return <Medal size={20} weight="fill" className="text-yellow-600" />
+        return <Medal size={18} weight="fill" className="text-[#EC5429]" />
       case 'insight':
-        return <Lightbulb size={20} weight="regular" className="text-blue-600" />
+        return <Lightbulb size={18} weight="regular" className="text-[#EC5429]" />
       case 'encouragement':
-        return <Heart size={20} weight="fill" className="text-pink-600" />
+        return <Heart size={18} weight="fill" className="text-[#EC5429]" />
       case 'tip':
-        return <Info size={20} weight="regular" className="text-purple-600" />
+        return <Info size={18} weight="regular" className="text-[#EC5429]" />
       case 'pattern':
-        return <TrendUp size={20} weight="regular" className="text-green-600" />
+        return <TrendUp size={18} weight="regular" className="text-[#EC5429]" />
       default:
-        return <Sparkle size={20} weight="fill" className="text-slate-600" />
-    }
-  }
-
-  const getTypeColor = (type: Suggestion['type']) => {
-    switch (type) {
-      case 'celebration':
-        return 'bg-yellow-50 border-yellow-200'
-      case 'insight':
-        return 'bg-blue-50 border-blue-200'
-      case 'encouragement':
-        return 'bg-pink-50 border-pink-200'
-      case 'tip':
-        return 'bg-purple-50 border-purple-200'
-      case 'pattern':
-        return 'bg-green-50 border-green-200'
-      default:
-        return 'bg-slate-50 border-slate-200'
+        return <Sparkle size={18} weight="fill" className="text-[#EC5429]" />
     }
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {displayedSuggestions.map((suggestion) => (
         <div
           key={suggestion.id}
-          className={`p-4 rounded-xl border ${getTypeColor(suggestion.type)} transition-all duration-200 hover:shadow-md`}
+          className="flex items-start gap-3 p-3 bg-white/[0.02] hover:bg-white/[0.04] rounded-xl transition-all cursor-pointer active:scale-[0.99]"
         >
-          <div className="flex items-start gap-3">
-            {/* Icon */}
-            <div className="flex-shrink-0 mt-0.5">
-              {getTypeIcon(suggestion.type)}
-            </div>
+          {/* Icon */}
+          <div className="flex-shrink-0 pt-1">
+            {getTypeIcon(suggestion.type)}
+          </div>
 
-            {/* Content */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-lg">{suggestion.icon}</span>
-                <h3 className="font-bold text-slate-900 text-sm">
-                  {suggestion.title}
-                </h3>
-              </div>
-              <p className="text-sm text-slate-700 leading-relaxed">
-                {suggestion.message}
-              </p>
-              
-              {suggestion.actionable && (
-                <div className="mt-3 pt-1">
-                  <p className="text-xs font-medium text-slate-600">
-                    💡 Action: {suggestion.actionable}
-                  </p>
-                </div>
-              )}
-            </div>
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <h3 className="text-[14px] font-semibold text-[#E6E1E5] leading-snug line-clamp-1 mb-0.5">
+              {suggestion.icon} {suggestion.title}
+            </h3>
+            <p className="text-[12px] font-normal text-[#938F99] leading-relaxed line-clamp-1">
+              {suggestion.message}
+            </p>
           </div>
         </div>
       ))}
 
       {suggestions.length > maxDisplay && (
-        <button className="w-full text-center text-sm text-slate-500 hover:text-slate-700 font-medium py-2 transition-colors">
+        <button className="w-full text-center text-[12px] text-[#938F99] hover:text-[#CAC4D0] font-medium py-2 transition-colors">
           View {suggestions.length - maxDisplay} more insight{suggestions.length - maxDisplay > 1 ? 's' : ''}
         </button>
       )}
