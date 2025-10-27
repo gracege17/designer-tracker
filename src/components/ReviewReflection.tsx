@@ -99,6 +99,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
                                     src={emotion.iconPath} 
                                     alt={emotion.label}
                                     className="w-6 h-6"
+                                    style={{ filter: 'brightness(1.3) contrast(1.1)' }}
                                   />
                                 ) : (
                                   <span className="text-2xl">{emotion?.emoji || '😐'}</span>

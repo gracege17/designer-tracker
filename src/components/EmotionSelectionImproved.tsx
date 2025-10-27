@@ -117,6 +117,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
                       src={emotion.iconPath} 
                       alt={emotion.label}
                       className="w-8 h-8"
+                      style={{ filter: 'brightness(1.3) contrast(1.1)' }}
                     />
                   ) : (
                     <span className="text-3xl">{emotion.emoji}</span>

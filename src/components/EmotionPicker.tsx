@@ -73,6 +73,7 @@ export default function EmotionPicker({
                   src={emotion.iconPath} 
                   alt={emotion.label}
                   className={size === 'small' ? 'w-6 h-6' : size === 'large' ? 'w-12 h-12' : 'w-8 h-8'}
+                  style={{ filter: 'brightness(1.3) contrast(1.1)' }}
                 />
               ) : (
                 <span className={getEmojiSize()}>

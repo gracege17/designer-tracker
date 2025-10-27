@@ -273,6 +273,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                             src={emotion.iconPath} 
                             alt={emotion.label}
                             className="w-8 h-8"
+                            style={{ filter: 'brightness(1.3) contrast(1.1)' }}
                           />
                         ) : (
                           <span className="text-3xl">{emotion.emoji}</span>
@@ -753,6 +754,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                                   src={emotion.iconPath} 
                                   alt={emotion.label}
                                   className="w-6 h-6"
+                                  style={{ filter: 'brightness(1.3) contrast(1.1)' }}
                                 />
                               ) : (
                                 <span className="text-2xl">{emotion.emoji}</span>
@@ -825,6 +827,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                                   src={emotion.iconPath} 
                                   alt={emotion.label}
                                   className="w-6 h-6"
+                                  style={{ filter: 'brightness(1.3) contrast(1.1)' }}
                                 />
                               ) : (
                                 <span className="text-2xl">{emotion.emoji}</span>
