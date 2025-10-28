@@ -72,8 +72,14 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
     >
       {/* Header Section */}
       <div className="mb-6">
-        {/* Coffee/Tea Icon */}
-        <div className="text-4xl mb-3">☕</div>
+        {/* Tea Icon */}
+        <div className="mb-3">
+          <img 
+            src="/icons/Tea.png" 
+            alt="Tea"
+            className="w-10 h-10"
+          />
+        </div>
         <h2 className="text-[28px] font-bold text-white mb-3 leading-tight">
           {title}
         </h2>
@@ -89,16 +95,20 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
           return (
             <div
               key={resource.id}
-              className="relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              className="relative rounded-2xl cursor-pointer transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
               style={{
-                minHeight: '140px',
-                backgroundImage: `url(${style.bgImage})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                minHeight: '140px'
               }}
             >
+              {/* Background Texture Image - Fully visible with rounded corners */}
+              <img 
+                src={style.bgImage} 
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover rounded-2xl"
+              />
+              
               {/* Gradient Overlay for better text readability */}
-              <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/40" />
+              <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/40 rounded-2xl" />
               
               {/* Content */}
               <div className="relative h-full p-4 flex flex-col justify-between">
