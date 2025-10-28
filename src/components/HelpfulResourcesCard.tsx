@@ -95,24 +95,20 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
           return (
             <div
               key={resource.id}
-              className="relative rounded-2xl cursor-pointer transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              className="relative rounded-2xl overflow-hidden cursor-pointer transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
               style={{
                 minHeight: '140px'
               }}
             >
-              {/* Background Texture Image - Fully visible with rounded corners */}
+              {/* Felt background image */}
               <img 
                 src={style.bgImage} 
                 alt=""
-                className="absolute inset-0 w-full h-full object-cover rounded-2xl"
+                className="absolute inset-0 w-full h-full object-cover"
               />
               
-              {/* Gradient Overlay for better text readability */}
-              <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/40 rounded-2xl" />
-              
-              {/* Content */}
+              {/* Foreground content */}
               <div className="relative h-full p-4 flex flex-col justify-between">
-                {/* Icon */}
                 <div className="flex justify-end">
                   <img 
                     src={style.icon} 
@@ -120,8 +116,6 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                     className="w-12 h-12 opacity-60"
                   />
                 </div>
-                
-                {/* Category Label */}
                 <div>
                   <h3 className="text-[20px] font-bold text-white drop-shadow-lg">
                     {style.label}
