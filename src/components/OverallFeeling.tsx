@@ -59,16 +59,16 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
 
   // Get emoji and label based on value
   const getEmojiAndLabel = (value: number): { emoji: string; label: string; description: string } => {
-    if (value <= 10) return { emoji: '😫', label: 'Very Unpleasant', description: 'Feeling overwhelmed' }
-    if (value <= 20) return { emoji: '😞', label: 'Unpleasant', description: 'Low energy day' }
-    if (value <= 30) return { emoji: '😐', label: 'Somewhat Low', description: 'A bit drained' }
-    if (value <= 40) return { emoji: '😌', label: 'Neutral', description: 'Calm and steady' }
-    if (value <= 50) return { emoji: '🙂', label: 'Okay', description: 'Balanced mood' }
-    if (value <= 60) return { emoji: '😊', label: 'Pleasant', description: 'Feeling good' }
-    if (value <= 70) return { emoji: '😄', label: 'Good', description: 'Positive energy' }
-    if (value <= 80) return { emoji: '🤩', label: 'Great', description: 'Really inspired' }
-    if (value <= 90) return { emoji: '⚡', label: 'Energized', description: 'Full of ideas' }
-    return { emoji: '🔥', label: 'Very Pleasant', description: 'On fire today!' }
+    if (value <= 10) return { emoji: '/icons/emoji_lg/32px-Frustrated.png', label: 'Very Unpleasant', description: 'Feeling overwhelmed' }
+    if (value <= 20) return { emoji: '/icons/emoji_lg/32px-Sad.png', label: 'Unpleasant', description: 'Low energy day' }
+    if (value <= 30) return { emoji: '/icons/emoji_lg/32px-Drained.png', label: 'Somewhat Low', description: 'A bit drained' }
+    if (value <= 40) return { emoji: '/icons/emoji_lg/32px-Neutral.png', label: 'Neutral', description: 'Calm and steady' }
+    if (value <= 50) return { emoji: '/icons/emoji_lg/32px-Satisfied.png', label: 'Okay', description: 'Balanced mood' }
+    if (value <= 60) return { emoji: '/icons/emoji_lg/32px-Happy.png', label: 'Pleasant', description: 'Feeling good' }
+    if (value <= 70) return { emoji: '/icons/emoji_lg/32px-Proud.png', label: 'Good', description: 'Positive energy' }
+    if (value <= 80) return { emoji: '/icons/emoji_lg/32px-Excited.png', label: 'Great', description: 'Really inspired' }
+    if (value <= 90) return { emoji: '/icons/emoji_lg/32px-Energized.png', label: 'Energized', description: 'Full of ideas' }
+    return { emoji: '/icons/emoji_lg/32px-joy.png', label: 'Very Pleasant', description: 'On fire today!' }
   }
 
   const currentColor = getCurrentColor(sliderValue)
@@ -105,13 +105,17 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
           {/* Emoji Display */}
           <div className="text-center space-y-6">
             <div 
-              className="text-[120px] transition-all duration-600 ease-in-out"
+              className="flex justify-center items-center transition-all duration-600 ease-in-out"
               style={{ 
                 filter: 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.1))',
                 transform: `scale(${0.9 + (sliderValue / 1000)})` 
               }}
             >
-              {emoji}
+              <img 
+                src={emoji} 
+                alt={label}
+                className="w-[120px] h-[120px] object-contain"
+              />
             </div>
             
             <div className="space-y-2">
