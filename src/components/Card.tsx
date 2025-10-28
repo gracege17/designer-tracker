@@ -7,6 +7,7 @@ interface CardProps {
   shadow?: 'none' | 'soft' | 'gentle' | 'cozy';
   background?: 'white' | 'cream';
   variant?: 'default' | 'asymmetric' | 'glass';
+  glassBackground?: 'longbar' | 'card';
 }
 
 export default function Card({
@@ -16,6 +17,7 @@ export default function Card({
   shadow = 'soft',
   background = 'white',
   variant = 'default',
+  glassBackground = 'longbar',
 }: CardProps) {
   const getPaddingStyles = () => {
     switch (padding) {
@@ -72,9 +74,15 @@ export default function Card({
       };
     }
     if (variant === 'glass') {
+      const bgImage = glassBackground === 'card' 
+        ? '/icons/bg-sm/black_card.png'
+        : '/icons/bg-sm/black_longbar.png';
+      
       return {
         borderRadius: '8px',
-        background: 'rgba(255, 255, 255, 0.04)',
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       };
     }
     return {};

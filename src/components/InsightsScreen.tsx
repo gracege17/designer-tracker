@@ -439,6 +439,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               <Card 
                 variant="glass" 
                 padding="small"
+                glassBackground="card"
                 className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
               >
                 <div className="flex flex-col gap-3">
@@ -491,6 +492,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               <Card 
                 variant="glass" 
                 padding="small"
+                glassBackground="card"
                 className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
               >
                 <div className="flex flex-col gap-3">
@@ -543,6 +545,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               <Card 
                 variant="glass" 
                 padding="small"
+                glassBackground="card"
                 className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
               >
                 <div className="flex flex-col gap-3">
@@ -595,6 +598,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               <Card 
                 variant="glass" 
                 padding="small"
+                glassBackground="card"
                 className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
               >
                 <div className="flex flex-col gap-3">
