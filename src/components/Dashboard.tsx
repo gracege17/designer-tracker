@@ -205,7 +205,9 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               style={{
                 width: '72px',
                 height: '72px',
-                backgroundColor: '#1a1a1a',
+                backgroundImage: 'url(/icons/bg-sm/black cube.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 borderRadius: '12px',
                 boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
               }}
@@ -229,7 +231,9 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 style={{
                   width: '72px',
                   height: '72px',
-                  backgroundColor: '#1a1a1a',
+                  backgroundImage: 'url(/icons/bg-sm/black cube.png)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
                   borderRadius: '12px',
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
                 }}
