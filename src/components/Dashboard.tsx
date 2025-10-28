@@ -184,33 +184,32 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           className="w-full bg-white/[0.04] mb-6"
           style={{ 
             borderRadius: '16px',
-            padding: '24px'
+            padding: '20px 16px'
           }}
         >
           {/* Challenge Title - Following Card Design System */}
-          <p className="text-[12px] font-normal text-[#CAC4D0] mb-2" style={{ letterSpacing: '0.1em' }}>
+          <p className="text-[11px] sm:text-[12px] font-normal text-[#CAC4D0] mb-1.5 sm:mb-2" style={{ letterSpacing: '0.1em' }}>
             5 DAYS CHALLENGE
           </p>
           
           {/* Challenge Subtitle */}
-          <p className="text-[18px] font-medium text-white leading-snug mb-6">
+          <p className="text-[15px] sm:text-[18px] font-medium text-white leading-snug mb-4 sm:mb-6">
             One day at a time, one step closer to a better you
           </p>
           
-          {/* Challenge Days Grid */}
-          <div className="flex items-center gap-4">
+          {/* Challenge Days Grid - Responsive */}
+          <div className="flex items-center gap-2 sm:gap-3 justify-between sm:justify-start">
             {/* Day 1 - Logo (shows when user logged task today) */}
             <div 
-              className="flex items-center justify-center relative overflow-hidden"
+              className="flex items-center justify-center relative overflow-hidden flex-shrink-0"
               style={{
-                width: '56px',
-                height: '56px',
+                width: '48px',
+                height: '48px',
                 aspectRatio: '1/1',
-                flexShrink: 0,
                 backgroundImage: 'url("/icons/bg-sm/black cube.png")',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                borderRadius: '12px',
+                borderRadius: '10px',
                 boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
               }}
             >
@@ -218,10 +217,10 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 <img 
                   src="/icons/32px-png/32px-logo.png" 
                   alt="Day 1 Complete" 
-                  className="w-8 h-8 relative z-10"
+                  className="w-6 h-6 sm:w-7 sm:h-7 relative z-10"
                 />
               ) : (
-                <span className="text-[32px] font-normal text-white relative z-10">1</span>
+                <span className="text-[26px] sm:text-[28px] font-normal text-white relative z-10">1</span>
               )}
             </div>
             
@@ -229,20 +228,19 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             {[2, 3, 4, 5].map((day) => (
               <div 
                 key={day}
-                className="flex items-center justify-center relative overflow-hidden"
+                className="flex items-center justify-center relative overflow-hidden flex-shrink-0"
                 style={{
-                  width: '56px',
-                  height: '56px',
+                  width: '48px',
+                  height: '48px',
                   aspectRatio: '1/1',
-                  flexShrink: 0,
                   backgroundImage: 'url("/icons/bg-sm/black cube.png")',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  borderRadius: '12px',
+                  borderRadius: '10px',
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                <span className="text-[32px] font-normal text-white relative z-10">
+                <span className="text-[26px] sm:text-[28px] font-normal text-white relative z-10">
                   {day}
                 </span>
               </div>
