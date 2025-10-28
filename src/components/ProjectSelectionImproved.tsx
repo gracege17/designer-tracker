@@ -174,7 +174,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
 
         {/* Add New Project - Inline Input or Button */}
         {showAddInput ? (
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-3">
             <input
               type="text"
               value={newProjectName}
@@ -182,30 +182,32 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
               onKeyDown={handleKeyDown}
               placeholder="Project name"
               autoFocus
-              className="flex-1 px-4 py-3 bg-white/[0.04] border border-[#49454F] text-[#E6E1E5] text-[14px] placeholder:text-[#938F99] focus:outline-none focus:border-[#EC5429] transition-colors"
+              className="w-full px-4 py-3 bg-white/[0.04] border border-[#49454F] text-[#E6E1E5] text-[14px] placeholder:text-[#938F99] focus:outline-none focus:border-[#EC5429] transition-colors"
             />
-            <button
-              onClick={handleAddProject}
-              disabled={!newProjectName.trim()}
-              className={`
-                px-5 py-3 font-medium text-[14px] transition-all active:scale-[0.99]
-                ${newProjectName.trim()
-                  ? 'bg-[#EC5429] text-white hover:bg-[#F76538]'
-                  : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed'
-                }
-              `}
-            >
-              Add
-            </button>
-            <button
-              onClick={() => {
-                setShowAddInput(false)
-                setNewProjectName('')
-              }}
-              className="px-5 py-3 bg-white/[0.04] border border-[#49454F] text-[#E6E1E5] font-medium text-[14px] hover:bg-[#36343B] transition-all active:scale-[0.99]"
-            >
-              Cancel
-            </button>
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={handleAddProject}
+                disabled={!newProjectName.trim()}
+                className={`
+                  px-5 py-3 font-medium text-[14px] transition-all active:scale-[0.99]
+                  ${newProjectName.trim()
+                    ? 'bg-[#EC5429] text-white hover:bg-[#F76538]'
+                    : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed'
+                  }
+                `}
+              >
+                Add
+              </button>
+              <button
+                onClick={() => {
+                  setShowAddInput(false)
+                  setNewProjectName('')
+                }}
+                className="px-5 py-3 bg-white/[0.04] border border-[#49454F] text-[#E6E1E5] font-medium text-[14px] hover:bg-[#36343B] transition-all active:scale-[0.99]"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         ) : (
           <button

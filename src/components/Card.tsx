@@ -67,7 +67,7 @@ export default function Card({
     return 'rounded-soft';
   };
 
-  const getVariantStyles = () => {
+  const getVariantStyles = (): React.CSSProperties => {
     if (variant === 'asymmetric') {
       return {
         borderRadius: '4px 47px 4px 4px',
@@ -80,9 +80,11 @@ export default function Card({
       
       return {
         borderRadius: '8px',
+        backgroundColor: 'rgba(255, 255, 255, 0.04)', // Fallback background
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       };
     }
     return {};
