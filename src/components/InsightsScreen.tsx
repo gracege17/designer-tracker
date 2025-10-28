@@ -447,7 +447,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 return null
               })()}
 
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-2 gap-2 mb-6">
               {/* 1. Energized */}
               <Card 
                 variant="glass" 
