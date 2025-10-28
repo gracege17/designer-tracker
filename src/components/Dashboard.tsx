@@ -219,7 +219,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   className="w-8 h-8 relative z-10"
                 />
               ) : (
-                <span className="text-[40px] font-normal text-white relative z-10" style={{ fontFamily: 'Playfair Display, serif' }}>1</span>
+                <span className="text-[40px] font-normal text-white relative z-10" style={{ fontFamily: 'Playfair Display, serif', lineHeight: '1' }}>1</span>
               )}
             </div>
             
@@ -238,7 +238,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                <span className="text-[40px] font-normal text-white relative z-10" style={{ fontFamily: 'Playfair Display, serif' }}>
+                <span className="text-[40px] font-normal text-white relative z-10" style={{ fontFamily: 'Playfair Display, serif', lineHeight: '1' }}>
                   {day}
                 </span>
               </div>
