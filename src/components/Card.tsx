@@ -81,9 +81,8 @@ export default function Card({
       return {
         borderRadius: '8px',
         backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'contain',
+        backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
       };
     }
     return {};
