@@ -179,6 +179,67 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </div>
         )}
 
+        {/* 5 Days Challenge Section */}
+        <div 
+          className="w-full bg-white/[0.04] mb-6"
+          style={{ 
+            borderRadius: '16px',
+            padding: '24px'
+          }}
+        >
+          {/* Challenge Title */}
+          <h2 className="text-[14px] font-semibold text-white tracking-wider mb-2" style={{ letterSpacing: '0.1em' }}>
+            5 DAYS CHALLENGE
+          </h2>
+          
+          {/* Challenge Subtitle */}
+          <p className="text-[18px] font-normal text-[#E6E1E5] leading-snug mb-6">
+            One day at a time, one step closer to a better you
+          </p>
+          
+          {/* Challenge Days Grid */}
+          <div className="flex items-center gap-3">
+            {/* Day 1 - Logo */}
+            <div 
+              className="flex items-center justify-center"
+              style={{
+                width: '72px',
+                height: '72px',
+                backgroundImage: 'url(/icons/bg-sm/black cube.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: '12px'
+              }}
+            >
+              <img 
+                src="/icons/32px-png/32px-logo.png" 
+                alt="Day 1" 
+                className="w-8 h-8"
+              />
+            </div>
+            
+            {/* Days 2-5 - Numbers */}
+            {[2, 3, 4, 5].map((day) => (
+              <div 
+                key={day}
+                className="flex items-center justify-center"
+                style={{
+                  width: '72px',
+                  height: '72px',
+                  backgroundImage: 'url(/icons/bg-sm/black cube.png)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  borderRadius: '12px'
+                }}
+              >
+                <span className="text-[32px] font-semibold text-white">
+                  {day}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Helpful Resources Section - AI-Ready */}
         {emotionBreakdown && (
           <HelpfulResourcesCard 
