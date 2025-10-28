@@ -231,8 +231,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 key={day}
                 className="flex items-center justify-center relative overflow-hidden"
                 style={{
-                  width: '72px',
-                  height: '72px',
+                  width: '56px',
+                  height: '56px',
                   aspectRatio: '1/1',
                   flexShrink: 0,
                   backgroundImage: 'url("/icons/bg-sm/black cube.png")',
