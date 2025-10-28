@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { CaretLeft } from 'phosphor-react'
-import FlowerProgress from './FlowerProgress'
 
 interface OverallFeelingProps {
   onComplete: (feelingScore: number) => void
@@ -59,16 +58,16 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
 
   // Get emoji and label based on value
   const getEmojiAndLabel = (value: number): { emoji: string; label: string; description: string } => {
-    if (value <= 10) return { emoji: '/icons/emoji_lg/32px-Frustrated.png', label: 'Very Unpleasant', description: 'Feeling overwhelmed' }
-    if (value <= 20) return { emoji: '/icons/emoji_lg/32px-Sad.png', label: 'Unpleasant', description: 'Low energy day' }
-    if (value <= 30) return { emoji: '/icons/emoji_lg/32px-Drained.png', label: 'Somewhat Low', description: 'A bit drained' }
-    if (value <= 40) return { emoji: '/icons/emoji_lg/32px-Neutral.png', label: 'Neutral', description: 'Calm and steady' }
-    if (value <= 50) return { emoji: '/icons/emoji_lg/32px-Satisfied.png', label: 'Okay', description: 'Balanced mood' }
-    if (value <= 60) return { emoji: '/icons/emoji_lg/32px-Happy.png', label: 'Pleasant', description: 'Feeling good' }
-    if (value <= 70) return { emoji: '/icons/emoji_lg/32px-Proud.png', label: 'Good', description: 'Positive energy' }
-    if (value <= 80) return { emoji: '/icons/emoji_lg/32px-Excited.png', label: 'Great', description: 'Really inspired' }
-    if (value <= 90) return { emoji: '/icons/emoji_lg/32px-Energized.png', label: 'Energized', description: 'Full of ideas' }
-    return { emoji: '/icons/emoji_lg/32px-joy.png', label: 'Very Pleasant', description: 'On fire today!' }
+    if (value <= 10) return { emoji: '/icons/emoji_xl/32px-Frustrated.png', label: 'Very Unpleasant', description: 'Feeling overwhelmed' }
+    if (value <= 20) return { emoji: '/icons/emoji_xl/32px-Sad.png', label: 'Unpleasant', description: 'Low energy day' }
+    if (value <= 30) return { emoji: '/icons/emoji_xl/32px-Drained.png', label: 'Somewhat Low', description: 'A bit drained' }
+    if (value <= 40) return { emoji: '/icons/emoji_xl/32px-Neutral.png', label: 'Neutral', description: 'Calm and steady' }
+    if (value <= 50) return { emoji: '/icons/emoji_xl/32px-Satisfied.png', label: 'Okay', description: 'Balanced mood' }
+    if (value <= 60) return { emoji: '/icons/emoji_xl/32px-Happy.png', label: 'Pleasant', description: 'Feeling good' }
+    if (value <= 70) return { emoji: '/icons/emoji_xl/32px-Proud.png', label: 'Good', description: 'Positive energy' }
+    if (value <= 80) return { emoji: '/icons/emoji_xl/32px-Excited.png', label: 'Great', description: 'Really inspired' }
+    if (value <= 90) return { emoji: '/icons/emoji_xl/32px-Energized.png', label: 'Energized', description: 'Full of ideas' }
+    return { emoji: '/icons/emoji_xl/32px-joy.png', label: 'Very Pleasant', description: 'On fire today!' }
   }
 
   const currentColor = getCurrentColor(sliderValue)
@@ -99,9 +98,6 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-5 pb-32 max-w-md mx-auto w-full">
         <div className="w-full space-y-12">
-          {/* Flower Progress Tracker */}
-          <FlowerProgress filledSteps={[true, false, false, false]} />
-          
           {/* Emoji Display */}
           <div className="text-center space-y-6">
             <div 

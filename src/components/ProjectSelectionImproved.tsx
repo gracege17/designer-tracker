@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { CaretLeft, Plus, X } from 'phosphor-react'
+import { CaretLeft, X } from 'phosphor-react'
 import { Project } from '../types'
 import { ProjectStorage, EntryStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
-import FlowerProgress from './FlowerProgress'
 
 interface ProjectSelectionProps {
   projects: Project[]
   initialSelectedProjects?: string[]
   onProjectsSelected: (projectIds: string[]) => void
   onBack: () => void
-  onAddNewProject: () => void
   onProjectDeleted?: () => void
 }
 
@@ -19,7 +17,6 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
   initialSelectedProjects = [],
   onProjectsSelected, 
   onBack, 
-  onAddNewProject,
   onProjectDeleted
 }) => {
   const [selectedProjects, setSelectedProjects] = useState<string[]>(initialSelectedProjects)
@@ -122,9 +119,6 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
       <main className="flex-grow px-5 pt-2 pb-4 max-w-md mx-auto w-full">
         {/* Title */}
         <div className="mb-8">
-          {/* Flower Progress Tracker */}
-          <FlowerProgress filledSteps={[true, false, false, false]} />
-          
           <h2 className="text-[32px] font-bold text-[#E6E1E5] mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
             What did you work on?
           </h2>
@@ -135,7 +129,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
 
         {/* All Projects as Pills */}
         <div className="flex flex-wrap gap-3 mb-6">
-          {localProjects.map((project, index) => {
+          {localProjects.map((project) => {
             const isSelected = selectedProjects.includes(project.id)
             
             // Dynamic styling based on selection (Dark mode only)

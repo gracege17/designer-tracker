@@ -1,22 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import { ProjectStorage } from '../utils/storage'
-import FlowerProgress from './FlowerProgress'
 
 interface TaskEntryProps {
   selectedProjectIds: string[]
   initialTaskDescription?: string
   onNext: (description: string) => void
   onBack: () => void
-  taskCount?: number
 }
 
 const TaskEntryImproved: React.FC<TaskEntryProps> = ({
   selectedProjectIds,
   initialTaskDescription = '',
   onNext,
-  onBack,
-  taskCount = 0
+  onBack
 }) => {
   const [description, setDescription] = useState(initialTaskDescription)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -55,11 +52,11 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
     <div className="flex flex-col min-h-screen bg-black">
       {/* Sticky Header */}
       <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#49454F]">
-        <div className="max-w-md mx-auto grid grid-cols-3 items-center">
+        <div className="max-w-md mx-auto flex items-center justify-between">
           {/* Left: Back Button */}
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2 justify-self-start"
+            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
@@ -68,20 +65,6 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
           {currentProject && (
             <span className="text-[16px] font-bold text-[#E6E1E5] text-center truncate px-2">{currentProject.name}</span>
           )}
-
-          {/* Right: Counter Badge */}
-          <div className="justify-self-end">
-            <div className="flex items-center gap-1.5">
-              <img 
-                src="/images/colored-flower.png" 
-                alt="flower" 
-                className="w-6 h-6"
-              />
-              <span className="text-sm font-medium text-[#E6E1E5]">
-                ({taskCount})
-              </span>
-            </div>
-          </div>
         </div>
       </header>
 
@@ -89,9 +72,6 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
       <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
         {/* Title Section */}
         <div className="mb-8">
-          {/* Flower Progress Tracker */}
-          <FlowerProgress filledSteps={[true, true, false, false]} />
-          
           <h2 className="text-[32px] font-normal text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             What did you work on for <span className="font-bold">{currentProject?.name}</span>?
           </h2>

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import { EmotionLevel, EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
-import FlowerProgress from './FlowerProgress'
 
 interface EmotionSelectionProps {
   selectedProjectIds: string[]
@@ -10,7 +9,6 @@ interface EmotionSelectionProps {
   initialEmotion?: EmotionLevel[]
   onNext: (emotions: EmotionLevel[]) => void
   onBack: () => void
-  taskCount?: number
 }
 
 const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
@@ -18,8 +16,7 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
   initialTaskDescription,
   initialEmotion = [],
   onNext,
-  onBack,
-  taskCount = 0
+  onBack
 }) => {
   const [selectedEmotions, setSelectedEmotions] = useState<EmotionLevel[]>(initialEmotion)
 
@@ -46,11 +43,11 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
     <div className="flex flex-col min-h-screen bg-black">
       {/* Sticky Header */}
       <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#2B2930]">
-        <div className="max-w-md mx-auto grid grid-cols-3 items-center">
+        <div className="max-w-md mx-auto flex items-center justify-between">
           {/* Left: Back Button */}
           <button 
             onClick={onBack}
-            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2 justify-self-start"
+            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
@@ -59,20 +56,6 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
           {currentProject && (
             <span className="text-[16px] font-bold text-[#E6E1E5] text-center truncate px-2">{currentProject.name}</span>
           )}
-
-          {/* Right: Counter Badge */}
-          <div className="justify-self-end">
-            <div className="flex items-center gap-1.5">
-              <img 
-                src="/images/colored-flower.png" 
-                alt="flower" 
-                className="w-6 h-6"
-              />
-              <span className="text-sm font-medium text-[#E6E1E5]">
-                ({taskCount})
-              </span>
-            </div>
-          </div>
         </div>
       </header>
 
@@ -80,9 +63,6 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
       <main className="flex-grow px-5 pt-6 pb-4 max-w-md mx-auto w-full">
         {/* Title Section */}
         <div className="mb-8">
-          {/* Flower Progress Tracker */}
-          <FlowerProgress filledSteps={[true, true, true, false]} />
-          
           <h2 className="text-[32px] font-normal text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
             How did it make you feel?
           </h2>

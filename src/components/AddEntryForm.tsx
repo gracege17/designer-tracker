@@ -4,7 +4,6 @@ import { TaskType, EmotionLevel, TASK_TYPE_LABELS, EMOTIONS, Project } from '../
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
 import Input from './Input'
-import FlowerFirework from './FlowerFirework'
 
 interface AddEntryFormProps {
   onSubmit: (entry: { 
@@ -33,7 +32,6 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
   const emotion = initialEmotion || undefined
   const [notes, setNotes] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [showFirework, setShowFirework] = useState(false)
 
   // Get selected projects from storage
   const selectedProjects = selectedProjectIds
@@ -57,12 +55,6 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
   const handleSubmit = async () => {
     if (project && taskName && taskType && emotion && !isSubmitting) {
       setIsSubmitting(true)
-      
-      // Trigger firework celebration
-      setShowFirework(true)
-      
-      // Add a small delay for better UX feedback
-      await new Promise(resolve => setTimeout(resolve, 800))
       
       onSubmit({ 
         project, 
@@ -211,12 +203,6 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
           className="w-full rounded-full font-bold"
         />
       </div>
-
-      {/* Flower Firework Celebration */}
-      <FlowerFirework 
-        isActive={showFirework}
-        onComplete={() => setShowFirework(false)}
-      />
     </div>
   )
 }
