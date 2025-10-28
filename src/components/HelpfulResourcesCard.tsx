@@ -1,5 +1,4 @@
 import React from 'react'
-import { Wrench, BookOpen, Microphone, Play } from 'phosphor-react'
 import { HelpfulResource, ResourceCategory } from '../utils/helpfulResourcesService'
 
 interface HelpfulResourcesCardProps {
@@ -15,7 +14,8 @@ interface HelpfulResourcesCardProps {
  * based on their emotional state and daily challenges.
  * 
  * Features:
- * - Modular design: accepts resources as props
+ * - Modern grid layout with colored backgrounds
+ * - Uses custom 50px icons for each category
  * - Ready for AI integration: just pass AI-generated resources
  * - Clean, scannable layout matching app design system
  */
@@ -25,22 +25,40 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
   subtitle = "Rest is also growth. Here's something gentle to recharge your energy."
 }) => {
   /**
-   * Get icon component based on category
+   * Get category icon path and background color
    */
-  const getCategoryIcon = (category: ResourceCategory) => {
-    const iconProps = { size: 18, weight: 'regular' as const, className: 'text-[#EC5429]' }
-    
+  const getCategoryStyle = (category: ResourceCategory) => {
     switch (category) {
-      case 'tools':
-        return <Wrench {...iconProps} />
       case 'read':
-        return <BookOpen {...iconProps} />
+        return {
+          icon: '/icons/50px-icons/read.png',
+          bgImage: '/icons/bg-sm/red.png',
+          label: 'Reads'
+        }
+      case 'tools':
+        return {
+          icon: '/icons/50px-icons/tool.png',
+          bgImage: '/icons/bg-sm/blue.png',
+          label: 'Tools'
+        }
       case 'podcast':
-        return <Microphone {...iconProps} />
+        return {
+          icon: '/icons/50px-icons/podcast.png',
+          bgImage: '/icons/bg-sm/purple.png',
+          label: 'Podcasts'
+        }
       case 'video':
-        return <Play {...iconProps} />
+        return {
+          icon: '/icons/50px-icons/video.png',
+          bgImage: '/icons/bg-sm/orange.png',
+          label: 'Videos'
+        }
       default:
-        return <Wrench {...iconProps} />
+        return {
+          icon: '/icons/50px-icons/tool.png',
+          bgImage: '/icons/bg-sm/blue.png',
+          label: 'Resources'
+        }
     }
   }
 
@@ -54,37 +72,55 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
     >
       {/* Header Section */}
       <div className="mb-6">
-        <h2 className="text-[24px] font-bold text-white mb-3">
+        {/* Coffee/Tea Icon */}
+        <div className="text-4xl mb-3">☕</div>
+        <h2 className="text-[28px] font-bold text-white mb-3 leading-tight">
           {title}
         </h2>
-        <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+        <p className="text-[14px] font-normal text-[#CAC4D0] leading-relaxed">
           {subtitle}
         </p>
       </div>
 
-      {/* Resource Cards Grid */}
-      <div className="space-y-2">
-        {resources.map((resource) => (
-          <div
-            key={resource.id}
-            className="flex items-start gap-3 p-3 bg-white/[0.02] hover:bg-white/[0.04] rounded-xl transition-all cursor-pointer active:scale-[0.99]"
-          >
-            {/* Icon Section */}
-            <div className="flex-shrink-0 pt-1">
-              {getCategoryIcon(resource.category)}
+      {/* Resource Cards Grid - 2x2 Layout */}
+      <div className="grid grid-cols-2 gap-3">
+        {resources.map((resource) => {
+          const style = getCategoryStyle(resource.category)
+          return (
+            <div
+              key={resource.id}
+              className="relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+              style={{
+                minHeight: '140px',
+                backgroundImage: `url(${style.bgImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
+            >
+              {/* Gradient Overlay for better text readability */}
+              <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/40" />
+              
+              {/* Content */}
+              <div className="relative h-full p-4 flex flex-col justify-between">
+                {/* Icon */}
+                <div className="flex justify-end">
+                  <img 
+                    src={style.icon} 
+                    alt={style.label}
+                    className="w-12 h-12 opacity-60"
+                  />
+                </div>
+                
+                {/* Category Label */}
+                <div>
+                  <h3 className="text-[20px] font-bold text-white drop-shadow-lg">
+                    {style.label}
+                  </h3>
+                </div>
+              </div>
             </div>
-
-            {/* Content Section */}
-            <div className="flex-1 min-w-0">
-              <h3 className="text-[14px] font-semibold text-[#E6E1E5] leading-snug line-clamp-1 mb-0.5">
-                {resource.title}
-              </h3>
-              <p className="text-[12px] font-normal text-[#938F99] leading-relaxed line-clamp-1">
-                {resource.description}
-              </p>
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
