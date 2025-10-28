@@ -198,13 +198,13 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </p>
           
           {/* Challenge Days Grid */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {/* Day 1 - Logo (shows when user logged task today) */}
             <div 
               className="flex items-center justify-center relative overflow-hidden"
               style={{
-                width: '72px',
-                height: '72px',
+                width: '56px',
+                height: '56px',
                 aspectRatio: '1/1',
                 flexShrink: 0,
                 backgroundImage: 'url("/icons/bg-sm/black cube.png")',
