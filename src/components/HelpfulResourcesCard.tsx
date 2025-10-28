@@ -104,7 +104,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
               <img 
                 src={style.bgImage} 
                 alt=""
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-fill"
               />
               
               {/* Foreground content */}
