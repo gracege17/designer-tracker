@@ -65,11 +65,11 @@ const EntryList: React.FC<EntryListProps> = ({
   return (
     <div className="flex h-full min-h-screen w-full flex-col bg-black text-[#E6E1E5] screen-transition">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-black border-b border-[#49454F] p-5">
+      <header className="sticky top-0 z-10 bg-black border-b border-[#49454F]/30 p-5">
         <div className="flex items-center justify-between max-w-md mx-auto">
-          <h1 className="text-[24px] font-bold text-[#E6E1E5]" style={{ fontFamily: 'Playfair Display, serif' }}>Reflections</h1>
-          <button className="p-2 hover:bg-slate-100 rounded-full transition-colors">
-            <MagnifyingGlass size={24} weight="light" className="text-slate-900" />
+          <h1 className="text-[28px] font-bold text-[#E6E1E5]" style={{ fontFamily: 'Playfair Display, serif' }}>Reflections</h1>
+          <button className="p-2 hover:bg-white/[0.08] rounded-full transition-colors">
+            <MagnifyingGlass size={24} weight="light" className="text-[#E6E1E5]" />
           </button>
         </div>
       </header>
@@ -92,15 +92,15 @@ const EntryList: React.FC<EntryListProps> = ({
                 {/* Month Header with Dropdown */}
                 <button 
                   onClick={() => toggleMonth(monthKey)}
-                  className="flex items-center justify-between w-full py-3 mb-3"
+                  className="flex items-center justify-between w-full py-3 mb-4"
                 >
-                  <h3 className="text-[16px] font-bold text-[#E6E1E5]">
+                  <h3 className="text-[18px] font-bold text-[#E6E1E5] tracking-wide">
                     {monthKey}
                   </h3>
                   <CaretRight 
                     size={20} 
                     weight="bold" 
-                    className={`text-slate-900 transition-transform duration-200 ${
+                    className={`text-[#938F99] transition-transform duration-200 ${
                       expandedMonths[monthKey] ? 'rotate-90' : ''
                     }`}
                   />
@@ -108,44 +108,53 @@ const EntryList: React.FC<EntryListProps> = ({
                 
                 {/* Entries for this month */}
                 {expandedMonths[monthKey] && (
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                   {monthEntries.map((entry) => {
                     const date = DateUtils.parseLocalDate(entry.date)
                     const dayNumber = date.getDate()
-                    const dayName = date.toLocaleDateString('en-US', { weekday: 'short' })
+                    const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()
                     
                     return (
                       <div 
                         key={entry.id}
                         onClick={() => onViewEntry(entry)}
-                        className="flex cursor-pointer items-stretch bg-white/[0.04] transition-all border border-[#49454F] overflow-hidden"
+                        className="flex cursor-pointer gap-4 transition-all hover:opacity-80"
                       >
-                        {/* Date Box - Full Height */}
-                        <div className="flex-shrink-0 bg-[#000] w-[70px] flex flex-col items-center justify-center text-white py-5">
-                          <p className="text-[36px] font-black leading-none mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
-                            {dayNumber}
-                          </p>
-                          <p className="text-[13px] font-medium">
+                        {/* Date Section - Compact Left Side */}
+                        <div className="flex-shrink-0 w-[44px] flex flex-col items-start pt-1">
+                          <p className="text-[10px] font-semibold text-[#938F99] mb-0.5 tracking-wide">
                             {dayName}
+                          </p>
+                          <p className="text-[32px] font-bold leading-none text-[#E6E1E5]">
+                            {dayNumber}
                           </p>
                         </div>
 
-                        {/* Content */}
-                        <div className="flex-1 min-w-0 py-4 px-5">
-                          {entry.tasks.slice(0, 3).map((task, index) => (
-                            <p 
-                              key={index} 
-                              className="truncate text-[14px] font-bold text-[#E6E1E5] mb-1"
-                              style={{ lineHeight: '1.5' }}
-                            >
-                              {task.description}
-                            </p>
-                          ))}
-                          {entry.tasks.length > 3 && (
-                            <p className="text-[14px] font-bold text-[#E6E1E5]">
-                              ...
-                            </p>
-                          )}
+                        {/* Content Section */}
+                        <div className="flex-1 min-w-0 pt-1">
+                          {/* Task Content */}
+                          <div className="space-y-2">
+                            {entry.tasks.slice(0, 3).map((task, index) => (
+                              <p 
+                                key={index} 
+                                className="text-[15px] font-normal text-white leading-relaxed"
+                                style={{ 
+                                  lineHeight: '1.6',
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden'
+                                }}
+                              >
+                                {task.description}
+                              </p>
+                            ))}
+                            {entry.tasks.length > 3 && (
+                              <p className="text-[14px] text-[#938F99] italic">
+                                +{entry.tasks.length - 3} more task{entry.tasks.length - 3 !== 1 ? 's' : ''}
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
                     )
