@@ -201,24 +201,23 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           <div className="flex items-center gap-3">
             {/* Day 1 - Logo (shows when user logged task today) */}
             <div 
-              className="flex items-center justify-center"
+              className="flex items-center justify-center relative overflow-hidden"
               style={{
                 width: '72px',
                 height: '72px',
-                backgroundImage: 'url(/icons/bg-sm/black cube.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                borderRadius: '12px'
+                backgroundColor: '#1a1a1a',
+                borderRadius: '12px',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
               }}
             >
               {todayTasks.length > 0 ? (
                 <img 
                   src="/icons/32px-png/32px-logo.png" 
                   alt="Day 1 Complete" 
-                  className="w-8 h-8"
+                  className="w-8 h-8 relative z-10"
                 />
               ) : (
-                <span className="text-[32px] font-semibold text-white">1</span>
+                <span className="text-[40px] font-bold text-white relative z-10">1</span>
               )}
             </div>
             
@@ -226,17 +225,16 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             {[2, 3, 4, 5].map((day) => (
               <div 
                 key={day}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center relative overflow-hidden"
                 style={{
                   width: '72px',
                   height: '72px',
-                  backgroundImage: 'url(/icons/bg-sm/black cube.png)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  borderRadius: '12px'
+                  backgroundColor: '#1a1a1a',
+                  borderRadius: '12px',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                <span className="text-[32px] font-semibold text-white">
+                <span className="text-[40px] font-bold text-white relative z-10">
                   {day}
                 </span>
               </div>
