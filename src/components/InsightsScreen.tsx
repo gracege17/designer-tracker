@@ -453,7 +453,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 variant="glass" 
                 padding="small"
                 glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
               >
                 <div className="flex flex-col gap-3">
                   {/* Header with title and chevron */}
@@ -484,7 +484,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           .slice(0, 2)
                         
                         return energyTasks.map((task, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#FF2D55] leading-tight">
+                          <p key={index} className="text-[18px] font-bold text-[#FF2D55] leading-tight line-clamp-1">
                             {extractKeywords(task.description)}
                           </p>
                         ))
@@ -506,7 +506,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 variant="glass" 
                 padding="small"
                 glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
               >
                 <div className="flex flex-col gap-3">
                   {/* Header with title and chevron */}
@@ -537,7 +537,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           .slice(0, 2)
                         
                         return drainingTasks.map((task, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#938F99] leading-tight">
+                          <p key={index} className="text-[18px] font-bold text-[#938F99] leading-tight line-clamp-1">
                             {extractKeywords(task.description)}
                           </p>
                         ))
@@ -559,7 +559,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 variant="glass" 
                 padding="small"
                 glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
               >
                 <div className="flex flex-col gap-3">
                   {/* Header with title and chevron */}
@@ -590,7 +590,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           .slice(0, 2)
                         
                         return meaningfulTasks.map((task, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#F4C95D] leading-tight">
+                          <p key={index} className="text-[18px] font-bold text-[#F4C95D] leading-tight line-clamp-1">
                             {extractKeywords(task.description)}
                           </p>
                         ))
@@ -612,7 +612,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 variant="glass" 
                 padding="small"
                 glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px]"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
               >
                 <div className="flex flex-col gap-3">
                   {/* Header with title and chevron */}
@@ -643,7 +643,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           .slice(0, 2)
                         
                         return passionTasks.map((task, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#AF52DE] leading-tight">
+                          <p key={index} className="text-[18px] font-bold text-[#AF52DE] leading-tight line-clamp-1">
                             {extractKeywords(task.description)}
                           </p>
                         ))
