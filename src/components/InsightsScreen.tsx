@@ -447,7 +447,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 return null
               })()}
 
-              <div className="grid grid-cols-2 gap-2 mb-6">
+              <div className="grid grid-cols-2 gap-3 mb-6">
               {/* 1. Energized */}
               <Card 
                 variant="glass" 
@@ -455,9 +455,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 glassBackground="card"
                 className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
               >
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1.5">
                     <div className="flex items-start justify-between">
                       <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
                         Energized
@@ -474,7 +474,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   
                   {/* Tasks */}
                   {energyProjects.length > 0 ? (
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       {(() => {
                         const energyTasks = allTasks
                           .filter(task => {
@@ -508,9 +508,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 glassBackground="card"
                 className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
               >
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1.5">
                     <div className="flex items-start justify-between">
                       <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
                         Drained
@@ -527,7 +527,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   
                   {/* Tasks */}
                   {drainingProjects.length > 0 ? (
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       {(() => {
                         const drainingTasks = allTasks
                           .filter(task => {
@@ -561,9 +561,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 glassBackground="card"
                 className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
               >
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1.5">
                     <div className="flex items-start justify-between">
                       <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
                         Meaningful
@@ -580,7 +580,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   
                   {/* Tasks */}
                   {meaningfulProjects.length > 0 ? (
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       {(() => {
                         const meaningfulTasks = allTasks
                           .filter(task => {
@@ -614,9 +614,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 glassBackground="card"
                 className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
               >
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1.5">
                     <div className="flex items-start justify-between">
                       <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
                         Curious
@@ -633,7 +633,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   
                   {/* Tasks */}
                   {passionProjects.length > 0 ? (
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       {(() => {
                         const passionTasks = allTasks
                           .filter(task => {
