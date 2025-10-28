@@ -32,7 +32,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
       case 'read':
         return {
           icon: '/icons/50px-icons/read.png',
-          bgImage: '/icons/bg-sm/red.png',
+          bgImage: '/icons/bg-sm/orange.png',
           label: 'Reads'
         }
       case 'tools':
@@ -50,7 +50,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
       case 'video':
         return {
           icon: '/icons/50px-icons/video.png',
-          bgImage: '/icons/bg-sm/orange.png',
+          bgImage: '/icons/bg-sm/red.png',
           label: 'Videos'
         }
       default:
