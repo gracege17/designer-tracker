@@ -453,7 +453,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 variant="glass" 
                 padding="small"
                 glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
               >
                 <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
@@ -506,7 +506,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 variant="glass" 
                 padding="small"
                 glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
               >
                 <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
@@ -559,7 +559,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 variant="glass" 
                 padding="small"
                 glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
               >
                 <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
@@ -612,7 +612,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 variant="glass" 
                 padding="small"
                 glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] h-[198px] overflow-hidden"
+                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
               >
                 <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
