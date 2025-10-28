@@ -187,19 +187,19 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             padding: '24px'
           }}
         >
-          {/* Challenge Title */}
-          <h2 className="text-[14px] font-semibold text-white tracking-wider mb-2" style={{ letterSpacing: '0.1em' }}>
+          {/* Challenge Title - Following Card Design System */}
+          <p className="text-[12px] font-normal text-[#CAC4D0] mb-2" style={{ letterSpacing: '0.1em' }}>
             5 DAYS CHALLENGE
-          </h2>
+          </p>
           
           {/* Challenge Subtitle */}
-          <p className="text-[18px] font-normal text-[#E6E1E5] leading-snug mb-6">
+          <p className="text-[18px] font-medium text-white leading-snug mb-6">
             One day at a time, one step closer to a better you
           </p>
           
           {/* Challenge Days Grid */}
           <div className="flex items-center gap-3">
-            {/* Day 1 - Logo */}
+            {/* Day 1 - Logo (shows when user logged task today) */}
             <div 
               className="flex items-center justify-center"
               style={{
@@ -211,11 +211,15 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 borderRadius: '12px'
               }}
             >
-              <img 
-                src="/icons/32px-png/32px-logo.png" 
-                alt="Day 1" 
-                className="w-8 h-8"
-              />
+              {todayTasks.length > 0 ? (
+                <img 
+                  src="/icons/32px-png/32px-logo.png" 
+                  alt="Day 1 Complete" 
+                  className="w-8 h-8"
+                />
+              ) : (
+                <span className="text-[32px] font-semibold text-white">1</span>
+              )}
             </div>
             
             {/* Days 2-5 - Numbers */}
