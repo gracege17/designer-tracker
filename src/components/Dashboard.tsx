@@ -205,7 +205,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               {/* Custom Illustration */}
               <div className="h-48 mb-4 flex items-center justify-center overflow-hidden" style={{ borderRadius: '0 36px 0 0' }}>
                 <img 
-                  src="https://cdn.midjourney.com/b0df52e3-5e6e-42d5-9597-331f1a2ed698/0_3.png" 
+                  src="/illustrations/guy_desktop.jpg" 
                   alt="Decorative illustration" 
                   className="w-full h-full object-cover"
                 />
