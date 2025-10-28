@@ -770,7 +770,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                                 <img 
                                   src={emotion.iconPath} 
                                   alt={emotion.label}
-                                  className="w-6 h-6"
+                                  className="w-8 h-8"
                                   style={{ filter: 'brightness(1.3) contrast(1.1)' }}
                                 />
                               ) : (
@@ -843,7 +843,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                                 <img 
                                   src={emotion.iconPath} 
                                   alt={emotion.label}
-                                  className="w-6 h-6"
+                                  className="w-8 h-8"
                                   style={{ filter: 'brightness(1.3) contrast(1.1)' }}
                                 />
                               ) : (
