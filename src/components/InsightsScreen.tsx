@@ -31,6 +31,19 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('week')
   const [showFullCalendar, setShowFullCalendar] = useState(false)
 
+  // Helper function to extract keywords from task description
+  const extractKeywords = (description: string): string => {
+    // Remove common words and get first 2-3 meaningful words
+    const words = description.split(' ')
+    const meaningfulWords = words.filter(word => 
+      word.length > 2 && 
+      !['the', 'and', 'for', 'with', 'from'].includes(word.toLowerCase())
+    )
+    
+    // Return first 1-2 words max
+    return meaningfulWords.slice(0, 2).join(' ') || words.slice(0, 2).join(' ')
+  }
+
   // Prevent body scroll when calendar is open
   React.useEffect(() => {
     if (showFullCalendar) {
@@ -472,7 +485,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         
                         return energyTasks.map((task, index) => (
                           <p key={index} className="text-[18px] font-bold text-[#FF2D55] leading-tight">
-                            {task.description}
+                            {extractKeywords(task.description)}
                           </p>
                         ))
                       })()}
@@ -525,7 +538,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         
                         return drainingTasks.map((task, index) => (
                           <p key={index} className="text-[18px] font-bold text-[#938F99] leading-tight">
-                            {task.description}
+                            {extractKeywords(task.description)}
                           </p>
                         ))
                       })()}
@@ -578,7 +591,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         
                         return meaningfulTasks.map((task, index) => (
                           <p key={index} className="text-[18px] font-bold text-[#F4C95D] leading-tight">
-                            {task.description}
+                            {extractKeywords(task.description)}
                           </p>
                         ))
                       })()}
@@ -631,7 +644,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         
                         return passionTasks.map((task, index) => (
                           <p key={index} className="text-[18px] font-bold text-[#AF52DE] leading-tight">
-                            {task.description}
+                            {extractKeywords(task.description)}
                           </p>
                         ))
                       })()}
