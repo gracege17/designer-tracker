@@ -96,7 +96,7 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
         <div className="max-w-md mx-auto space-y-3">
           <button
             onClick={handleAddAnotherTask}
-            className="w-full py-2.5 px-4 text-center bg-white/[0.04] border text-[#E6E1E5] font-medium text-[17px] hover:bg-[#3A3840] transition-all active:scale-[0.99]"
+            className="w-full py-2 px-4 text-center bg-white/[0.04] border text-[#E6E1E5] font-medium text-[17px] hover:bg-[#3A3840] transition-all active:scale-[0.99]"
             style={{ borderColor: 'rgba(255, 255, 255, 0.6)' }}
           >
             + Add another task
@@ -104,7 +104,7 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
           
           <button
             onClick={isLastProject ? handleDoneReflecting : handleNextProject}
-            className="w-full py-2.5 px-4 font-medium text-[17px] transition-all duration-200 bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]"
+            className="w-full py-2 px-4 font-medium text-[17px] transition-all duration-200 bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]"
           >
             {isLastProject ? "Done Reflecting" : "Next Project"}
           </button>

@@ -131,40 +131,26 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
         <div className="flex flex-wrap gap-3 mb-6">
           {localProjects.map((project) => {
             const isSelected = selectedProjects.includes(project.id)
-            
-            // Dynamic styling based on selection (Dark mode only)
-            const getStyles = () => {
-              if (isSelected) {
-                return {
-                  backgroundColor: '#FFFFFF',
-                  borderColor: '#FD654F',
-                  textColor: 'text-black'
-                }
-              } else {
-                return {
-                  backgroundColor: 'transparent',
-                  borderColor: 'rgba(255, 255, 255, 0.6)',
-                  textColor: 'text-[#E6E1E5]'
-                }
-              }
-            }
-            
-            const styles = getStyles()
 
             return (
               <div
                 key={project.id}
-                className="flex items-center justify-between px-5 py-3 border transition-all"
-                style={{ 
-                  backgroundColor: styles.backgroundColor, 
-                  borderColor: styles.borderColor 
-                }}
+                className={`
+                  flex items-center justify-between px-4 py-2 rounded-lg
+                  transition-all duration-200
+                  ${isSelected
+                    ? 'bg-[#EC5429]/20 backdrop-blur-sm shadow-lg shadow-[#EC5429]/10 hover:bg-[#EC5429]/30'
+                    : 'bg-white/[0.08] backdrop-blur-sm shadow-md hover:bg-white/[0.12]'
+                  }
+                `}
               >
                 <button
                   onClick={() => handleProjectToggle(project.id)}
                   className="flex-1 text-left active:scale-[0.99] transition-all"
                 >
-                  <span className={`text-[14px] font-normal ${styles.textColor}`}>
+                  <span className={`text-[14px] font-normal transition-colors ${
+                    isSelected ? 'text-[#EC5429] font-medium' : 'text-[#E6E1E5]'
+                  }`}>
                     {project.name}
                   </span>
                 </button>
@@ -176,7 +162,9 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
                   <X 
                     size={20} 
                     weight="bold"
-                    className={`opacity-50 ${isSelected ? 'text-black' : styles.textColor}`}
+                    className={`opacity-50 transition-colors ${
+                      isSelected ? 'text-[#EC5429]' : 'text-[#E6E1E5]'
+                    }`}
                   />
                 </button>
               </div>
@@ -236,7 +224,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             onClick={handleNext}
             disabled={selectedProjects.length === 0}
             className={`
-              w-full py-2.5 px-4 font-medium text-[17px] transition-all duration-200
+              w-full py-2 px-4 font-medium text-[17px] transition-all duration-200
               ${selectedProjects.length > 0
                 ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
                 : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed'

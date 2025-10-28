@@ -94,7 +94,7 @@ const OnboardingFirstEntry: React.FC<OnboardingFirstEntryProps> = ({ onStartEntr
       <div className="px-6 pb-8">
         <button
           onClick={onStartEntry}
-          className="w-full bg-[#EC5429] text-white font-bold py-2.5 px-4 text-[17px] transition-all duration-200 hover:bg-[#F76538] active:scale-[0.98] flex items-center justify-center gap-2"
+          className="w-full bg-[#EC5429] text-white font-bold py-2 px-4 text-[17px] transition-all duration-200 hover:bg-[#F76538] active:scale-[0.98] flex items-center justify-center gap-2"
         >
           <span>Start My First Reflection</span>
           <span>✨</span>
