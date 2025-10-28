@@ -52,7 +52,7 @@ export const generateDailySummary = async (todayEntry: Entry | undefined): Promi
     }
 
     const data = await response.json()
-    const summary = data.summary || "You had a productive day with a mix of creative and technical work. Keep up the great momentum!"
+    const summary = data.summary || "Productive day with mixed work. Great momentum."
 
     // Cache the result
     summaryCache.set(cacheKey, {
@@ -73,13 +73,13 @@ export const generateDailySummary = async (todayEntry: Entry | undefined): Promi
     }, 0) / todayEntry.tasks.length
 
     if (avgEmotion >= 10) {
-      return "You had an incredibly energizing day! Your creative flow was strong and you tackled exciting challenges with enthusiasm."
+      return "Energizing day. Strong creative flow and focus."
     } else if (avgEmotion >= 7) {
-      return "You had a solid, productive day with good momentum. You balanced different types of work effectively."
+      return "Solid, productive day. Good momentum throughout."
     } else if (avgEmotion >= 4) {
-      return "You worked through some challenging tasks today. Every step forward counts, even the difficult ones."
+      return "Challenging work ahead. Every step counts."
     } else {
-      return "You pushed through some tough moments today. Remember that difficult days often lead to the biggest breakthroughs."
+      return "Tough moments today. Progress through perseverance."
     }
   }
 }

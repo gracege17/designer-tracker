@@ -124,12 +124,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 {dailySummary}
               </p>
             )}
-            
-            {todayEntry && todayEntry.tasks.length > 0 && (
-              <p className="text-[13px] font-normal text-slate-200 opacity-70">
-                Based on {todayEntry.tasks.length} task{todayEntry.tasks.length !== 1 ? 's' : ''} logged today
-              </p>
-            )}
           </div>
         </div>
 
