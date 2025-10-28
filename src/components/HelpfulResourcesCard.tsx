@@ -64,7 +64,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
 
   return (
     <div 
-      className="w-full max-w-[360px] h-auto bg-white/[0.04] mb-6"
+      className="w-full bg-white/[0.04] mb-6"
       style={{ 
         borderRadius: '16px 16px 0px 0px',
         padding: '24px'
