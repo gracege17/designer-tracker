@@ -205,6 +205,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               style={{
                 width: '72px',
                 height: '72px',
+                aspectRatio: '1/1',
+                flexShrink: 0,
                 backgroundImage: 'url("/icons/bg-sm/black cube.png")',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -231,6 +233,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 style={{
                   width: '72px',
                   height: '72px',
+                  aspectRatio: '1/1',
+                  flexShrink: 0,
                   backgroundImage: 'url("/icons/bg-sm/black cube.png")',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
