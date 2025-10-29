@@ -121,11 +121,11 @@ const EntryList: React.FC<EntryListProps> = ({
                         className="flex cursor-pointer gap-4 transition-all hover:opacity-80"
                       >
                         {/* Date Section - Compact Left Side */}
-                        <div className="flex-shrink-0 w-[44px] flex flex-col items-start pt-1">
+                        <div className="flex-shrink-0 w-[44px] flex flex-col items-center pt-1 bg-[#1C1B1F] rounded-lg px-2 py-2">
                           <p className="text-[10px] font-semibold text-[#938F99] mb-0.5 tracking-wide">
                             {dayName}
                           </p>
-                          <p className="text-[32px] font-bold leading-none text-[#E6E1E5]">
+                          <p className="text-[24px] font-bold leading-none text-[#E6E1E5]">
                             {dayNumber}
                           </p>
                         </div>
