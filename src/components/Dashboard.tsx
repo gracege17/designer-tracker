@@ -6,10 +6,11 @@ import { UserProfileStorage } from '../utils/storage'
 import { generateDailySummary } from '../utils/aiSummaryService'
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { getHelpfulResources } from '../utils/helpfulResourcesService'
-import { calculateDailyColor, getColorFamilyBreakdown } from '../utils/emotionColorBlender'
+import { calculateDailyColor } from '../utils/emotionColorBlender'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
 import { EMOTIONS } from '../types'
 import Card from './Card'
+import namer from 'color-namer'
 
 interface DashboardProps {
   entries: Entry[]
@@ -161,11 +162,17 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             {/* Today's Color Card */}
             {(() => {
               const dailyColor = calculateDailyColor(todayEntry)
-              const colorBreakdown = getColorFamilyBreakdown(todayEntry)
-              const dominantColorFamily = colorBreakdown[0]?.familyName || 'Neutral'
               
-              // Extract the English name from the family name
-              const colorName = dominantColorFamily.split('(')[0].trim()
+              // Get human-readable color name using color-namer
+              const colorResult = namer(dailyColor)
+              // Use pantone for more sophisticated names, fallback to basic
+              const colorName = colorResult.pantone?.[0]?.name || colorResult.basic?.[0]?.name || 'Neutral'
+              
+              // Capitalize each word for better display
+              const formattedColorName = colorName
+                .split(' ')
+                .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ')
               
               return (
                 <Card 
@@ -210,7 +217,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   
                   {/* Color Name */}
                   <p className="text-[20px] font-bold text-white text-center">
-                    {colorName}
+                    {formattedColorName}
                   </p>
                 </Card>
               )
