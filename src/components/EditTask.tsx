@@ -68,13 +68,7 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
         </div>
         
         {/* Project Name */}
-        <div className="flex items-center gap-2 justify-center">
-          {project && (
-            <div 
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: project.color }}
-            />
-          )}
+        <div className="flex items-center justify-center">
           <p className="text-sm text-[#CAC4D0]">
             {project?.name || 'Unknown Project'}
           </p>

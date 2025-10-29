@@ -104,11 +104,7 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
                       : 'border-slate-200 bg-white hover:border-slate-300'
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <div 
-                      className="w-4 h-4 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: projectOption.color }}
-                    />
+                  <div className="flex items-center">
                     <span className="font-medium text-slate-800">
                       {projectOption.name}
                     </span>

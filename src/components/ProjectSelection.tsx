@@ -119,10 +119,6 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
                 {isEditing ? (
                   /* Edit Mode */
                   <div className="flex items-center gap-3 py-4 px-6 rounded-full bg-white border border-primary soft-shadow">
-                    <div 
-                      className="w-4 h-4 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: project.color }}
-                    />
                     <input
                       type="text"
                       value={editingName}
@@ -156,10 +152,6 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
                     }}
                     title="Double-tap to edit project name"
                   >
-                    <div 
-                      className="w-4 h-4 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: project.color }}
-                    />
                     <span>{project.name}</span>
                   </button>
                 )}
