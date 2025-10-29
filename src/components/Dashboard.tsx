@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import BottomNav from './BottomNav'
-import { Entry } from '../types'
+import { Entry, EmotionLevel } from '../types'
 import { getTodayDateString } from '../utils/dataHelpers'
 import { UserProfileStorage } from '../utils/storage'
 import { generateDailySummary } from '../utils/aiSummaryService'
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { getHelpfulResources } from '../utils/helpfulResourcesService'
-import { calculateDailyColor } from '../utils/emotionColorBlender'
+import { calculateDailyColor, getColorFamilyBreakdown } from '../utils/emotionColorBlender'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
+import { EMOTIONS } from '../types'
+import Card from './Card'
 
 interface DashboardProps {
   entries: Entry[]
@@ -78,80 +80,143 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </p>
         </div>
 
-        {/* Today's Summary Card - Combined with Emotional Flow */}
+        {/* Today's Summary Card */}
         <div 
           className="p-6 mb-6 bg-white/[0.04]" 
           style={{ 
             borderRadius: '16px'
           }}
         >
-          <div className="flex items-center justify-between gap-6">
-            {/* Left Section: Task Count and Summary */}
-            <div className="flex-1">
-              <p className="text-[12px] font-normal text-[#CAC4D0] mb-4">
-                Today's Summary
-              </p>
-              
-              {/* Task Count */}
-              <div className="mb-4 flex items-baseline gap-2">
-                <div className="text-[32px] font-bold text-white leading-none">
-                  {todayTasks.length}
-                </div>
-                <div className="text-[14px] font-normal text-white">
-                  Tasks
-                </div>
-              </div>
-              
-              {/* Summary Text */}
-              {isLoadingSummary ? (
-                <p className="text-[16px] font-normal text-[#CAC4D0] leading-snug italic animate-pulse">
-                  Analyzing your day...
-                </p>
-              ) : (
-                <p className="text-[16px] font-normal text-[#CAC4D0] leading-snug">
-                  {dailySummary}
-                </p>
-              )}
+          <p className="text-[12px] font-normal text-[#CAC4D0] mb-4">
+            Today's Summary
+          </p>
+          
+          {/* Task Count */}
+          <div className="mb-4 flex items-baseline gap-2">
+            <div className="text-[32px] font-bold text-white leading-none">
+              {todayTasks.length}
             </div>
+            <div className="text-[14px] font-normal text-white">
+              Tasks
+            </div>
+          </div>
+          
+          {/* Summary Text */}
+          {isLoadingSummary ? (
+            <p className="text-[16px] font-normal text-[#CAC4D0] leading-snug italic animate-pulse">
+              Analyzing your day...
+            </p>
+          ) : (
+            <p className="text-[16px] font-normal text-[#CAC4D0] leading-snug">
+              {dailySummary}
+            </p>
+          )}
+        </div>
 
-            {/* Right Section: Flower-Shaped Emotional Indicator */}
-            {todayTasks.length > 0 && (() => {
-              const dailyColor = calculateDailyColor(todayEntry)
+        {/* Today's Mood and Color Grid */}
+        {todayTasks.length > 0 && (
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {/* Today's Mood Card */}
+            {(() => {
+              // Get most common emotion
+              const emotionCounts = todayTasks.reduce((acc, task) => {
+                const emotion = task.emotion
+                acc[emotion] = (acc[emotion] || 0) + 1
+                return acc
+              }, {} as Record<number, number>)
+              
+              const mostCommonEmotion = Object.entries(emotionCounts)
+                .sort(([, a], [, b]) => b - a)[0]?.[0]
+              
+              const emotionData = mostCommonEmotion ? EMOTIONS[Number(mostCommonEmotion) as EmotionLevel] : EMOTIONS[8]
               
               return (
-                <svg 
-                  width="56" 
-                  height="160" 
-                  viewBox="0 0 35 128" 
-                  className="flex-shrink-0"
-                  style={{ filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))' }}
+                <Card 
+                  variant="glass" 
+                  padding="small"
+                  glassBackground="card"
+                  className="flex flex-col items-center justify-center !p-6 min-h-[180px]"
                 >
-                  <defs>
-                    {/* Define the flower shape as a clip path */}
-                    <clipPath id="flowerClip">
-                      <path d="M11.8284 11.3138C10.2663 9.75168 10.2663 7.21902 11.8284 5.65692C14.9526 2.53273 20.0179 2.53273 23.1421 5.65692C24.7042 7.21899 24.7042 9.75171 23.1421 11.3138L17.4853 16.9706L11.8284 11.3138Z" />
-                      <path d="M23.1423 23.6569C24.7044 25.219 24.7044 27.7517 23.1423 29.3138C20.0181 32.438 14.9528 32.438 11.8286 29.3138C10.2665 27.7517 10.2665 25.219 11.8286 23.6569L17.4854 18.0001L23.1423 23.6569Z" />
-                      <path d="M23.596 11.7492C25.1416 10.1707 27.6741 10.144 29.2526 11.6896C32.4095 14.7807 32.4628 19.8458 29.3717 23.0027C27.8262 24.5811 25.2936 24.6078 23.7152 23.0622L17.9991 17.4653L23.596 11.7492Z" />
-                      <path d="M11.3727 23.2215C9.82715 24.8 7.29463 24.8267 5.71617 23.2811C2.55925 20.19 2.50593 15.1249 5.59706 11.968C7.14259 10.3896 9.67517 10.3629 11.2536 11.9085L16.9697 17.5054L11.3727 23.2215Z" />
-                    </clipPath>
-                  </defs>
+                  <p className="text-[14px] font-normal text-[#938F99] mb-4">
+                    Today's Mood
+                  </p>
                   
-                  {/* Render single blended color with flower clip path */}
-                  <g clipPath="url(#flowerClip)">
-                    <rect
-                      x="0"
-                      y="0"
-                      width="35"
-                      height="128"
-                      fill={dailyColor}
-                      className="transition-all duration-500"
+                  {/* Emotion Icon */}
+                  <div className="mb-3">
+                    <img 
+                      src={emotionData.iconPath} 
+                      alt={emotionData.label}
+                      className="w-16 h-16"
                     />
-                  </g>
-                </svg>
+                  </div>
+                  
+                  {/* Emotion Label */}
+                  <p className="text-[20px] font-bold text-white">
+                    {emotionData.label}
+                  </p>
+                </Card>
+              )
+            })()}
+            
+            {/* Today's Color Card */}
+            {(() => {
+              const dailyColor = calculateDailyColor(todayEntry)
+              const colorBreakdown = getColorFamilyBreakdown(todayEntry)
+              const dominantColorFamily = colorBreakdown[0]?.familyName || 'Neutral'
+              
+              // Extract the English name from the family name
+              const colorName = dominantColorFamily.split('(')[0].trim()
+              
+              return (
+                <Card 
+                  variant="glass" 
+                  padding="small"
+                  glassBackground="card"
+                  className="flex flex-col items-center justify-center !p-6 min-h-[180px]"
+                >
+                  <p className="text-[14px] font-normal text-[#938F99] mb-4">
+                    Today's Color
+                  </p>
+                  
+                  {/* Color Flower */}
+                  <div className="mb-3">
+                    <svg 
+                      width="64" 
+                      height="64" 
+                      viewBox="0 0 35 35" 
+                      style={{ filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))' }}
+                    >
+                      <defs>
+                        <clipPath id="flowerClipSmall">
+                          <path d="M11.8284 11.3138C10.2663 9.75168 10.2663 7.21902 11.8284 5.65692C14.9526 2.53273 20.0179 2.53273 23.1421 5.65692C24.7042 7.21899 24.7042 9.75171 23.1421 11.3138L17.4853 16.9706L11.8284 11.3138Z" />
+                          <path d="M23.1423 23.6569C24.7044 25.219 24.7044 27.7517 23.1423 29.3138C20.0181 32.438 14.9528 32.438 11.8286 29.3138C10.2665 27.7517 10.2665 25.219 11.8286 23.6569L17.4854 18.0001L23.1423 23.6569Z" />
+                          <path d="M23.596 11.7492C25.1416 10.1707 27.6741 10.144 29.2526 11.6896C32.4095 14.7807 32.4628 19.8458 29.3717 23.0027C27.8262 24.5811 25.2936 24.6078 23.7152 23.0622L17.9991 17.4653L23.596 11.7492Z" />
+                          <path d="M11.3727 23.2215C9.82715 24.8 7.29463 24.8267 5.71617 23.2811C2.55925 20.19 2.50593 15.1249 5.59706 11.968C7.14259 10.3896 9.67517 10.3629 11.2536 11.9085L16.9697 17.5054L11.3727 23.2215Z" />
+                        </clipPath>
+                      </defs>
+                      
+                      <g clipPath="url(#flowerClipSmall)">
+                        <rect
+                          x="0"
+                          y="0"
+                          width="35"
+                          height="35"
+                          fill={dailyColor}
+                          className="transition-all duration-500"
+                        />
+                      </g>
+                    </svg>
+                  </div>
+                  
+                  {/* Color Name */}
+                  <p className="text-[20px] font-bold text-white text-center">
+                    {colorName}
+                  </p>
+                </Card>
               )
             })()}
           </div>
-        </div>
+        )}
 
         {/* 5 Days Challenge Section */}
         <div 
