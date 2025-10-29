@@ -125,7 +125,7 @@ const EntryList: React.FC<EntryListProps> = ({
                           <p className="text-[10px] font-semibold text-[#938F99] mb-0.5 tracking-wide">
                             {dayName}
                           </p>
-                          <p className="text-[24px] font-bold leading-none text-[#E6E1E5]">
+                          <p className="text-[24px] font-medium leading-none text-[#E6E1E5]">
                             {dayNumber}
                           </p>
                         </div>
