@@ -9,7 +9,6 @@ import { getHelpfulResources } from '../utils/helpfulResourcesService'
 import { calculateDailyColor } from '../utils/emotionColorBlender'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
 import { EMOTIONS } from '../types'
-import Card from './Card'
 import namer from 'color-namer'
 
 interface DashboardProps {
@@ -132,12 +131,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               const emotionData = mostCommonEmotion ? EMOTIONS[Number(mostCommonEmotion) as EmotionLevel] : EMOTIONS[8]
               
               return (
-                <Card 
-                  variant="glass" 
-                  padding="small"
-                  glassBackground="card"
-                  className="flex flex-col items-center justify-center !p-6 min-h-[180px]"
-                >
+                <div className="p-6 bg-white/[0.04] flex flex-col items-center justify-center min-h-[180px]" style={{ borderRadius: '16px' }}>
                   <p className="text-[14px] font-normal text-[#938F99] mb-4">
                     Today's Mood
                   </p>
@@ -155,7 +149,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   <p className="text-[20px] font-bold text-white">
                     {emotionData.label}
                   </p>
-                </Card>
+                </div>
               )
             })()}
             
@@ -175,12 +169,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 .join(' ')
               
               return (
-                <Card 
-                  variant="glass" 
-                  padding="small"
-                  glassBackground="card"
-                  className="flex flex-col items-center justify-center !p-6 min-h-[180px]"
-                >
+                <div className="p-6 bg-white/[0.04] flex flex-col items-center justify-center min-h-[180px]" style={{ borderRadius: '16px' }}>
                   <p className="text-[14px] font-normal text-[#938F99] mb-4">
                     Today's Color
                   </p>
@@ -219,7 +208,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   <p className="text-[20px] font-bold text-white text-center">
                     {formattedColorName}
                   </p>
-                </Card>
+                </div>
               )
             })()}
           </div>
