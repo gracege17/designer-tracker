@@ -120,8 +120,8 @@ const EntryList: React.FC<EntryListProps> = ({
                         onClick={() => onViewEntry(entry)}
                         className="flex cursor-pointer gap-4 transition-all hover:opacity-80"
                       >
-                        {/* Date Section - Compact Left Side */}
-                        <div className="flex-shrink-0 w-[44px] flex flex-col items-center justify-center bg-[#1C1B1F] rounded-lg px-2 py-2.5">
+                        {/* Date Section - Square Left Side */}
+                        <div className="flex-shrink-0 w-[48px] h-[48px] flex flex-col items-center justify-center bg-[#1C1B1F]">
                           <p className="text-[10px] font-semibold text-[#79747E] mb-0.5 tracking-wider uppercase">
                             {dayName}
                           </p>
