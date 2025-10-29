@@ -80,7 +80,6 @@ export default function Card({
       
       return {
         borderRadius: '8px',
-        backgroundColor: 'rgba(255, 255, 255, 0.04)', // Fallback background
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
