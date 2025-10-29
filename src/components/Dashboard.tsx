@@ -120,8 +120,8 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               
               return (
                 <svg 
-                  width="35" 
-                  height="128" 
+                  width="56" 
+                  height="160" 
                   viewBox="0 0 35 128" 
                   className="flex-shrink-0"
                   style={{ filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))' }}
