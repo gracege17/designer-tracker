@@ -51,17 +51,17 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
   const isValid = description.trim().length > 0 && selectedEmotions.length > 0
 
   return (
-    <div className="flex flex-col min-h-screen bg-background-light">
+    <div className="flex flex-col min-h-screen bg-black">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background-light/80 backdrop-blur-sm border-b border-slate-200 p-4">
+      <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-sm border-b border-[#49454F] p-4">
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={onCancel}
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
-          <h1 className="text-lg font-bold text-slate-900 flex-1 text-center">
+          <h1 className="text-lg font-bold text-[#E6E1E5] flex-1 text-center">
             Edit Task
           </h1>
           <div className="w-10" />
@@ -75,7 +75,7 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
               style={{ backgroundColor: project.color }}
             />
           )}
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-[#CAC4D0]">
             {project?.name || 'Unknown Project'}
           </p>
         </div>
@@ -85,28 +85,28 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
       <main className="flex-1 overflow-y-auto p-4 space-y-6">
         {/* Task Description */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-[#E6E1E5] mb-2">
             Task Description
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder-slate-400 text-slate-900 text-base"
+            className="w-full px-4 py-3 bg-white/[0.04] border border-[#49454F] focus:ring-2 focus:ring-[#EC5429]/50 focus:border-[#EC5429] placeholder-[#938F99] text-[#E6E1E5] text-base focus:outline-none"
             rows={4}
             maxLength={500}
             placeholder="What did you work on?"
           />
-          <p className="text-xs text-slate-500 mt-1 text-right">
+          <p className="text-xs text-[#938F99] mt-1 text-right">
             {description.length}/500
           </p>
         </div>
 
         {/* Emotions */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-[#E6E1E5] mb-2">
             How did it make you feel?
           </label>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-xs text-[#938F99] mb-3">
             Pick as many as you'd like
           </p>
           <div className="grid grid-cols-4 gap-3">
@@ -121,8 +121,8 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
                 className={`
                   flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border
                   ${isSelected
-                      ? 'bg-[#FFD678] border-slate-900 scale-105' 
-                      : 'bg-white border-slate-200 hover:border-slate-300 active:scale-95'
+                      ? 'bg-[#FFD678] border-[#EC5429] scale-105' 
+                      : 'bg-white/[0.04] border-[#49454F] hover:border-[#938F99] active:scale-95'
                     }
                   `}
                   style={{ borderRadius: '0 24px 0 0' }}
@@ -130,7 +130,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
                   <div className="mb-2 flex items-center justify-center">
                     <span className="text-3xl">{emotion.emoji}</span>
                   </div>
-                  <span className="text-[11px] font-medium text-slate-900 text-center leading-tight">
+                  <span className={`text-[11px] font-medium text-center leading-tight ${
+                    isSelected ? 'text-slate-900' : 'text-[#E6E1E5]'
+                  }`}>
                     {emotion.label}
                   </span>
                 </button>
@@ -141,25 +143,25 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
 
         {/* Notes */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-[#E6E1E5] mb-2">
             Notes (Optional)
           </label>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary placeholder-slate-400 text-slate-900 text-base"
+            className="w-full px-4 py-3 bg-white/[0.04] border border-[#49454F] focus:ring-2 focus:ring-[#EC5429]/50 focus:border-[#EC5429] placeholder-[#938F99] text-[#E6E1E5] text-base focus:outline-none"
             rows={3}
             maxLength={500}
             placeholder="Why did you feel that way?"
           />
-          <p className="text-xs text-slate-500 mt-1 text-right">
+          <p className="text-xs text-[#938F99] mt-1 text-right">
             {notes.length}/500
           </p>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="sticky bottom-0 bg-background-light/80 backdrop-blur-sm border-t border-slate-200 p-4 space-y-3">
+      <footer className="sticky bottom-0 bg-black/80 backdrop-blur-sm border-t border-[#49454F] p-4 space-y-3">
         <Button
           title="Save Changes"
           onPress={handleSave}
@@ -170,7 +172,7 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
         />
         <button
           onClick={onCancel}
-          className="w-full py-3 text-slate-600 font-medium hover:text-slate-900 transition-colors"
+          className="w-full py-3 text-[#CAC4D0] font-medium hover:text-[#E6E1E5] transition-colors"
         >
           Cancel
         </button>
