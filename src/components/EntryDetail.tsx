@@ -128,13 +128,9 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                           return
                         }
                         
-                        const action = window.confirm('What would you like to do with this task?\n\nPress OK to edit, or Cancel to delete.')
-                        if (action && onEditTask) {
+                        // Tap to edit directly
+                        if (onEditTask) {
                           onEditTask(task.id)
-                        } else if (!action && onDeleteTask) {
-                          if (window.confirm('Are you sure you want to delete this task?')) {
-                            onDeleteTask(task.id)
-                          }
                         }
                       }}
                     >
