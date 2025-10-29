@@ -48,13 +48,16 @@
 
 ## 🎨 颜色应用场景
 
-### 1. 情绪指示器（Flower Shape）
-在 Dashboard 中，使用花朵形状的 SVG clipPath 展示多个任务情绪的堆叠：
-- 每个任务占据相等的垂直空间
-- 颜色从底部向上堆叠
-- 使用上述颜色映射自动渲染
+### 1. 情绪指示器（Flower Shape）- 每日混合色
+在 Dashboard 中，使用花朵形状的 SVG clipPath 展示当日的情绪混合色：
+- 根据所有任务的情绪计算每个颜色家族的比例
+- 在 RGB 色彩空间中按权重混合颜色
+- 生成单一的每日代表色填充花朵形状
+- 颜色平滑过渡，视觉效果优雅
 
-**实现位置**: `src/components/Dashboard.tsx`
+**实现位置**: 
+- `src/components/Dashboard.tsx` (显示组件)
+- `src/utils/emotionColorBlender.ts` (颜色计算服务)
 
 ### 2. 情绪雷达图
 在 Insights 页面展示一周情绪分布：
@@ -76,6 +79,31 @@
 ---
 
 ## 📝 技术实现
+
+### 颜色混合算法
+
+**工作原理**:
+1. **分组统计**: 遍历当日所有任务，将每个情绪映射到对应的颜色家族
+2. **计算比例**: 统计每个颜色家族出现的次数，计算百分比
+3. **RGB 混合**: 在 RGB 色彩空间中，按比例对各颜色家族进行加权平均
+4. **生成结果**: 将混合后的 RGB 值转换为 Hex 颜色代码
+
+**示例计算**:
+```
+假设今天有 5 个任务：
+- 2 个 Happy (Golden Yellow #F4C95D) = 40%
+- 2 个 Excited (Red/Pink #FF2D55) = 40%
+- 1 个 Anxious (Purple #AF52DE) = 20%
+
+混合结果：
+R = (244 * 0.4 + 255 * 0.4 + 175 * 0.2) = 234.6 ≈ 235
+G = (201 * 0.4 + 45 * 0.4 + 82 * 0.2) = 114.8 ≈ 115
+B = (93 * 0.4 + 85 * 0.4 + 222 * 0.2) = 115.6 ≈ 116
+
+最终颜色: #EB7374
+```
+
+**服务文件**: `src/utils/emotionColorBlender.ts`
 
 ### 情绪到颜色的映射（TypeScript）
 
@@ -134,7 +162,56 @@ const emotionLevelMap: Record<number, string> = {
 
 ---
 
+## 🔧 API 函数
+
+### `calculateDailyColor(entry: Entry | undefined): string`
+计算并返回当日的混合情绪颜色（Hex 格式）
+
+**使用示例**:
+```typescript
+import { calculateDailyColor } from '../utils/emotionColorBlender'
+
+const dailyColor = calculateDailyColor(todayEntry)
+// 返回: "#EB7374" (示例)
+```
+
+### `calculateColorProportions(entry: Entry | undefined): Record<string, number>`
+计算各颜色家族的比例分布
+
+**返回格式**:
+```typescript
+{
+  "#FF2D55": 0.4,  // Red/Pink - 40%
+  "#F4C95D": 0.4,  // Golden Yellow - 40%
+  "#AF52DE": 0.2   // Purple - 20%
+}
+```
+
+### `getColorFamilyBreakdown(entry: Entry | undefined): Array<...>`
+获取详细的颜色家族分布信息（用于调试或显示）
+
+**返回格式**:
+```typescript
+[
+  {
+    color: "#FF2D55",
+    proportion: 0.4,
+    percentage: "40%",
+    familyName: "Red/Pink (热情高涨)"
+  },
+  // ...
+]
+```
+
+---
+
 ## 🔄 更新历史
+
+**Version 1.1** - October 2025
+- ✨ 新增颜色混合算法 (`emotionColorBlender.ts`)
+- 🎨 实现每日情绪混合色计算
+- 🌸 应用于 Dashboard 花朵形状指示器
+- 📊 提供颜色比例分析 API
 
 **Version 1.0** - October 2025
 - 初始版本发布
