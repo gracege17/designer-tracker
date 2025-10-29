@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, GearSix, HouseSimple, PlusCircle, ChartBar, Notepad } from 'phosphor-react'
 import BottomNav from './BottomNav'
-import { Entry, EMOTIONS, EmotionLevel } from '../types'
-import { DateUtils } from '../utils/dateUtils'
-import { getTodayDateString, getCurrentWeekEntries, getTotalTaskCount, getMostEnergizingTaskType } from '../utils/dataHelpers'
-import { ProjectStorage, UserProfileStorage } from '../utils/storage'
-import { generateSuggestions, getMotivationalQuote } from '../utils/suggestionEngine'
+import { Entry } from '../types'
+import { getTodayDateString } from '../utils/dataHelpers'
+import { UserProfileStorage } from '../utils/storage'
 import { generateDailySummary } from '../utils/aiSummaryService'
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
-import { generateEmotionalSummary } from '../utils/emotionalSummaryService'
 import { getHelpfulResources } from '../utils/helpfulResourcesService'
-import EmotionalRadarChart from './EmotionalRadarChart'
-import SuggestionsCard from './SuggestionsCard'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
 
 interface DashboardProps {
@@ -23,7 +17,7 @@ interface DashboardProps {
   isLoading?: boolean
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntries, onViewInsights, onViewSettings, isLoading = false }) => {
+const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntries, onViewInsights, onViewSettings }) => {
   // Theme
   
   // AI Summary State
@@ -41,26 +35,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   const todayDate = getTodayDateString()
   const todayEntry = entries.find(entry => entry.date === todayDate)
   const todayTasks = todayEntry?.tasks || []
-  
-  // Get this week's entries and insights
-  const thisWeekEntries = getCurrentWeekEntries(entries)
-  const thisWeekTaskCount = getTotalTaskCount(thisWeekEntries)
-  const mostEnergizingTaskType = getMostEnergizingTaskType(thisWeekEntries)
-
-  // Generate personalized suggestions
-  const suggestions = generateSuggestions(entries)
-
-  // Get motivational quote
-  const allTasks = thisWeekEntries.flatMap(entry => entry.tasks)
-  const recentAvgEmotion = allTasks.length > 0
-    ? allTasks.reduce((sum, task) => {
-        if (task.emotions && task.emotions.length > 0) {
-          return sum + (task.emotions.reduce((s, e) => s + e, 0) / task.emotions.length)
-        }
-        return sum + task.emotion
-      }, 0) / allTasks.length
-    : 6
-  const motivationalQuote = getMotivationalQuote(recentAvgEmotion)
 
   // Load daily summary
   useEffect(() => {
@@ -103,75 +77,94 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </p>
         </div>
 
-        {/* AI Daily Summary Card - Cyan accent */}
+        {/* Today's Summary Card - Combined with Emotional Flow */}
         <div 
-          className="p-4 mb-6 transition-all active:scale-[0.99] flex items-start self-stretch w-full cursor-pointer bg-white/[0.04]" 
+          className="p-6 mb-6 bg-white/[0.04]" 
           style={{ 
-            borderRadius: '4px 47px 4px 4px'
+            borderRadius: '16px'
           }}
         >
-          <div className="flex flex-col items-start gap-3 w-full">
-            <p className="text-[12px] font-normal text-white">
-              Today's Summary
-            </p>
-            
-            {isLoadingSummary ? (
-              <p className="text-[16px] font-medium text-slate-200 leading-snug italic animate-pulse">
-                Analyzing your day...
+          <div className="flex items-center justify-between gap-6">
+            {/* Left Section: Task Count and Summary */}
+            <div className="flex-1">
+              <p className="text-[12px] font-normal text-[#CAC4D0] mb-4">
+                Today's Summary
               </p>
-            ) : (
-              <p className="text-[18px] font-medium text-white leading-snug">
-                {dailySummary}
-              </p>
+              
+              {/* Task Count */}
+              <div className="mb-4">
+                <div className="text-[56px] font-bold text-white leading-none">
+                  {todayTasks.length}
+                </div>
+                <div className="text-[20px] font-normal text-white">
+                  Tasks
+                </div>
+              </div>
+              
+              {/* Summary Text */}
+              {isLoadingSummary ? (
+                <p className="text-[16px] font-normal text-[#CAC4D0] leading-snug italic animate-pulse">
+                  Analyzing your day...
+                </p>
+              ) : (
+                <p className="text-[16px] font-normal text-[#CAC4D0] leading-snug">
+                  {dailySummary}
+                </p>
+              )}
+            </div>
+
+            {/* Right Section: Emotional Color Bars */}
+            {emotionBreakdown && emotionBreakdown.totalTasks > 0 && (
+              <div className="flex items-end gap-1.5 h-32">
+                {Object.entries(emotionBreakdown.breakdown)
+                  .filter(([_, count]: [string, any]) => count > 0)
+                  .sort((a, b) => (b[1] as number) - (a[1] as number))
+                  .slice(0, 4) // Show top 4 emotions
+                  .map(([emotionLabel, count]: [string, any], index) => {
+                    // Map emotion label to color
+                    const emotionColorMap: Record<string, string> = {
+                      'Happy': '#4CAF50',
+                      'Calm': '#2196F3',
+                      'Excited': '#FF9800',
+                      'Frustrated': '#F44336',
+                      'Sad': '#9C27B0',
+                      'Anxious': '#FF5722',
+                      'Surprised': '#FFEB3B',
+                      'Neutral': '#9E9E9E',
+                      'Nostalgic': '#795548',
+                      'Energized': '#FFC107',
+                      'Normal': '#607D8B',
+                      'Tired': '#3F51B5',
+                      'Satisfied': '#8BC34A',
+                      'Annoyed': '#E91E63',
+                      'Drained': '#673AB7',
+                      'Proud': '#00BCD4'
+                    }
+                    const color = emotionColorMap[emotionLabel] || '#666666'
+                    
+                    // Calculate bar height based on count (max 128px)
+                    const maxCount = Math.max(...Object.values(emotionBreakdown.breakdown) as number[])
+                    const heightPercentage = (count as number) / maxCount
+                    const minHeight = 40 // Minimum height in pixels
+                    const maxHeight = 128 // Maximum height in pixels
+                    const barHeight = minHeight + (heightPercentage * (maxHeight - minHeight))
+                    
+                    return (
+                      <div
+                        key={emotionLabel}
+                        className="w-8 transition-all duration-300 rounded-full"
+                        style={{
+                          height: `${barHeight}px`,
+                          backgroundColor: color,
+                          opacity: 1 - (index * 0.1) // Slight fade for visual hierarchy
+                        }}
+                      />
+                    )
+                  })}
+              </div>
             )}
           </div>
         </div>
-
-        {/* Emotional Highlights Card - Horizontal Two-Column Layout */}
-        {emotionBreakdown && (
-          <div 
-            className="w-full bg-white/[0.04] mb-6"
-            style={{ 
-              borderRadius: '16px 16px 0px 0px',
-              padding: '24px'
-            }}
-          >
-            {/* Horizontal flex-row layout */}
-            <div className="flex flex-row items-center gap-6">
-              
-              {/* LEFT COLUMN: Emotion Blob Canvas (80x80, vertically centered) */}
-              <div 
-                className="flex-shrink-0"
-                style={{ width: '80px', height: '80px' }}
-              >
-                <EmotionalRadarChart 
-                  emotionData={emotionBreakdown} 
-                  showLabels={false}
-                  taskCount={emotionBreakdown.totalTasks}
-                  view="today"
-                />
-              </div>
-
-              {/* RIGHT COLUMN: Text Block */}
-              <div className="flex-1 flex flex-col gap-3">
-                
-                {/* Section Subtitle */}
-                <p className="text-[12px] font-normal text-[#CAC4D0]">
-                  Today's Emotional Flow
-                </p>
-                
-                {/* AI-Generated Emotional Summary */}
-                <p className="text-[18px] font-medium text-white leading-snug">
-                  {generateEmotionalSummary({
-                    breakdown: emotionBreakdown.breakdown,
-                    taskCount: emotionBreakdown.totalTasks
-                  })}
-                </p>
-                
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* 5 Days Challenge Section */}
         <div 
