@@ -34,15 +34,15 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       <div className="flex flex-col min-h-screen bg-black">
         <header className="sticky top-0 z-10 bg-black border-b border-[#49454F] p-5">
           <div className="max-w-md mx-auto flex items-center justify-between">
-            <button
-              onClick={onBack}
-              className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
-            >
-              <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-            </button>
-            <h1 className="text-[18px] font-bold text-[#E6E1E5]">
-              Reflection Details
-            </h1>
+          <button
+            onClick={onBack}
+            className="p-2 hover:bg-white/10 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+          >
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
+          </button>
+          <h1 className="text-[18px] font-bold text-[#E6E1E5]">
+            Reflection Details
+          </h1>
             <div className="w-10" />
           </div>
         </header>
@@ -72,11 +72,11 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
         <div className="max-w-md mx-auto flex items-center justify-between">
           <button
             onClick={onBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="p-2 hover:bg-white/10 rounded-full transition-all duration-200 active:scale-95 -ml-2"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
-          <h1 className="text-[18px] font-bold text-slate-900">
+          <h1 className="text-[18px] font-bold text-[#E6E1E5]">
             Reflection Details
           </h1>
           <div className="w-10" />
