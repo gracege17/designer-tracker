@@ -113,64 +113,81 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               )}
             </div>
 
-            {/* Right Section: Unified Emotional Bar */}
+            {/* Right Section: Flower-Shaped Emotional Indicator */}
             {todayTasks.length > 0 && (
-              <div 
-                className="w-8 overflow-hidden rounded-full flex flex-col-reverse"
-                style={{ height: '128px' }}
+              <svg 
+                width="35" 
+                height="128" 
+                viewBox="0 0 35 128" 
+                className="flex-shrink-0"
+                style={{ filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))' }}
               >
-                {todayTasks.map((task) => {
-                  // Map emotion label to color
-                  const emotionColorMap: Record<string, string> = {
-                    'Happy': '#4CAF50',
-                    'Calm': '#2196F3',
-                    'Excited': '#FF9800',
-                    'Frustrated': '#F44336',
-                    'Sad': '#9C27B0',
-                    'Anxious': '#FF5722',
-                    'Surprised': '#FFEB3B',
-                    'Neutral': '#9E9E9E',
-                    'Nostalgic': '#795548',
-                    'Energized': '#FFC107',
-                    'Normal': '#607D8B',
-                    'Tired': '#3F51B5',
-                    'Satisfied': '#8BC34A',
-                    'Annoyed': '#E91E63',
-                    'Drained': '#673AB7',
-                    'Proud': '#00BCD4'
-                  }
-                  
-                  // Get emotion label from EMOTIONS constant
-                  const emotionLevel = task.emotion
-                  let emotionLabel = 'Neutral'
-                  
-                  // Map emotion level to label
-                  const emotionLevelMap: Record<number, string> = {
-                    1: 'Happy', 2: 'Calm', 3: 'Excited', 4: 'Frustrated',
-                    5: 'Sad', 6: 'Anxious', 7: 'Surprised', 8: 'Neutral',
-                    9: 'Nostalgic', 10: 'Energized', 11: 'Normal', 12: 'Tired',
-                    13: 'Satisfied', 14: 'Annoyed', 15: 'Drained', 16: 'Proud'
-                  }
-                  
-                  emotionLabel = emotionLevelMap[emotionLevel] || 'Neutral'
-                  const color = emotionColorMap[emotionLabel] || '#9E9E9E'
-                  
-                  // Each segment takes equal space
-                  const segmentHeight = `${100 / todayTasks.length}%`
-                  
-                  return (
-                    <div
-                      key={task.id}
-                      className="w-full transition-all duration-300"
-                      style={{
-                        height: segmentHeight,
-                        backgroundColor: color,
-                        flexShrink: 0
-                      }}
-                    />
-                  )
-                })}
-              </div>
+                <defs>
+                  {/* Define the flower shape as a clip path */}
+                  <clipPath id="flowerClip">
+                    <path d="M11.8284 11.3138C10.2663 9.75168 10.2663 7.21902 11.8284 5.65692C14.9526 2.53273 20.0179 2.53273 23.1421 5.65692C24.7042 7.21899 24.7042 9.75171 23.1421 11.3138L17.4853 16.9706L11.8284 11.3138Z" />
+                    <path d="M23.1423 23.6569C24.7044 25.219 24.7044 27.7517 23.1423 29.3138C20.0181 32.438 14.9528 32.438 11.8286 29.3138C10.2665 27.7517 10.2665 25.219 11.8286 23.6569L17.4854 18.0001L23.1423 23.6569Z" />
+                    <path d="M23.596 11.7492C25.1416 10.1707 27.6741 10.144 29.2526 11.6896C32.4095 14.7807 32.4628 19.8458 29.3717 23.0027C27.8262 24.5811 25.2936 24.6078 23.7152 23.0622L17.9991 17.4653L23.596 11.7492Z" />
+                    <path d="M11.3727 23.2215C9.82715 24.8 7.29463 24.8267 5.71617 23.2811C2.55925 20.19 2.50593 15.1249 5.59706 11.968C7.14259 10.3896 9.67517 10.3629 11.2536 11.9085L16.9697 17.5054L11.3727 23.2215Z" />
+                  </clipPath>
+                </defs>
+                
+                {/* Render stacked emotion colors with flower clip path */}
+                <g clipPath="url(#flowerClip)">
+                  {todayTasks.slice().reverse().map((task, index) => {
+                    // Map emotion label to color
+                    const emotionColorMap: Record<string, string> = {
+                      'Happy': '#4CAF50',
+                      'Calm': '#2196F3',
+                      'Excited': '#FF9800',
+                      'Frustrated': '#F44336',
+                      'Sad': '#9C27B0',
+                      'Anxious': '#FF5722',
+                      'Surprised': '#FFEB3B',
+                      'Neutral': '#9E9E9E',
+                      'Nostalgic': '#795548',
+                      'Energized': '#FFC107',
+                      'Normal': '#607D8B',
+                      'Tired': '#3F51B5',
+                      'Satisfied': '#8BC34A',
+                      'Annoyed': '#E91E63',
+                      'Drained': '#673AB7',
+                      'Proud': '#00BCD4'
+                    }
+                    
+                    // Get emotion label from EMOTIONS constant
+                    const emotionLevel = task.emotion
+                    let emotionLabel = 'Neutral'
+                    
+                    // Map emotion level to label
+                    const emotionLevelMap: Record<number, string> = {
+                      1: 'Happy', 2: 'Calm', 3: 'Excited', 4: 'Frustrated',
+                      5: 'Sad', 6: 'Anxious', 7: 'Surprised', 8: 'Neutral',
+                      9: 'Nostalgic', 10: 'Energized', 11: 'Normal', 12: 'Tired',
+                      13: 'Satisfied', 14: 'Annoyed', 15: 'Drained', 16: 'Proud'
+                    }
+                    
+                    emotionLabel = emotionLevelMap[emotionLevel] || 'Neutral'
+                    const color = emotionColorMap[emotionLabel] || '#9E9E9E'
+                    
+                    // Each segment takes equal vertical space
+                    const segmentHeight = 128 / todayTasks.length
+                    const yPosition = index * segmentHeight
+                    
+                    return (
+                      <rect
+                        key={task.id}
+                        x="0"
+                        y={yPosition}
+                        width="35"
+                        height={segmentHeight}
+                        fill={color}
+                        className="transition-all duration-300"
+                      />
+                    )
+                  })}
+                </g>
+              </svg>
             )}
           </div>
         </div>
