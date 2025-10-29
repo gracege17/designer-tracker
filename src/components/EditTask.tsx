@@ -13,9 +13,13 @@ interface EditTaskProps {
 
 const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }) => {
   const [description, setDescription] = useState(task.description)
-  const [selectedEmotions, setSelectedEmotions] = useState<EmotionLevel[]>(
-    task.emotions || [task.emotion]
-  )
+  
+  // Initialize with existing emotions, ensuring we always have at least the primary emotion
+  const initialEmotions = task.emotions && task.emotions.length > 0 
+    ? task.emotions 
+    : [task.emotion]
+  
+  const [selectedEmotions, setSelectedEmotions] = useState<EmotionLevel[]>(initialEmotions)
   const [notes, setNotes] = useState(task.notes || '')
 
   const project = ProjectStorage.getProjectById(task.projectId)
@@ -113,9 +117,9 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
                   type="button"
                   onClick={() => handleEmotionToggle(emotion.level)}
                 className={`
-                  flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border
+                  flex flex-col items-center justify-center py-4 px-2 transition-all duration-200 border-2
                   ${isSelected
-                      ? 'bg-[#FFD678] border-[#EC5429] scale-105' 
+                      ? 'bg-[#FFD678] border-[#EC5429] scale-105 shadow-lg' 
                       : 'bg-white/[0.04] border-[#49454F] hover:border-[#938F99] active:scale-95'
                     }
                   `}

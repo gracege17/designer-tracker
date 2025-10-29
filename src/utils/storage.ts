@@ -35,6 +35,10 @@ export const EntryStorage = {
         updatedAt: new Date(entry.updatedAt),
         tasks: entry.tasks.map((task: any) => ({
           ...task,
+          emotion: typeof task.emotion === 'string' ? parseInt(task.emotion, 10) : task.emotion,
+          emotions: task.emotions 
+            ? task.emotions.map((e: any) => typeof e === 'string' ? parseInt(e, 10) : e)
+            : undefined,
           createdAt: new Date(task.createdAt)
         }))
       }))
