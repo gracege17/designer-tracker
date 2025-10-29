@@ -92,11 +92,11 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               </p>
               
               {/* Task Count */}
-              <div className="mb-4">
-                <div className="text-[56px] font-bold text-white leading-none">
+              <div className="mb-4 flex items-baseline gap-2">
+                <div className="text-[32px] font-bold text-white leading-none">
                   {todayTasks.length}
                 </div>
-                <div className="text-[20px] font-normal text-white">
+                <div className="text-[14px] font-normal text-white">
                   Tasks
                 </div>
               </div>
@@ -113,54 +113,63 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
               )}
             </div>
 
-            {/* Right Section: Emotional Color Bars */}
-            {emotionBreakdown && emotionBreakdown.totalTasks > 0 && (
-              <div className="flex items-end gap-1.5 h-32">
-                {Object.entries(emotionBreakdown.breakdown)
-                  .filter(([_, count]: [string, any]) => count > 0)
-                  .sort((a, b) => (b[1] as number) - (a[1] as number))
-                  .slice(0, 4) // Show top 4 emotions
-                  .map(([emotionLabel, count]: [string, any], index) => {
-                    // Map emotion label to color
-                    const emotionColorMap: Record<string, string> = {
-                      'Happy': '#4CAF50',
-                      'Calm': '#2196F3',
-                      'Excited': '#FF9800',
-                      'Frustrated': '#F44336',
-                      'Sad': '#9C27B0',
-                      'Anxious': '#FF5722',
-                      'Surprised': '#FFEB3B',
-                      'Neutral': '#9E9E9E',
-                      'Nostalgic': '#795548',
-                      'Energized': '#FFC107',
-                      'Normal': '#607D8B',
-                      'Tired': '#3F51B5',
-                      'Satisfied': '#8BC34A',
-                      'Annoyed': '#E91E63',
-                      'Drained': '#673AB7',
-                      'Proud': '#00BCD4'
-                    }
-                    const color = emotionColorMap[emotionLabel] || '#666666'
-                    
-                    // Calculate bar height based on count (max 128px)
-                    const maxCount = Math.max(...Object.values(emotionBreakdown.breakdown) as number[])
-                    const heightPercentage = (count as number) / maxCount
-                    const minHeight = 40 // Minimum height in pixels
-                    const maxHeight = 128 // Maximum height in pixels
-                    const barHeight = minHeight + (heightPercentage * (maxHeight - minHeight))
-                    
-                    return (
-                      <div
-                        key={emotionLabel}
-                        className="w-8 transition-all duration-300 rounded-full"
-                        style={{
-                          height: `${barHeight}px`,
-                          backgroundColor: color,
-                          opacity: 1 - (index * 0.1) // Slight fade for visual hierarchy
-                        }}
-                      />
-                    )
-                  })}
+            {/* Right Section: Unified Emotional Bar */}
+            {todayTasks.length > 0 && (
+              <div 
+                className="w-8 overflow-hidden rounded-full flex flex-col-reverse"
+                style={{ height: '128px' }}
+              >
+                {todayTasks.map((task) => {
+                  // Map emotion label to color
+                  const emotionColorMap: Record<string, string> = {
+                    'Happy': '#4CAF50',
+                    'Calm': '#2196F3',
+                    'Excited': '#FF9800',
+                    'Frustrated': '#F44336',
+                    'Sad': '#9C27B0',
+                    'Anxious': '#FF5722',
+                    'Surprised': '#FFEB3B',
+                    'Neutral': '#9E9E9E',
+                    'Nostalgic': '#795548',
+                    'Energized': '#FFC107',
+                    'Normal': '#607D8B',
+                    'Tired': '#3F51B5',
+                    'Satisfied': '#8BC34A',
+                    'Annoyed': '#E91E63',
+                    'Drained': '#673AB7',
+                    'Proud': '#00BCD4'
+                  }
+                  
+                  // Get emotion label from EMOTIONS constant
+                  const emotionLevel = task.emotion
+                  let emotionLabel = 'Neutral'
+                  
+                  // Map emotion level to label
+                  const emotionLevelMap: Record<number, string> = {
+                    1: 'Happy', 2: 'Calm', 3: 'Excited', 4: 'Frustrated',
+                    5: 'Sad', 6: 'Anxious', 7: 'Surprised', 8: 'Neutral',
+                    9: 'Nostalgic', 10: 'Energized', 11: 'Normal', 12: 'Tired',
+                    13: 'Satisfied', 14: 'Annoyed', 15: 'Drained', 16: 'Proud'
+                  }
+                  
+                  emotionLabel = emotionLevelMap[emotionLevel] || 'Neutral'
+                  const color = emotionColorMap[emotionLabel] || '#9E9E9E'
+                  
+                  // Each segment takes equal space
+                  const segmentHeight = `${100 / todayTasks.length}%`
+                  
+                  return (
+                    <div
+                      key={task.id}
+                      className="w-full transition-all duration-300"
+                      style={{
+                        height: segmentHeight,
+                        backgroundColor: color,
+                        flexShrink: 0
+                      }}
+                    />
+                  )
+                })}
               </div>
             )}
           </div>
