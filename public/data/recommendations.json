@@ -1,0 +1,587 @@
+{
+  "emotionalStates": {
+    "balanced": {
+      "tools": [
+        {
+          "id": "tools-balanced-1",
+          "category": "tools",
+          "title": "Figma Design System Starter Kit",
+          "description": "A comprehensive template for building scalable design systems.",
+          "url": "https://www.figma.com/community/file/design-system-starter"
+        },
+        {
+          "id": "tools-balanced-2",
+          "category": "tools",
+          "title": "Notion Daily Reflection Template",
+          "description": "Track your creative progress and maintain balance.",
+          "url": "https://notion.so/templates/daily-reflection"
+        },
+        {
+          "id": "tools-balanced-3",
+          "category": "tools",
+          "title": "Arc Browser for Designers",
+          "description": "A cleaner browsing experience for focused creative work.",
+          "url": "https://arc.net"
+        }
+      ],
+      "read": [
+        {
+          "id": "read-balanced-1",
+          "category": "read",
+          "title": "The Art of Rest by Alex Pang",
+          "description": "How rest restores focus and creativity.",
+          "url": "https://www.goodreads.com/book/show/the-art-of-rest"
+        },
+        {
+          "id": "read-balanced-2",
+          "category": "read",
+          "title": "Make Time by Jake Knapp",
+          "description": "Focus on what matters every day.",
+          "url": "https://maketime.blog"
+        },
+        {
+          "id": "read-balanced-3",
+          "category": "read",
+          "title": "Atomic Habits by James Clear",
+          "description": "Build better creative habits one small step at a time.",
+          "url": "https://jamesclear.com/atomic-habits"
+        }
+      ],
+      "podcast": [
+        {
+          "id": "podcast-balanced-1",
+          "category": "podcast",
+          "title": "How Designers Communicate Better with Engineers – Lenny's Podcast",
+          "description": "Simple ways to bridge creative and technical thinking.",
+          "url": "https://www.lennyspodcast.com"
+        },
+        {
+          "id": "podcast-balanced-2",
+          "category": "podcast",
+          "title": "Design Better Podcast – InVision",
+          "description": "Stories from the world's best designers.",
+          "url": "https://www.designbetter.co/podcast"
+        },
+        {
+          "id": "podcast-balanced-3",
+          "category": "podcast",
+          "title": "High Resolution – Bobby Ghoshal",
+          "description": "Conversations about design, business, and creativity.",
+          "url": "https://www.highresolution.design"
+        }
+      ],
+      "video": [
+        {
+          "id": "video-balanced-1",
+          "category": "video",
+          "title": "Why You Don't Have to Be Productive Every Day – TEDx Talk",
+          "description": "A short reminder to slow down and recharge.",
+          "url": "https://www.ted.com/talks/productivity"
+        },
+        {
+          "id": "video-balanced-2",
+          "category": "video",
+          "title": "The Power of Intentional Design – Design Matters",
+          "description": "Creating with purpose and clarity.",
+          "url": "https://www.designmatters.io/talks"
+        },
+        {
+          "id": "video-balanced-3",
+          "category": "video",
+          "title": "Finding Your Creative Voice – The Futur",
+          "description": "Building confidence in your design decisions.",
+          "url": "https://thefutur.com/creative-voice"
+        }
+      ]
+    },
+    "struggling": {
+      "tools": [
+        {
+          "id": "tools-struggling-1",
+          "category": "tools",
+          "title": "Notion Daily Reset Checklist",
+          "description": "A simple way to reset when things feel overwhelming.",
+          "url": "https://notion.so/templates/daily-reset"
+        },
+        {
+          "id": "tools-struggling-2",
+          "category": "tools",
+          "title": "Calm App – Designer Recharge",
+          "description": "5-minute meditation for creative professionals.",
+          "url": "https://www.calm.com"
+        },
+        {
+          "id": "tools-struggling-3",
+          "category": "tools",
+          "title": "Otter.ai for Design Meetings",
+          "description": "Transcribe meetings so you can focus on the conversation.",
+          "url": "https://otter.ai"
+        }
+      ],
+      "read": [
+        {
+          "id": "read-struggling-1",
+          "category": "read",
+          "title": "Overcoming Creative Blocks by Austin Kleon",
+          "description": "Practical strategies for getting unstuck.",
+          "url": "https://austinkleon.com/creative-blocks"
+        },
+        {
+          "id": "read-struggling-2",
+          "category": "read",
+          "title": "The Obstacle Is the Way by Ryan Holiday",
+          "description": "Turn challenges into opportunities for growth.",
+          "url": "https://ryanholiday.net/the-obstacle-is-the-way"
+        },
+        {
+          "id": "read-struggling-3",
+          "category": "read",
+          "title": "Rest Is Also Growth – Designer's Guide to Self-Care",
+          "description": "Why resting is productive work.",
+          "url": "https://designer.blog/rest-is-growth"
+        }
+      ],
+      "podcast": [
+        {
+          "id": "podcast-struggling-1",
+          "category": "podcast",
+          "title": "Managing Design Stress – Design Better Podcast",
+          "description": "How to handle pressure without burning out.",
+          "url": "https://www.designbetter.co/podcast/stress"
+        },
+        {
+          "id": "podcast-struggling-2",
+          "category": "podcast",
+          "title": "Dealing with Design Feedback – Design Details",
+          "description": "Navigating critique and maintaining confidence.",
+          "url": "https://designdetails.fm/feedback"
+        },
+        {
+          "id": "podcast-struggling-3",
+          "category": "podcast",
+          "title": "When Projects Go Wrong – 99% Invisible",
+          "description": "Learning from design challenges and failures.",
+          "url": "https://99percentinvisible.org"
+        }
+      ],
+      "video": [
+        {
+          "id": "video-struggling-1",
+          "category": "video",
+          "title": "When Design Feels Hard – TEDx Talk",
+          "description": "A reminder that struggle leads to growth.",
+          "url": "https://www.ted.com/talks/design-struggles"
+        },
+        {
+          "id": "video-struggling-2",
+          "category": "video",
+          "title": "Embracing Creative Failure – Adobe Creative Cloud",
+          "description": "Why failure is part of the creative process.",
+          "url": "https://www.adobe.com/creative-failure"
+        },
+        {
+          "id": "video-struggling-3",
+          "category": "video",
+          "title": "Design Through Difficulty – AIGA",
+          "description": "Stories of designers overcoming challenges.",
+          "url": "https://www.aiga.org/design-difficulty"
+        }
+      ]
+    },
+    "energized": {
+      "tools": [
+        {
+          "id": "tools-energized-1",
+          "category": "tools",
+          "title": "Figma Plugin: Design Systems Organizer",
+          "description": "Channel your energy into building better systems.",
+          "url": "https://www.figma.com/community/plugin/design-systems"
+        },
+        {
+          "id": "tools-energized-2",
+          "category": "tools",
+          "title": "Framer Motion Library",
+          "description": "Create stunning animations with production-ready code.",
+          "url": "https://www.framer.com/motion"
+        },
+        {
+          "id": "tools-energized-3",
+          "category": "tools",
+          "title": "Spline 3D Design Tool",
+          "description": "Push your creative boundaries with 3D design.",
+          "url": "https://spline.design"
+        }
+      ],
+      "read": [
+        {
+          "id": "read-energized-1",
+          "category": "read",
+          "title": "Creative Flow by Mihaly Csikszentmihalyi",
+          "description": "The science behind your creative momentum.",
+          "url": "https://www.goodreads.com/book/show/flow"
+        },
+        {
+          "id": "read-energized-2",
+          "category": "read",
+          "title": "Steal Like an Artist by Austin Kleon",
+          "description": "10 things nobody told you about being creative.",
+          "url": "https://austinkleon.com/steal"
+        },
+        {
+          "id": "read-energized-3",
+          "category": "read",
+          "title": "Creative Confidence by Tom & David Kelley",
+          "description": "Unleashing the creative potential within us all.",
+          "url": "https://www.creativeconfidence.com"
+        }
+      ],
+      "podcast": [
+        {
+          "id": "podcast-energized-1",
+          "category": "podcast",
+          "title": "Scaling Your Design Impact – High Resolution",
+          "description": "How to amplify your creative work.",
+          "url": "https://www.highresolution.design/scaling-impact"
+        },
+        {
+          "id": "podcast-energized-2",
+          "category": "podcast",
+          "title": "Building Design Systems at Scale – Lenny's Podcast",
+          "description": "Lessons from top tech companies.",
+          "url": "https://www.lennyspodcast.com/design-systems"
+        },
+        {
+          "id": "podcast-energized-3",
+          "category": "podcast",
+          "title": "Innovation in Design – The Futur Podcast",
+          "description": "Pushing boundaries and creating the future.",
+          "url": "https://thefutur.com/podcast/innovation"
+        }
+      ],
+      "video": [
+        {
+          "id": "video-energized-1",
+          "category": "video",
+          "title": "The Power of Creative Energy – TEDx",
+          "description": "Sustaining momentum in creative work.",
+          "url": "https://www.ted.com/talks/creative-energy"
+        },
+        {
+          "id": "video-energized-2",
+          "category": "video",
+          "title": "Design Systems Done Right – Config 2023",
+          "description": "Building scalable design systems with impact.",
+          "url": "https://config.figma.com/design-systems"
+        },
+        {
+          "id": "video-energized-3",
+          "category": "video",
+          "title": "Creative Experimentation – Adobe MAX",
+          "description": "Trying new techniques and pushing limits.",
+          "url": "https://max.adobe.com/experimentation"
+        }
+      ]
+    },
+    "tired": {
+      "tools": [
+        {
+          "id": "tools-tired-1",
+          "category": "tools",
+          "title": "Calm App – 5-Minute Designer Recharge",
+          "description": "Quick meditation for creative professionals.",
+          "url": "https://www.calm.com/designer-recharge"
+        },
+        {
+          "id": "tools-tired-2",
+          "category": "tools",
+          "title": "Forest App – Focus Timer",
+          "description": "Stay focused with gamified productivity.",
+          "url": "https://www.forestapp.cc"
+        },
+        {
+          "id": "tools-tired-3",
+          "category": "tools",
+          "title": "Notion Minimal Task Template",
+          "description": "Simplify your to-do list when energy is low.",
+          "url": "https://notion.so/templates/minimal-tasks"
+        }
+      ],
+      "read": [
+        {
+          "id": "read-tired-1",
+          "category": "read",
+          "title": "Rest Is Also Growth – Designer's Guide to Self-Care",
+          "description": "Why resting is productive work.",
+          "url": "https://designer.blog/rest-is-growth"
+        },
+        {
+          "id": "read-tired-2",
+          "category": "read",
+          "title": "Do Nothing by Celeste Headlee",
+          "description": "How to break away from overworking.",
+          "url": "https://www.celesteheadlee.com/do-nothing"
+        },
+        {
+          "id": "read-tired-3",
+          "category": "read",
+          "title": "The Power of Rest by Matthew Edlund",
+          "description": "Why sleep alone is not enough.",
+          "url": "https://www.goodreads.com/book/show/power-of-rest"
+        }
+      ],
+      "podcast": [
+        {
+          "id": "podcast-tired-1",
+          "category": "podcast",
+          "title": "Avoiding Designer Burnout – Design Details",
+          "description": "Recognizing and preventing creative exhaustion.",
+          "url": "https://designdetails.fm/burnout"
+        },
+        {
+          "id": "podcast-tired-2",
+          "category": "podcast",
+          "title": "Sustainable Creativity – Being Boss",
+          "description": "Building a creative practice that lasts.",
+          "url": "https://beingboss.club/sustainable-creativity"
+        },
+        {
+          "id": "podcast-tired-3",
+          "category": "podcast",
+          "title": "Rest and Recovery for Creatives – The Futur",
+          "description": "Why downtime makes you a better designer.",
+          "url": "https://thefutur.com/podcast/rest-recovery"
+        }
+      ],
+      "video": [
+        {
+          "id": "video-tired-1",
+          "category": "video",
+          "title": "The Science of Rest – TED Talk",
+          "description": "How intentional rest boosts creativity.",
+          "url": "https://www.ted.com/talks/science-of-rest"
+        },
+        {
+          "id": "video-tired-2",
+          "category": "video",
+          "title": "Working Smarter, Not Harder – Ali Abdaal",
+          "description": "Productivity for people who hate productivity.",
+          "url": "https://www.youtube.com/aliabdaal"
+        },
+        {
+          "id": "video-tired-3",
+          "category": "video",
+          "title": "Designer Self-Care Routine – CharliMarieTV",
+          "description": "Taking care of yourself as a creative professional.",
+          "url": "https://www.youtube.com/charlimarietv"
+        }
+      ]
+    },
+    "curious": {
+      "tools": [
+        {
+          "id": "tools-curious-1",
+          "category": "tools",
+          "title": "Notion Creative Research Template",
+          "description": "Organize your design inspiration and explorations.",
+          "url": "https://notion.so/templates/creative-research"
+        },
+        {
+          "id": "tools-curious-2",
+          "category": "tools",
+          "title": "Are.na Visual Bookmarking",
+          "description": "Build visual connections between ideas.",
+          "url": "https://www.are.na"
+        },
+        {
+          "id": "tools-curious-3",
+          "category": "tools",
+          "title": "Mobbin Design Patterns Library",
+          "description": "Explore UI patterns from top apps.",
+          "url": "https://mobbin.com"
+        }
+      ],
+      "read": [
+        {
+          "id": "read-curious-1",
+          "category": "read",
+          "title": "A Technique for Producing Ideas by James Webb Young",
+          "description": "A simple guide to creative thinking.",
+          "url": "https://www.goodreads.com/book/show/technique-for-ideas"
+        },
+        {
+          "id": "read-curious-2",
+          "category": "read",
+          "title": "The Practice by Seth Godin",
+          "description": "Shipping creative work.",
+          "url": "https://seths.blog/the-practice"
+        },
+        {
+          "id": "read-curious-3",
+          "category": "read",
+          "title": "Range by David Epstein",
+          "description": "Why generalists triumph in a specialized world.",
+          "url": "https://davidepstein.com/range"
+        }
+      ],
+      "podcast": [
+        {
+          "id": "podcast-curious-1",
+          "category": "podcast",
+          "title": "Design Exploration – 99% Invisible",
+          "description": "The hidden stories behind everyday design.",
+          "url": "https://99percentinvisible.org"
+        },
+        {
+          "id": "podcast-curious-2",
+          "category": "podcast",
+          "title": "Creative Curiosity – Design Matters",
+          "description": "Conversations with designers who push boundaries.",
+          "url": "https://www.designmattersmedia.com"
+        },
+        {
+          "id": "podcast-curious-3",
+          "category": "podcast",
+          "title": "Learning Design Trends – The Honest Designers Show",
+          "description": "Staying current without losing yourself.",
+          "url": "https://thehonestdesigners.show"
+        }
+      ],
+      "video": [
+        {
+          "id": "video-curious-1",
+          "category": "video",
+          "title": "Design Experimentation – FITC",
+          "description": "The art of trying new things.",
+          "url": "https://fitc.ca/design-experiments"
+        },
+        {
+          "id": "video-curious-2",
+          "category": "video",
+          "title": "Creative Exploration – Awwwards Conference",
+          "description": "Pushing creative boundaries online.",
+          "url": "https://conference.awwwards.com"
+        },
+        {
+          "id": "video-curious-3",
+          "category": "video",
+          "title": "Innovation in Design – Google Design",
+          "description": "Building products that shape the future.",
+          "url": "https://design.google/innovation"
+        }
+      ]
+    }
+  },
+  "quotes": [
+    {
+      "id": "quote-1",
+      "text": "Creativity is intelligence having fun.",
+      "author": "Albert Einstein",
+      "category": "inspiration"
+    },
+    {
+      "id": "quote-2",
+      "text": "The only way to do great work is to love what you do.",
+      "author": "Steve Jobs",
+      "category": "passion"
+    },
+    {
+      "id": "quote-3",
+      "text": "Progress, not perfection.",
+      "author": "Unknown",
+      "category": "growth"
+    },
+    {
+      "id": "quote-4",
+      "text": "Design is not just what it looks like and feels like. Design is how it works.",
+      "author": "Steve Jobs",
+      "category": "purpose"
+    },
+    {
+      "id": "quote-5",
+      "text": "Every problem is a gift - without problems we would not grow.",
+      "author": "Anthony Robbins",
+      "category": "challenges"
+    },
+    {
+      "id": "quote-6",
+      "text": "Innovation distinguishes between a leader and a follower.",
+      "author": "Steve Jobs",
+      "category": "innovation"
+    },
+    {
+      "id": "quote-7",
+      "text": "Rest when you're weary. Refresh and renew yourself, your body, your mind, your spirit.",
+      "author": "Ralph Marston",
+      "category": "wellbeing"
+    },
+    {
+      "id": "quote-8",
+      "text": "Every expert was once a beginner. Every pro was once an amateur.",
+      "author": "Robin Sharma",
+      "category": "learning"
+    },
+    {
+      "id": "quote-9",
+      "text": "Simplicity is the ultimate sophistication.",
+      "author": "Leonardo da Vinci",
+      "category": "design"
+    },
+    {
+      "id": "quote-10",
+      "text": "You can't use up creativity. The more you use, the more you have.",
+      "author": "Maya Angelou",
+      "category": "creativity"
+    }
+  ],
+  "taskTypeResources": {
+    "ui_design": [
+      {
+        "title": "Refactoring UI",
+        "description": "Learn UI design without relying on talent.",
+        "url": "https://www.refactoringui.com"
+      },
+      {
+        "title": "Laws of UX",
+        "description": "Collection of principles for designing intuitive interfaces.",
+        "url": "https://lawsofux.com"
+      }
+    ],
+    "research": [
+      {
+        "title": "Just Enough Research by Erika Hall",
+        "description": "The right amount of research at the right time.",
+        "url": "https://abookapart.com/products/just-enough-research"
+      },
+      {
+        "title": "User Research Methods",
+        "description": "Comprehensive guide to research techniques.",
+        "url": "https://www.nngroup.com/articles/which-ux-research-methods"
+      }
+    ],
+    "prototyping": [
+      {
+        "title": "Prototyping for Designers by Kathryn McElroy",
+        "description": "A guide to creating realistic prototypes.",
+        "url": "https://www.oreilly.com/prototyping-for-designers"
+      },
+      {
+        "title": "Framer Learn",
+        "description": "Interactive prototyping tutorials.",
+        "url": "https://www.framer.com/learn"
+      }
+    ],
+    "collaboration": [
+      {
+        "title": "Articulating Design Decisions by Tom Greever",
+        "description": "Communicate your designs to stakeholders.",
+        "url": "https://www.oreilly.com/articulating-design-decisions"
+      },
+      {
+        "title": "Working with Engineers",
+        "description": "Best practices for designer-developer collaboration.",
+        "url": "https://medium.com/designer-hangout/working-with-engineers"
+      }
+    ]
+  }
+}
+
