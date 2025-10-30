@@ -400,10 +400,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 })
 
                 return (
-                  <Card 
-                    variant="glass" 
-                    padding="small"
-                    className="mb-4 !p-[20px]"
+                  <div 
+                    className="bg-white/[0.04] mb-4 p-[20px]"
+                    style={{ borderRadius: '8px' }}
                   >
                     <div className="flex flex-col gap-3">
                       <h2 className="text-[20px] font-bold text-[#E6E1E5]">
@@ -413,7 +412,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         {insights}
                       </p>
                     </div>
-                  </Card>
+                  </div>
                 )
               })()}
 
@@ -427,10 +426,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 
                 if (emotionBreakdown) {
                   return (
-                    <Card 
-                      variant="glass" 
-                      padding="small"
-                      className="mb-4 !p-[20px]"
+                    <div 
+                      className="bg-white/[0.04] mb-4 p-[20px]"
+                      style={{ borderRadius: '8px' }}
                     >
                       <div className="flex flex-col items-center">
                         <EmotionalRadarChart 
@@ -441,7 +439,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           size={240}
                         />
                       </div>
-                    </Card>
+                    </div>
                   )
                 }
                 return null
@@ -449,11 +447,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
 
               <div className="grid grid-cols-2 gap-3 mb-6">
               {/* 1. Energized */}
-              <Card 
-                variant="glass" 
-                padding="small"
-                glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+              <div 
+                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                style={{ borderRadius: '8px' }}
               >
                 <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
@@ -499,14 +495,12 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Three dots */}
                   <DotsThree size={24} weight="bold" className="text-[#938F99]" />
                 </div>
-              </Card>
+              </div>
               
               {/* 2. Drained */}
-              <Card 
-                variant="glass" 
-                padding="small"
-                glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+              <div 
+                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                style={{ borderRadius: '8px' }}
               >
                 <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
@@ -552,14 +546,12 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Three dots */}
                   <DotsThree size={24} weight="bold" className="text-[#938F99]" />
                 </div>
-              </Card>
+              </div>
               
               {/* 3. Meaningful */}
-              <Card 
-                variant="glass" 
-                padding="small"
-                glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+              <div 
+                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                style={{ borderRadius: '8px' }}
               >
                 <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
@@ -605,14 +597,12 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Three dots */}
                   <DotsThree size={24} weight="bold" className="text-[#938F99]" />
                 </div>
-              </Card>
+              </div>
               
               {/* 4. Curious */}
-              <Card 
-                variant="glass" 
-                padding="small"
-                glassBackground="card"
-                className="transition-all active:scale-[0.98] cursor-pointer !p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+              <div 
+                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                style={{ borderRadius: '8px' }}
               >
                 <div className="flex flex-col gap-2">
                   {/* Header with title and chevron */}
@@ -658,7 +648,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Three dots */}
                   <DotsThree size={24} weight="bold" className="text-[#938F99]" />
                 </div>
-              </Card>
+              </div>
             </div>
             </>
           )
