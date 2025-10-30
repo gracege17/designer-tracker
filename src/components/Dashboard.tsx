@@ -82,38 +82,45 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
 
         {/* Today's Summary Card */}
         <div 
-          className="p-6 mb-6 bg-white/[0.04]" 
+          className="mb-6 bg-white/[0.04]" 
           style={{ 
             borderRadius: '16px'
           }}
         >
           {/* Header with Task Count */}
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-[20px] font-bold text-white">
-              Today's Summary
-            </h2>
+          <div 
+            className="flex items-center justify-between"
+            style={{
+              padding: '18px 22px'
+            }}
+          >
+            <div className="flex-1 pr-4">
+              <h2 className="text-[20px] font-bold text-white mb-3">
+                Today's Summary
+              </h2>
+              
+              {/* Summary Text */}
+              {isLoadingSummary ? (
+                <p className="text-[16px] font-normal text-[#E6E1E5] leading-relaxed italic animate-pulse">
+                  Analyzing your day...
+                </p>
+              ) : (
+                <p className="text-[16px] font-normal text-[#E6E1E5] leading-relaxed">
+                  {dailySummary}
+                </p>
+              )}
+            </div>
             
             {/* Task Count */}
-            <div className="flex flex-col items-end leading-none">
-              <div className="text-[48px] font-bold text-white leading-none mb-1">
+            <div className="flex flex-col items-center justify-center flex-shrink-0">
+              <div className="text-[48px] font-bold text-white leading-none">
                 {todayTasks.length}
               </div>
-              <div className="text-[14px] font-normal text-white leading-none">
+              <div className="text-[14px] font-normal text-white leading-none mt-1">
                 Tasks
               </div>
             </div>
           </div>
-          
-          {/* Summary Text */}
-          {isLoadingSummary ? (
-            <p className="text-[16px] font-normal text-[#E6E1E5] leading-relaxed italic animate-pulse">
-              Analyzing your day...
-            </p>
-          ) : (
-            <p className="text-[16px] font-normal text-[#E6E1E5] leading-relaxed">
-              {dailySummary}
-            </p>
-          )}
         </div>
 
         {/* Today's Mood and Color Grid */}
