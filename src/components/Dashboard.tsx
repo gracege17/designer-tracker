@@ -113,10 +113,10 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             
             {/* Task Count */}
             <div className="flex flex-col items-center justify-center flex-shrink-0">
-              <div className="text-[36px] font-bold text-white leading-none">
+              <div className="text-[56px] font-bold text-white leading-none">
                 {todayTasks.length}
               </div>
-              <div className="text-[14px] font-normal text-white leading-none mt-1">
+              <div className="text-[14px] font-normal text-white leading-none mt-2">
                 Tasks
               </div>
             </div>
@@ -156,7 +156,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   </div>
                   
                   {/* Emotion Label */}
-                  <p className="text-[20px] font-bold text-white">
+                  <p className="text-[18px] font-semibold text-white">
                     {emotionData.label}
                   </p>
                 </div>
@@ -215,7 +215,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   </div>
                   
                   {/* Color Name */}
-                  <p className="text-[20px] font-bold text-white text-center">
+                  <p className="text-[18px] font-semibold text-white text-center">
                     {formattedColorName}
                   </p>
                 </div>
