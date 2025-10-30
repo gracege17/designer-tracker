@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { HouseSimple, Plus, ChartBar, Notepad, GearSix, CalendarBlank, X, CaretRight, DotsThree } from 'phosphor-react'
+import { HouseSimple, Plus, ChartBar, Notepad, GearSix, CalendarBlank, X, CaretRight, DotsThree, CaretLeft } from 'phosphor-react'
 import BottomNav from './BottomNav'
 import { Entry, EMOTIONS, TASK_TYPE_LABELS, EmotionLevel } from '../types'
 import { ProjectStorage } from '../utils/storage'
-import { getCurrentWeekEntries, getCurrentMonthEntries, calculateAverageEmotion, getMostEnergizingTaskType, getMostDrainingTaskType } from '../utils/dataHelpers'
+import { calculateAverageEmotion, getMostEnergizingTaskType, getMostDrainingTaskType } from '../utils/dataHelpers'
 import Card from './Card'
 import EmotionalRadarChart from './EmotionalRadarChart'
 import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
@@ -30,6 +30,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
 }) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('week')
   const [showFullCalendar, setShowFullCalendar] = useState(false)
+  const [timeOffset, setTimeOffset] = useState(0) // 0 = current week/month, -1 = previous, 1 = next
 
   // Helper function to extract keywords from task description
   const extractKeywords = (description: string): string => {
@@ -58,76 +59,45 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
     }
   }, [showFullCalendar])
 
-  // Get data based on selected time range (for calendar only)
-  const currentEntries = selectedTimeRange === 'week' 
-    ? getCurrentWeekEntries(entries)
-    : getCurrentMonthEntries(entries)
+  // Get data based on selected time range with offset
+  const getEntriesForTimeRange = () => {
+    const today = new Date()
+    
+    if (selectedTimeRange === 'week') {
+      // Calculate week start/end with offset
+      const targetDate = new Date(today)
+      targetDate.setDate(today.getDate() + (timeOffset * 7))
+      
+      const dayOfWeek = targetDate.getDay() // 0 = Sunday, 1 = Monday, etc.
+      const startOfWeek = new Date(targetDate)
+      startOfWeek.setDate(targetDate.getDate() - dayOfWeek)
+      
+      const endOfWeek = new Date(startOfWeek)
+      endOfWeek.setDate(startOfWeek.getDate() + 6)
+      
+      const startDateString = `${startOfWeek.getFullYear()}-${String(startOfWeek.getMonth() + 1).padStart(2, '0')}-${String(startOfWeek.getDate()).padStart(2, '0')}`
+      const endDateString = `${endOfWeek.getFullYear()}-${String(endOfWeek.getMonth() + 1).padStart(2, '0')}-${String(endOfWeek.getDate()).padStart(2, '0')}`
+      
+      return entries.filter(entry => entry.date >= startDateString && entry.date <= endDateString)
+    } else {
+      // Calculate month start/end with offset
+      const targetDate = new Date(today.getFullYear(), today.getMonth() + timeOffset, 1)
+      const startOfMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 1)
+      const endOfMonth = new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0)
+      
+      const startDateString = `${startOfMonth.getFullYear()}-${String(startOfMonth.getMonth() + 1).padStart(2, '0')}-${String(startOfMonth.getDate()).padStart(2, '0')}`
+      const endDateString = `${endOfMonth.getFullYear()}-${String(endOfMonth.getMonth() + 1).padStart(2, '0')}-${String(endOfMonth.getDate()).padStart(2, '0')}`
+      
+      return entries.filter(entry => entry.date >= startDateString && entry.date <= endDateString)
+    }
+  }
+  
+  const currentEntries = getEntriesForTimeRange()
 
   // Calculate insights from ALL entries (not just current time range)
   const averageEmotion = calculateAverageEmotion(entries)
   const mostEnergizingTaskType = getMostEnergizingTaskType(entries)
   const mostDrainingTaskType = getMostDrainingTaskType(entries)
-
-  // Get weekly emotional calendar data (Monday to Sunday of current week)
-  const getWeeklyEmotionalData = () => {
-    const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'] // Always Monday to Sunday
-    const calendarData = []
-    const today = new Date()
-    
-    // Find the Monday of the current week
-    const dayOfWeek = today.getDay() // 0 = Sunday, 1 = Monday, etc.
-    const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1 // If Sunday, go back 6 days, otherwise go back (dayOfWeek - 1) days
-    const monday = new Date(today)
-    monday.setDate(today.getDate() - daysFromMonday)
-    
-    // Generate 7 days starting from Monday
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(monday)
-      date.setDate(monday.getDate() + i)
-      const year = date.getFullYear()
-      const month = String(date.getMonth() + 1).padStart(2, '0')
-      const day = String(date.getDate()).padStart(2, '0')
-      const dateString = `${year}-${month}-${day}`
-      
-      const dayEntry = entries.find(entry => entry.date === dateString)
-      
-      if (dayEntry && dayEntry.tasks.length > 0) {
-        // Get the first emotion from the first task (consistent with EntryList display)
-        const firstTask = dayEntry.tasks[0]
-        const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
-          ? firstTask.emotions[0] 
-          : firstTask.emotion
-        const emoji = EMOTIONS[emotionLevel]?.emoji || '😐'
-        
-        // Still calculate average for tooltip/stats
-        const avgEmotion = dayEntry.tasks.reduce((sum, task) => sum + task.emotion, 0) / dayEntry.tasks.length
-        
-        calendarData.push({
-          label: dayLabels[i],
-          emoji: emoji,
-          hasData: true,
-          avgEmotion: avgEmotion,
-          taskCount: dayEntry.tasks.length,
-          date: date.getDate(),
-          dateString: dateString,
-          entry: dayEntry
-        })
-      } else {
-        calendarData.push({
-          label: dayLabels[i],
-          emoji: '⚪',
-          hasData: false,
-          avgEmotion: 0,
-          taskCount: 0,
-          date: date.getDate(),
-          dateString: dateString,
-          entry: null
-        })
-      }
-    }
-    
-    return calendarData
-  }
 
   // Get calendar data for a specific month
   const getMonthCalendarData = (monthOffset: number = 0) => {
@@ -207,99 +177,108 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
     return calendarGrid
   }
 
-  const weeklyData = getWeeklyEmotionalData()
   const currentMonthData = getMonthCalendarData(0) // October
   const nextMonthData = getMonthCalendarData(1) // November
 
-  // Get current date formatted
-  const getCurrentDate = () => {
+  // Get current date formatted based on time range
+  const getFormattedDate = () => {
     const today = new Date()
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    const month = months[today.getMonth()]
-    const day = today.getDate()
-    const year = today.getFullYear()
-    return `Today, ${month} ${day}, ${year}`
+    
+    if (selectedTimeRange === 'week') {
+      // For week view: "Oct 22, 2025"
+      const targetDate = new Date(today)
+      targetDate.setDate(today.getDate() + (timeOffset * 7))
+      const month = months[targetDate.getMonth()]
+      const day = targetDate.getDate()
+      const year = targetDate.getFullYear()
+      return `${month} ${day}, ${year}`
+    } else {
+      // For month view: "Oct, 2025"
+      const targetDate = new Date(today.getFullYear(), today.getMonth() + timeOffset, 1)
+      const month = months[targetDate.getMonth()]
+      const year = targetDate.getFullYear()
+      return `${month}, ${year}`
+    }
+  }
+  
+  // Handle time range change - reset offset when switching between week/month
+  const handleTimeRangeChange = (range: TimeRange) => {
+    setSelectedTimeRange(range)
+    setTimeOffset(0)
+  }
+  
+  // Navigate previous/next
+  const handlePrevious = () => {
+    setTimeOffset(timeOffset - 1)
+  }
+  
+  const handleNext = () => {
+    setTimeOffset(timeOffset + 1)
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-black screen-transition">
       <main className="flex-1 p-5 pb-32 overflow-y-auto max-w-md mx-auto w-full">
-        {/* Header with Date and Calendar Icon */}
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-[18px] font-semibold text-[#E6E1E5]">
-            {getCurrentDate()}
-          </h1>
-          <button
-            onClick={() => setShowFullCalendar(true)}
-            className="p-2 hover:bg-white/[0.04] rounded-lg transition-all active:scale-95"
-          >
-            <CalendarBlank size={24} weight="regular" className="text-[#EC5429]" />
-          </button>
-        </div>
-
-        {/* Emotional Calendar - Weekly View */}
+        {/* Header with Week/Month Tabs and Calendar Icon */}
         <div className="mb-6">
-          {/* Weekly View - Emojis with day labels */}
-          <div>
-            {/* Week day headers (M T W T F S S) */}
-            <div className="grid grid-cols-7 gap-2 mb-3">
-              {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((dayName, idx) => (
-                <div key={idx} className="text-center text-sm font-medium text-[#938F99]">
-                  {dayName}
-                </div>
-              ))}
+          {/* Top Row: Tabs and Calendar Icon */}
+          <div className="flex items-center justify-between mb-6">
+            {/* Week/Month Tabs */}
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => handleTimeRangeChange('week')}
+                className={`text-[32px] font-bold transition-colors ${
+                  selectedTimeRange === 'week' 
+                    ? 'text-white' 
+                    : 'text-[#938F99]'
+                }`}
+                style={{ fontFamily: 'Playfair Display, serif' }}
+              >
+                Week
+              </button>
+              <button
+                onClick={() => handleTimeRangeChange('month')}
+                className={`text-[32px] font-bold transition-colors ${
+                  selectedTimeRange === 'month' 
+                    ? 'text-white' 
+                    : 'text-[#938F99]'
+                }`}
+                style={{ fontFamily: 'Playfair Display, serif' }}
+              >
+                Month
+              </button>
             </div>
-              
-              {/* Week emojis */}
-              <div className="grid grid-cols-7 gap-2">
-                {weeklyData.map((day, index) => {
-                  // Get emoji based on emotion
-                  const getEmotion = () => {
-                    if (!day.hasData) return { emoji: '⚪', label: 'No data', iconPath: undefined }
-                    const firstTask = day.entry?.tasks[0]
-                    if (!firstTask) return { emoji: '⚪', label: 'No data', iconPath: undefined }
-                    
-                    const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
-                      ? firstTask.emotions[0] 
-                      : firstTask.emotion
-                    
-                    return EMOTIONS[emotionLevel] || { emoji: '😐', label: 'Neutral', iconPath: undefined }
-                  }
-                  
-                  const emotion = getEmotion()
-                  
-                  return (
-                    <div 
-                      key={index} 
-                      className="flex flex-col items-center gap-1"
-                    >
-                      <div 
-                        className={`transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'opacity-30'}`}
-                        onClick={() => {
-                          if (day.hasData && day.entry) {
-                            onViewEntry(day.entry)
-                          }
-                        }}
-                      >
-                        {emotion.iconPath ? (
-                          <img 
-                            src={emotion.iconPath} 
-                            alt={emotion.label}
-                            className="w-8 h-8"
-                            style={{ filter: 'brightness(1.3) contrast(1.1)' }}
-                          />
-                        ) : (
-                          <span className="text-3xl">{emotion.emoji}</span>
-                        )}
-                      </div>
-                      <span className="text-[10px] font-medium text-[#E6E1E5]">
-                        {day.date}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+            
+            {/* Calendar Icon */}
+            <button
+              onClick={() => setShowFullCalendar(true)}
+              className="p-2 hover:bg-white/[0.04] rounded-lg transition-all active:scale-95"
+            >
+              <CalendarBlank size={24} weight="regular" className="text-[#EC5429]" />
+            </button>
+          </div>
+          
+          {/* Date Navigation */}
+          <div className="flex items-center justify-center gap-4">
+            <button
+              onClick={handlePrevious}
+              className="p-1 hover:bg-white/[0.04] rounded-lg transition-all active:scale-95"
+            >
+              <CaretLeft size={20} weight="bold" className="text-white" />
+            </button>
+            
+            <h2 className="text-[18px] font-semibold text-white min-w-[180px] text-center">
+              {getFormattedDate()}
+            </h2>
+            
+            <button
+              onClick={handleNext}
+              className="p-1 hover:bg-white/[0.04] rounded-lg transition-all active:scale-95"
+            >
+              <CaretRight size={20} weight="bold" className="text-white" />
+            </button>
+          </div>
         </div>
 
         {/* No data message */}
@@ -387,9 +366,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               {/* Week's Reflection Card */}
               {(() => {
                 // Use time-filtered entries for insights
-                const filteredEntries = selectedTimeRange === 'week' 
-                  ? getCurrentWeekEntries(entries)
-                  : getCurrentMonthEntries(entries)
+                const filteredEntries = currentEntries
                 const emotionBreakdown = getEmotionBreakdown(filteredEntries)
                 const taskCount = filteredEntries.reduce((sum, entry) => sum + entry.tasks.length, 0)
                 
@@ -419,9 +396,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               {/* Emotional Radar Chart */}
               {(() => {
                 // Use time-filtered entries for the radar chart
-                const filteredEntries = selectedTimeRange === 'week' 
-                  ? getCurrentWeekEntries(entries)
-                  : getCurrentMonthEntries(entries)
+                const filteredEntries = currentEntries
                 const emotionBreakdown = getEmotionBreakdown(filteredEntries)
                 
                 if (emotionBreakdown) {
