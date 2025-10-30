@@ -95,9 +95,9 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             }}
           >
             <div className="flex-1 pr-4">
-              <h2 className="text-[20px] font-bold text-white mb-3">
+              <p className="text-[14px] font-normal text-[#938F99] mb-4">
                 Today's Summary
-              </h2>
+              </p>
               
               {/* Summary Text */}
               {isLoadingSummary ? (
@@ -113,7 +113,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             
             {/* Task Count */}
             <div className="flex flex-col items-center justify-center flex-shrink-0">
-              <div className="text-[48px] font-bold text-white leading-none">
+              <div className="text-[36px] font-bold text-white leading-none">
                 {todayTasks.length}
               </div>
               <div className="text-[14px] font-normal text-white leading-none mt-1">
