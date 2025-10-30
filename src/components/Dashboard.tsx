@@ -87,17 +87,20 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             borderRadius: '16px'
           }}
         >
-          <p className="text-[12px] font-normal text-[#CAC4D0] mb-4">
-            Today's Summary
-          </p>
-          
-          {/* Task Count */}
-          <div className="mb-4 flex items-baseline gap-2">
-            <div className="text-[32px] font-bold text-white leading-none">
-              {todayTasks.length}
-            </div>
-            <div className="text-[14px] font-normal text-white">
-              Tasks
+          {/* Header with Task Count */}
+          <div className="flex items-start justify-between mb-4">
+            <p className="text-[16px] font-semibold text-white">
+              Today's Summary
+            </p>
+            
+            {/* Task Count */}
+            <div className="flex flex-col items-end">
+              <div className="text-[32px] font-bold text-white leading-none">
+                {todayTasks.length}
+              </div>
+              <div className="text-[14px] font-normal text-white">
+                Tasks
+              </div>
             </div>
           </div>
           
