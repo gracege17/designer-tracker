@@ -88,17 +88,17 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           }}
         >
           {/* Header with Task Count */}
-          <div className="flex items-start justify-between mb-4">
-            <p className="text-[16px] font-semibold text-white">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-[20px] font-bold text-white">
               Today's Summary
-            </p>
+            </h2>
             
             {/* Task Count */}
-            <div className="flex flex-col items-end">
-              <div className="text-[32px] font-bold text-white leading-none">
+            <div className="flex flex-col items-end leading-none">
+              <div className="text-[48px] font-bold text-white leading-none mb-1">
                 {todayTasks.length}
               </div>
-              <div className="text-[14px] font-normal text-white">
+              <div className="text-[14px] font-normal text-white leading-none">
                 Tasks
               </div>
             </div>
@@ -106,11 +106,11 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           
           {/* Summary Text */}
           {isLoadingSummary ? (
-            <p className="text-[16px] font-normal text-[#CAC4D0] leading-snug italic animate-pulse">
+            <p className="text-[16px] font-normal text-[#E6E1E5] leading-relaxed italic animate-pulse">
               Analyzing your day...
             </p>
           ) : (
-            <p className="text-[16px] font-normal text-[#CAC4D0] leading-snug">
+            <p className="text-[16px] font-normal text-[#E6E1E5] leading-relaxed">
               {dailySummary}
             </p>
           )}
