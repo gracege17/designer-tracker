@@ -113,7 +113,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             
             {/* Task Count */}
             <div className="flex flex-col items-center justify-center flex-shrink-0">
-              <div className="text-[56px] font-bold text-white leading-none">
+              <div className="text-[36px] font-bold text-white leading-none">
                 {todayTasks.length}
               </div>
               <div className="text-[14px] font-normal text-white leading-none mt-2">
