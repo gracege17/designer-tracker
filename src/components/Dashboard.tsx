@@ -356,6 +356,16 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </div>
         </div>
 
+        {/* Helpful Resources Section - AI-Ready */}
+        {emotionBreakdown && (
+          <HelpfulResourcesCard 
+            resources={getHelpfulResources(
+              emotionBreakdown.breakdown,
+              emotionBreakdown.totalTasks
+            )}
+          />
+        )}
+
         {/* Weekly Emotional Calendar Overview */}
         <div className="mb-6">
           {/* Weekly View - Emojis with day labels */}
@@ -415,16 +425,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             </div>
           </div>
         </div>
-
-        {/* Helpful Resources Section - AI-Ready */}
-        {emotionBreakdown && (
-          <HelpfulResourcesCard 
-            resources={getHelpfulResources(
-              emotionBreakdown.breakdown,
-              emotionBreakdown.totalTasks
-            )}
-          />
-        )}
 
         {/* Inspirational Quote Card */}
         {(() => {
