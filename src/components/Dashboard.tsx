@@ -39,6 +39,69 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   const todayEntry = entries.find(entry => entry.date === todayDate)
   const todayTasks = todayEntry?.tasks || []
 
+  // Get weekly emotional calendar data (Monday to Sunday of current week)
+  const getWeeklyEmotionalData = () => {
+    const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'] // Always Monday to Sunday
+    const calendarData = []
+    const today = new Date()
+    
+    // Find the Monday of the current week
+    const dayOfWeek = today.getDay() // 0 = Sunday, 1 = Monday, etc.
+    const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1 // If Sunday, go back 6 days, otherwise go back (dayOfWeek - 1) days
+    const monday = new Date(today)
+    monday.setDate(today.getDate() - daysFromMonday)
+    
+    // Generate 7 days starting from Monday
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(monday)
+      date.setDate(monday.getDate() + i)
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const dateString = `${year}-${month}-${day}`
+      
+      const dayEntry = entries.find(entry => entry.date === dateString)
+      
+      if (dayEntry && dayEntry.tasks.length > 0) {
+        // Get the first emotion from the first task (consistent with EntryList display)
+        const firstTask = dayEntry.tasks[0]
+        const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
+          ? firstTask.emotions[0] 
+          : firstTask.emotion
+        const emoji = EMOTIONS[emotionLevel]?.emoji || '😐'
+        
+        // Still calculate average for tooltip/stats
+        const avgEmotion = dayEntry.tasks.reduce((sum, task) => sum + task.emotion, 0) / dayEntry.tasks.length
+        
+        calendarData.push({
+          label: dayLabels[i],
+          emoji: emoji,
+          hasData: true,
+          avgEmotion: avgEmotion,
+          taskCount: dayEntry.tasks.length,
+          date: date.getDate(),
+          dateString: dateString,
+          entry: dayEntry
+        })
+      } else {
+        calendarData.push({
+          label: dayLabels[i],
+          emoji: '⚪',
+          hasData: false,
+          avgEmotion: 0,
+          taskCount: 0,
+          date: date.getDate(),
+          dateString: dateString,
+          entry: null
+        })
+      }
+    }
+    
+    return calendarData
+  }
+
+  const weeklyData = getWeeklyEmotionalData()
+
   // Load daily summary
   useEffect(() => {
     const loadDailySummary = async () => {
@@ -290,6 +353,66 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 </span>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Weekly Emotional Calendar Overview */}
+        <div className="mb-6">
+          {/* Weekly View - Emojis with day labels */}
+          <div>
+            {/* Week day headers (M T W T F S S) */}
+            <div className="grid grid-cols-7 gap-2 mb-3">
+              {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((dayName, idx) => (
+                <div key={idx} className="text-center text-sm font-medium text-[#938F99]">
+                  {dayName}
+                </div>
+              ))}
+            </div>
+              
+            {/* Week emojis */}
+            <div className="grid grid-cols-7 gap-2">
+              {weeklyData.map((day, index) => {
+                // Get emoji based on emotion
+                const getEmotion = () => {
+                  if (!day.hasData) return { emoji: '⚪', label: 'No data', iconPath: undefined }
+                  const firstTask = day.entry?.tasks[0]
+                  if (!firstTask) return { emoji: '⚪', label: 'No data', iconPath: undefined }
+                  
+                  const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
+                    ? firstTask.emotions[0] 
+                    : firstTask.emotion
+                  
+                  return EMOTIONS[emotionLevel] || { emoji: '😐', label: 'Neutral', iconPath: undefined }
+                }
+                
+                const emotion = getEmotion()
+                
+                return (
+                  <div 
+                    key={index} 
+                    className="flex flex-col items-center gap-1"
+                  >
+                    <div 
+                      className={`transition-all ${day.hasData ? 'cursor-pointer hover:scale-110' : 'opacity-30'}`}
+                    >
+                      {emotion.iconPath ? (
+                        <img 
+                          src={emotion.iconPath} 
+                          alt={emotion.label}
+                          className="w-8 h-8"
+                          style={{ filter: 'brightness(1.3) contrast(1.1)' }}
+                        />
+                      ) : (
+                        <span className="text-3xl">{emotion.emoji}</span>
+                      )}
+                    </div>
+                    <span className="text-[10px] font-medium text-[#E6E1E5]">
+                      {day.date}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
 
