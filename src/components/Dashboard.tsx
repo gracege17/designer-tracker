@@ -5,7 +5,7 @@ import { getTodayDateString } from '../utils/dataHelpers'
 import { UserProfileStorage } from '../utils/storage'
 import { generateDailySummary } from '../utils/aiSummaryService'
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
-import { getHelpfulResources } from '../utils/helpfulResourcesService'
+import { analyzeTodayChallenges } from '../utils/challengeAnalysisService'
 import { calculateDailyColor } from '../utils/emotionColorBlender'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
 import { EMOTIONS } from '../types'
@@ -356,15 +356,10 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </div>
         </div>
 
-        {/* Helpful Resources Section - AI-Ready */}
-        {emotionBreakdown && (
-          <HelpfulResourcesCard 
-            resources={getHelpfulResources(
-              emotionBreakdown.breakdown,
-              emotionBreakdown.totalTasks
-            )}
-          />
-        )}
+        {/* Today's Top Challenges - Personalized Based on Emotions */}
+        <HelpfulResourcesCard 
+          challenges={analyzeTodayChallenges(todayEntry)}
+        />
 
         {/* Weekly Emotional Calendar Overview */}
         <div className="mb-6">

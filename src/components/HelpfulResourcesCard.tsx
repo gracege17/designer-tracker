@@ -1,19 +1,9 @@
 import React, { useState } from 'react'
 import { Lightbulb, CaretUp, CaretDown } from 'phosphor-react'
-import { HelpfulResource, ResourceCategory } from '../utils/helpfulResourcesService'
-
-interface Challenge {
-  id: string
-  title: string
-  strategies: {
-    icon: string
-    title: string
-    description: string
-  }[]
-}
+import { Challenge } from '../utils/challengeAnalysisService'
 
 interface HelpfulResourcesCardProps {
-  resources: HelpfulResource[]
+  challenges: Challenge[]
   title?: string
   subtitle?: string
 }
@@ -31,38 +21,25 @@ interface HelpfulResourcesCardProps {
  * - Uses app's color scheme and design system
  */
 const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({ 
-  resources,
+  challenges,
   title = "Today's Top Challenges",
   subtitle
 }) => {
-  const [expandedChallenge, setExpandedChallenge] = useState<string | null>(null)
+  const [expandedChallenge, setExpandedChallenge] = useState<number | null>(null)
 
-  // Transform resources into challenges format
-  // Group resources by category for the challenge layout
-  const getCategoryIcon = (category: ResourceCategory): string => {
-    switch (category) {
-      case 'tools': return '🔧'
-      case 'read': return '📖'
+  // Get icon for suggestion type
+  const getSuggestionIcon = (type: string): string => {
+    switch (type) {
+      case 'tool': return '🔧'
       case 'podcast': return '🎙️'
-      case 'video': return '▶️'
+      case 'book': return '📖'
+      case 'resource': return '💡'
       default: return '💡'
     }
   }
 
-  const challenges: Challenge[] = resources.slice(0, 3).map((resource, index) => ({
-    id: `challenge-${index + 1}`,
-    title: resource.title,
-    strategies: [
-      {
-        icon: getCategoryIcon(resource.category),
-        title: resource.title,
-        description: resource.description
-      }
-    ]
-  }))
-
-  const toggleChallenge = (challengeId: string) => {
-    setExpandedChallenge(expandedChallenge === challengeId ? null : challengeId)
+  const toggleChallenge = (rank: number) => {
+    setExpandedChallenge(expandedChallenge === rank ? null : rank)
   }
 
   return (
@@ -81,19 +58,19 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
 
       {/* Challenge Cards */}
       <div className="space-y-3">
-        {challenges.map((challenge, index) => {
-          const isExpanded = expandedChallenge === challenge.id
+        {challenges.map((challenge) => {
+          const isExpanded = expandedChallenge === challenge.rank
           
           return (
             <div
-              key={challenge.id}
+              key={challenge.rank}
               className="bg-white/[0.04] overflow-hidden transition-all duration-300"
               style={{ borderRadius: '16px' }}
             >
               {/* Challenge Header */}
               <div className="p-5">
-                {/* Number Badge */}
-                <div className="flex items-start gap-4 mb-4">
+                {/* Number Badge and Title */}
+                <div className="flex items-start gap-4 mb-3">
                   <div 
                     className="flex-shrink-0 flex items-center justify-center"
                     style={{
@@ -110,20 +87,23 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                         color: '#EC5429'
                       }}
                     >
-                      {index + 1}
+                      {challenge.rank}
                     </span>
                   </div>
                   
                   <div className="flex-1">
-                    <h3 className="text-[18px] font-semibold text-white leading-snug">
+                    <h3 className="text-[18px] font-semibold text-white leading-snug mb-2">
                       {challenge.title}
                     </h3>
+                    <p className="text-[14px] text-[#CAC4D0] leading-relaxed">
+                      {challenge.empathy}
+                    </p>
                   </div>
                 </div>
 
                 {/* Ways to Cope Button */}
                 <button
-                  onClick={() => toggleChallenge(challenge.id)}
+                  onClick={() => toggleChallenge(challenge.rank)}
                   className="w-full flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/[0.04]"
                   style={{
                     border: isExpanded ? '2px solid #EC5429' : '2px solid rgba(236, 84, 41, 0.3)',
@@ -149,7 +129,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                 </button>
               </div>
 
-              {/* Expandable Strategies Section */}
+              {/* Expandable Suggestions Section */}
               {isExpanded && (
                 <div 
                   className="px-5 pb-5 space-y-3 animate-fade-in"
@@ -157,16 +137,21 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                     animation: 'fadeIn 0.3s ease-in-out'
                   }}
                 >
-                  {challenge.strategies.map((strategy, strategyIndex) => (
+                  {challenge.suggestions.map((suggestion, suggestionIndex) => (
                     <div
-                      key={strategyIndex}
-                      className="flex items-start gap-4 p-4 rounded-xl"
+                      key={suggestionIndex}
+                      className="flex items-start gap-4 p-4 rounded-xl cursor-pointer hover:bg-white/[0.02] transition-all"
                       style={{
                         background: 'rgba(255, 255, 255, 0.02)',
                         border: '1px solid rgba(255, 255, 255, 0.05)'
                       }}
+                      onClick={() => {
+                        if (suggestion.url) {
+                          window.open(suggestion.url, '_blank')
+                        }
+                      }}
                     >
-                      {/* Strategy Icon */}
+                      {/* Suggestion Icon */}
                       <div 
                         className="flex-shrink-0 flex items-center justify-center"
                         style={{
@@ -176,16 +161,21 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                           background: 'rgba(236, 84, 41, 0.1)'
                         }}
                       >
-                        <span className="text-[24px]">{strategy.icon}</span>
+                        <span className="text-[24px]">{getSuggestionIcon(suggestion.type)}</span>
                       </div>
 
-                      {/* Strategy Content */}
+                      {/* Suggestion Content */}
                       <div className="flex-1">
-                        <h4 className="text-[16px] font-semibold text-white mb-1">
-                          {strategy.title}
-                        </h4>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="text-[16px] font-semibold text-white">
+                            {suggestion.title}
+                          </h4>
+                          <span className="text-[11px] text-[#EC5429] uppercase font-medium tracking-wide">
+                            {suggestion.type}
+                          </span>
+                        </div>
                         <p className="text-[14px] text-[#CAC4D0] leading-relaxed">
-                          {strategy.description}
+                          {suggestion.desc}
                         </p>
                       </div>
                     </div>
