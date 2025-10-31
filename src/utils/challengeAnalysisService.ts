@@ -53,7 +53,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
   if (anxiousCount > 0 || frustratedCount > 0) {
     challenges.push({
       rank: 1,
-      title: "I'm feeling anxious about work deadlines",
+      title: "Stressed about deadlines",
       empathy: "You're not alone — deadline pressure can feel overwhelming. It's okay to feel this way.",
       suggestions: [
         {
@@ -81,7 +81,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
   if (drainedCount > 0 || tiredCount > 0) {
     challenges.push({
       rank: challenges.length + 1,
-      title: "I'm feeling drained and low on energy",
+      title: "Drained and low energy",
       empathy: "Rest is productive too. Your body and mind are telling you what they need.",
       suggestions: [
         {
@@ -109,7 +109,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
   if (annoyedCount > 0 || sadCount > 0) {
     challenges.push({
       rank: challenges.length + 1,
-      title: "I'm stuck and feeling frustrated with my work",
+      title: "Stuck and frustrated",
       empathy: "Creative blocks happen to everyone. This feeling is temporary, and you'll find your way through.",
       suggestions: [
         {
@@ -143,7 +143,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
   if (positiveTotal > anxiousCount + frustratedCount + drainedCount && challenges.length < 3) {
     challenges.push({
       rank: challenges.length + 1,
-      title: "I want to channel this energy into growth",
+      title: "Riding creative momentum",
       empathy: "You're in a great flow! This is the perfect time to amplify your creative work.",
       suggestions: [
         {
@@ -172,7 +172,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
   if (challenges.length < 3) {
     challenges.push({
       rank: challenges.length + 1,
-      title: "I'm juggling multiple tasks and feeling scattered",
+      title: "Scattered across too many tasks",
       empathy: "Multitasking is hard, especially in creative work. It's okay to slow down and focus.",
       suggestions: [
         {
@@ -208,7 +208,7 @@ function getDefaultChallenges(): Challenge[] {
   return [
     {
       rank: 1,
-      title: "Starting the day with intention",
+      title: "Hard to start the day",
       empathy: "Every designer faces this — the blank canvas of a new day can feel daunting.",
       suggestions: [
         {
@@ -233,7 +233,7 @@ function getDefaultChallenges(): Challenge[] {
     },
     {
       rank: 2,
-      title: "Maintaining creative energy throughout the day",
+      title: "Energy drops after lunch",
       empathy: "Creative work takes real energy. It's normal to feel drained as the day goes on.",
       suggestions: [
         {
@@ -258,7 +258,7 @@ function getDefaultChallenges(): Challenge[] {
     },
     {
       rank: 3,
-      title: "Balancing feedback and staying confident",
+      title: "Self-doubt after feedback",
       empathy: "Design feedback can be tough. Your work matters, and so does your creative voice.",
       suggestions: [
         {
