@@ -4,6 +4,7 @@ import BottomNav from './BottomNav'
 import { Entry } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { DateUtils } from '../utils/dateUtils'
+import { useTasks } from '../../hooks/useMockTasks'
 
 interface EntryListProps {
   entries: Entry[]
@@ -23,6 +24,9 @@ const EntryList: React.FC<EntryListProps> = ({
   onViewEntry
 }) => {
   const [expandedMonths, setExpandedMonths] = useState<Record<string, boolean>>({})
+  
+  // Get mock tasks
+  const mockTasks = useTasks()
 
   // Sort entries by date (newest first)
   const sortedEntries = entries.sort((a, b) => b.date.localeCompare(a.date))
@@ -45,6 +49,22 @@ const EntryList: React.FC<EntryListProps> = ({
   }
 
   const groupedEntries = groupEntriesByMonth(sortedEntries)
+
+  // Group mock tasks by date
+  const groupMockTasksByDate = (tasks: any[]) => {
+    const grouped: Record<string, any[]> = {}
+    
+    tasks.forEach(task => {
+      if (!grouped[task.date]) {
+        grouped[task.date] = []
+      }
+      grouped[task.date].push(task)
+    })
+    
+    return grouped
+  }
+
+  const groupedMockTasks = groupMockTasksByDate(mockTasks)
 
   // Initialize all months as expanded
   useEffect(() => {
@@ -76,6 +96,52 @@ const EntryList: React.FC<EntryListProps> = ({
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto p-5 max-w-md mx-auto w-full">
+        {/* Mock Tasks Section */}
+        {mockTasks.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-[20px] font-bold text-[#EC5429] mb-4">Mock Tasks</h2>
+            <div className="space-y-6">
+              {Object.entries(groupedMockTasks)
+                .sort(([dateA], [dateB]) => dateB.localeCompare(dateA))
+                .map(([date, tasks]) => (
+                <div key={date} className="space-y-3">
+                  {/* Date Header */}
+                  <div className="text-[16px] font-semibold text-[#E6E1E5] mb-3">
+                    {new Date(date).toLocaleDateString('en-US', { 
+                      weekday: 'short', 
+                      month: 'short', 
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </div>
+                  
+                  {/* Tasks for this date */}
+                  {tasks.map((task, index) => (
+                    <div 
+                      key={index}
+                      className="bg-white/[0.04] p-4 rounded-xl hover:bg-white/[0.06] transition-colors"
+                    >
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <div className="flex-1">
+                          <div className="text-[14px] font-semibold text-[#EC5429] mb-1">
+                            {task.projectName}
+                          </div>
+                          <div className="text-[16px] text-[#E6E1E5] mb-2">
+                            {task.task}
+                          </div>
+                        </div>
+                        <div className="flex-shrink-0 text-[14px] text-[#CAC4D0] bg-white/[0.04] px-3 py-1 rounded-full">
+                          {task.mood}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {entries.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64">
             <h3 className="text-xl font-semibold text-[#E6E1E5] mb-2 text-center">
