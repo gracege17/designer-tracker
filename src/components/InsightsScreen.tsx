@@ -427,26 +427,18 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
                 style={{ borderRadius: '8px' }}
               >
-                <div className="flex flex-col gap-2">
-                  {/* Header with title and chevron */}
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-start justify-between">
-                      <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
-                        Energized
-                      </h3>
-                      <CaretRight size={20} weight="bold" className="text-[#EC5429] mt-1" />
-                    </div>
-                    <div className="w-full h-[1px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}></div>
+                <div className="flex flex-col gap-3">
+                  {/* Header: Emotion name (secondary) + Chevron */}
+                  <div className="flex items-start justify-between">
+                    <h3 className="text-[11px] font-medium text-[#938F99]">
+                      Energized
+                    </h3>
+                    <CaretRight size={20} weight="bold" className="text-[#EC5429]" />
                   </div>
                   
-                  {/* Today subtitle */}
-                  <p className="text-[11px] font-normal text-[#938F99]">
-                    Today
-                  </p>
-                  
-                  {/* Summary Tags */}
+                  {/* Summary Tags (PRIMARY FOCUS) */}
                   {energyProjects.length > 0 ? (
-                    <div className="space-y-1.5">
+                    <div className="space-y-2 flex-1">
                       {(() => {
                         const energyTasks = allTasks.filter(task => {
                           const emotions = getEmotions(task)
@@ -456,20 +448,25 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         const summaryTags = generateSummaryTags(energyTasks).slice(0, 2)
                         
                         return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[14px] font-bold text-[#FF2D55] leading-tight">
+                          <p key={index} className="text-[16px] font-bold text-[#FF2D55] leading-tight">
                             {tag}
                           </p>
                         ))
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[14px] font-bold text-[#FF2D55]/50 leading-tight italic">
+                    <p className="text-[16px] font-bold text-[#FF2D55]/50 leading-tight italic flex-1">
                       No energizing tasks yet
                     </p>
                   )}
                   
-                  {/* Three dots */}
-                  <DotsThree size={24} weight="bold" className="text-[#938F99]" />
+                  {/* Footer: Entry count + three dots */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] text-[#938F99]">
+                      {energyProjects.length} {energyProjects.length === 1 ? 'entry' : 'entries'}
+                    </p>
+                    <DotsThree size={20} weight="bold" className="text-[#938F99]" />
+                  </div>
                 </div>
               </div>
               
@@ -478,26 +475,18 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
                 style={{ borderRadius: '8px' }}
               >
-                <div className="flex flex-col gap-2">
-                  {/* Header with title and chevron */}
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-start justify-between">
-                      <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
-                        Drained
-                      </h3>
-                      <CaretRight size={20} weight="bold" className="text-[#EC5429] mt-1" />
-                    </div>
-                    <div className="w-full h-[1px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}></div>
+                <div className="flex flex-col gap-3">
+                  {/* Header: Emotion name (secondary) + Chevron */}
+                  <div className="flex items-start justify-between">
+                    <h3 className="text-[11px] font-medium text-[#938F99]">
+                      Drained
+                    </h3>
+                    <CaretRight size={20} weight="bold" className="text-[#EC5429]" />
                   </div>
                   
-                  {/* Today subtitle */}
-                  <p className="text-[11px] font-normal text-[#938F99]">
-                    Today
-                  </p>
-                  
-                  {/* Summary Tags */}
+                  {/* Summary Tags (PRIMARY FOCUS) */}
                   {drainingProjects.length > 0 ? (
-                    <div className="space-y-1.5">
+                    <div className="space-y-2 flex-1">
                       {(() => {
                         const drainingTasks = allTasks.filter(task => {
                           const emotions = getEmotions(task)
@@ -507,20 +496,25 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         const summaryTags = generateSummaryTags(drainingTasks).slice(0, 2)
                         
                         return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[14px] font-bold text-[#938F99] leading-tight">
+                          <p key={index} className="text-[16px] font-bold text-[#938F99] leading-tight">
                             {tag}
                           </p>
                         ))
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[14px] font-bold text-[#938F99]/50 leading-tight italic">
+                    <p className="text-[16px] font-bold text-[#938F99]/50 leading-tight italic flex-1">
                       No draining tasks yet
                     </p>
                   )}
                   
-                  {/* Three dots */}
-                  <DotsThree size={24} weight="bold" className="text-[#938F99]" />
+                  {/* Footer: Entry count + three dots */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] text-[#938F99]">
+                      {drainingProjects.length} {drainingProjects.length === 1 ? 'entry' : 'entries'}
+                    </p>
+                    <DotsThree size={20} weight="bold" className="text-[#938F99]" />
+                  </div>
                 </div>
               </div>
               
@@ -529,26 +523,18 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
                 style={{ borderRadius: '8px' }}
               >
-                <div className="flex flex-col gap-2">
-                  {/* Header with title and chevron */}
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-start justify-between">
-                      <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
-                        Meaningful
-                      </h3>
-                      <CaretRight size={20} weight="bold" className="text-[#EC5429] mt-1" />
-                    </div>
-                    <div className="w-full h-[1px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}></div>
+                <div className="flex flex-col gap-3">
+                  {/* Header: Emotion name (secondary) + Chevron */}
+                  <div className="flex items-start justify-between">
+                    <h3 className="text-[11px] font-medium text-[#938F99]">
+                      Meaningful
+                    </h3>
+                    <CaretRight size={20} weight="bold" className="text-[#EC5429]" />
                   </div>
                   
-                  {/* Today subtitle */}
-                  <p className="text-[11px] font-normal text-[#938F99]">
-                    Today
-                  </p>
-                  
-                  {/* Summary Tags */}
+                  {/* Summary Tags (PRIMARY FOCUS) */}
                   {meaningfulProjects.length > 0 ? (
-                    <div className="space-y-1.5">
+                    <div className="space-y-2 flex-1">
                       {(() => {
                         const meaningfulTasks = allTasks.filter(task => {
                           const emotions = getEmotions(task)
@@ -558,20 +544,25 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         const summaryTags = generateSummaryTags(meaningfulTasks).slice(0, 2)
                         
                         return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[14px] font-bold text-[#F4C95D] leading-tight">
+                          <p key={index} className="text-[16px] font-bold text-[#F4C95D] leading-tight">
                             {tag}
                           </p>
                         ))
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[14px] font-bold text-[#F4C95D]/50 leading-tight italic">
+                    <p className="text-[16px] font-bold text-[#F4C95D]/50 leading-tight italic flex-1">
                       No meaningful tasks yet
                     </p>
                   )}
                   
-                  {/* Three dots */}
-                  <DotsThree size={24} weight="bold" className="text-[#938F99]" />
+                  {/* Footer: Entry count + three dots */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] text-[#938F99]">
+                      {meaningfulProjects.length} {meaningfulProjects.length === 1 ? 'entry' : 'entries'}
+                    </p>
+                    <DotsThree size={20} weight="bold" className="text-[#938F99]" />
+                  </div>
                 </div>
               </div>
               
@@ -580,26 +571,18 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
                 style={{ borderRadius: '8px' }}
               >
-                <div className="flex flex-col gap-2">
-                  {/* Header with title and chevron */}
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex items-start justify-between">
-                      <h3 className="text-[14px] font-semibold text-[#E6E1E5]">
-                        Curious
-                      </h3>
-                      <CaretRight size={20} weight="bold" className="text-[#EC5429] mt-1" />
-                    </div>
-                    <div className="w-full h-[1px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}></div>
+                <div className="flex flex-col gap-3">
+                  {/* Header: Emotion name (secondary) + Chevron */}
+                  <div className="flex items-start justify-between">
+                    <h3 className="text-[11px] font-medium text-[#938F99]">
+                      Curious
+                    </h3>
+                    <CaretRight size={20} weight="bold" className="text-[#EC5429]" />
                   </div>
                   
-                  {/* Today subtitle */}
-                  <p className="text-[11px] font-normal text-[#938F99]">
-                    Today
-                  </p>
-                  
-                  {/* Summary Tags */}
+                  {/* Summary Tags (PRIMARY FOCUS) */}
                   {passionProjects.length > 0 ? (
-                    <div className="space-y-1.5">
+                    <div className="space-y-2 flex-1">
                       {(() => {
                         const passionTasks = allTasks.filter(task => {
                           const emotions = getEmotions(task)
@@ -609,20 +592,25 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         const summaryTags = generateSummaryTags(passionTasks).slice(0, 2)
                         
                         return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[14px] font-bold text-[#AF52DE] leading-tight">
+                          <p key={index} className="text-[16px] font-bold text-[#AF52DE] leading-tight">
                             {tag}
                           </p>
                         ))
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[14px] font-bold text-[#AF52DE]/50 leading-tight italic">
+                    <p className="text-[16px] font-bold text-[#AF52DE]/50 leading-tight italic flex-1">
                       No curious tasks yet
                     </p>
                   )}
                   
-                  {/* Three dots */}
-                  <DotsThree size={24} weight="bold" className="text-[#938F99]" />
+                  {/* Footer: Entry count + three dots */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] text-[#938F99]">
+                      {passionProjects.length} {passionProjects.length === 1 ? 'entry' : 'entries'}
+                    </p>
+                    <DotsThree size={20} weight="bold" className="text-[#938F99]" />
+                  </div>
                 </div>
               </div>
             </div>
