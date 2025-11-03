@@ -136,18 +136,18 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
   const drawContourLines = (ctx: CanvasRenderingContext2D, points: { x: number; y: number }[]) => {
     const colors = emotionColors[emotionData.mainEmotion as keyof typeof emotionColors] || emotionColors.neutral
     
-    // Draw 3 contour lines at different scales
-    for (let i = 1; i <= 3; i++) {
-      const scale = i * 0.25 // 25%, 50%, 75% of original size
+    // Draw 2 contour lines at different scales (simplified for clarity)
+    for (let i = 1; i <= 2; i++) {
+      const scale = i * 0.35 // 35%, 70% of original size
       const contourPoints = points.map(p => ({
         x: p.x * scale,
         y: p.y * scale
       }))
       
-      // Vary opacity based on ripple phase for subtle animation
-      const opacity = 0.1 + Math.sin(ripplePhase + i) * 0.05
+      // Vary opacity based on ripple phase for subtle animation (more visible)
+      const opacity = 0.15 + Math.sin(ripplePhase + i) * 0.05
       ctx.strokeStyle = `${colors.primary}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`
-      ctx.lineWidth = 0.5
+      ctx.lineWidth = 1
       
       drawOrganicBlob(ctx, contourPoints)
       ctx.stroke()
@@ -167,8 +167,8 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
     const centerY = height / 2
     
     // Calculate maxRadius with proper padding to prevent overflow
-    // Padding accounts for: labels (20px), breathing animation (~2%), and safety margin
-    const EDGE_PADDING = showLabels ? 32 : 16 // More padding when labels are shown
+    // Padding accounts for: labels (24px), breathing animation (~2%), and safety margin
+    const EDGE_PADDING = showLabels ? 40 : 16 // More padding for larger labels
     const maxRadius = Math.min(width, height) / 2 - EDGE_PADDING
     
     // Clear canvas (transparent background)
@@ -224,16 +224,18 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
 
     // Draw static grid, axis, and labels only if showLabels is true
     if (showLabels) {
-      // Draw static grid (very light) - NO ANIMATION (Dark mode only)
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)' // Subtle white lines
-      ctx.lineWidth = 0.5
+      // Draw static grid (more visible) - NO ANIMATION (Dark mode only)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)' // More visible white lines
+      ctx.lineWidth = 1
       for (let i = 1; i <= 4; i++) {
         ctx.beginPath()
         ctx.arc(0, 0, (maxRadius * i) / 4, 0, Math.PI * 2)
         ctx.stroke()
       }
 
-      // Draw static axis lines - NO ANIMATION
+      // Draw static axis lines - NO ANIMATION (more prominent)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)' // More visible axis
+      ctx.lineWidth = 1
       for (let i = 0; i < 5; i++) {
         const angle = (i * Math.PI * 2) / 5 - Math.PI / 2
         ctx.beginPath()
@@ -242,15 +244,15 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
         ctx.stroke()
       }
 
-      // Draw static emotion labels - NO ANIMATION (Dark mode only)
-      ctx.fillStyle = '#CAC4D0' // Material Design 3 on-surface-variant
-      ctx.font = '11px Inter, sans-serif'
+      // Draw static emotion labels - NO ANIMATION (larger and clearer)
+      ctx.fillStyle = '#E6E1E5' // Brighter text for better readability
+      ctx.font = '600 14px Inter, sans-serif' // Larger, bolder font
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       
       for (let i = 0; i < 5; i++) {
         const angle = (i * Math.PI * 2) / 5 - Math.PI / 2
-        const labelRadius = maxRadius + 20
+        const labelRadius = maxRadius + 24 // More space from chart
         const x = Math.cos(angle) * labelRadius
         const y = Math.sin(angle) * labelRadius
         
@@ -270,19 +272,19 @@ const TodayEmotionRadarBlob: React.FC<TodayEmotionRadarBlobProps> = ({
     // Draw main organic blob with gradient fill (animated)
     const colors = emotionColors[emotionData.mainEmotion as keyof typeof emotionColors] || emotionColors.neutral
     
-    // Create radial gradient for the blob
+    // Create radial gradient for the blob (more vibrant)
     const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, maxRadius)
-    gradient.addColorStop(0, `${colors.primary}60`) // 37% opacity at center
-    gradient.addColorStop(0.7, `${colors.secondary}40`) // 25% opacity in middle
-    gradient.addColorStop(1, `${colors.primary}20`) // 12% opacity at edges
+    gradient.addColorStop(0, `${colors.primary}80`) // 50% opacity at center
+    gradient.addColorStop(0.7, `${colors.secondary}50`) // 31% opacity in middle
+    gradient.addColorStop(1, `${colors.primary}30`) // 19% opacity at edges
     
     ctx.fillStyle = gradient
     drawOrganicBlob(ctx, points)
     ctx.fill()
 
-    // Draw subtle border (animated with blob)
-    ctx.strokeStyle = `${colors.primary}80` // 50% opacity border
-    ctx.lineWidth = 1
+    // Draw prominent border (animated with blob)
+    ctx.strokeStyle = `${colors.primary}CC` // 80% opacity border for clarity
+    ctx.lineWidth = 2 // Thicker border for better visibility
     drawOrganicBlob(ctx, points)
     ctx.stroke()
 
