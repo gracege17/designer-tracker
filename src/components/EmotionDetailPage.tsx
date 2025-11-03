@@ -95,26 +95,38 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
 
     // Analyze patterns
     const projectCounts: Record<string, number> = {}
+    const timeOfDayPattern: Record<string, number> = { morning: 0, afternoon: 0, evening: 0 }
+    
     relevantTasks.forEach(task => {
       projectCounts[task.projectName] = (projectCounts[task.projectName] || 0) + 1
+      
+      // Check for time-related keywords in description
+      const desc = task.description.toLowerCase()
+      if (desc.includes('morning') || desc.includes('start')) timeOfDayPattern.morning++
+      else if (desc.includes('afternoon') || desc.includes('lunch')) timeOfDayPattern.afternoon++
+      else if (desc.includes('evening') || desc.includes('end')) timeOfDayPattern.evening++
     })
 
     const topProject = Object.entries(projectCounts)
       .sort(([, a], [, b]) => b - a)[0]
 
-    const topTag = topReasonTags[0] || 'certain activities'
+    const topTimeOfDay = Object.entries(timeOfDayPattern)
+      .sort(([, a], [, b]) => b - a)[0]
 
-    // Generate contextual insight
+    // Generate contextual insight based on patterns
     if (emotion === 'energized') {
-      return `You tend to feel energized during "${topTag}". Your energy peaks when working on ${topProject[0]}.`
+      if (topTimeOfDay[1] > 0) {
+        return `Energized feelings emerged most often in the ${topTimeOfDay[0]}, especially after physical activity or productive starts to your day.`
+      }
+      return `You tend to feel energized when working on ${topProject[0]}. These moments often involve team collaboration and social interaction.`
     } else if (emotion === 'drained') {
-      return `"${topTag}" often leaves you feeling drained. Consider taking breaks during ${topProject[0]} tasks.`
+      return `Energy tends to dip during complex tasks and extended work sessions. Consider scheduling breaks to maintain your creative energy.`
     } else if (emotion === 'meaningful') {
-      return `"${topTag}" brings the most meaning to your work. ${topProject[0]} consistently gives you purpose.`
+      return `Meaningful moments cluster around accomplishments and helping others. ${topProject[0]} consistently gives you a sense of purpose.`
     } else {
-      return `Your curiosity is sparked by "${topTag}". ${topProject[0]} keeps you engaged and exploring.`
+      return `Your curiosity sparks during exploration and learning. New challenges and creative problem-solving keep you engaged.`
     }
-  }, [relevantTasks, topReasonTags, emotion, config.label])
+  }, [relevantTasks, emotion, config.label])
 
   // Format date for display
   const formatDate = (dateString: string) => {
@@ -131,18 +143,6 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     }
   }
-
-  // Group tasks by date
-  const groupedTasks = useMemo(() => {
-    const groups: Record<string, typeof relevantTasks> = {}
-    relevantTasks.forEach(task => {
-      if (!groups[task.date]) {
-        groups[task.date] = []
-      }
-      groups[task.date].push(task)
-    })
-    return Object.entries(groups).sort(([a], [b]) => b.localeCompare(a)) // Most recent first
-  }, [relevantTasks])
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -164,31 +164,44 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
       </header>
 
       {/* Main Content */}
-      <main className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-6">
+      <main className="max-w-2xl mx-auto px-4 py-6 pb-24 space-y-8">
         
         {/* 1. Summary Header */}
-        <div className={`${config.bgColor} p-6 rounded-2xl`}>
-          <h2 className={`text-[28px] font-bold ${config.textColor} leading-tight mb-2`}>
-            You felt {config.label.toLowerCase()} {relevantEntries.length} {relevantEntries.length === 1 ? 'time' : 'times'} this week
+        <div>
+          <h2 className="text-[32px] font-bold text-white leading-tight mb-2">
+            {config.label}
           </h2>
-          <p className="text-[14px] text-[#CAC4D0]">
-            Based on {relevantTasks.length} logged {relevantTasks.length === 1 ? 'task' : 'tasks'}
+          <p className="text-[14px] text-[#938F99]">
+            {relevantEntries.length} {relevantEntries.length === 1 ? 'entry' : 'entries'} this week
           </p>
         </div>
 
-        {/* 2. Top 3 Reason Tags */}
+        {/* 2. Insight Card */}
+        <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10">
+          <div className="flex items-start gap-3 mb-4">
+            <span className={`text-[16px] ${config.textColor}`}>✨</span>
+            <h3 className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider">
+              Insight
+            </h3>
+          </div>
+          <p className="text-[15px] text-white leading-relaxed">
+            {insightPattern}
+          </p>
+        </div>
+
+        {/* 3. Top Triggers */}
         {topReasonTags.length > 0 && (
           <div>
-            <h3 className="text-[16px] font-bold text-[#E6E1E5] mb-3">
-              Top Reasons
+            <h3 className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider mb-3">
+              Top Triggers
             </h3>
             <div className="flex flex-wrap gap-2">
               {topReasonTags.map((tag, index) => (
                 <div
                   key={index}
-                  className={`${config.bgColor} px-4 py-2 rounded-full`}
+                  className="bg-white/[0.08] px-4 py-2.5 rounded-full border border-white/10"
                 >
-                  <span className={`text-[14px] font-semibold ${config.textColor}`}>
+                  <span className="text-[14px] font-medium text-white">
                     {tag}
                   </span>
                 </div>
@@ -197,71 +210,29 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
           </div>
         )}
 
-        {/* 3. Logged Entries */}
-        {groupedTasks.length > 0 && (
+        {/* 4. Recent Entries */}
+        {relevantTasks.length > 0 && (
           <div>
-            <h3 className="text-[16px] font-bold text-[#E6E1E5] mb-3">
-              Your {config.label} Moments
+            <h3 className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider mb-4">
+              Recent Entries
             </h3>
-            <div className="space-y-4">
-              {groupedTasks.map(([date, tasks]) => (
-                <div key={date}>
-                  {/* Date Header */}
-                  <p className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider mb-2">
-                    {formatDate(date)}
+            <div className="space-y-3">
+              {relevantTasks.slice(0, 8).map((task, index) => (
+                <div
+                  key={index}
+                  className="flex items-start justify-between gap-3"
+                >
+                  <p className="text-[15px] text-white leading-snug flex-1">
+                    {task.description}
                   </p>
-                  
-                  {/* Tasks for this date */}
-                  <div className="space-y-2">
-                    {tasks.map((task, index) => (
-                      <div
-                        key={index}
-                        className="bg-white/[0.04] p-4 rounded-xl"
-                      >
-                        <p className="text-[14px] font-semibold text-[#E6E1E5] mb-1">
-                          {task.description}
-                        </p>
-                        <p className="text-[12px] text-[#938F99]">
-                          {task.projectName}
-                        </p>
-                        {task.notes && (
-                          <p className="text-[12px] text-[#CAC4D0] mt-2 italic">
-                            "{task.notes}"
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                  <span className="text-[13px] text-[#938F99] whitespace-nowrap">
+                    {formatDate(task.date)}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         )}
-
-        {/* 4. Insight Pattern */}
-        <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10">
-          <div className="flex items-start gap-3">
-            <div className={`w-1 h-full ${config.bgColor} rounded-full`}></div>
-            <div>
-              <h3 className="text-[14px] font-bold text-[#E6E1E5] mb-2">
-                💡 Pattern Insight
-              </h3>
-              <p className="text-[14px] text-[#CAC4D0] leading-relaxed">
-                {insightPattern}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* 5. Reflection Question */}
-        <div className={`${config.bgColor} p-6 rounded-2xl border border-[${config.color}]/20`}>
-          <h3 className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider mb-3">
-            Reflect
-          </h3>
-          <p className={`text-[16px] font-medium ${config.textColor} leading-relaxed`}>
-            {config.reflectionQuestion}
-          </p>
-        </div>
 
         {/* Empty State */}
         {relevantTasks.length === 0 && (
