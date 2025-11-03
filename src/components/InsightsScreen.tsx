@@ -8,6 +8,7 @@ import Card from './Card'
 import EmotionalRadarChart from './EmotionalRadarChart'
 import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { generateWeeklyInsights } from '../utils/weeklyInsightsService'
+import { generateSummaryTags } from '../utils/smartSummaryService'
 
 interface InsightsScreenProps {
   entries: Entry[]
@@ -443,20 +444,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     Today
                   </p>
                   
-                  {/* Tasks */}
+                  {/* Summary Tags */}
                   {energyProjects.length > 0 ? (
                     <div className="space-y-1.5">
                       {(() => {
-                        const energyTasks = allTasks
-                          .filter(task => {
-                            const emotions = getEmotions(task)
-                            return emotions.some(e => energyEmotions.includes(e))
-                          })
-                          .slice(0, 2)
+                        const energyTasks = allTasks.filter(task => {
+                          const emotions = getEmotions(task)
+                          return emotions.some(e => energyEmotions.includes(e))
+                        })
                         
-                        return energyTasks.map((task, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#FF2D55] leading-tight line-clamp-1">
-                            {extractKeywords(task.description)}
+                        const summaryTags = generateSummaryTags(energyTasks)
+                        
+                        return summaryTags.map((tag, index) => (
+                          <p key={index} className="text-[18px] font-bold text-[#FF2D55] leading-tight">
+                            {tag}
                           </p>
                         ))
                       })()}
@@ -494,20 +495,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     Today
                   </p>
                   
-                  {/* Tasks */}
+                  {/* Summary Tags */}
                   {drainingProjects.length > 0 ? (
                     <div className="space-y-1.5">
                       {(() => {
-                        const drainingTasks = allTasks
-                          .filter(task => {
-                            const emotions = getEmotions(task)
-                            return emotions.some(e => drainingEmotions.includes(e))
-                          })
-                          .slice(0, 2)
+                        const drainingTasks = allTasks.filter(task => {
+                          const emotions = getEmotions(task)
+                          return emotions.some(e => drainingEmotions.includes(e))
+                        })
                         
-                        return drainingTasks.map((task, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#938F99] leading-tight line-clamp-1">
-                            {extractKeywords(task.description)}
+                        const summaryTags = generateSummaryTags(drainingTasks)
+                        
+                        return summaryTags.map((tag, index) => (
+                          <p key={index} className="text-[18px] font-bold text-[#938F99] leading-tight">
+                            {tag}
                           </p>
                         ))
                       })()}
@@ -545,20 +546,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     Today
                   </p>
                   
-                  {/* Tasks */}
+                  {/* Summary Tags */}
                   {meaningfulProjects.length > 0 ? (
                     <div className="space-y-1.5">
                       {(() => {
-                        const meaningfulTasks = allTasks
-                          .filter(task => {
-                            const emotions = getEmotions(task)
-                            return emotions.some(e => meaningfulEmotions.includes(e))
-                          })
-                          .slice(0, 2)
+                        const meaningfulTasks = allTasks.filter(task => {
+                          const emotions = getEmotions(task)
+                          return emotions.some(e => meaningfulEmotions.includes(e))
+                        })
                         
-                        return meaningfulTasks.map((task, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#F4C95D] leading-tight line-clamp-1">
-                            {extractKeywords(task.description)}
+                        const summaryTags = generateSummaryTags(meaningfulTasks)
+                        
+                        return summaryTags.map((tag, index) => (
+                          <p key={index} className="text-[18px] font-bold text-[#F4C95D] leading-tight">
+                            {tag}
                           </p>
                         ))
                       })()}
@@ -596,20 +597,20 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     Today
                   </p>
                   
-                  {/* Tasks */}
+                  {/* Summary Tags */}
                   {passionProjects.length > 0 ? (
                     <div className="space-y-1.5">
                       {(() => {
-                        const passionTasks = allTasks
-                          .filter(task => {
-                            const emotions = getEmotions(task)
-                            return emotions.some(e => passionEmotions.includes(e))
-                          })
-                          .slice(0, 2)
+                        const passionTasks = allTasks.filter(task => {
+                          const emotions = getEmotions(task)
+                          return emotions.some(e => passionEmotions.includes(e))
+                        })
                         
-                        return passionTasks.map((task, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#AF52DE] leading-tight line-clamp-1">
-                            {extractKeywords(task.description)}
+                        const summaryTags = generateSummaryTags(passionTasks)
+                        
+                        return summaryTags.map((tag, index) => (
+                          <p key={index} className="text-[18px] font-bold text-[#AF52DE] leading-tight">
+                            {tag}
                           </p>
                         ))
                       })()}
