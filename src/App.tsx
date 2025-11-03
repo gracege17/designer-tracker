@@ -13,6 +13,7 @@ import InsightsScreen from './components/InsightsScreen'
 import EditTask from './components/EditTask'
 import Settings from './components/Settings'
 import OverallFeeling from './components/OverallFeeling'
+import EmotionDetailPage from './components/EmotionDetailPage'
 import OnboardingAuth from './components/OnboardingAuth'
 import OnboardingUserInfo, { UserProfileData } from './components/OnboardingUserInfo'
 import OnboardingFirstProject from './components/OnboardingFirstProject'
@@ -29,7 +30,9 @@ import { mockProjects } from '../mock/mockProjects'
 // Enable mock data for testing insights
 const USE_MOCK_ENTRIES = true
 
-type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'overallFeeling' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings'
+type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'overallFeeling' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings' | 'emotionDetail'
+
+type EmotionType = 'energized' | 'drained' | 'meaningful' | 'curious'
 
 interface TaskReview {
   id: string
@@ -50,6 +53,7 @@ function App() {
   const [projects, setProjects] = useState<Project[]>([])
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([])
   const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null)
+  const [selectedEmotion, setSelectedEmotion] = useState<EmotionType | null>(null)
   const [editingTask, setEditingTask] = useState<Task | null>(null)
   const [taskDescription, setTaskDescription] = useState('')
   const [selectedEmotions, setSelectedEmotions] = useState<EmotionLevel[]>([])
@@ -434,6 +438,11 @@ function App() {
     setCurrentView('entryDetail')
   }
 
+  const handleViewEmotionDetail = (emotion: EmotionType) => {
+    setSelectedEmotion(emotion)
+    setCurrentView('emotionDetail')
+  }
+
   const handleEditEntryTask = (taskId: string) => {
     if (!selectedEntry) return
     
@@ -723,8 +732,17 @@ function App() {
             onNavigateHistory={() => setCurrentView('entryList')}
             onNavigateSettings={() => setCurrentView('settings')}
             onViewEntry={handleViewEntry}
+            onEmotionClick={handleViewEmotionDetail}
           />
         )
+      case 'emotionDetail':
+        return selectedEmotion ? (
+          <EmotionDetailPage
+            emotion={selectedEmotion}
+            entries={entries}
+            onBack={() => setCurrentView('insights')}
+          />
+        ) : null
       case 'entryList':
         return (
           <EntryList 

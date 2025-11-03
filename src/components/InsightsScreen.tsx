@@ -10,6 +10,8 @@ import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { generateWeeklyInsights } from '../utils/weeklyInsightsService'
 import { generateSummaryTags } from '../utils/smartSummaryService'
 
+type EmotionType = 'energized' | 'drained' | 'meaningful' | 'curious'
+
 interface InsightsScreenProps {
   entries: Entry[]
   onNavigateHome: () => void
@@ -17,6 +19,7 @@ interface InsightsScreenProps {
   onNavigateHistory: () => void
   onNavigateSettings?: () => void
   onViewEntry: (entry: Entry) => void
+  onEmotionClick: (emotion: EmotionType) => void
 }
 
 type TimeRange = 'week' | 'month'
@@ -27,7 +30,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   onNavigateAdd,
   onNavigateHistory,
   onNavigateSettings,
-  onViewEntry
+  onViewEntry,
+  onEmotionClick
 }) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('week')
   const [showFullCalendar, setShowFullCalendar] = useState(false)
@@ -424,6 +428,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               <div className="grid grid-cols-2 gap-3 mb-6">
               {/* 1. Energized */}
               <div 
+                onClick={() => onEmotionClick('energized')}
                 className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
                 style={{ borderRadius: '16px' }}
               >
@@ -468,6 +473,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               
               {/* 2. Drained */}
               <div 
+                onClick={() => onEmotionClick('drained')}
                 className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
                 style={{ borderRadius: '16px' }}
               >
@@ -512,6 +518,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               
               {/* 3. Meaningful */}
               <div 
+                onClick={() => onEmotionClick('meaningful')}
                 className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
                 style={{ borderRadius: '16px' }}
               >
@@ -556,6 +563,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               
               {/* 4. Curious */}
               <div 
+                onClick={() => onEmotionClick('curious')}
                 className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
                 style={{ borderRadius: '16px' }}
               >
