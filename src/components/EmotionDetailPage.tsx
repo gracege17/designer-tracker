@@ -2,11 +2,16 @@ import React, { useMemo } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import { Entry, EmotionLevel } from '../types'
 import { generateSummaryTags } from '../utils/smartSummaryService'
+import BottomNav from './BottomNav'
 
 interface EmotionDetailPageProps {
   emotion: 'energized' | 'drained' | 'meaningful' | 'curious'
   entries: Entry[]
   onBack: () => void
+  onNavigateHome: () => void
+  onNavigateAdd: () => void
+  onNavigateHistory: () => void
+  onNavigateSettings: () => void
 }
 
 // Emotion configuration
@@ -48,7 +53,11 @@ const emotionConfig = {
 const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
   emotion,
   entries,
-  onBack
+  onBack,
+  onNavigateHome,
+  onNavigateAdd,
+  onNavigateHistory,
+  onNavigateSettings
 }) => {
   const config = emotionConfig[emotion]
 
@@ -249,6 +258,16 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
           </div>
         )}
       </main>
+
+      {/* Bottom Navigation */}
+      <BottomNav
+        activeTab="overview"
+        onNavigateHome={onNavigateHome}
+        onNavigateInsights={onBack}
+        onNavigateAdd={onNavigateAdd}
+        onNavigateHistory={onNavigateHistory}
+        onNavigateSettings={onNavigateSettings}
+      />
     </div>
   )
 }

@@ -741,6 +741,10 @@ function App() {
             emotion={selectedEmotion}
             entries={entries}
             onBack={() => setCurrentView('insights')}
+            onNavigateHome={() => setCurrentView('dashboard')}
+            onNavigateAdd={handleStartAddEntry}
+            onNavigateHistory={() => setCurrentView('entryList')}
+            onNavigateSettings={() => setCurrentView('settings')}
           />
         ) : null
       case 'entryList':
