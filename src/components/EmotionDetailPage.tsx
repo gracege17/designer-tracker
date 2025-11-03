@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import { Entry, EmotionLevel } from '../types'
 import { generateSummaryTags } from '../utils/smartSummaryService'
+import { getCurrentWeekEntries } from '../utils/dataHelpers'
 import BottomNav from './BottomNav'
 
 interface EmotionDetailPageProps {
@@ -61,15 +62,18 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
 }) => {
   const config = emotionConfig[emotion]
 
-  // Get total entries for context
-  const totalEntries = entries.length
+  // Filter to only this week's entries first
+  const thisWeekEntries = useMemo(() => getCurrentWeekEntries(entries), [entries])
+  
+  // Get total this week's entries for context
+  const totalEntriesThisWeek = thisWeekEntries.length
 
-  // Filter entries and tasks that match this emotion
+  // Filter entries and tasks that match this emotion (from this week only)
   const { relevantEntries, relevantTasks } = useMemo(() => {
     const filteredEntries: Entry[] = []
     const allTasks: Array<{ date: string; description: string; projectName: string; notes?: string }> = []
 
-    entries.forEach(entry => {
+    thisWeekEntries.forEach(entry => {
       const matchingTasks = entry.tasks.filter(task => {
         const emotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
         return emotions.some(e => config.emotions.includes(e))
@@ -89,7 +93,7 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
     })
 
     return { relevantEntries: filteredEntries, relevantTasks: allTasks }
-  }, [entries, config.emotions])
+  }, [thisWeekEntries, config.emotions])
 
   // Generate top 3 reason tags
   const topReasonTags = useMemo(() => {
@@ -185,7 +189,7 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
           </h2>
           <p className="text-[14px] text-[#938F99]">
             {relevantEntries.length} {relevantEntries.length === 1 ? 'entry' : 'entries'} this week 
-            {totalEntries > 0 && ` (out of ${totalEntries})`}
+            {totalEntriesThisWeek > 0 && ` (out of ${totalEntriesThisWeek})`}
           </p>
         </div>
 
