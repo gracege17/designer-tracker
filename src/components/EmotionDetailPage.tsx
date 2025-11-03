@@ -227,14 +227,14 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
           </div>
         )}
 
-        {/* 4. Recent Entries */}
+        {/* 4. Related Entries */}
         {relevantTasks.length > 0 && (
           <div>
             <h3 className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider mb-4">
-              Recent Entries
+              Related Entries
             </h3>
             <div className="space-y-3">
-              {relevantTasks.slice(0, 8).map((task, index) => (
+              {relevantTasks.map((task, index) => (
                 <div
                   key={index}
                   className="flex items-start justify-between gap-3"
