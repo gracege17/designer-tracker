@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CaretLeft } from 'phosphor-react'
+import { useTasks } from '../../hooks/useMockTasks'
 
 interface OverallFeelingProps {
   onComplete: (feelingScore: number) => void
@@ -8,6 +9,23 @@ interface OverallFeelingProps {
 
 const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) => {
   const [sliderValue, setSliderValue] = useState(50)
+  
+  // Get tasks from hook
+  const tasks = useTasks()
+  
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split('T')[0]
+  
+  // Filter today's tasks
+  const todayTasks = tasks.filter(task => task.date === today)
+  
+  // Group tasks by mood
+  const moodGroups = {
+    Energized: todayTasks.filter(task => task.mood === 'Energized'),
+    Drained: todayTasks.filter(task => task.mood === 'Drained'),
+    Meaningful: todayTasks.filter(task => task.mood === 'Meaningful'),
+    Curious: todayTasks.filter(task => task.mood === 'Curious')
+  }
 
   // Gradient colors from low to high (updated with new emotion colors)
   const gradientStops = [
@@ -208,6 +226,41 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
           >
             Continue
           </button>
+
+          {/* Today's Tasks Grouped by Mood */}
+          <div className="w-full space-y-6 mt-12">
+            {Object.entries(moodGroups).map(([mood, tasks]) => (
+              <div key={mood} className="space-y-3">
+                {/* Mood Heading */}
+                <h3 className="text-[20px] font-bold text-white">
+                  {mood}
+                </h3>
+                
+                {/* Subheading */}
+                <p className="text-[14px] text-[#938F99]">
+                  Today
+                </p>
+                
+                {/* Tasks or Empty State */}
+                {tasks.length === 0 ? (
+                  <p className="text-[16px] text-[#CAC4D0] italic">
+                    No {mood.toLowerCase()} tasks yet
+                  </p>
+                ) : (
+                  <ul className="space-y-2">
+                    {tasks.map((task, index) => (
+                      <li 
+                        key={index}
+                        className="text-[16px] text-[#E6E1E5] bg-white/[0.04] p-3 rounded-lg"
+                      >
+                        {task.task}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </main>
     </div>
