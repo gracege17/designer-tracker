@@ -61,6 +61,9 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
 }) => {
   const config = emotionConfig[emotion]
 
+  // Get total entries for context
+  const totalEntries = entries.length
+
   // Filter entries and tasks that match this emotion
   const { relevantEntries, relevantTasks } = useMemo(() => {
     const filteredEntries: Entry[] = []
@@ -181,7 +184,8 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
             {config.label}
           </h2>
           <p className="text-[14px] text-[#938F99]">
-            {relevantEntries.length} {relevantEntries.length === 1 ? 'entry' : 'entries'} this week
+            {relevantEntries.length} {relevantEntries.length === 1 ? 'entry' : 'entries'} this week 
+            {totalEntries > 0 && ` (out of ${totalEntries})`}
           </p>
         </div>
 
