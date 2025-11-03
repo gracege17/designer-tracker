@@ -453,17 +453,17 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           return emotions.some(e => energyEmotions.includes(e))
                         })
                         
-                        const summaryTags = generateSummaryTags(energyTasks)
+                        const summaryTags = generateSummaryTags(energyTasks).slice(0, 2)
                         
                         return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#FF2D55] leading-tight">
+                          <p key={index} className="text-[14px] font-bold text-[#FF2D55] leading-tight">
                             {tag}
                           </p>
                         ))
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[18px] font-bold text-[#FF2D55]/50 leading-tight italic">
+                    <p className="text-[14px] font-bold text-[#FF2D55]/50 leading-tight italic">
                       No energizing tasks yet
                     </p>
                   )}
@@ -504,17 +504,17 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           return emotions.some(e => drainingEmotions.includes(e))
                         })
                         
-                        const summaryTags = generateSummaryTags(drainingTasks)
+                        const summaryTags = generateSummaryTags(drainingTasks).slice(0, 2)
                         
                         return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#938F99] leading-tight">
+                          <p key={index} className="text-[14px] font-bold text-[#938F99] leading-tight">
                             {tag}
                           </p>
                         ))
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[18px] font-bold text-[#938F99]/50 leading-tight italic">
+                    <p className="text-[14px] font-bold text-[#938F99]/50 leading-tight italic">
                       No draining tasks yet
                     </p>
                   )}
@@ -555,17 +555,17 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           return emotions.some(e => meaningfulEmotions.includes(e))
                         })
                         
-                        const summaryTags = generateSummaryTags(meaningfulTasks)
+                        const summaryTags = generateSummaryTags(meaningfulTasks).slice(0, 2)
                         
                         return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#F4C95D] leading-tight">
+                          <p key={index} className="text-[14px] font-bold text-[#F4C95D] leading-tight">
                             {tag}
                           </p>
                         ))
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[18px] font-bold text-[#F4C95D]/50 leading-tight italic">
+                    <p className="text-[14px] font-bold text-[#F4C95D]/50 leading-tight italic">
                       No meaningful tasks yet
                     </p>
                   )}
@@ -606,17 +606,17 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           return emotions.some(e => passionEmotions.includes(e))
                         })
                         
-                        const summaryTags = generateSummaryTags(passionTasks)
+                        const summaryTags = generateSummaryTags(passionTasks).slice(0, 2)
                         
                         return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[18px] font-bold text-[#AF52DE] leading-tight">
+                          <p key={index} className="text-[14px] font-bold text-[#AF52DE] leading-tight">
                             {tag}
                           </p>
                         ))
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[18px] font-bold text-[#AF52DE]/50 leading-tight italic">
+                    <p className="text-[14px] font-bold text-[#AF52DE]/50 leading-tight italic">
                       No curious tasks yet
                     </p>
                   )}
