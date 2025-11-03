@@ -424,193 +424,177 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               <div className="grid grid-cols-2 gap-3 mb-6">
               {/* 1. Energized */}
               <div 
-                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
-                style={{ borderRadius: '8px' }}
+                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                style={{ borderRadius: '16px' }}
               >
-                <div className="flex flex-col gap-3">
-                  {/* Header: Emotion name (secondary) + Chevron */}
-                  <div className="flex items-start justify-between">
-                    <h3 className="text-[11px] font-medium text-[#938F99]">
-                      Energized
-                    </h3>
-                    <CaretRight size={20} weight="bold" className="text-[#EC5429]" />
-                  </div>
+                <div className="flex flex-col h-full justify-between">
+                  {/* Emotion name (top) */}
+                  <h3 className="text-[10px] font-semibold text-[#938F99] uppercase tracking-wider">
+                    Energized
+                  </h3>
                   
-                  {/* Summary Tags (PRIMARY FOCUS) */}
+                  {/* Summary Tag (center, main focus) */}
                   {energyProjects.length > 0 ? (
-                    <div className="space-y-2 flex-1">
+                    <div className="flex-1 flex flex-col justify-center">
                       {(() => {
                         const energyTasks = allTasks.filter(task => {
                           const emotions = getEmotions(task)
                           return emotions.some(e => energyEmotions.includes(e))
                         })
                         
-                        const summaryTags = generateSummaryTags(energyTasks).slice(0, 2)
+                        const summaryTags = generateSummaryTags(energyTasks).slice(0, 1)
                         
-                        return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[16px] font-bold text-[#FF2D55] leading-tight">
-                            {tag}
+                        return (
+                          <p className="text-[20px] font-bold text-[#FF2D55] leading-tight">
+                            {summaryTags[0] || 'Team collaboration'}
                           </p>
-                        ))
+                        )
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[16px] font-bold text-[#FF2D55]/50 leading-tight italic flex-1">
-                      No energizing tasks yet
-                    </p>
+                    <div className="flex-1 flex flex-col justify-center">
+                      <p className="text-[20px] font-bold text-[#FF2D55]/50 leading-tight italic">
+                        No tasks yet
+                      </p>
+                    </div>
                   )}
                   
-                  {/* Footer: Entry count + three dots */}
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] text-[#938F99]">
-                      {energyProjects.length} {energyProjects.length === 1 ? 'entry' : 'entries'}
-                    </p>
-                    <DotsThree size={20} weight="bold" className="text-[#938F99]" />
-                  </div>
+                  {/* Entry count (bottom) */}
+                  <p className="text-[11px] text-[#938F99]">
+                    {energyProjects.length} {energyProjects.length === 1 ? 'entry' : 'entries'}
+                  </p>
                 </div>
               </div>
               
               {/* 2. Drained */}
               <div 
-                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
-                style={{ borderRadius: '8px' }}
+                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                style={{ borderRadius: '16px' }}
               >
-                <div className="flex flex-col gap-3">
-                  {/* Header: Emotion name (secondary) + Chevron */}
-                  <div className="flex items-start justify-between">
-                    <h3 className="text-[11px] font-medium text-[#938F99]">
-                      Drained
-                    </h3>
-                    <CaretRight size={20} weight="bold" className="text-[#EC5429]" />
-                  </div>
+                <div className="flex flex-col h-full justify-between">
+                  {/* Emotion name (top) */}
+                  <h3 className="text-[10px] font-semibold text-[#938F99] uppercase tracking-wider">
+                    Drained
+                  </h3>
                   
-                  {/* Summary Tags (PRIMARY FOCUS) */}
+                  {/* Summary Tag (center, main focus) */}
                   {drainingProjects.length > 0 ? (
-                    <div className="space-y-2 flex-1">
+                    <div className="flex-1 flex flex-col justify-center">
                       {(() => {
                         const drainingTasks = allTasks.filter(task => {
                           const emotions = getEmotions(task)
                           return emotions.some(e => drainingEmotions.includes(e))
                         })
                         
-                        const summaryTags = generateSummaryTags(drainingTasks).slice(0, 2)
+                        const summaryTags = generateSummaryTags(drainingTasks).slice(0, 1)
                         
-                        return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[16px] font-bold text-[#938F99] leading-tight">
-                            {tag}
+                        return (
+                          <p className="text-[20px] font-bold text-[#938F99] leading-tight">
+                            {summaryTags[0] || 'Evening wrap-up'}
                           </p>
-                        ))
+                        )
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[16px] font-bold text-[#938F99]/50 leading-tight italic flex-1">
-                      No draining tasks yet
-                    </p>
+                    <div className="flex-1 flex flex-col justify-center">
+                      <p className="text-[20px] font-bold text-[#938F99]/50 leading-tight italic">
+                        No tasks yet
+                      </p>
+                    </div>
                   )}
                   
-                  {/* Footer: Entry count + three dots */}
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] text-[#938F99]">
-                      {drainingProjects.length} {drainingProjects.length === 1 ? 'entry' : 'entries'}
-                    </p>
-                    <DotsThree size={20} weight="bold" className="text-[#938F99]" />
-                  </div>
+                  {/* Entry count (bottom) */}
+                  <p className="text-[11px] text-[#938F99]">
+                    {drainingProjects.length} {drainingProjects.length === 1 ? 'entry' : 'entries'}
+                  </p>
                 </div>
               </div>
               
               {/* 3. Meaningful */}
               <div 
-                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
-                style={{ borderRadius: '8px' }}
+                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                style={{ borderRadius: '16px' }}
               >
-                <div className="flex flex-col gap-3">
-                  {/* Header: Emotion name (secondary) + Chevron */}
-                  <div className="flex items-start justify-between">
-                    <h3 className="text-[11px] font-medium text-[#938F99]">
-                      Meaningful
-                    </h3>
-                    <CaretRight size={20} weight="bold" className="text-[#EC5429]" />
-                  </div>
+                <div className="flex flex-col h-full justify-between">
+                  {/* Emotion name (top) */}
+                  <h3 className="text-[10px] font-semibold text-[#938F99] uppercase tracking-wider">
+                    Meaningful
+                  </h3>
                   
-                  {/* Summary Tags (PRIMARY FOCUS) */}
+                  {/* Summary Tag (center, main focus) */}
                   {meaningfulProjects.length > 0 ? (
-                    <div className="space-y-2 flex-1">
+                    <div className="flex-1 flex flex-col justify-center">
                       {(() => {
                         const meaningfulTasks = allTasks.filter(task => {
                           const emotions = getEmotions(task)
                           return emotions.some(e => meaningfulEmotions.includes(e))
                         })
                         
-                        const summaryTags = generateSummaryTags(meaningfulTasks).slice(0, 2)
+                        const summaryTags = generateSummaryTags(meaningfulTasks).slice(0, 1)
                         
-                        return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[16px] font-bold text-[#F4C95D] leading-tight">
-                            {tag}
+                        return (
+                          <p className="text-[20px] font-bold text-[#F4C95D] leading-tight">
+                            {summaryTags[0] || 'Organizing workflow'}
                           </p>
-                        ))
+                        )
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[16px] font-bold text-[#F4C95D]/50 leading-tight italic flex-1">
-                      No meaningful tasks yet
-                    </p>
+                    <div className="flex-1 flex flex-col justify-center">
+                      <p className="text-[20px] font-bold text-[#F4C95D]/50 leading-tight italic">
+                        No tasks yet
+                      </p>
+                    </div>
                   )}
                   
-                  {/* Footer: Entry count + three dots */}
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] text-[#938F99]">
-                      {meaningfulProjects.length} {meaningfulProjects.length === 1 ? 'entry' : 'entries'}
-                    </p>
-                    <DotsThree size={20} weight="bold" className="text-[#938F99]" />
-                  </div>
+                  {/* Entry count (bottom) */}
+                  <p className="text-[11px] text-[#938F99]">
+                    {meaningfulProjects.length} {meaningfulProjects.length === 1 ? 'entry' : 'entries'}
+                  </p>
                 </div>
               </div>
               
               {/* 4. Curious */}
               <div 
-                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-[14px] min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
-                style={{ borderRadius: '8px' }}
+                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                style={{ borderRadius: '16px' }}
               >
-                <div className="flex flex-col gap-3">
-                  {/* Header: Emotion name (secondary) + Chevron */}
-                  <div className="flex items-start justify-between">
-                    <h3 className="text-[11px] font-medium text-[#938F99]">
-                      Curious
-                    </h3>
-                    <CaretRight size={20} weight="bold" className="text-[#EC5429]" />
-                  </div>
+                <div className="flex flex-col h-full justify-between">
+                  {/* Emotion name (top) */}
+                  <h3 className="text-[10px] font-semibold text-[#938F99] uppercase tracking-wider">
+                    Curious
+                  </h3>
                   
-                  {/* Summary Tags (PRIMARY FOCUS) */}
+                  {/* Summary Tag (center, main focus) */}
                   {passionProjects.length > 0 ? (
-                    <div className="space-y-2 flex-1">
+                    <div className="flex-1 flex flex-col justify-center">
                       {(() => {
                         const passionTasks = allTasks.filter(task => {
                           const emotions = getEmotions(task)
                           return emotions.some(e => passionEmotions.includes(e))
                         })
                         
-                        const summaryTags = generateSummaryTags(passionTasks).slice(0, 2)
+                        const summaryTags = generateSummaryTags(passionTasks).slice(0, 1)
                         
-                        return summaryTags.map((tag, index) => (
-                          <p key={index} className="text-[16px] font-bold text-[#AF52DE] leading-tight">
-                            {tag}
+                        return (
+                          <p className="text-[20px] font-bold text-[#AF52DE] leading-tight">
+                            {summaryTags[0] || 'Team collaboration'}
                           </p>
-                        ))
+                        )
                       })()}
                     </div>
                   ) : (
-                    <p className="text-[16px] font-bold text-[#AF52DE]/50 leading-tight italic flex-1">
-                      No curious tasks yet
-                    </p>
+                    <div className="flex-1 flex flex-col justify-center">
+                      <p className="text-[20px] font-bold text-[#AF52DE]/50 leading-tight italic">
+                        No tasks yet
+                      </p>
+                    </div>
                   )}
                   
-                  {/* Footer: Entry count + three dots */}
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] text-[#938F99]">
-                      {passionProjects.length} {passionProjects.length === 1 ? 'entry' : 'entries'}
-                    </p>
-                    <DotsThree size={20} weight="bold" className="text-[#938F99]" />
-                  </div>
+                  {/* Entry count (bottom) */}
+                  <p className="text-[11px] text-[#938F99]">
+                    {passionProjects.length} {passionProjects.length === 1 ? 'entry' : 'entries'}
+                  </p>
                 </div>
               </div>
             </div>
