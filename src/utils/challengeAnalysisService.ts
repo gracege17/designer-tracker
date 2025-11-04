@@ -173,7 +173,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: challenges.length + 1,
       title: "Scattered across too many tasks",
-      empathy: "Multitasking drains focus. Prioritize 1 creative task at a time—your best work requires deep, uninterrupted attention.",
+      empathy: "One task at a time. That's how creative flow begins.",
       suggestions: [
         {
           type: 'tool',
