@@ -54,7 +54,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: 1,
       title: "Stressed about deadlines",
-      empathy: "You're not alone — deadline pressure can feel overwhelming. It's okay to feel this way.",
+      empathy: "Deadline anxiety is a signal to break work into smaller, concrete steps. Focus on completing one milestone at a time.",
       suggestions: [
         {
           type: 'tool',
@@ -82,7 +82,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: challenges.length + 1,
       title: "Drained and low energy",
-      empathy: "Rest is productive too. Your body and mind are telling you what they need.",
+      empathy: "Low energy means it's time to recharge, not push through. Schedule a 15-minute break every 90 minutes of focused work.",
       suggestions: [
         {
           type: 'tool',
@@ -110,7 +110,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: challenges.length + 1,
       title: "Stuck and frustrated",
-      empathy: "Creative blocks happen to everyone. This feeling is temporary, and you'll find your way through.",
+      empathy: "Creative blocks signal it's time to shift modes. Step away from the screen—take a walk, sketch, or talk through the problem.",
       suggestions: [
         {
           type: 'book',
@@ -144,7 +144,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: challenges.length + 1,
       title: "Riding creative momentum",
-      empathy: "You're in a great flow! This is the perfect time to amplify your creative work.",
+      empathy: "You're in flow—capitalize on it. Tackle your most challenging creative task while your energy is high.",
       suggestions: [
         {
           type: 'book',
@@ -173,7 +173,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: challenges.length + 1,
       title: "Scattered across too many tasks",
-      empathy: "Multitasking is hard, especially in creative work. It's okay to slow down and focus.",
+      empathy: "Multitasking drains focus. Prioritize 1 creative task at a time—your best work requires deep, uninterrupted attention.",
       suggestions: [
         {
           type: 'tool',
@@ -209,7 +209,7 @@ function getDefaultChallenges(): Challenge[] {
     {
       rank: 1,
       title: "Hard to start the day",
-      empathy: "Every designer faces this — the blank canvas of a new day can feel daunting.",
+      empathy: "Morning momentum is built, not found. Start with a 5-minute warm-up task to activate your creative brain.",
       suggestions: [
         {
           type: 'tool',
@@ -234,7 +234,7 @@ function getDefaultChallenges(): Challenge[] {
     {
       rank: 2,
       title: "Energy drops after lunch",
-      empathy: "Creative work takes real energy. It's normal to feel drained as the day goes on.",
+      empathy: "Afternoon slumps are predictable. Use this time for lighter tasks like organizing, reviewing, or admin work.",
       suggestions: [
         {
           type: 'tool',
@@ -259,7 +259,7 @@ function getDefaultChallenges(): Challenge[] {
     {
       rank: 3,
       title: "Self-doubt after feedback",
-      empathy: "Design feedback can be tough. Your work matters, and so does your creative voice.",
+      empathy: "Feedback is data, not judgment. Separate useful insights from noise—then iterate with confidence.",
       suggestions: [
         {
           type: 'book',
