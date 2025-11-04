@@ -104,7 +104,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                   onClick={() => toggleChallenge(challenge.rank)}
                   className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 hover:bg-white/5"
                   style={{
-                    border: isExpanded ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)',
+                    border: isExpanded ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
                     background: isExpanded ? 'rgba(239, 68, 68, 0.05)' : 'rgba(255, 255, 255, 0.02)'
                   }}
                 >
