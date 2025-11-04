@@ -133,13 +133,13 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
                 <button
                   key={option.value}
                   onClick={() => setGender(option.value)}
-                  className={`p-4 border transition-all duration-200 flex flex-col items-center gap-2 rounded-xl backdrop-blur-sm ${
+                  className={`px-4 py-3 border transition-all duration-200 flex items-center gap-3 rounded-lg backdrop-blur-sm ${
                     gender === option.value
                       ? 'border-[var(--md-sys-color-primary)] bg-[rgba(236,84,41,0.18)] shadow-[0_12px_30px_rgba(236,84,41,0.25)]'
                       : 'border-white/10 bg-[var(--md-sys-color-surface-container)] hover:border-white/20'
                   }`}
                 >
-                  <span className="text-2xl">{option.emoji}</span>
+                  <span className="text-xl">{option.emoji}</span>
                   <span className={`text-sm font-medium ${
                     gender === option.value ? 'text-[var(--md-sys-color-on-surface)]' : 'text-[var(--md-sys-color-on-surface-variant)]'
                   }`}>
