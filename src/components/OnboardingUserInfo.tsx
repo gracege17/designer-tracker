@@ -12,6 +12,7 @@ export interface UserProfileData {
   jobTitle: string
   gender: 'male' | 'female' | 'non-binary' | 'prefer-not-to-say'
   ageRange: '18-24' | '25-34' | '35-44' | '45-54' | '55-64' | '65+'
+  learningPreferences?: string[]
 }
 
 const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) => {

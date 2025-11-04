@@ -18,14 +18,12 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
       {/* Hero Section */}
       <div className="flex-grow flex flex-col items-center justify-center px-6 pt-12 pb-8">
         {/* App Icon / Logo */}
-        <div className="mb-8 relative">
-          <div className="w-24 h-24 flex items-center justify-center rounded-3xl bg-[var(--md-sys-color-surface-container-high)] border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-            <img 
-              src="/images/designer's logo.svg" 
-              alt="Designer's Life Tracker Logo" 
-              className="w-16 h-16"
-            />
-          </div>
+        <div className="mb-8">
+          <img 
+            src="/images/designer's logo.svg" 
+            alt="Designer's Life Tracker Logo" 
+            className="w-20 h-20"
+          />
         </div>
 
         {/* Welcome Text */}

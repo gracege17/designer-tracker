@@ -157,6 +157,7 @@ export interface UserProfile {
   name: string;
   jobTitle: string;
   gender: 'male' | 'female' | 'non-binary' | 'prefer-not-to-say';
+  learningPreferences?: string[];
   authMethod?: 'google' | 'facebook' | 'email' | 'guest';
   createdAt: Date;
   updatedAt: Date;

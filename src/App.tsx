@@ -18,6 +18,7 @@ import OnboardingAuth from './components/OnboardingAuth'
 import OnboardingUserInfo, { UserProfileData } from './components/OnboardingUserInfo'
 import OnboardingFirstProject from './components/OnboardingFirstProject'
 import OnboardingFirstEntry from './components/OnboardingFirstEntry'
+import OnboardingLearningPreference from './components/OnboardingLearningPreference'
 import LoadingScreen from './components/LoadingScreen'
 import { SuccessToast, Confetti } from './components/SuccessToast'
 import { Entry, Project, TaskType, EmotionLevel, Task } from './types'
@@ -30,7 +31,7 @@ import { mockProjects } from '../mock/mockProjects'
 // Enable mock data for testing insights
 const USE_MOCK_ENTRIES = true
 
-type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'overallFeeling' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings' | 'emotionDetail'
+type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingLearningPreference' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'overallFeeling' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings' | 'emotionDetail'
 
 type EmotionType = 'energized' | 'drained' | 'meaningful' | 'curious'
 
@@ -576,6 +577,12 @@ function App() {
     }
     UserProfileStorage.saveUserProfile(fullUserData)
     setUserProfile(userData)
+    setCurrentView('onboardingLearningPreference')
+  }
+
+  const handleLearningPreferenceComplete = (preferences: string[]) => {
+    UserProfileStorage.updateUserProfile({ learningPreferences: preferences })
+    setUserProfile(prev => prev ? { ...prev, learningPreferences: preferences } : prev)
     setCurrentView('onboardingFirstProject')
   }
 
@@ -625,6 +632,13 @@ function App() {
         return (
           <OnboardingUserInfo
             onComplete={handleUserInfoComplete}
+          />
+        )
+      case 'onboardingLearningPreference':
+        return (
+          <OnboardingLearningPreference
+            onComplete={handleLearningPreferenceComplete}
+            onBack={() => setCurrentView('onboardingUserInfo')}
           />
         )
       case 'onboardingFirstProject':
