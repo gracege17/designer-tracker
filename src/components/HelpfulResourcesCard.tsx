@@ -73,7 +73,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
               {/* Challenge Content */}
               <div className="p-6">
                 {/* Number Badge + Title + Description */}
-                <div className="flex items-start gap-4 mb-4">
+                <div className="flex items-start gap-4 mb-6">
                   {/* Number Badge - Rounded Square */}
                   <div 
                     className="flex-shrink-0 flex items-center justify-center bg-red-500/10 text-red-500"
@@ -98,6 +98,9 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                     </p>
                   </div>
                 </div>
+
+                {/* Border Line */}
+                <div className="border-t border-white/10 -mx-6 mb-6"></div>
 
                 {/* Ways to Cope Button */}
                 <button
