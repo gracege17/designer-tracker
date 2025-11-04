@@ -28,26 +28,10 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
   const [expandedChallenge, setExpandedChallenge] = useState<number | null>(null)
 
   const badgeStyles = [
-    {
-      background: 'rgba(239, 68, 68, 0.22)',
-      border: '1px solid rgba(239, 68, 68, 0.45)',
-      color: '#FECACA'
-    },
-    {
-      background: 'rgba(45, 212, 191, 0.22)',
-      border: '1px solid rgba(45, 212, 191, 0.4)',
-      color: '#A7F3D0'
-    },
-    {
-      background: 'rgba(59, 130, 246, 0.22)',
-      border: '1px solid rgba(59, 130, 246, 0.4)',
-      color: '#BFDBFE'
-    },
-    {
-      background: 'rgba(250, 204, 21, 0.22)',
-      border: '1px solid rgba(250, 204, 21, 0.4)',
-      color: '#FDE68A'
-    }
+    { color: '#F87171' },
+    { color: '#2DD4BF' },
+    { color: '#60A5FA' },
+    { color: '#FACC15' }
   ]
 
   // Get icon for suggestion type
@@ -100,18 +84,12 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                 <div className="flex items-start gap-4">
                   {/* Number Badge */}
                   <div 
-                    className="flex-shrink-0 flex items-center justify-center"
-                    style={{
-                      width: '56px',
-                      height: '56px',
-                      borderRadius: '16px',
-                      background: badgeStyle.background,
-                      border: badgeStyle.border,
-                      color: badgeStyle.color,
-                      backdropFilter: 'blur(12px)'
-                    }}
+                    className="flex-shrink-0"
                   >
-                    <span className="text-[22px] font-semibold">
+                    <span
+                      className="text-[22px] font-semibold"
+                      style={{ color: badgeStyle.color }}
+                    >
                       {challenge.rank}
                     </span>
                   </div>
@@ -175,7 +153,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                       }}
                     >
                       {/* Icon */}
-                      <div className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-2xl bg-white/10 text-[22px]">
+                      <div className="flex-shrink-0 text-[22px]">
                         {getSuggestionIcon(suggestion.type)}
                       </div>
 
