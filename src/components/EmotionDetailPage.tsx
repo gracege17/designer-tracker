@@ -182,21 +182,16 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
       {/* Header */}
       <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-sm border-b border-white/10">
         <div className="max-w-2xl mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between">
             <button
               onClick={onBack}
               className="p-2 -ml-2 hover:bg-white/5 rounded-lg transition-colors"
             >
               <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
             </button>
-            <div className="flex-1">
-              <h1 className="text-[20px] font-bold text-[#E6E1E5] leading-tight">
-                {config.label}
-              </h1>
-              <p className="text-[12px] text-[#938F99] mt-0.5">
-                {getWeekRange()}
-              </p>
-            </div>
+            <p className="text-[14px] text-[#938F99]">
+              {getWeekRange()}
+            </p>
           </div>
         </div>
       </header>
