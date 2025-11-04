@@ -200,13 +200,19 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8]">
+    <div className="min-h-screen flex flex-col bg-[var(--md-sys-color-surface)] text-[var(--md-sys-color-on-surface)]">
       {/* Chat Messages */}
       <div className="flex-grow overflow-y-auto px-6 py-8 space-y-4">
         {messages.map((message, index) => (
           <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] ${message.type === 'user' ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'} px-5 py-4 shadow-sm`}
-                 style={{ borderRadius: message.type === 'user' ? '16px 16px 0 16px' : '16px 16px 16px 0' }}>
+            <div
+              className={`max-w-[85%] px-5 py-4 shadow-[0_16px_44px_rgba(0,0,0,0.35)] border ${
+                message.type === 'user'
+                  ? 'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] border-[var(--md-sys-color-primary)]'
+                  : 'bg-[var(--md-sys-color-surface-container)] text-[var(--md-sys-color-on-surface)] border-white/5'
+              }`}
+              style={{ borderRadius: message.type === 'user' ? '16px 16px 0 16px' : '16px 16px 16px 0' }}
+            >
               <p className="text-[15px] leading-relaxed whitespace-pre-line">
                 {message.content}
               </p>
@@ -227,25 +233,24 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
 
       {/* Input Area */}
       <div className="px-6 pb-8">
-        <div className="flex items-center gap-3 bg-white p-2 shadow-sm" style={{ borderRadius: '24px' }}>
+        <div className="flex items-center gap-3 bg-[var(--md-sys-color-surface-container-high)] border border-white/10 p-2 shadow-[0_18px_44px_rgba(0,0,0,0.35)]" style={{ borderRadius: '24px' }}>
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Type your projects or 'skip'..."
-            className="flex-1 px-4 py-3 bg-transparent text-slate-900 text-[15px] outline-none placeholder:text-slate-400"
+            className="flex-1 px-4 py-3 bg-transparent text-[var(--md-sys-color-on-surface)] text-[15px] outline-none placeholder:text-[var(--md-sys-color-on-surface-variant)]"
             autoFocus
           />
           <button
             onClick={handleSendMessage}
             disabled={!inputValue.trim()}
-            className={`p-3 transition-all ${
+            className={`p-3 transition-all rounded-full ${
               inputValue.trim()
-                ? 'text-slate-900 hover:bg-slate-100 active:scale-95'
-                : 'text-slate-300 cursor-not-allowed'
+                ? 'text-[var(--md-sys-color-on-surface)] hover:bg-white/10 active:scale-95'
+                : 'text-white/30 cursor-not-allowed'
             }`}
-            style={{ borderRadius: '50%' }}
             aria-label="Send message"
           >
             <PaperPlaneRight size={20} weight="bold" />

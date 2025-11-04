@@ -22,7 +22,7 @@ export default function Input({
     <div className={`mb-4 ${className}`}>
       {/* Label */}
       {label && (
-        <label className="text-sm font-medium text-slate-700 mb-2 block transition-colors duration-200">
+        <label className="text-sm font-medium text-[var(--md-sys-color-on-surface-variant)] mb-2 block transition-colors duration-200">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -33,16 +33,16 @@ export default function Input({
         className={`
           px-4 py-4
           border rounded-xl
-          bg-white
-          text-slate-900
+          bg-[var(--md-sys-color-surface-container-high)]
+          text-[var(--md-sys-color-on-surface)]
           font-body text-body-md
           w-full
           transition-all duration-300 ease-out
           focus:outline-none
-          placeholder:text-slate-400
+          placeholder:text-[var(--md-sys-color-on-surface-variant)]
           ${hasError 
-            ? 'border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-100' 
-            : 'border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 hover:border-slate-300'
+            ? 'border-red-400 focus:border-red-400 focus:ring-4 focus:ring-red-500/20' 
+            : 'border-[var(--md-sys-color-outline)] focus:border-[var(--md-sys-color-primary)] focus:ring-4 focus:ring-[rgba(236,84,41,0.25)] hover:border-[var(--md-sys-color-outline-variant)]'
           }
         `}
         required={required}
@@ -58,7 +58,7 @@ export default function Input({
 
       {/* Helper Text */}
       {helperText && !error && (
-        <span className="text-xs text-slate-500 mt-1.5 block">
+        <span className="text-xs text-[var(--md-sys-color-on-surface-variant)] mt-1.5 block">
           {helperText}
         </span>
       )}

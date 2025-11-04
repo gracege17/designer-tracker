@@ -61,14 +61,14 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
   ]
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFF9F8]">
+    <div className="min-h-screen flex flex-col bg-[var(--md-sys-color-surface)] text-[var(--md-sys-color-on-surface)]">
       {/* Progress Indicator */}
       <div className="px-6 pt-6 pb-4">
         <div className="flex items-center gap-2">
-          <div className="h-2 flex-1 bg-[#FFD678]" style={{ borderRadius: '0 8px 0 0' }}></div>
-          <div className="h-2 flex-1 bg-slate-200" style={{ borderRadius: '0 8px 0 0' }}></div>
-          <div className="h-2 flex-1 bg-slate-200" style={{ borderRadius: '0 8px 0 0' }}></div>
-          <div className="h-2 flex-1 bg-slate-200" style={{ borderRadius: '0 8px 0 0' }}></div>
+          <div className="h-2 flex-1 rounded-full bg-[var(--md-sys-color-primary)] shadow-[0_8px_20px_rgba(236,84,41,0.35)]"></div>
+          <div className="h-2 flex-1 rounded-full bg-white/10"></div>
+          <div className="h-2 flex-1 rounded-full bg-white/10"></div>
+          <div className="h-2 flex-1 rounded-full bg-white/10"></div>
         </div>
       </div>
 
@@ -76,16 +76,16 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
       <div className="flex-grow px-6 py-8">
         {/* Icon */}
         <div className="mb-6">
-          <div className="w-16 h-16 bg-[#AF52DE] flex items-center justify-center mx-auto" style={{ borderRadius: '0 16px 0 0' }}>
-            <User size={32} weight="regular" className="text-slate-900" />
+          <div className="w-16 h-16 bg-[rgba(175,82,222,0.2)] flex items-center justify-center mx-auto" style={{ borderRadius: '0 16px 0 0' }}>
+            <User size={32} weight="regular" className="text-[#E0B3FF]" />
           </div>
         </div>
 
         {/* Title & Description */}
-        <h2 className="text-[28px] font-bold text-slate-900 mb-3 text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
+        <h2 className="text-[28px] font-bold text-[var(--md-sys-color-on-surface)] mb-3 text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
           A bit about you
         </h2>
-        <p className="text-[16px] text-slate-700 text-center mb-8 leading-relaxed">
+        <p className="text-[16px] text-[var(--md-sys-color-on-surface-variant)] text-center mb-8 leading-relaxed">
           This helps us give you better insights.
         </p>
 
@@ -118,14 +118,14 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
               placeholder="e.g., Product Designer"
               error={errors.jobTitle}
             />
-            <p className="text-xs text-slate-500 mt-1 ml-1">
+            <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] mt-1 ml-1">
               This helps give you relevant insights.
             </p>
           </div>
 
           {/* Gender Selection */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-3">
+            <label className="block text-sm font-medium text-[var(--md-sys-color-on-surface-variant)] mb-3">
               Gender (Optional)
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -133,30 +133,29 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
                 <button
                   key={option.value}
                   onClick={() => setGender(option.value)}
-                  className={`p-4 border transition-all duration-200 flex flex-col items-center gap-2 ${
+                  className={`p-4 border transition-all duration-200 flex flex-col items-center gap-2 rounded-xl backdrop-blur-sm ${
                     gender === option.value
-                      ? 'border-slate-900 bg-[#FFD678]'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      ? 'border-[var(--md-sys-color-primary)] bg-[rgba(236,84,41,0.18)] shadow-[0_12px_30px_rgba(236,84,41,0.25)]'
+                      : 'border-white/10 bg-[var(--md-sys-color-surface-container)] hover:border-white/20'
                   }`}
-                  style={{ borderRadius: '0 16px 0 0' }}
                 >
                   <span className="text-2xl">{option.emoji}</span>
                   <span className={`text-sm font-medium ${
-                    gender === option.value ? 'text-slate-900' : 'text-slate-600'
+                    gender === option.value ? 'text-[var(--md-sys-color-on-surface)]' : 'text-[var(--md-sys-color-on-surface-variant)]'
                   }`}>
                     {option.label}
                   </span>
                 </button>
               ))}
             </div>
-            <p className="text-xs text-slate-500 mt-2 ml-1">
+            <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] mt-2 ml-1">
               Used for analytics and personalization only
             </p>
           </div>
 
           {/* Age Range */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-slate-700 mb-3 ml-1">
+            <label className="block text-sm font-medium text-[var(--md-sys-color-on-surface-variant)] mb-3 ml-1">
               Age Range
             </label>
             <div className="grid grid-cols-3 gap-3">
@@ -164,15 +163,14 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
                 <button
                   key={option.value}
                   onClick={() => setAgeRange(option.value)}
-                  className={`p-3 border transition-all duration-200 flex items-center justify-center ${
+                  className={`p-3 border transition-all duration-200 flex items-center justify-center rounded-xl ${
                     ageRange === option.value
-                      ? 'border-slate-900 bg-[#FFD678]'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      ? 'border-[var(--md-sys-color-primary)] bg-[rgba(236,84,41,0.18)] shadow-[0_8px_24px_rgba(236,84,41,0.2)]'
+                      : 'border-white/10 bg-[var(--md-sys-color-surface-container)] hover:border-white/20'
                   }`}
-                  style={{ borderRadius: '0 16px 0 0' }}
                 >
                   <span className={`text-sm font-medium ${
-                    ageRange === option.value ? 'text-slate-900' : 'text-slate-600'
+                    ageRange === option.value ? 'text-[var(--md-sys-color-on-surface)]' : 'text-[var(--md-sys-color-on-surface-variant)]'
                   }`}>
                     {option.label}
                   </span>
@@ -183,9 +181,9 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
         </div>
 
         {/* Privacy Notice */}
-        <div className="mt-8 max-w-md mx-auto bg-white p-4 border border-slate-200" style={{ borderRadius: '0 24px 0 0' }}>
-          <p className="text-xs text-slate-700 text-center">
-            🔒 <span className="font-semibold">Your privacy matters.</span> Everything stays on your device. You can update this anytime in settings.
+        <div className="mt-8 max-w-md mx-auto bg-[var(--md-sys-color-surface-container-high)] p-4 border border-white/10" style={{ borderRadius: '0 24px 0 0' }}>
+          <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] text-center">
+            🔒 <span className="font-semibold text-[var(--md-sys-color-on-surface)]">Your privacy matters.</span> Everything stays on your device. You can update this anytime in settings.
           </p>
         </div>
       </div>
@@ -195,10 +193,10 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
         <button
           onClick={handleContinue}
           disabled={!name.trim() || !jobTitle.trim()}
-          className={`w-full bg-[#EC5429] text-white font-bold py-2 px-4 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 hover:bg-[#F76538] ${
+          className={`w-full font-semibold py-3 px-4 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 rounded-2xl ${
             !name.trim() || !jobTitle.trim()
-              ? 'bg-[#999] cursor-not-allowed'
-              : 'hover:bg-slate-900 active:scale-[0.98]'
+              ? 'bg-white/10 text-white/40 cursor-not-allowed'
+              : 'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] shadow-[0_18px_44px_rgba(236,84,41,0.4)] hover:bg-[var(--md-sys-color-primary-hover)] active:scale-[0.98]'
           }`}
         >
           <span>Continue</span>
