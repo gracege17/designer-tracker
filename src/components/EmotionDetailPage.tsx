@@ -188,8 +188,7 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
             {config.label}
           </h2>
           <p className="text-[14px] text-[#938F99]">
-            {relevantEntries.length} {relevantEntries.length === 1 ? 'entry' : 'entries'} this week 
-            {totalEntriesThisWeek > 0 && ` (out of ${totalEntriesThisWeek})`}
+            {relevantTasks.length} {relevantTasks.length === 1 ? 'task' : 'tasks'} this week
           </p>
         </div>
 
