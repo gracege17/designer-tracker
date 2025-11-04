@@ -131,7 +131,7 @@ const EntryList: React.FC<EntryListProps> = ({
                         </div>
 
                         {/* Content Section */}
-                        <div className="flex-1 min-w-0 pt-1">
+                        <div className="flex-1 min-w-0 pb-1">
                           {/* Task Content */}
                           <div className="space-y-2">
                             {entry.tasks.slice(0, 3).map((task, index) => (
