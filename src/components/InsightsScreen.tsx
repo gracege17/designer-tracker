@@ -296,8 +296,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
 
         {/* Insight Cards - Moved from Dashboard */}
         {(() => {
-          // Get all tasks from history
-          const allTasks = entries.length > 0 ? entries.flatMap(entry => entry.tasks) : []
+          // Get tasks from current time range (week or month)
+          const allTasks = currentEntries.length > 0 ? currentEntries.flatMap(entry => entry.tasks) : []
           
           // Helper function to get emotions array from task
           const getEmotions = (task: any): number[] => {
