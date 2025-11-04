@@ -38,17 +38,6 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
     }
   }
 
-  // Get type label
-  const getTypeLabel = (type: string): string => {
-    switch (type) {
-      case 'tool': return 'TOOL'
-      case 'podcast': return 'PODCAST'
-      case 'book': return 'BOOK'
-      case 'resource': return 'RESOURCE'
-      default: return type.toUpperCase()
-    }
-  }
-
   const toggleChallenge = (rank: number) => {
     setExpandedChallenge(expandedChallenge === rank ? null : rank)
   }
@@ -165,19 +154,9 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2 mb-1">
-                          <h4 className="text-[15px] font-semibold text-white leading-snug group-hover:text-red-500 transition-colors">
-                            {suggestion.title}
-                          </h4>
-                          <span 
-                            className="flex-shrink-0 px-2 py-0.5 text-[10px] font-bold text-red-500 uppercase tracking-wider rounded"
-                            style={{
-                              background: 'rgba(239, 68, 68, 0.1)'
-                            }}
-                          >
-                            {getTypeLabel(suggestion.type)}
-                          </span>
-                        </div>
+                        <h4 className="text-[15px] font-semibold text-white leading-snug mb-1 group-hover:text-red-500 transition-colors">
+                          {suggestion.title}
+                        </h4>
                         <p className="text-[13px] text-[#938F99] leading-relaxed">
                           {suggestion.desc}
                         </p>
