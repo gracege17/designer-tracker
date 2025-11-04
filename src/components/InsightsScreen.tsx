@@ -366,6 +366,24 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             })
             .slice(0, 3)
           
+          // Calculate task counts for each emotion category
+          const energyTasks = allTasks.filter(task => {
+            const emotions = getEmotions(task)
+            return emotions.some(e => energyEmotions.includes(e))
+          })
+          const drainingTasks = allTasks.filter(task => {
+            const emotions = getEmotions(task)
+            return emotions.some(e => drainingEmotions.includes(e))
+          })
+          const meaningfulTasks = allTasks.filter(task => {
+            const emotions = getEmotions(task)
+            return emotions.some(e => meaningfulEmotions.includes(e))
+          })
+          const passionTasks = allTasks.filter(task => {
+            const emotions = getEmotions(task)
+            return emotions.some(e => passionEmotions.includes(e))
+          })
+          
           return (
             <>
               {/* Week's Reflection Card */}
@@ -439,14 +457,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   </h3>
                   
                   {/* Summary Tag (center, main focus) */}
-                  {energyProjects.length > 0 ? (
+                  {energyTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
                       {(() => {
-                        const energyTasks = allTasks.filter(task => {
-                          const emotions = getEmotions(task)
-                          return emotions.some(e => energyEmotions.includes(e))
-                        })
-                        
                         const summaryTags = generateSummaryTags(energyTasks).slice(0, 1)
                         
                         return (
@@ -464,9 +477,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     </div>
                   )}
                   
-                  {/* Entry count (bottom) */}
+                  {/* Task count (bottom) */}
                   <p className="text-[11px] text-[#938F99]">
-                    {energyProjects.length} {energyProjects.length === 1 ? 'entry' : 'entries'}
+                    {energyTasks.length} {energyTasks.length === 1 ? 'task' : 'tasks'}
                   </p>
                 </div>
               </div>
@@ -484,14 +497,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   </h3>
                   
                   {/* Summary Tag (center, main focus) */}
-                  {drainingProjects.length > 0 ? (
+                  {drainingTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
                       {(() => {
-                        const drainingTasks = allTasks.filter(task => {
-                          const emotions = getEmotions(task)
-                          return emotions.some(e => drainingEmotions.includes(e))
-                        })
-                        
                         const summaryTags = generateSummaryTags(drainingTasks).slice(0, 1)
                         
                         return (
@@ -509,9 +517,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     </div>
                   )}
                   
-                  {/* Entry count (bottom) */}
+                  {/* Task count (bottom) */}
                   <p className="text-[11px] text-[#938F99]">
-                    {drainingProjects.length} {drainingProjects.length === 1 ? 'entry' : 'entries'}
+                    {drainingTasks.length} {drainingTasks.length === 1 ? 'task' : 'tasks'}
                   </p>
                 </div>
               </div>
@@ -529,14 +537,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   </h3>
                   
                   {/* Summary Tag (center, main focus) */}
-                  {meaningfulProjects.length > 0 ? (
+                  {meaningfulTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
                       {(() => {
-                        const meaningfulTasks = allTasks.filter(task => {
-                          const emotions = getEmotions(task)
-                          return emotions.some(e => meaningfulEmotions.includes(e))
-                        })
-                        
                         const summaryTags = generateSummaryTags(meaningfulTasks).slice(0, 1)
                         
                         return (
@@ -554,9 +557,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     </div>
                   )}
                   
-                  {/* Entry count (bottom) */}
+                  {/* Task count (bottom) */}
                   <p className="text-[11px] text-[#938F99]">
-                    {meaningfulProjects.length} {meaningfulProjects.length === 1 ? 'entry' : 'entries'}
+                    {meaningfulTasks.length} {meaningfulTasks.length === 1 ? 'task' : 'tasks'}
                   </p>
                 </div>
               </div>
@@ -574,14 +577,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   </h3>
                   
                   {/* Summary Tag (center, main focus) */}
-                  {passionProjects.length > 0 ? (
+                  {passionTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
                       {(() => {
-                        const passionTasks = allTasks.filter(task => {
-                          const emotions = getEmotions(task)
-                          return emotions.some(e => passionEmotions.includes(e))
-                        })
-                        
                         const summaryTags = generateSummaryTags(passionTasks).slice(0, 1)
                         
                         return (
@@ -599,9 +597,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     </div>
                   )}
                   
-                  {/* Entry count (bottom) */}
+                  {/* Task count (bottom) */}
                   <p className="text-[11px] text-[#938F99]">
-                    {passionProjects.length} {passionProjects.length === 1 ? 'entry' : 'entries'}
+                    {passionTasks.length} {passionTasks.length === 1 ? 'task' : 'tasks'}
                   </p>
                 </div>
               </div>
