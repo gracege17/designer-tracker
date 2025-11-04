@@ -160,6 +160,23 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
     }
   }
 
+  // Get current week date range
+  const getWeekRange = () => {
+    const today = new Date()
+    const dayOfWeek = today.getDay() // 0 = Sunday, 1 = Monday, etc.
+    const startOfWeek = new Date(today)
+    startOfWeek.setDate(today.getDate() - dayOfWeek)
+    
+    const endOfWeek = new Date(startOfWeek)
+    endOfWeek.setDate(startOfWeek.getDate() + 6)
+    
+    const formatWeekDate = (date: Date) => {
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    }
+    
+    return `${formatWeekDate(startOfWeek)} - ${formatWeekDate(endOfWeek)}`
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
@@ -172,9 +189,14 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
             >
               <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
             </button>
-            <h1 className="text-[20px] font-bold text-[#E6E1E5]">
-              {config.label} Details
-            </h1>
+            <div className="flex-1">
+              <h1 className="text-[20px] font-bold text-[#E6E1E5] leading-tight">
+                {config.label}
+              </h1>
+              <p className="text-[12px] text-[#938F99] mt-0.5">
+                {getWeekRange()}
+              </p>
+            </div>
           </div>
         </div>
       </header>
