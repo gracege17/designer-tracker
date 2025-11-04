@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Lightbulb, CaretUp, CaretDown } from 'phosphor-react'
+import { CaretDown } from 'phosphor-react'
 import { Challenge } from '../utils/challengeAnalysisService'
 
 interface HelpfulResourcesCardProps {
@@ -16,9 +16,9 @@ interface HelpfulResourcesCardProps {
  * 
  * Features:
  * - Expandable accordion layout for each challenge
- * - Numbered challenge cards
+ * - Numbered challenge cards with cleaner design
  * - "Ways to cope" sections with actionable strategies
- * - Uses app's color scheme and design system
+ * - Staggered animations and smooth interactions
  */
 const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({ 
   challenges,
@@ -30,11 +30,22 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
   // Get icon for suggestion type
   const getSuggestionIcon = (type: string): string => {
     switch (type) {
-      case 'tool': return '🔧'
-      case 'podcast': return '🎙️'
-      case 'book': return '📖'
+      case 'tool': return '🛠️'
+      case 'podcast': return '🎧'
+      case 'book': return '📚'
       case 'resource': return '💡'
       default: return '💡'
+    }
+  }
+
+  // Get type label
+  const getTypeLabel = (type: string): string => {
+    switch (type) {
+      case 'tool': return 'TOOL'
+      case 'podcast': return 'PODCAST'
+      case 'book': return 'BOOK'
+      case 'resource': return 'RESOURCE'
+      default: return type.toUpperCase()
     }
   }
 
@@ -46,11 +57,11 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
     <div className="w-full mb-6">
       {/* Header */}
       <div className="mb-4">
-        <h2 className="text-[28px] font-bold text-white leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
+        <h2 className="text-[20px] font-bold text-[#E6E1E5] leading-tight mb-1">
           {title}
         </h2>
         {subtitle && (
-          <p className="text-[14px] font-normal text-[#CAC4D0] mt-2 leading-relaxed">
+          <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
             {subtitle}
           </p>
         )}
@@ -58,44 +69,42 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
 
       {/* Challenge Cards */}
       <div className="space-y-3">
-        {challenges.map((challenge) => {
+        {challenges.map((challenge, index) => {
           const isExpanded = expandedChallenge === challenge.rank
           
           return (
             <div
               key={challenge.rank}
-              className="bg-white/[0.04] overflow-hidden transition-all duration-300"
-              style={{ borderRadius: '16px' }}
+              className="bg-neutral-950/50 border border-white/5 overflow-hidden transition-all duration-300 hover:border-white/10"
+              style={{ 
+                borderRadius: '16px',
+                animation: `fadeInUp 0.4s ease-out ${index * 0.1}s both`
+              }}
             >
-              {/* Challenge Header */}
-              <div className="p-5">
-                {/* Number Badge and Title */}
-                <div className="flex items-start gap-4 mb-3">
+              {/* Challenge Content */}
+              <div className="p-6">
+                {/* Number Badge + Title + Description */}
+                <div className="flex items-start gap-4 mb-4">
+                  {/* Number Badge - Rounded Square */}
                   <div 
-                    className="flex-shrink-0 flex items-center justify-center"
+                    className="flex-shrink-0 flex items-center justify-center bg-red-500/10 text-red-500"
                     style={{
                       width: '48px',
                       height: '48px',
                       borderRadius: '12px',
-                      background: 'rgba(236, 84, 41, 0.1)'
                     }}
                   >
-                    <span 
-                      className="text-[32px] font-bold"
-                      style={{ 
-                        fontFamily: 'Playfair Display, serif',
-                        color: '#EC5429'
-                      }}
-                    >
+                    <span className="text-[24px] font-bold">
                       {challenge.rank}
                     </span>
                   </div>
                   
-                  <div className="flex-1">
-                    <h3 className="text-[18px] font-semibold text-white leading-snug mb-2">
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-[17px] font-semibold text-white leading-snug mb-2">
                       {challenge.title}
                     </h3>
-                    <p className="text-[14px] text-[#CAC4D0] leading-relaxed">
+                    <p className="text-[14px] text-[#938F99] leading-relaxed">
                       {challenge.empathy}
                     </p>
                   </div>
@@ -104,46 +113,44 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                 {/* Ways to Cope Button */}
                 <button
                   onClick={() => toggleChallenge(challenge.rank)}
-                  className="w-full flex items-center justify-between p-4 rounded-xl transition-all duration-200 hover:bg-white/[0.04]"
+                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 hover:bg-white/5"
                   style={{
-                    border: isExpanded ? '2px solid #EC5429' : '2px solid rgba(236, 84, 41, 0.3)',
-                    background: isExpanded ? 'rgba(236, 84, 41, 0.05)' : 'transparent'
+                    border: isExpanded ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)',
+                    background: isExpanded ? 'rgba(239, 68, 68, 0.05)' : 'rgba(255, 255, 255, 0.02)'
                   }}
                 >
-                  <div className="flex items-center gap-3">
-                    <Lightbulb 
-                      size={20} 
-                      weight="fill" 
-                      className="text-[#F4C95D]"
-                    />
-                    <span className="text-[16px] font-medium text-white">
-                      Ways to cope
-                    </span>
-                  </div>
+                  <span className="text-[15px] font-medium text-white">
+                    💡 Ways to cope
+                  </span>
                   
-                  {isExpanded ? (
-                    <CaretUp size={20} weight="bold" className="text-[#EC5429]" />
-                  ) : (
-                    <CaretDown size={20} weight="bold" className="text-[#EC5429]" />
-                  )}
+                  <CaretDown 
+                    size={20} 
+                    weight="bold" 
+                    className="transition-transform duration-300"
+                    style={{
+                      color: '#ef4444',
+                      transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+                    }}
+                  />
                 </button>
               </div>
 
-              {/* Expandable Suggestions Section */}
+              {/* Expandable Resource Cards */}
               {isExpanded && (
                 <div 
-                  className="px-5 pb-5 space-y-3 animate-fade-in"
+                  className="px-6 pb-6 space-y-2.5"
                   style={{
-                    animation: 'fadeIn 0.3s ease-in-out'
+                    animation: 'fadeIn 0.3s ease-out'
                   }}
                 >
                   {challenge.suggestions.map((suggestion, suggestionIndex) => (
                     <div
                       key={suggestionIndex}
-                      className="flex items-start gap-4 p-4 rounded-xl cursor-pointer hover:bg-white/[0.02] transition-all"
+                      className="group flex items-start gap-3.5 p-4 rounded-xl transition-all duration-200 cursor-pointer hover:bg-white/5"
                       style={{
                         background: 'rgba(255, 255, 255, 0.02)',
-                        border: '1px solid rgba(255, 255, 255, 0.05)'
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        animation: `fadeInUp 0.3s ease-out ${suggestionIndex * 0.1}s both`
                       }}
                       onClick={() => {
                         if (suggestion.url) {
@@ -151,30 +158,27 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                         }
                       }}
                     >
-                      {/* Suggestion Icon */}
-                      <div 
-                        className="flex-shrink-0 flex items-center justify-center"
-                        style={{
-                          width: '40px',
-                          height: '40px',
-                          borderRadius: '10px',
-                          background: 'rgba(236, 84, 41, 0.1)'
-                        }}
-                      >
-                        <span className="text-[24px]">{getSuggestionIcon(suggestion.type)}</span>
+                      {/* Icon */}
+                      <div className="flex-shrink-0 text-[28px] mt-0.5">
+                        {getSuggestionIcon(suggestion.type)}
                       </div>
 
-                      {/* Suggestion Content */}
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="text-[16px] font-semibold text-white">
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <h4 className="text-[15px] font-semibold text-white leading-snug group-hover:text-red-500 transition-colors">
                             {suggestion.title}
                           </h4>
-                          <span className="text-[11px] text-[#EC5429] uppercase font-medium tracking-wide">
-                            {suggestion.type}
+                          <span 
+                            className="flex-shrink-0 px-2 py-0.5 text-[10px] font-bold text-red-500 uppercase tracking-wider rounded"
+                            style={{
+                              background: 'rgba(239, 68, 68, 0.1)'
+                            }}
+                          >
+                            {getTypeLabel(suggestion.type)}
                           </span>
                         </div>
-                        <p className="text-[14px] text-[#CAC4D0] leading-relaxed">
+                        <p className="text-[13px] text-[#938F99] leading-relaxed">
                           {suggestion.desc}
                         </p>
                       </div>
@@ -186,9 +190,31 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
           )
         })}
       </div>
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   )
 }
 
 export default HelpfulResourcesCard
-
