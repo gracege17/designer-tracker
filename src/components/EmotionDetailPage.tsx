@@ -210,16 +210,18 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
         </div>
 
         {/* 2. Insight Card */}
-        <div className="bg-white/[0.04] p-6 rounded-2xl border border-white/10">
-          <div className="flex items-start gap-3 mb-4">
-            <span className={`text-[16px] ${config.textColor}`}>✨</span>
-            <h3 className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider">
-              Insight
-            </h3>
+        <div 
+          className="bg-white/[0.04] p-[20px]"
+          style={{ borderRadius: '8px' }}
+        >
+          <div className="flex flex-col gap-3">
+            <h2 className="text-[20px] font-bold text-[#E6E1E5]">
+              ✨ Insight
+            </h2>
+            <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+              {insightPattern}
+            </p>
           </div>
-          <p className="text-[15px] text-white leading-relaxed">
-            {insightPattern}
-          </p>
         </div>
 
         {/* 3. Top Triggers */}
