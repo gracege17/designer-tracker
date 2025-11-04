@@ -227,11 +227,11 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
           </div>
         )}
 
-        {/* 4. Related Entries */}
+        {/* 4. Related Tasks */}
         {relevantTasks.length > 0 && (
           <div>
             <h3 className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider mb-4">
-              Related Entries
+              Related Tasks
             </h3>
             <div className="space-y-3">
               {relevantTasks.map((task, index) => (
