@@ -57,40 +57,40 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
       </div>
 
       {/* Challenge Cards */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {challenges.map((challenge, index) => {
           const isExpanded = expandedChallenge === challenge.rank
           
           return (
             <div
               key={challenge.rank}
-              className="bg-neutral-950/50 border border-white/5 overflow-hidden transition-all duration-300 hover:border-white/10"
+              className="bg-white/[0.04] overflow-hidden transition-all duration-300"
               style={{ 
-                borderRadius: '16px',
+                borderRadius: '12px',
                 animation: `fadeInUp 0.4s ease-out ${index * 0.1}s both`
               }}
             >
               {/* Challenge Content */}
-              <div className="p-6">
+              <div className="p-5">
                 {/* Number Badge + Title + Description */}
-                <div className="flex items-start gap-4 mb-6">
-                  {/* Number Badge - Rounded Square */}
+                <div className="flex items-start gap-4 mb-5">
+                  {/* Number Badge - Circle */}
                   <div 
-                    className="flex-shrink-0 flex items-center justify-center bg-red-500/10 text-red-500"
+                    className="flex-shrink-0 flex items-center justify-center bg-white text-black"
                     style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '12px',
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '50%',
                     }}
                   >
-                    <span className="text-[24px] font-bold">
+                    <span className="text-[28px] font-bold">
                       {challenge.rank}
                     </span>
                   </div>
                   
                   {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-[17px] font-semibold text-white leading-snug mb-2">
+                  <div className="flex-1 min-w-0 pt-1">
+                    <h3 className="text-[18px] font-bold text-white leading-tight mb-2">
                       {challenge.title}
                     </h3>
                     <p className="text-[14px] text-[#938F99] leading-relaxed">
@@ -99,19 +99,17 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                   </div>
                 </div>
 
-                {/* Border Line */}
-                <div className="border-t border-white/10 -mx-6 mb-6"></div>
-
                 {/* Ways to Cope Button */}
                 <button
                   onClick={() => toggleChallenge(challenge.rank)}
-                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 hover:bg-white/5"
+                  className="w-full flex items-center justify-between px-5 py-4 transition-all duration-200"
                   style={{
-                    border: isExpanded ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid rgba(255, 255, 255, 0.1)',
-                    background: isExpanded ? 'rgba(239, 68, 68, 0.05)' : 'rgba(255, 255, 255, 0.02)'
+                    borderRadius: '8px',
+                    background: isExpanded ? '#ef4444' : '#27272a',
+                    color: isExpanded ? '#ffffff' : '#e4e4e7'
                   }}
                 >
-                  <span className="text-[15px] font-medium text-white">
+                  <span className="text-[16px] font-semibold">
                     💡 Ways to cope
                   </span>
                   
@@ -120,7 +118,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                     weight="bold" 
                     className="transition-transform duration-300"
                     style={{
-                      color: '#ef4444',
+                      color: isExpanded ? '#ffffff' : '#71717a',
                       transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
                     }}
                   />
