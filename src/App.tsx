@@ -164,7 +164,16 @@ function App() {
   }
 
   const handleStartAddEntry = () => {
-    setCurrentView('overallFeeling')
+    // Check if user has already logged something today
+    const todayDate = getTodayDateString()
+    const todayEntry = entries.find(entry => entry.date === todayDate)
+    
+    // If they already have tasks today, skip OverallFeeling and go straight to project selection
+    if (todayEntry && todayEntry.tasks.length > 0) {
+      setCurrentView('projectSelection')
+    } else {
+      setCurrentView('overallFeeling')
+    }
   }
 
   const handleOverallFeelingComplete = (feelingScore: number) => {
