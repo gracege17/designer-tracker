@@ -54,7 +54,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: 1,
       title: "Stressed about deadlines",
-      empathy: "Deadline anxiety is a signal to break work into smaller, concrete steps. Focus on completing one milestone at a time.",
+      empathy: "Break it down. One milestone at a time.",
       suggestions: [
         {
           type: 'tool',
@@ -82,7 +82,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: challenges.length + 1,
       title: "Drained and low energy",
-      empathy: "Low energy means it's time to recharge, not push through. Schedule a 15-minute break every 90 minutes of focused work.",
+      empathy: "Recharge, don't push through. Take breaks every 90 minutes.",
       suggestions: [
         {
           type: 'tool',
@@ -110,7 +110,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: challenges.length + 1,
       title: "Stuck and frustrated",
-      empathy: "Creative blocks signal it's time to shift modes. Step away from the screen—take a walk, sketch, or talk through the problem.",
+      empathy: "Step away from the screen. Walk, sketch, talk it through.",
       suggestions: [
         {
           type: 'book',
@@ -144,7 +144,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     challenges.push({
       rank: challenges.length + 1,
       title: "Riding creative momentum",
-      empathy: "You're in flow—capitalize on it. Tackle your most challenging creative task while your energy is high.",
+      empathy: "You're in flow. Tackle your hardest task now.",
       suggestions: [
         {
           type: 'book',
@@ -209,7 +209,7 @@ function getDefaultChallenges(): Challenge[] {
     {
       rank: 1,
       title: "Hard to start the day",
-      empathy: "Morning momentum is built, not found. Start with a 5-minute warm-up task to activate your creative brain.",
+      empathy: "Start with a 5-minute warm-up. Momentum builds from there.",
       suggestions: [
         {
           type: 'tool',
@@ -234,7 +234,7 @@ function getDefaultChallenges(): Challenge[] {
     {
       rank: 2,
       title: "Energy drops after lunch",
-      empathy: "Afternoon slumps are predictable. Use this time for lighter tasks like organizing, reviewing, or admin work.",
+      empathy: "Save lighter tasks for afternoon. Organize, review, admin.",
       suggestions: [
         {
           type: 'tool',
@@ -259,7 +259,7 @@ function getDefaultChallenges(): Challenge[] {
     {
       rank: 3,
       title: "Self-doubt after feedback",
-      empathy: "Feedback is data, not judgment. Separate useful insights from noise—then iterate with confidence.",
+      empathy: "Feedback is data, not judgment. Filter signal from noise.",
       suggestions: [
         {
           type: 'book',
