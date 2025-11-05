@@ -168,13 +168,46 @@ import ButtonPrimaryCTA from '@/components/ButtonPrimaryCTA'
 
 #### Secondary Button
 ```css
-Background: transparent / surface tint
+Component: <ButtonSecondary />  (src/components/ButtonSecondary.tsx)
+Background: rgba(255,255,255,0.04)
 Text: #E6E1E5
-Border: 1px solid #49454F
+Border: 1px solid rgba(255,255,255,0.6)
 Border Radius: 12px
-Padding: 12px 24px
-Hover: bg-white/[0.08]
+Padding: 8px 16px (py-2 px-4)
+Font: Inter, 14px, weight 500 (Tailwind `font-medium`)
+Hover: #3A3840
+Active: scale 0.99, gentle ease-out
 ```
+
+Use this for neutral or secondary actions such as "Cancel" or "Add another task" so spacing, typography, and interaction states remain consistent.
+
+#### Icon Button (Tertiary)
+```css
+Component: <ButtonIcon />  (src/components/ButtonIcon.tsx)
+Layout: Inline-flex, centered icon
+Background: transparent (hover adds white/10 overlay)
+Text: #E6E1E5 (override per icon color)
+Padding: 8px (p-2)
+Border Radius: 8px (Tailwind `rounded`), override with `rounded-full` as needed
+Hover: Slight tint, white/10 overlay
+Active: scale 0.90, keep motion snappy
+Opacity: 80% default, override to 100% for main navigation/back actions
+```
+
+Use for icon-only affordances (back button, close, calendar toggle). Add `rounded-full`, custom padding, or color overrides through the `className` prop when a different shape or state is needed.
+
+#### Text Button (Link Style)
+```css
+Component: <ButtonText />  (src/components/ButtonText.tsx)
+Font: Inter, 14px, weight 500
+Color: #E6E1E5 (override per context)
+Hover: underline
+Active: opacity 0.8
+Transition: 200ms
+Spacing: No default padding — add via `className` if required
+```
+
+Use for tertiary actions such as "Skip", "View all", inline prompts, or link-style CTAs.
 
 #### Outline Button
 ```css
@@ -283,114 +316,9 @@ SafeAreaView (bg-cream)
     └── Footer/Actions
 ```
 
-### Navigation Patterns
-- **Back Button:** Always top-left, gentle arrow
-- **Primary Action:** Bottom-right or full-width at bottom
-- **Tab Bar:** If needed, use soft icons with warm yellow active state
-
----
-
-## 🌈 Accessibility Guidelines
-
-### Color Contrast
-- **Text on Cream:** #5E5E5E meets WCAG AA (4.8:1)
-- **Text on White:** #5E5E5E meets WCAG AA (5.7:1)
-- **CTA Button:** #3E3E3E on #FFD678 meets WCAG AA (4.2:1)
-
-### Touch Targets
-- **Minimum Size:** 44px × 44px
-- **Preferred Size:** 48px × 48px or larger
-- **Spacing:** 8px minimum between targets
-
-### Screen Reader Support
-- **Semantic HTML:** Use proper heading hierarchy
-- **Alt Text:** Descriptive text for all images/icons
-- **Labels:** Clear, descriptive labels for all inputs
-- **Focus States:** Visible focus indicators
-
----
-
-## 📝 Content Guidelines
-
-### Tone of Voice
-- **Encouraging:** "Great job reflecting today!"
-- **Non-judgmental:** "Every feeling is valid"
-- **Gentle:** "Take your time" vs "Hurry up"
-- **Personal:** "Your journey" vs "The process"
-
-### Microcopy Examples
-```
-✅ Good: "How are you feeling about today's work?"
-❌ Avoid: "Rate your productivity level"
-
-✅ Good: "You're building great habits! 🌱"
-❌ Avoid: "Task completed successfully"
-
-✅ Good: "Take a moment to reflect..."
-❌ Avoid: "Please fill out this form"
-```
-
-### Emoji Usage
-- **Consistent:** Use same emojis for same concepts
-- **Meaningful:** Each emoji should add emotional context
-- **Accessible:** Always pair with text, never emoji-only
-- **Gentle:** Avoid intense or negative emojis
-
----
-
-## 🔧 Implementation Notes
-
-### Tailwind Classes Quick Reference
-```css
-/* Colors */
-bg-cream, bg-white
-text-gray-gentle, text-gray-dark
-bg-yellow-warm, text-yellow-warm
-
-/* Typography */
-font-heading, font-body
-text-heading-xl, text-body-md
-
-/* Spacing */
-p-6 (24px), m-8 (32px)
-space-y-4 (16px vertical)
-
-/* Borders */
-rounded-soft (12px)
-rounded-pill (24px)
-
-/* Shadows */
-shadow-soft, shadow-gentle, shadow-cozy
-```
-
-### Component Import Pattern
-```typescript
-// Always import from types for consistency
-import { EmotionLevel, EMOTIONS, DESIGN_COLORS } from '../types';
-```
-
----
-
-## 🎯 Quality Checklist
-
-Before implementing any new screen or component, verify:
-
-- [ ] Uses cream background (#FEFBEA) for main screens
-- [ ] Typography follows Playfair Display (headings) + Inter (body)
-- [ ] Touch targets are minimum 44px height
-- [ ] Generous spacing (24px margins, 16px+ between elements)
-- [ ] Soft rounded corners (12px) on all containers
-- [ ] Primary actions use <ButtonPrimaryCTA> (bg #EC5429, text-white)
-- [ ] Gentle gray (#5E5E5E) for text
-- [ ] Soft shadows for depth
-- [ ] Encouraging, non-judgmental copy
-- [ ] Emoji usage is meaningful and consistent
-- [ ] Accessibility contrast ratios met
-- [ ] Mobile-first responsive design
-
 ---
 
 *This style guide is a living document. Update it as the design system evolves.*
 
 **Last Updated:** November 5, 2025  
-**Version:** 1.1
+**Version:** 1.2

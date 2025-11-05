@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
+import ButtonIcon from './ButtonIcon'
 import { EmotionLevel, EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
 
@@ -46,12 +47,12 @@ const EmotionSelectionImproved: React.FC<EmotionSelectionProps> = ({
       <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#2B2930]">
         <div className="max-w-md mx-auto flex items-center justify-between">
           {/* Left: Back Button */}
-          <button 
+          <ButtonIcon
             onClick={onBack}
-            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="-ml-2 rounded-full hover:bg-white/[0.04] active:scale-95 opacity-100"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
           
           {/* Center: Current Project Name */}
           {currentProject && (

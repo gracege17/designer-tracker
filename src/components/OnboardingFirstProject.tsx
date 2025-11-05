@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Palette, CaretRight, Plus, X, PaperPlaneRight } from 'phosphor-react'
 import Button from './Button'
 import Input from './Input'
+import ButtonIcon from './ButtonIcon'
 import { PROJECT_COLORS } from '../types'
 
 interface OnboardingFirstProjectProps {
@@ -243,18 +244,18 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
             className="flex-1 px-4 py-3 bg-transparent text-[var(--md-sys-color-on-surface)] text-[15px] outline-none placeholder:text-[var(--md-sys-color-on-surface-variant)]"
             autoFocus
           />
-          <button
+          <ButtonIcon
             onClick={handleSendMessage}
             disabled={!inputValue.trim()}
-            className={`p-3 transition-all rounded-full ${
+            className={`p-3 rounded-full ${
               inputValue.trim()
-                ? 'text-[var(--md-sys-color-on-surface)] hover:bg-white/10 active:scale-95'
-                : 'text-white/30 cursor-not-allowed'
+                ? 'text-[var(--md-sys-color-on-surface)] hover:bg-white/10 active:scale-95 opacity-100'
+                : 'text-white/30 cursor-not-allowed opacity-40'
             }`}
             aria-label="Send message"
           >
             <PaperPlaneRight size={20} weight="bold" />
-          </button>
+          </ButtonIcon>
         </div>
       </div>
     </div>

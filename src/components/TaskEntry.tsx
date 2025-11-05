@@ -3,6 +3,7 @@ import { CaretLeft } from 'phosphor-react'
 import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
+import ButtonIcon from './ButtonIcon'
 
 interface TaskEntryProps {
   selectedProjectIds: string[]
@@ -36,12 +37,12 @@ const TaskEntry: React.FC<TaskEntryProps> = ({
       {/* Header */}
       <header>
         <div className="flex items-center justify-between mb-12">
-          <button 
+          <ButtonIcon
             onClick={onBack}
-            className="p-2 rounded-full hover:bg-primary/20 transition-colors"
+            className="hover:bg-slate-100 rounded-full opacity-100"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
           <h1 className="text-lg font-bold text-slate-900 flex-grow text-center">
             {isMultipleProjects ? `${projectName} + ${selectedProjectIds.length - 1} more` : projectName}
           </h1>

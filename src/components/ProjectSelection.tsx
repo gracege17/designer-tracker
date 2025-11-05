@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { CaretLeft, Plus, X } from 'phosphor-react'
+import { CaretLeft, PlusCircle, X } from 'phosphor-react'
+import Button from './Button'
 import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
-import Button from './Button'
+import ButtonIcon from './ButtonIcon'
 
 interface ProjectSelectionProps {
   projects: Project[]
@@ -81,12 +82,12 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
     <div className="flex flex-col min-h-screen bg-background-light">
       {/* Header */}
       <header className="flex items-center justify-between p-4">
-        <button 
+        <ButtonIcon
           onClick={onBack}
-          className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+          className="hover:bg-slate-100 rounded-full opacity-100"
         >
           <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-        </button>
+        </ButtonIcon>
         <h1 className="text-xl font-semibold text-center flex-grow text-slate-900">
           Week's Reflection
         </h1>
@@ -108,13 +109,13 @@ const ProjectSelection: React.FC<ProjectSelectionProps> = ({
             return (
               <div key={project.id} className="relative">
                 {/* Delete Button - Always visible on top */}
-                <button
+                <ButtonIcon
                   onClick={(e) => handleDeleteProject(project.id, e)}
-                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-400 hover:bg-red-500 text-white flex items-center justify-center transition-all duration-200 hover:scale-110 z-10 shadow-sm"
+                  className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-slate-400 text-white opacity-100 hover:bg-red-500 hover:scale-110 shadow-sm"
                   title={`Delete ${project.name}`}
                 >
                   <X size={16} weight="bold" />
-                </button>
+                </ButtonIcon>
 
                 {isEditing ? (
                   /* Edit Mode */

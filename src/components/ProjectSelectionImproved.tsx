@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { CaretLeft, X } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
+import ButtonSecondary from './ButtonSecondary'
+import ButtonIcon from './ButtonIcon'
 import { Project } from '../types'
 import { ProjectStorage, EntryStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
@@ -107,12 +109,12 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
       {/* Sticky Header */}
       <header className="sticky top-0 bg-black z-10 p-5">
         <div className="max-w-md mx-auto">
-          <button 
+          <ButtonIcon
             onClick={onBack}
-            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="-ml-2 rounded-full hover:bg-white/[0.04] active:scale-95 opacity-100"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
         </div>
       </header>
 
@@ -155,9 +157,9 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
                     {project.name}
                   </span>
                 </button>
-                <button
+                <ButtonIcon
                   onClick={(e) => handleProjectDelete(project.id, e)}
-                  className="ml-3 p-1 hover:bg-white/10 rounded transition-all active:scale-90"
+                  className="ml-3 p-1 rounded hover:bg-white/10 active:scale-90 opacity-100"
                   title="Delete project"
                 >
                   <X 
@@ -167,7 +169,7 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
                       isSelected ? 'text-[#EC5429]' : 'text-[#E6E1E5]'
                     }`}
                   />
-                </button>
+                </ButtonIcon>
               </div>
             )
           })}
@@ -193,15 +195,15 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
               >
                 Add
               </ButtonPrimaryCTA>
-              <button
+              <ButtonSecondary
                 onClick={() => {
                   setShowAddInput(false)
                   setNewProjectName('')
                 }}
-                className="px-5 py-3 bg-white/[0.04] border border-[#49454F] text-[#E6E1E5] font-medium text-[14px] hover:bg-[#36343B] transition-all active:scale-[0.99]"
+                className="w-auto px-5 py-3 border-[#49454F] hover:bg-[#36343B]"
               >
                 Cancel
-              </button>
+              </ButtonSecondary>
             </div>
           </div>
         ) : (

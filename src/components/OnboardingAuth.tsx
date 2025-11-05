@@ -1,6 +1,6 @@
 import React from 'react'
-import { EnvelopeSimple, GoogleChromeLogo, FacebookLogo } from 'phosphor-react'
-import Button from './Button'
+import { ArrowRight, EnvelopeSimple, GoogleChromeLogo, FacebookLogo } from 'phosphor-react'
+import ButtonText from './ButtonText'
 
 interface OnboardingAuthProps {
   onContinueWithGoogle: () => void
@@ -75,12 +75,12 @@ const OnboardingAuth: React.FC<OnboardingAuthProps> = ({
         </div>
 
         {/* Skip for now */}
-        <button
+        <ButtonText
           onClick={onContinueWithEmail}
-          className="text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] font-medium transition-colors"
+          className="text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]"
         >
           Skip for now (use as guest)
-        </button>
+        </ButtonText>
       </div>
 
       {/* Privacy Notice */}

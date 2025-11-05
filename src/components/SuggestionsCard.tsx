@@ -1,5 +1,6 @@
 import React from 'react'
 import { Sparkle, TrendUp, Heart, Lightbulb, Medal, Info } from 'phosphor-react'
+import ButtonText from './ButtonText'
 import { Suggestion } from '../utils/suggestionEngine'
 
 interface SuggestionsCardProps {
@@ -54,9 +55,9 @@ const SuggestionsCard: React.FC<SuggestionsCardProps> = ({ suggestions, maxDispl
       ))}
 
       {suggestions.length > maxDisplay && (
-        <button className="w-full text-center text-[12px] text-[#938F99] hover:text-[#CAC4D0] font-medium py-2 transition-colors">
-          View {suggestions.length - maxDisplay} more insight{suggestions.length - maxDisplay > 1 ? 's' : ''}
-        </button>
+        <ButtonText className="block w-full text-center text-[12px] text-[#938F99] hover:text-[#CAC4D0] py-2 transition-colors">
+          View more suggestions
+        </ButtonText>
       )}
     </div>
   )

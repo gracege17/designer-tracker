@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { CaretLeft, DownloadSimple, Trash, EnvelopeSimple, HouseSimple, Plus, ChartBar, Notepad, GearSix } from 'phosphor-react'
 import BottomNav from './BottomNav'
 import { UserProfileStorage, EntryStorage, ProjectStorage } from '../utils/storage'
+import ButtonIcon from './ButtonIcon'
 
 interface SettingsProps {
   onBack: () => void
@@ -151,12 +152,12 @@ const Settings: React.FC<SettingsProps> = ({
       {/* Header */}
       <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#49454F]">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <button 
+          <ButtonIcon
             onClick={onBack}
-            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="-ml-2 rounded-full hover:bg-white/[0.04] active:scale-95 opacity-100"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
           <h1 className="text-[18px] font-bold text-[#E6E1E5]">
             Settings
           </h1>

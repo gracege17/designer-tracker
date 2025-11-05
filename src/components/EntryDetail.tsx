@@ -4,6 +4,7 @@ import BottomNav from './BottomNav'
 import { Entry, EMOTIONS } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { ProjectStorage } from '../utils/storage'
+import ButtonIcon from './ButtonIcon'
 
 interface EntryDetailProps {
   entry: Entry
@@ -34,12 +35,12 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       <div className="flex flex-col min-h-screen bg-black">
         <header className="sticky top-0 z-10 bg-black border-b border-[#49454F] p-5">
           <div className="max-w-md mx-auto flex items-center justify-between">
-          <button
+          <ButtonIcon
             onClick={onBack}
-            className="p-2 hover:bg-white/10 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="-ml-2 rounded-full hover:bg-white/10 active:scale-95 opacity-100"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
           <h1 className="text-[18px] font-bold text-[#E6E1E5]">
             Reflection Details
           </h1>
@@ -70,12 +71,12 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
       {/* Sticky Header */}
       <header className="sticky top-0 z-10 bg-black border-b border-[#49454F] p-5">
         <div className="max-w-md mx-auto flex items-center justify-between">
-          <button
+          <ButtonIcon
             onClick={onBack}
-            className="p-2 hover:bg-white/10 rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="-ml-2 rounded-full hover:bg-white/10 active:scale-95 opacity-100"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
           <h1 className="text-[18px] font-bold text-[#E6E1E5]">
             Reflection Details
           </h1>

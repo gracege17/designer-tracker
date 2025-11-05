@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
+import ButtonSecondary from './ButtonSecondary'
+import ButtonIcon from './ButtonIcon'
 import { ProjectStorage } from '../utils/storage'
 
 interface TaskNotesProps {
@@ -56,12 +58,12 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
       <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#2B2930]">
         <div className="max-w-md mx-auto flex items-center justify-between">
           {/* Left: Back Button */}
-          <button 
+          <ButtonIcon
             onClick={onBack}
-            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95 -ml-2"
+            className="-ml-2 rounded-full hover:bg-white/[0.04] active:scale-95 opacity-100"
           >
-                <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+            <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
+          </ButtonIcon>
           
           {/* Center: Current Project Name */}
           {firstProject && (
@@ -95,13 +97,9 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
       {/* Footer */}
       <footer className="sticky bottom-0 bg-black p-5">
         <div className="max-w-md mx-auto space-y-3">
-          <button
-            onClick={handleAddAnotherTask}
-            className="w-full py-2 px-4 text-center bg-white/[0.04] border text-[#E6E1E5] font-medium text-[17px] hover:bg-[#3A3840] transition-all active:scale-[0.99]"
-            style={{ borderColor: 'rgba(255, 255, 255, 0.6)' }}
-          >
+          <ButtonSecondary onClick={handleAddAnotherTask}>
             + Add another task
-          </button>
+          </ButtonSecondary>
           
           <ButtonPrimaryCTA
             onClick={isLastProject ? handleDoneReflecting : handleNextProject}

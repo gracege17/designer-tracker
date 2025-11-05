@@ -3,6 +3,7 @@ import { CaretLeft } from 'phosphor-react'
 import { Task, EmotionLevel, EMOTIONS, Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
+import ButtonIcon from './ButtonIcon'
 
 interface EditTaskProps {
   task: Task
@@ -59,12 +60,12 @@ const EditTask: React.FC<EditTaskProps> = ({ task, entryDate, onSave, onCancel }
       {/* Header */}
       <header className="sticky top-0 z-10 bg-black/80 backdrop-blur-sm border-b border-[#49454F] p-4">
         <div className="flex items-center justify-between mb-4">
-          <button
+          <ButtonIcon
             onClick={onCancel}
-            className="p-2 hover:bg-white/[0.04] rounded-full transition-all duration-200 active:scale-95"
+            className="rounded-full hover:bg-white/[0.04] active:scale-95 opacity-100"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
           <h1 className="text-lg font-bold text-[#E6E1E5] flex-1 text-center">
             Edit Task
           </h1>

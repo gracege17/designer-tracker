@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { HouseSimple, Plus, ChartBar, Notepad, GearSix, CalendarBlank, X, CaretRight, DotsThree, CaretLeft } from 'phosphor-react'
+import ButtonIcon from './ButtonIcon'
 import BottomNav from './BottomNav'
 import { Entry, EMOTIONS, TASK_TYPE_LABELS, EmotionLevel } from '../types'
 import { ProjectStorage } from '../utils/storage'
@@ -256,33 +257,33 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
             </div>
             
             {/* Calendar Icon */}
-            <button
+            <ButtonIcon
               onClick={() => setShowFullCalendar(true)}
-              className="p-2 hover:bg-white/[0.04] rounded-lg transition-all active:scale-95"
+              className="rounded-lg hover:bg-white/[0.04] active:scale-95 opacity-100"
             >
               <CalendarBlank size={24} weight="regular" className="text-[#EC5429]" />
-            </button>
+            </ButtonIcon>
           </div>
           
           {/* Date Navigation */}
           <div className="flex items-center justify-center gap-4">
-            <button
+            <ButtonIcon
               onClick={handlePrevious}
-              className="p-1 hover:bg-white/[0.04] rounded-lg transition-all active:scale-95"
+              className="p-1 rounded-lg hover:bg-white/[0.04] active:scale-95 opacity-100"
             >
               <CaretLeft size={20} weight="bold" className="text-white" />
-            </button>
+            </ButtonIcon>
             
             <h2 className="text-[18px] font-semibold text-white min-w-[180px] text-center">
               {getFormattedDate()}
             </h2>
             
-            <button
+            <ButtonIcon
               onClick={handleNext}
-              className="p-1 hover:bg-white/[0.04] rounded-lg transition-all active:scale-95"
+              className="p-1 rounded-lg hover:bg-white/[0.04] active:scale-95 opacity-100"
             >
               <CaretRight size={20} weight="bold" className="text-white" />
-            </button>
+            </ButtonIcon>
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
+import ButtonIcon from './ButtonIcon'
 
 interface OverallFeelingProps {
   onComplete: (feelingScore: number) => void
@@ -84,12 +85,12 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
       {/* Header */}
       <header className="sticky top-0 bg-black z-10 p-5 border-b border-[#49454F]">
         <div className="max-w-md mx-auto flex items-center">
-          <button 
+          <ButtonIcon
             onClick={onBack}
-            className="mr-4 p-2 hover:bg-white/[0.04] rounded-full transition-colors"
+            className="mr-4 rounded-full hover:bg-white/[0.04] opacity-100"
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
           <h1 className="text-[18px] font-bold text-[#E6E1E5]">
             How's your day so far?
           </h1>

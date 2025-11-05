@@ -4,6 +4,7 @@ import BottomNav from './BottomNav'
 import { Entry } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { DateUtils } from '../utils/dateUtils'
+import ButtonIcon from './ButtonIcon'
 
 interface EntryListProps {
   entries: Entry[]
@@ -68,9 +69,9 @@ const EntryList: React.FC<EntryListProps> = ({
       <header className="sticky top-0 z-10 bg-black border-b border-[#49454F]/30 p-5">
         <div className="flex items-center justify-between max-w-md mx-auto">
           <h1 className="text-[28px] font-bold text-[#E6E1E5]" style={{ fontFamily: 'Playfair Display, serif' }}>Reflections</h1>
-          <button className="p-2 hover:bg-white/[0.08] rounded-full transition-colors">
+          <ButtonIcon className="hover:bg-white/[0.08] rounded-full opacity-100">
             <MagnifyingGlass size={24} weight="light" className="text-[#E6E1E5]" />
-          </button>
+          </ButtonIcon>
         </div>
       </header>
 
