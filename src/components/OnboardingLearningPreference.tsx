@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CaretLeft, CaretRight } from 'phosphor-react'
+import Badge from './Badge'
 
 interface OnboardingLearningPreferenceProps {
   onComplete: (preferences: string[]) => void
@@ -81,9 +82,9 @@ const OnboardingLearningPreference: React.FC<OnboardingLearningPreferenceProps> 
                       </span>
                     </div>
                     {isSelected && (
-                      <span className="text-xs uppercase tracking-wide text-[var(--color-accent, #EC5429)]">
+                      <Badge tone="accent" size="sm" className="text-[var(--color-accent, #EC5429)]">
                         Selected
-                      </span>
+                      </Badge>
                     )}
                   </div>
                 </button>

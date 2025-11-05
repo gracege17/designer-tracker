@@ -4,6 +4,7 @@ import { Entry, EmotionLevel } from '../types'
 import { generateSummaryTags } from '../utils/smartSummaryService'
 import { getCurrentWeekEntries } from '../utils/dataHelpers'
 import BottomNav from './BottomNav'
+import Badge from './Badge'
 
 interface EmotionDetailPageProps {
   emotion: 'energized' | 'drained' | 'meaningful' | 'curious'
@@ -232,14 +233,15 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
             </h3>
             <div className="flex flex-wrap gap-2">
               {topReasonTags.map((tag, index) => (
-                <div
+                <Badge
                   key={index}
-                  className="bg-white/[0.08] px-4 py-2.5 rounded-full border border-white/10"
+                  tone="neutral"
+                  size="md"
+                  uppercase={false}
+                  className="px-4 py-2.5 text-[14px] text-white"
                 >
-                  <span className="text-[14px] font-medium text-white">
-                    {tag}
-                  </span>
-                </div>
+                  {tag}
+                </Badge>
               ))}
             </div>
           </div>

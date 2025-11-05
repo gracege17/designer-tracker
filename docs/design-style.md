@@ -209,6 +209,18 @@ Spacing: No default padding — add via `className` if required
 
 Use for tertiary actions such as "Skip", "View all", inline prompts, or link-style CTAs.
 
+#### Badge / Tag
+```css
+Component: <Badge />  (src/components/Badge.tsx)
+Shape: Rounded-full, inline-flex
+Sizes: sm (px-2.5 py-1 text-11) · md (px-3.5 py-2 text-13)
+Default Tone: Neutral surface tint (bg white/4, border white/10, text #E6E1E5)
+Accent Tones: accent / positive / warning / info colorways available
+Case: Uppercase by default (`uppercase` prop toggles normal case)
+```
+
+Use badges for compact metadata chips (e.g. Top Trigger tags, Selected states). Stack variants or override colors through the `tone`, `size`, and `className` props to support contextual accents without redefining styles.
+
 #### Outline Button
 ```css
 Background: transparent
@@ -321,4 +333,4 @@ SafeAreaView (bg-cream)
 *This style guide is a living document. Update it as the design system evolves.*
 
 **Last Updated:** November 5, 2025  
-**Version:** 1.2
+**Version:** 1.3
