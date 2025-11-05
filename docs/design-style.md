@@ -209,7 +209,7 @@ Spacing: No default padding — add via `className` if required
 
 Use for tertiary actions such as "Skip", "View all", inline prompts, or link-style CTAs.
 
-#### Badge / Tag
+#### Badge
 ```css
 Component: <Badge />  (src/components/Badge.tsx)
 Shape: Rounded-full, inline-flex
@@ -220,6 +220,42 @@ Case: Uppercase by default (`uppercase` prop toggles normal case)
 ```
 
 Use badges for compact metadata chips (e.g. Top Trigger tags, Selected states). Stack variants or override colors through the `tone`, `size`, and `className` props to support contextual accents without redefining styles.
+
+#### Tag (Static)
+```css
+Component: <Tag />  (src/components/Tag.tsx)
+Font: text-[14px] font-medium text-white
+Padding: px-4 py-2.5
+Shape: rounded-full, inline-flex
+Border: border border-white/10
+Background: bg-white/[0.08]
+Supports optional left icon via `icon` prop (adds gap-2 alignment)
+```
+
+Use for static labels, filters, or categories that don’t require dismissal.
+
+#### TagDismissible (Removable)
+```css
+Component: <TagDismissible />  (src/components/TagDismissible.tsx)
+Base: Inherits <Tag /> styling
+Layout: flex items-center gap-2
+Close Button: ml-1 p-1 rounded hover:bg-white/10 active:scale-90 text-white/80
+Icon: Defaults to bold X; override with `removeIcon`
+Accessibility: Customise `removeAriaLabel`
+```
+
+Use for multi-select chips, removable filters, or editable labels.
+
+#### Optional Tag With Icon
+- Use the `icon` prop on `<Tag />` or `<TagDismissible />` to inject a left-aligned glyph.
+- Icons inherit `text-white/80`; override via `className` on the icon node if needed.
+
+#### Tag Summary
+| Variant | Component | Interactive | Primary Use Case |
+|---------|-----------|-------------|------------------|
+| Static Tag | `<Tag />` | ❌ No | Labels, filters, read-only chips |
+| Removable Tag | `<TagDismissible />` | ✅ Yes | Multi-select tags, removable filters |
+| Icon Tag | `<Tag />` / `<TagDismissible />` with `icon` | Optional | Priority/status chips with glyph |
 
 #### Outline Button
 ```css
@@ -333,4 +369,4 @@ SafeAreaView (bg-cream)
 *This style guide is a living document. Update it as the design system evolves.*
 
 **Last Updated:** November 5, 2025  
-**Version:** 1.3
+**Version:** 1.4
