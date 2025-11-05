@@ -1,5 +1,6 @@
 import React from 'react'
 import { CaretLeft } from 'phosphor-react'
+import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import { EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
 
@@ -139,19 +140,13 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
       {/* Footer */}
       <footer className="sticky bottom-0 bg-black p-5 border-t border-[#49454F]">
         <div className="max-w-md mx-auto">
-          <button
+          <ButtonPrimaryCTA
             onClick={onSaveReflection}
             disabled={tasks.length === 0}
-            className={`
-              w-full py-2 px-4 font-bold text-[17px] transition-all duration-200 rounded-full
-              ${tasks.length > 0
-                ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
-                : 'bg-[#49454F] text-[#938F99] cursor-not-allowed'
-              }
-            `}
+            className={`rounded-full font-bold ${tasks.length === 0 ? 'bg-[#49454F] text-[#938F99] cursor-not-allowed hover:bg-[#49454F]' : ''}`}
           >
             Save reflections
-          </button>
+          </ButtonPrimaryCTA>
         </div>
       </footer>
     </div>

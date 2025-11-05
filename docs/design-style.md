@@ -145,39 +145,54 @@ Body SM: 12px/16px, weight 400     /* Helper text, labels */
 
 #### Primary Button (CTA)
 ```css
-Background: #FFD678 (warm yellow)
-Text: #3E3E3E (dark gray)
-Border Radius: 12px (soft)
-Padding: 12px 24px (generous)
-Shadow: 0 2px 8px rgba(0,0,0,0.04)
-Font: Inter, 14px, weight 400
+Component: <ButtonPrimaryCTA />  (src/components/ButtonPrimaryCTA.tsx)
+Background: #EC5429  /* base */
+Text: #FFFFFF
+Hover: #F76538
+Active: scale 0.98
+Border Radius: 12px (can be overridden per usage)
+Padding: 8px 16px (py-2 px-4)
+Font: Inter, 14px, weight 500 (Tailwind `font-medium`)
+Transition: 200ms ease-out, matches Tailwind utilities
+```
+
+Usage always flows through the reusable component so that spacing, font, and interaction states remain consistent across flows.
+
+```tsx
+import ButtonPrimaryCTA from '@/components/ButtonPrimaryCTA'
+
+<ButtonPrimaryCTA onClick={handleSubmit} disabled={isSaving}>
+  Save Reflection
+</ButtonPrimaryCTA>
 ```
 
 #### Secondary Button
 ```css
-Background: #F5F5F5 (light gray)
-Text: #5E5E5E (gentle gray)
-Border Radius: 12px (soft)
-Padding: 12px 24px (generous)
-Shadow: 0 2px 8px rgba(0,0,0,0.04)
+Background: transparent / surface tint
+Text: #E6E1E5
+Border: 1px solid #49454F
+Border Radius: 12px
+Padding: 12px 24px
+Hover: bg-white/[0.08]
 ```
 
 #### Outline Button
 ```css
 Background: transparent
-Border: 2px solid #FFD678 (warm yellow)
-Text: #FFD678 (warm yellow)
-Border Radius: 12px (soft)
-Padding: 10px 22px (adjust for border)
+Border: 1px solid #938F99
+Text: #E6E1E5
+Border Radius: 12px
+Padding: 10px 22px
+Hover: border-[#EC5429] text-[#EC5429]
 ```
 
 #### Pill Button
 ```css
-Background: #FFD678 (warm yellow)
-Text: #3E3E3E (dark gray)
-Border Radius: 24px (pill)
-Padding: 12px 24px (generous)
-Shadow: 0 2px 8px rgba(0,0,0,0.04)
+Background: #EC5429 (or surface tint)
+Text: #FFFFFF
+Border Radius: 9999px
+Padding: 12px 20px
+Shadow: subtle glow (#EC5429/15)
 ```
 
 ### Cards
@@ -365,7 +380,7 @@ Before implementing any new screen or component, verify:
 - [ ] Touch targets are minimum 44px height
 - [ ] Generous spacing (24px margins, 16px+ between elements)
 - [ ] Soft rounded corners (12px) on all containers
-- [ ] Warm yellow (#FFD678) for primary actions
+- [ ] Primary actions use <ButtonPrimaryCTA> (bg #EC5429, text-white)
 - [ ] Gentle gray (#5E5E5E) for text
 - [ ] Soft shadows for depth
 - [ ] Encouraging, non-judgmental copy
@@ -377,5 +392,5 @@ Before implementing any new screen or component, verify:
 
 *This style guide is a living document. Update it as the design system evolves.*
 
-**Last Updated:** September 30, 2025  
-**Version:** 1.0
+**Last Updated:** November 5, 2025  
+**Version:** 1.1

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { CaretLeft } from 'phosphor-react'
+import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import { ProjectStorage } from '../utils/storage'
 
 interface TaskNotesProps {
@@ -102,12 +103,11 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
             + Add another task
           </button>
           
-          <button
+          <ButtonPrimaryCTA
             onClick={isLastProject ? handleDoneReflecting : handleNextProject}
-            className="w-full py-2 px-4 font-medium text-[17px] transition-all duration-200 bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]"
           >
-            {isLastProject ? "Done Reflecting" : "Next Project"}
-          </button>
+            {isLastProject ? 'Done Reflecting' : 'Next Project'}
+          </ButtonPrimaryCTA>
         </div>
       </footer>
     </div>

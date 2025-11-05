@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { CaretLeft } from 'phosphor-react'
+import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import { ProjectStorage } from '../utils/storage'
 
 interface TaskEntryProps {
@@ -94,19 +95,13 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
       {/* Sticky Bottom CTA */}
       <footer className="sticky bottom-0 bg-black p-5">
         <div className="max-w-md mx-auto">
-          <button
+          <ButtonPrimaryCTA
             onClick={handleNext}
             disabled={!description.trim()}
-            className={`
-              w-full py-2 px-4 font-medium text-[17px] transition-all duration-200
-              ${description.trim()
-                ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
-                : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed'
-              }
-            `}
+            className={description.trim() ? '' : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed hover:bg-white/[0.04]'}
           >
             {description.trim() ? 'Continue' : 'Describe your task to continue'}
-          </button>
+          </ButtonPrimaryCTA>
         </div>
       </footer>
     </div>

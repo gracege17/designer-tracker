@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { CaretLeft, X } from 'phosphor-react'
+import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import { Project } from '../types'
 import { ProjectStorage, EntryStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
@@ -185,19 +186,13 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
               className="w-full px-4 py-3 bg-white/[0.04] border border-[#49454F] text-[#E6E1E5] text-[14px] placeholder:text-[#938F99] focus:outline-none focus:border-[#EC5429] transition-colors"
             />
             <div className="flex gap-2 justify-end">
-              <button
+              <ButtonPrimaryCTA
                 onClick={handleAddProject}
                 disabled={!newProjectName.trim()}
-                className={`
-                  px-5 py-3 font-medium text-[14px] transition-all active:scale-[0.99]
-                  ${newProjectName.trim()
-                    ? 'bg-[#EC5429] text-white hover:bg-[#F76538]'
-                    : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed'
-                  }
-                `}
+                className={`w-auto px-5 py-3 text-[14px] active:scale-[0.99] ${newProjectName.trim() ? '' : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed hover:bg-white/[0.04]'}`}
               >
                 Add
-              </button>
+              </ButtonPrimaryCTA>
               <button
                 onClick={() => {
                   setShowAddInput(false)
@@ -210,34 +205,28 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             </div>
           </div>
         ) : (
-          <button
+          <ButtonPrimaryCTA
             onClick={() => setShowAddInput(true)}
-            className="px-5 py-3 bg-[#EC5429] text-white font-medium text-[16px] hover:bg-[#F76538] transition-all active:scale-[0.99]"
+            className="w-auto px-5 py-3 text-[16px] active:scale-[0.99]"
           >
             + Project
-          </button>
+          </ButtonPrimaryCTA>
         )}
       </main>
 
       {/* Sticky Bottom CTA */}
       <footer className="sticky bottom-0 bg-black p-5">
         <div className="max-w-md mx-auto">
-          <button
+          <ButtonPrimaryCTA
             onClick={handleNext}
             disabled={selectedProjects.length === 0}
-            className={`
-              w-full py-2 px-4 font-medium text-[17px] transition-all duration-200
-              ${selectedProjects.length > 0
-                ? 'bg-[#EC5429] text-white hover:bg-[#F76538] active:scale-[0.98]'
-                : 'bg-white/[0.04] text-[#938F99] cursor-not-allowed'
-              }
-            `}
+            className={selectedProjects.length === 0 ? 'bg-white/[0.04] text-[#938F99] cursor-not-allowed hover:bg-white/[0.04]' : ''}
           >
             {selectedProjects.length > 0 
               ? `Continue with ${selectedProjects.length} project${selectedProjects.length > 1 ? 's' : ''}`
               : 'Select at least one project'
             }
-          </button>
+          </ButtonPrimaryCTA>
         </div>
       </footer>
     </div>

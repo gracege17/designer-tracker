@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CaretLeft } from 'phosphor-react'
+import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
@@ -112,19 +113,13 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
       <footer className="fixed bottom-0 left-0 right-0 bg-[#FFF9F8] p-5 border-t border-slate-200">
         <div className="max-w-md mx-auto space-y-3">
           {/* Primary CTA - Create Project */}
-          <button
+          <ButtonPrimaryCTA
             onClick={handleSubmit}
             disabled={!projectName.trim() || isSubmitting}
-            className={`
-              w-full py-2 px-4 font-medium text-[17px] transition-all duration-200 active:scale-[0.98]
-              ${!projectName.trim() || isSubmitting 
-                ? 'bg-[#999] text-white cursor-not-allowed' 
-                : 'bg-[#EC5429] text-white hover:bg-[#F76538]'
-              }
-            `}
+            className={!projectName.trim() || isSubmitting ? 'bg-[#999] hover:bg-[#999] cursor-not-allowed' : ''}
           >
-            {isSubmitting ? "Creating..." : "+ Add Project"}
-          </button>
+            {isSubmitting ? 'Creating...' : '+ Add Project'}
+          </ButtonPrimaryCTA>
 
           {/* Secondary Action - Done */}
           <button

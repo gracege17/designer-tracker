@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { CaretLeft } from 'phosphor-react'
+import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 
 interface OverallFeelingProps {
   onComplete: (feelingScore: number) => void
@@ -202,12 +203,9 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
           </div>
 
           {/* Continue Button */}
-          <button
-            onClick={() => onComplete(sliderValue)}
-            className="w-full bg-[#EC5429] text-white py-2 px-4 font-medium text-[17px] hover:bg-[#F76538] transition-all duration-200 active:scale-[0.98]"
-          >
+          <ButtonPrimaryCTA onClick={() => onComplete(sliderValue)}>
             Continue
-          </button>
+          </ButtonPrimaryCTA>
         </div>
       </main>
     </div>
