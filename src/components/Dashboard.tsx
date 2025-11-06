@@ -159,9 +159,9 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             }}
           >
             <div className="flex-1 pr-4">
-              <p className="text-[14px] font-normal text-[#938F99] mb-4">
+              <SectionLabel className="mb-4">
                 Today's Summary
-              </p>
+              </SectionLabel>
               
               {/* Summary Text */}
               {isLoadingSummary ? (
