@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, Sparkle } from 'phosphor-react';
+import Card from './Card';
 
 interface SuccessToastProps {
   message: string;
@@ -31,18 +32,13 @@ export const SuccessToast: React.FC<SuccessToastProps> = ({
 
   return (
     <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-      <div 
-        className={`
-          max-w-md w-full bg-mono-900 text-mono-50 rounded-xl p-4 
-          flex items-center gap-3 shadow-xl
-          ${visible ? 'success-pop' : 'opacity-0'}
-          transition-opacity duration-400
-        `}
+      <Card 
+        className={`max-w-md w-full bg-mono-900 text-mono-50 p-4 flex items-center gap-3 shadow-xl ${visible ? 'success-pop' : 'opacity-0'} transition-opacity duration-400 space-y-0`}
       >
         <CheckCircle className="w-6 h-6 text-mono-50 flex-shrink-0" weight="regular" />
         <p className="font-normal text-base flex-1">{message}</p>
         <Sparkle className="w-5 h-5 text-mono-50 flex-shrink-0 animate-pulse" weight="fill" />
-      </div>
+      </Card>
     </div>
   );
 };

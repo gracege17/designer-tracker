@@ -5,6 +5,7 @@ import { Entry, EMOTIONS } from '../types'
 import { DateUtils } from '../utils/dateUtils'
 import { ProjectStorage } from '../utils/storage'
 import ButtonIcon from './ButtonIcon'
+import Card from './Card'
 
 interface EntryDetailProps {
   entry: Entry
@@ -116,13 +117,13 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                   const uniqueEmotions = Array.from(new Set(emotions))
                   
                   return (
-                    <div 
+                    <Card 
                       key={task.id} 
                       className={`bg-white/[0.04] p-4 border border-[#49454F] transition-all ${
                         isToday 
                           ? 'cursor-pointer hover:shadow-md active:scale-[0.99]' 
                           : 'cursor-default opacity-75'
-                      }`}
+                      } space-y-0`}
                       onClick={() => {
                         if (!isToday) {
                           // For historical entries, do nothing (read-only)
@@ -168,7 +169,7 @@ const EntryDetail: React.FC<EntryDetailProps> = ({ entry, onBack, onEditTask, on
                           )}
                         </div>
                       </div>
-                    </div>
+                    </Card>
                   )
                 })}
               </div>

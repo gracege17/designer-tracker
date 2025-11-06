@@ -1,6 +1,7 @@
 import React from 'react'
 import { CaretLeft } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
+import Card from './Card'
 import { EMOTIONS } from '../types'
 import { ProjectStorage } from '../utils/storage'
 
@@ -73,9 +74,9 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
                   const uniqueEmotions = Array.from(new Set(emotions))
                   
                   return (
-                    <div 
+                    <Card 
                       key={task.id} 
-                      className="bg-white/[0.04] p-4 cursor-pointer transition-all active:scale-[0.99] hover:bg-white/[0.08]"
+                      className="bg-white/[0.04] p-4 cursor-pointer transition-all active:scale-[0.99] hover:bg-white/[0.08] space-y-0"
                       style={{ borderRadius: '12px' }}
                       onClick={() => {
                         const action = window.confirm('What would you like to do with this task?\n\nPress OK to edit, or Cancel to delete.')
@@ -117,7 +118,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
                           )}
                         </div>
                       </div>
-                    </div>
+                    </Card>
                   )
                 })}
               </div>

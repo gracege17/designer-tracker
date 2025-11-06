@@ -1,107 +1,28 @@
-import React from 'react';
+import React from 'react'
 
-interface CardProps {
-  children: React.ReactNode;
-  className?: string;
-  padding?: 'none' | 'small' | 'medium' | 'large';
-  shadow?: 'none' | 'soft' | 'gentle' | 'cozy';
-  background?: 'white' | 'cream';
-  variant?: 'default' | 'asymmetric' | 'glass';
-  glassBackground?: 'longbar' | 'card';
+type CardOwnProps<T extends React.ElementType> = {
+  as?: T
+  className?: string
+  children?: React.ReactNode
 }
 
-export default function Card({
-  children,
+type CardProps<T extends React.ElementType> = CardOwnProps<T> &
+  Omit<React.ComponentPropsWithoutRef<T>, keyof CardOwnProps<T>>
+
+const BASE_CLASSES = 'rounded-2xl bg-white/[0.04] p-4 space-y-2 transition-all shadow-md hover:bg-white/[0.06]'
+
+export default function Card<T extends React.ElementType = 'div'>({
+  as,
   className = '',
-  padding = 'medium',
-  shadow = 'soft',
-  background = 'white',
-  variant = 'default',
-  glassBackground = 'longbar',
-}: CardProps) {
-  const getPaddingStyles = () => {
-    switch (padding) {
-      case 'none':
-        return '';
-      case 'small':
-        return 'p-4';
-      case 'medium':
-        return 'p-6';
-      case 'large':
-        return 'p-8';
-      default:
-        return 'p-6';
-    }
-  };
-
-  const getShadowStyles = () => {
-    switch (shadow) {
-      case 'none':
-        return '';
-      case 'soft':
-        return 'shadow-soft';
-      case 'gentle':
-        return 'shadow-gentle';
-      case 'cozy':
-        return 'shadow-cozy';
-      default:
-        return 'shadow-soft';
-    }
-  };
-
-  const getBackgroundStyles = () => {
-    // Dark mode only: use dark theme colors
-    if (variant === 'glass') {
-      return ''; // Glass variant uses inline style for background
-    }
-    return background === 'cream' ? 'bg-[#211F26]' : 'bg-white/[0.04]';
-  };
-
-  const getBorderRadiusStyles = () => {
-    if (variant === 'asymmetric') {
-      return ''; // Will use inline style for custom border-radius
-    }
-    if (variant === 'glass') {
-      return 'rounded-lg'; // 8px border-radius
-    }
-    return 'rounded-soft';
-  };
-
-  const getVariantStyles = (): React.CSSProperties => {
-    if (variant === 'asymmetric') {
-      return {
-        borderRadius: '4px 47px 4px 4px',
-      };
-    }
-    if (variant === 'glass') {
-      const bgImage = glassBackground === 'card' 
-        ? '/icons/bg-sm/black_card.png'
-        : '/icons/bg-sm/black_longbar.png';
-      
-      return {
-        borderRadius: '8px',
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      };
-    }
-    return {};
-  };
+  children,
+  ...rest
+}: CardProps<T>) {
+  const Component = (as || 'div') as React.ElementType
+  const mergedClassName = className ? `${BASE_CLASSES} ${className}` : BASE_CLASSES
 
   return (
-    <div
-      className={`
-        ${getBackgroundStyles()}
-        ${getBorderRadiusStyles()}
-        ${variant === 'default' ? 'border border-gray-light' : ''}
-        ${getPaddingStyles()}
-        ${variant === 'default' ? getShadowStyles() : ''}
-        ${className}
-      `}
-      style={getVariantStyles()}
-    >
+    <Component className={mergedClassName} {...rest}>
       {children}
-    </div>
-  );
+    </Component>
+  )
 }

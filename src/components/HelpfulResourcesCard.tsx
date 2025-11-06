@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { CaretDown } from 'phosphor-react'
 import { Challenge } from '../utils/challengeAnalysisService'
+import Card from './Card'
 
 interface HelpfulResourcesCardProps {
   challenges: Challenge[]
@@ -70,9 +71,9 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
           const badgeStyle = badgeStyles[(challenge.rank - 1) % badgeStyles.length]
           
           return (
-            <div
+            <Card
               key={challenge.rank}
-              className="bg-white/[0.02] border border-white/5 overflow-hidden transition-all duration-300"
+              className="bg-white/[0.02] border border-white/5 overflow-hidden transition-all duration-300 space-y-0"
               style={{ 
                 borderRadius: '20px',
                 animation: `fadeInUp 0.4s ease-out ${index * 0.1}s both`
@@ -170,7 +171,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                   ))}
                 </div>
               )}
-            </div>
+            </Card>
           )
         })}
       </div>

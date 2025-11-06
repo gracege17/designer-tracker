@@ -1,6 +1,7 @@
 import React from 'react'
 import { Sparkle, TrendUp, Heart, Lightbulb, Medal, Info } from 'phosphor-react'
 import ButtonText from './ButtonText'
+import Card from './Card'
 import { Suggestion } from '../utils/suggestionEngine'
 
 interface SuggestionsCardProps {
@@ -33,9 +34,9 @@ const SuggestionsCard: React.FC<SuggestionsCardProps> = ({ suggestions, maxDispl
   return (
     <div className="space-y-2">
       {displayedSuggestions.map((suggestion) => (
-        <div
+        <Card
           key={suggestion.id}
-          className="flex items-start gap-3 p-3 bg-white/[0.02] hover:bg-white/[0.04] rounded-xl transition-all cursor-pointer active:scale-[0.99]"
+          className="flex items-start gap-3 p-3 bg-white/[0.02] hover:bg-white/[0.04] rounded-xl transition-all cursor-pointer active:scale-[0.99] space-y-0"
         >
           {/* Icon */}
           <div className="flex-shrink-0 pt-1">
@@ -51,7 +52,7 @@ const SuggestionsCard: React.FC<SuggestionsCardProps> = ({ suggestions, maxDispl
               {suggestion.message}
             </p>
           </div>
-        </div>
+        </Card>
       ))}
 
       {suggestions.length > maxDisplay && (

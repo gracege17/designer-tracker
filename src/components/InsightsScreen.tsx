@@ -289,10 +289,10 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
 
         {/* No data message */}
         {entries.length === 0 && (
-          <div className="bg-white/[0.04] p-6 mb-6 text-center" style={{ borderRadius: '4px 47px 4px 4px' }}>
+          <Card className="mb-6 text-center space-y-3" style={{ borderRadius: '4px 47px 4px 4px' }}>
             <p className="text-[16px] font-medium text-[#E6E1E5] mb-2">No data yet</p>
             <p className="text-[14px] text-[#CAC4D0]">Add some reflections to see insights here.</p>
-          </div>
+          </Card>
         )}
 
         {/* Insight Cards - Moved from Dashboard */}
@@ -401,8 +401,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 })
 
                 return (
-                  <div 
-                    className="bg-white/[0.04] mb-4 p-[20px]"
+                  <Card 
+                    className="mb-4 p-[20px] space-y-0"
                     style={{ borderRadius: '8px' }}
                   >
                     <div className="flex flex-col gap-3">
@@ -413,7 +413,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                         {insights}
                       </p>
                     </div>
-                  </div>
+                  </Card>
                 )
               })()}
 
@@ -425,8 +425,8 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                 
                 if (emotionBreakdown) {
                   return (
-                    <div 
-                      className="bg-white/[0.04] mb-4 p-[20px]"
+                    <Card 
+                      className="mb-4 p-[20px] space-y-0"
                       style={{ borderRadius: '8px' }}
                     >
                       <div className="flex flex-col items-center">
@@ -438,7 +438,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                           size={240}
                         />
                       </div>
-                    </div>
+                    </Card>
                   )
                 }
                 return null
@@ -446,9 +446,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
 
               <div className="grid grid-cols-2 gap-3 mb-6">
               {/* 1. Energized */}
-              <div 
+              <Card 
                 onClick={() => onEmotionClick('energized')}
-                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                className="transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden space-y-0"
                 style={{ borderRadius: '16px' }}
               >
                 <div className="flex flex-col h-full justify-between">
@@ -483,12 +483,12 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     {energyTasks.length} {energyTasks.length === 1 ? 'task' : 'tasks'}
                   </p>
                 </div>
-              </div>
+              </Card>
               
               {/* 2. Drained */}
-              <div 
+              <Card 
                 onClick={() => onEmotionClick('drained')}
-                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                className="transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden space-y-0"
                 style={{ borderRadius: '16px' }}
               >
                 <div className="flex flex-col h-full justify-between">
@@ -523,12 +523,12 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     {drainingTasks.length} {drainingTasks.length === 1 ? 'task' : 'tasks'}
                   </p>
                 </div>
-              </div>
+              </Card>
               
               {/* 3. Meaningful */}
-              <div 
+              <Card 
                 onClick={() => onEmotionClick('meaningful')}
-                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                className="transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden space-y-0"
                 style={{ borderRadius: '16px' }}
               >
                 <div className="flex flex-col h-full justify-between">
@@ -563,12 +563,12 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     {meaningfulTasks.length} {meaningfulTasks.length === 1 ? 'task' : 'tasks'}
                   </p>
                 </div>
-              </div>
+              </Card>
               
               {/* 4. Curious */}
-              <div 
+              <Card 
                 onClick={() => onEmotionClick('curious')}
-                className="bg-white/[0.04] transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden"
+                className="transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden space-y-0"
                 style={{ borderRadius: '16px' }}
               >
                 <div className="flex flex-col h-full justify-between">
@@ -603,7 +603,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                     {passionTasks.length} {passionTasks.length === 1 ? 'task' : 'tasks'}
                   </p>
                 </div>
-              </div>
+              </Card>
             </div>
             </>
           )

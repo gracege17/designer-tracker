@@ -3,6 +3,7 @@ import { CaretLeft, DownloadSimple, Trash, EnvelopeSimple, HouseSimple, Plus, Ch
 import BottomNav from './BottomNav'
 import { UserProfileStorage, EntryStorage, ProjectStorage } from '../utils/storage'
 import ButtonIcon from './ButtonIcon'
+import Card from './Card'
 
 interface SettingsProps {
   onBack: () => void
@@ -170,7 +171,7 @@ const Settings: React.FC<SettingsProps> = ({
         {/* Daily Reminder Section */}
         <section>
           <h3 className="text-xs uppercase text-[#A6A6A6] mb-3 tracking-wide">DAILY REMINDER</h3>
-          <div className="p-4 bg-white/[0.04] rounded-xl">
+          <Card className="space-y-3">
             <label className="block">
               <span className="text-sm text-white mb-2 block">
                 Reminder Time
@@ -190,13 +191,13 @@ const Settings: React.FC<SettingsProps> = ({
                 return `${displayHour}:${m} ${period}`;
               })} 🌙
             </p>
-          </div>
+          </Card>
         </section>
 
         {/* Account Section */}
         <section>
           <h3 className="text-xs uppercase text-[#A6A6A6] mb-3 tracking-wide">ACCOUNT</h3>
-          <div className="p-4 bg-white/[0.04] rounded-xl">
+          <Card className="space-y-3">
             <label className="block">
               <span className="text-sm text-white mb-2 block">
                 Your Name
@@ -229,7 +230,7 @@ const Settings: React.FC<SettingsProps> = ({
             <p className="text-xs text-[#938F99] mt-2">
               Appears in your daily greeting ✨
             </p>
-          </div>
+          </Card>
         </section>
 
         {/* Data Control Section */}
@@ -237,9 +238,11 @@ const Settings: React.FC<SettingsProps> = ({
           <h3 className="text-xs uppercase text-[#A6A6A6] mb-3 tracking-wide">DATA CONTROL</h3>
           <div className="space-y-3">
             {/* Export Data */}
-            <button
+            <Card
+              as="button"
+              type="button"
               onClick={handleExportData}
-              className="w-full p-4 bg-white/[0.04] rounded-xl text-left transition-all active:scale-[0.98] hover:bg-white/[0.06]"
+              className="w-full text-left active:scale-[0.98] hover:bg-white/[0.06] space-y-0"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
@@ -250,12 +253,14 @@ const Settings: React.FC<SettingsProps> = ({
                   <p className="text-xs text-[#938F99]">Save your reflections as backup</p>
                 </div>
               </div>
-            </button>
+            </Card>
 
             {/* Check Data Integrity */}
-            <button
+            <Card
+              as="button"
+              type="button"
               onClick={handleCheckDataIntegrity}
-              className="w-full p-4 bg-white/[0.04] rounded-xl text-left transition-all active:scale-[0.98] hover:bg-white/[0.06]"
+              className="w-full text-left active:scale-[0.98] hover:bg-white/[0.06] space-y-0"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
@@ -266,12 +271,14 @@ const Settings: React.FC<SettingsProps> = ({
                   <p className="text-xs text-[#938F99]">Scan and fix any broken links</p>
                 </div>
               </div>
-            </button>
+            </Card>
 
             {/* Delete All Data */}
-            <button
+            <Card
+              as="button"
+              type="button"
               onClick={handleDeleteAllData}
-              className="w-full p-4 bg-white/[0.04] rounded-xl text-left transition-all active:scale-[0.98] hover:bg-white/[0.06]"
+              className="w-full text-left active:scale-[0.98] hover:bg-white/[0.06] space-y-0"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
@@ -282,16 +289,18 @@ const Settings: React.FC<SettingsProps> = ({
                   <p className="text-xs text-[#938F99]">Removes everything permanently</p>
                 </div>
               </div>
-            </button>
+            </Card>
           </div>
         </section>
 
         {/* Feedback Section */}
         <section>
           <h3 className="text-xs uppercase text-[#A6A6A6] mb-3 tracking-wide">FEEDBACK</h3>
-          <button
+          <Card
+            as="button"
+            type="button"
             onClick={handleSendFeedback}
-            className="w-full p-4 bg-white/[0.04] rounded-xl text-left transition-all active:scale-[0.98] hover:bg-white/[0.06]"
+            className="w-full text-left active:scale-[0.98] hover:bg-white/[0.06] space-y-0"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
@@ -302,7 +311,7 @@ const Settings: React.FC<SettingsProps> = ({
                 <p className="text-xs text-[#938F99]">Share your thoughts with us 💭</p>
               </div>
             </div>
-          </button>
+          </Card>
         </section>
 
         {/* App Version */}
