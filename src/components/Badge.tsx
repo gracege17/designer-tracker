@@ -21,7 +21,7 @@ const toneClassMap: Record<BadgeTone, string> = {
 
 const sizeClassMap: Record<BadgeSize, string> = {
   sm: 'px-2.5 py-1 text-[11px]',
-  md: 'px-3.5 py-2 text-[13px]',
+  md: 'px-4 py-2.5 text-[14px]',
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(

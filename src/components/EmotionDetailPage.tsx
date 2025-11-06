@@ -238,7 +238,7 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
                   tone="neutral"
                   size="md"
                   uppercase={false}
-                  className="px-4 py-2.5 text-[14px] text-white"
+                  className="text-white"
                 >
                   {tag}
                 </Badge>

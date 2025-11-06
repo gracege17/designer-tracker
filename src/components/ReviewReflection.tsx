@@ -143,7 +143,7 @@ const ReviewReflection: React.FC<ReviewReflectionProps> = ({
           <ButtonPrimaryCTA
             onClick={onSaveReflection}
             disabled={tasks.length === 0}
-            className={`rounded-full font-bold ${tasks.length === 0 ? 'bg-[#49454F] text-[#938F99] cursor-not-allowed hover:bg-[#49454F]' : ''}`}
+            className={tasks.length === 0 ? 'bg-[#49454F] text-[#938F99] cursor-not-allowed hover:bg-[#49454F]' : ''}
           >
             Save reflections
           </ButtonPrimaryCTA>

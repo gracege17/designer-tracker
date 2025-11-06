@@ -3,6 +3,7 @@ import { CaretLeft, X } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import ButtonSecondary from './ButtonSecondary'
 import ButtonIcon from './ButtonIcon'
+import TagDismissible from './TagDismissible'
 import { Project } from '../types'
 import { ProjectStorage, EntryStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
@@ -135,42 +136,41 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
           {localProjects.map((project) => {
             const isSelected = selectedProjects.includes(project.id)
 
+            const handleTagClick = () => {
+              handleProjectToggle(project.id)
+            }
+
+            const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
+              handleProjectDelete(project.id, event)
+            }
+
+            const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                handleProjectToggle(project.id)
+              }
+            }
+ 
             return (
-              <div
+              <TagDismissible
                 key={project.id}
-                className={`
-                  flex items-center justify-between px-4 py-2 rounded-lg
-                  transition-all duration-200
-                  ${isSelected
+                label={project.name}
+                onClick={handleTagClick}
+                onKeyDown={handleKeyDown}
+                aria-pressed={isSelected}
+                onRemove={handleRemove}
+                className={`w-full transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EC5429]/60 ${
+                  isSelected
                     ? 'bg-[#EC5429]/20 backdrop-blur-sm shadow-lg shadow-[#EC5429]/10 hover:bg-[#EC5429]/30'
                     : 'bg-white/[0.08] backdrop-blur-sm shadow-md hover:bg-white/[0.12]'
-                  }
-                `}
-              >
-                <button
-                  onClick={() => handleProjectToggle(project.id)}
-                  className="flex-1 text-left active:scale-[0.99] transition-all"
-                >
-                  <span className={`text-[14px] font-normal transition-colors ${
-                    isSelected ? 'text-[#EC5429] font-medium' : 'text-[#E6E1E5]'
-                  }`}>
-                    {project.name}
-                  </span>
-                </button>
-                <ButtonIcon
-                  onClick={(e) => handleProjectDelete(project.id, e)}
-                  className="ml-3 p-1 rounded hover:bg-white/10 active:scale-90 opacity-100"
-                  title="Delete project"
-                >
-                  <X 
-                    size={20} 
-                    weight="bold"
-                    className={`opacity-50 transition-colors ${
-                      isSelected ? 'text-[#EC5429]' : 'text-[#E6E1E5]'
-                    }`}
-                  />
-                </ButtonIcon>
-              </div>
+                }`}
+                labelClassName={`text-[14px] transition-colors ${
+                  isSelected ? 'text-[#EC5429]' : 'text-[#E6E1E5] font-normal'
+                }`}
+                removeButtonClassName={`${
+                  isSelected ? 'text-[#EC5429]' : 'text-[#E6E1E5]'
+                } opacity-50`}
+              />
             )
           })}
         </div>
