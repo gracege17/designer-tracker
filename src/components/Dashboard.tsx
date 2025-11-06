@@ -10,6 +10,7 @@ import { calculateDailyColor } from '../utils/emotionColorBlender'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
 import { EMOTIONS } from '../types'
 import namer from 'color-namer'
+import SectionLabel from './SectionLabel'
 
 interface DashboardProps {
   entries: Entry[]
@@ -296,9 +297,7 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           }}
         >
           {/* Challenge Title - Following Card Design System */}
-          <p className="text-[11px] sm:text-[12px] font-normal text-[#CAC4D0] mb-1.5 sm:mb-2" style={{ letterSpacing: '0.1em' }}>
-            5 DAYS CHALLENGE
-          </p>
+          <SectionLabel>5 DAYS CHALLENGE</SectionLabel>
           
           {/* Challenge Subtitle */}
           <p className="text-[15px] sm:text-[18px] font-medium text-white leading-snug mb-4 sm:mb-6">

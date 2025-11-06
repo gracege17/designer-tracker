@@ -10,6 +10,7 @@ import EmotionalRadarChart from './EmotionalRadarChart'
 import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { generateWeeklyInsights } from '../utils/weeklyInsightsService'
 import { generateSummaryTags } from '../utils/smartSummaryService'
+import LabelUppercase from './LabelUppercase'
 
 type EmotionType = 'energized' | 'drained' | 'meaningful' | 'curious'
 
@@ -301,10 +302,17 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
           const allTasks = currentEntries.length > 0 ? currentEntries.flatMap(entry => entry.tasks) : []
           
           // Helper function to get emotions array from task
-          const getEmotions = (task: any): number[] => {
+          const getEmotions = (task: any): EmotionLevel[] => {
             const emotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
             // Convert to numbers in case they're stored as strings
-            return emotions.map((e: any) => typeof e === 'string' ? parseInt(e, 10) : e)
+            return emotions
+              .map((e: any) => {
+                const numericValue = typeof e === 'string' ? parseInt(e, 10) : e
+                return numericValue
+              })
+              .filter((value: number): value is EmotionLevel =>
+                typeof value === 'number' && value >= 1 && value <= 16
+              )
           }
           
           // Group tasks by project with emotion counts
@@ -453,9 +461,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               >
                 <div className="flex flex-col h-full justify-between">
                   {/* Emotion name (top) */}
-                  <h3 className="text-[10px] font-semibold text-[#938F99] uppercase tracking-wider">
-                    Energized
-                  </h3>
+                  <LabelUppercase>Energized</LabelUppercase>
                   
                   {/* Summary Tag (center, main focus) */}
                   {energyTasks.length > 0 ? (
@@ -493,9 +499,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               >
                 <div className="flex flex-col h-full justify-between">
                   {/* Emotion name (top) */}
-                  <h3 className="text-[10px] font-semibold text-[#938F99] uppercase tracking-wider">
-                    Drained
-                  </h3>
+                  <LabelUppercase>Drained</LabelUppercase>
                   
                   {/* Summary Tag (center, main focus) */}
                   {drainingTasks.length > 0 ? (
@@ -533,9 +537,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               >
                 <div className="flex flex-col h-full justify-between">
                   {/* Emotion name (top) */}
-                  <h3 className="text-[10px] font-semibold text-[#938F99] uppercase tracking-wider">
-                    Meaningful
-                  </h3>
+                  <LabelUppercase>Meaningful</LabelUppercase>
                   
                   {/* Summary Tag (center, main focus) */}
                   {meaningfulTasks.length > 0 ? (
@@ -573,9 +575,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               >
                 <div className="flex flex-col h-full justify-between">
                   {/* Emotion name (top) */}
-                  <h3 className="text-[10px] font-semibold text-[#938F99] uppercase tracking-wider">
-                    Curious
-                  </h3>
+                  <LabelUppercase>Curious</LabelUppercase>
                   
                   {/* Summary Tag (center, main focus) */}
                   {passionTasks.length > 0 ? (

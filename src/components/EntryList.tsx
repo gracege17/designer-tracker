@@ -5,6 +5,7 @@ import { Entry } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { DateUtils } from '../utils/dateUtils'
 import ButtonIcon from './ButtonIcon'
+import LabelUppercase from './LabelUppercase'
 
 interface EntryListProps {
   entries: Entry[]
@@ -123,9 +124,9 @@ const EntryList: React.FC<EntryListProps> = ({
                       >
                         {/* Date Section - Square Left Side */}
                         <div className="flex-shrink-0 w-[48px] h-[48px] flex flex-col items-center justify-center bg-[#1C1B1F] rounded">
-                          <p className="text-[10px] font-semibold text-[#79747E] mb-0.5 tracking-wider uppercase">
+                          <LabelUppercase className="text-[#79747E] mb-0.5">
                             {dayName}
-                          </p>
+                          </LabelUppercase>
                           <p className="text-[24px] font-medium leading-none text-white">
                             {dayNumber}
                           </p>
