@@ -136,10 +136,6 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
           {localProjects.map((project) => {
             const isSelected = selectedProjects.includes(project.id)
 
-            const handleTagClick = () => {
-              handleProjectToggle(project.id)
-            }
-
             const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
               handleProjectDelete(project.id, event)
             }
@@ -154,23 +150,22 @@ const ProjectSelectionImproved: React.FC<ProjectSelectionProps> = ({
             return (
               <TagDismissible
                 key={project.id}
-                label={project.name}
-                onClick={handleTagClick}
+                onClick={() => handleProjectToggle(project.id)}
                 onKeyDown={handleKeyDown}
-                aria-pressed={isSelected}
                 onRemove={handleRemove}
-                className={`w-full transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EC5429]/60 ${
+                aria-pressed={isSelected}
+                className={`${
                   isSelected
-                    ? 'bg-[#EC5429]/20 backdrop-blur-sm shadow-lg shadow-[#EC5429]/10 hover:bg-[#EC5429]/30'
-                    : 'bg-white/[0.08] backdrop-blur-sm shadow-md hover:bg-white/[0.12]'
+                    ? 'bg-[#EC5429]/20 shadow-lg shadow-[#EC5429]/10 hover:bg-[#EC5429]/30'
+                    : ''
                 }`}
-                labelClassName={`text-[14px] transition-colors ${
-                  isSelected ? 'text-[#EC5429]' : 'text-[#E6E1E5] font-normal'
+                labelClassName={`${
+                  isSelected ? 'text-[#EC5429]' : 'font-normal'
                 }`}
-                removeButtonClassName={`${
-                  isSelected ? 'text-[#EC5429]' : 'text-[#E6E1E5]'
-                } opacity-50`}
-              />
+                removeButtonClassName={isSelected ? 'text-[#EC5429]' : undefined}
+              >
+                {project.name}
+              </TagDismissible>
             )
           })}
         </div>

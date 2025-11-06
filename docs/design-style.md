@@ -230,6 +230,7 @@ Shape: rounded-full, inline-flex
 Border: border border-white/10
 Background: bg-white/[0.08]
 Supports optional left icon via `icon` prop (adds gap-2 alignment)
+Label Slot: children (string or node)
 ```
 
 Use for static labels, filters, or categories that don’t require dismissal.
@@ -239,9 +240,11 @@ Use for static labels, filters, or categories that don’t require dismissal.
 Component: <TagDismissible />  (src/components/TagDismissible.tsx)
 Base: Inherits <Tag /> styling
 Layout: flex items-center gap-2
-Close Button: ml-1 p-1 rounded hover:bg-white/10 active:scale-90 text-white/80
+Close Button: p-1 rounded hover:bg-white/10 active:scale-90 text-[#E6E1E5] opacity-80
 Icon: Defaults to bold X; override with `removeIcon`
 Accessibility: Customise `removeAriaLabel`
+Label Slot: children (string or node)
+Remove Action: optional `onRemove`; omitting hides the close button
 ```
 
 Use for multi-select chips, removable filters, or editable labels.
@@ -369,4 +372,4 @@ SafeAreaView (bg-cream)
 *This style guide is a living document. Update it as the design system evolves.*
 
 **Last Updated:** November 5, 2025  
-**Version:** 1.4
+**Version:** 1.5
