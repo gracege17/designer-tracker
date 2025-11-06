@@ -112,6 +112,8 @@ import {
   BodyTextMuted,
   AlertSuccess,
   LabelBold,
+  SectionLabel,
+  LabelUppercase,
 } from '@/components/Typography'
 ```
 
@@ -121,6 +123,8 @@ import {
 - `<BodyTextMuted />`: `text-sm text-slate-500`
 - `<AlertSuccess />`: `text-[14px] font-medium text-green-800` (wrap with success backgrounds as needed)
 - `<LabelBold />`: `font-bold` inline helper for emphasizing inline text
+- `<SectionLabel />`: `text-[12px] sm:text-[13px] font-normal text-[#CAC4D0] tracking-widest uppercase` (use for small section titles; spacing can be tweaked via `className`)
+- `<LabelUppercase />`: `text-[10px] font-semibold text-[#938F99] uppercase tracking-wider` (for mini category/status tags)
 
 Each component accepts:
 - `as`: override the rendered tag (default listed above)
@@ -398,4 +402,4 @@ SafeAreaView (bg-cream)
 *This style guide is a living document. Update it as the design system evolves.*
 
 **Last Updated:** November 5, 2025  
-**Version:** 1.6
+**Version:** 1.7

@@ -10,7 +10,7 @@ import EmotionalRadarChart from './EmotionalRadarChart'
 import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { generateWeeklyInsights } from '../utils/weeklyInsightsService'
 import { generateSummaryTags } from '../utils/smartSummaryService'
-import LabelUppercase from './LabelUppercase'
+import SectionLabel from './SectionLabel'
 
 type EmotionType = 'energized' | 'drained' | 'meaningful' | 'curious'
 
@@ -461,7 +461,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               >
                 <div className="flex flex-col h-full justify-between">
                   {/* Emotion name (top) */}
-                  <LabelUppercase>Energized</LabelUppercase>
+                  <SectionLabel className="text-[10px] font-semibold text-[#938F99] mb-0 tracking-wider">
+                    Energized
+                  </SectionLabel>
                   
                   {/* Summary Tag (center, main focus) */}
                   {energyTasks.length > 0 ? (
@@ -499,7 +501,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               >
                 <div className="flex flex-col h-full justify-between">
                   {/* Emotion name (top) */}
-                  <LabelUppercase>Drained</LabelUppercase>
+                  <SectionLabel className="text-[10px] font-semibold text-[#938F99] mb-0 tracking-wider">
+                    Drained
+                  </SectionLabel>
                   
                   {/* Summary Tag (center, main focus) */}
                   {drainingTasks.length > 0 ? (
@@ -537,7 +541,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               >
                 <div className="flex flex-col h-full justify-between">
                   {/* Emotion name (top) */}
-                  <LabelUppercase>Meaningful</LabelUppercase>
+                  <SectionLabel className="text-[10px] font-semibold text-[#938F99] mb-0 tracking-wider">
+                    Meaningful
+                  </SectionLabel>
                   
                   {/* Summary Tag (center, main focus) */}
                   {meaningfulTasks.length > 0 ? (
@@ -575,7 +581,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               >
                 <div className="flex flex-col h-full justify-between">
                   {/* Emotion name (top) */}
-                  <LabelUppercase>Curious</LabelUppercase>
+                  <SectionLabel className="text-[10px] font-semibold text-[#938F99] mb-0 tracking-wider">
+                    Curious
+                  </SectionLabel>
                   
                   {/* Summary Tag (center, main focus) */}
                   {passionTasks.length > 0 ? (
