@@ -4,6 +4,7 @@ import { TaskType, EmotionLevel, TASK_TYPE_LABELS, EMOTIONS, Project } from '../
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
 import Input from './Input'
+import { BodyTextMuted } from './Typography'
 
 interface AddEntryFormProps {
   onSubmit: (entry: { 
@@ -180,9 +181,9 @@ const AddEntryForm: React.FC<AddEntryFormProps> = ({
               className="w-full p-4 border border-slate-200 rounded-lg focus:border-primary focus:outline-none text-slate-800 resize-none soft-shadow"
               maxLength={1000}
             />
-            <p className="text-sm text-slate-500 mt-1">
-              {notes.length}/1000 characters
-            </p>
+            <BodyTextMuted className="mt-1">
+              Use emoji or keep it simple—whatever feels right.
+            </BodyTextMuted>
           </div>
         </form>
       </main>

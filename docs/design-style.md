@@ -103,6 +103,32 @@ Body MD: 14px/20px, weight 400     /* Standard body text */
 Body SM: 12px/16px, weight 400     /* Helper text, labels */
 ```
 
+### Typography Components
+```tsx
+import {
+  Heading1,
+  BodyTextPrimary,
+  BodyTextSecondary,
+  BodyTextMuted,
+  AlertSuccess,
+  LabelBold,
+} from '@/components/Typography'
+```
+
+- `<Heading1 />`: `text-[18px] font-bold text-slate-900` (default `h1`, override via `as`)
+- `<BodyTextPrimary />`: `text-[14px] font-medium text-slate-700`
+- `<BodyTextSecondary />`: `text-[13px] text-slate-600`
+- `<BodyTextMuted />`: `text-sm text-slate-500`
+- `<AlertSuccess />`: `text-[14px] font-medium text-green-800` (wrap with success backgrounds as needed)
+- `<LabelBold />`: `font-bold` inline helper for emphasizing inline text
+
+Each component accepts:
+- `as`: override the rendered tag (default listed above)
+- `className`: append additional utilities (e.g. spacing, color tweaks)
+- Any other native props pass through to the rendered element
+
+Use these primitives to keep typography consistent across flows instead of re-declaring Tailwind text stacks.
+
 ### Typography Guidelines
 - **Line Height:** Always generous (1.4-1.6x) for readability
 - **Font Weight:** Keep light to regular (400-500) for gentle feel
@@ -372,4 +398,4 @@ SafeAreaView (bg-cream)
 *This style guide is a living document. Update it as the design system evolves.*
 
 **Last Updated:** November 5, 2025  
-**Version:** 1.5
+**Version:** 1.6

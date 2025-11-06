@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
+import ButtonSecondary from './ButtonSecondary'
+import { Heading1, BodyTextPrimary, BodyTextSecondary, AlertSuccess } from './Typography'
 import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import { createProject } from '../utils/dataHelpers'
@@ -67,9 +69,9 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
           >
             <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
           </button>
-          <h1 className="text-[18px] font-bold text-slate-900">
+          <Heading1>
             Add New Project
-          </h1>
+          </Heading1>
           <div className="w-10"></div>
         </div>
       </header>
@@ -78,20 +80,18 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
       <main className="flex-1 px-5 pt-6 pb-32 max-w-md mx-auto w-full overflow-y-auto">
         {/* Success Message */}
         {showSuccess && (
-          <div 
-            className="mb-4 p-4 bg-green-50 border border-green-200 text-green-800 text-[14px] animate-fade-in"
-          >
+          <AlertSuccess className="mb-4 p-4 bg-green-50 border border-green-200 animate-fade-in">
             ✓ "{lastProjectName}" added successfully!
-          </div>
+          </AlertSuccess>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Project Name */}
           <div>
             <label className="block mb-2">
-              <span className="text-[14px] font-medium text-slate-700 block mb-2">
+              <BodyTextPrimary as="span" className="block mb-2">
                 Project Name
-              </span>
+              </BodyTextPrimary>
               <input
                 type="text"
                 value={projectName}
@@ -102,9 +102,9 @@ const AddProject: React.FC<AddProjectProps> = ({ onProjectAdded, onBack }) => {
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-900 text-[16px] focus:outline-none focus:border-slate-400 transition-colors"
               />
             </label>
-            <p className="text-[13px] text-slate-600 mt-2">
+            <BodyTextSecondary className="mt-2">
               Add one project at a time. Click Done when finished.
-            </p>
+            </BodyTextSecondary>
           </div>
         </form>
       </main>

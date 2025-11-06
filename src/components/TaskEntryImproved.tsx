@@ -3,6 +3,7 @@ import { CaretLeft } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import ButtonIcon from './ButtonIcon'
 import { ProjectStorage } from '../utils/storage'
+import { BodyTextMuted, LabelBold } from './Typography'
 
 interface TaskEntryProps {
   selectedProjectIds: string[]
@@ -75,9 +76,9 @@ const TaskEntryImproved: React.FC<TaskEntryProps> = ({
         {/* Title Section */}
         <div className="mb-8">
           <h2 className="text-[32px] font-normal text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
-            What did you work on for <span className="font-bold">{currentProject?.name}</span>?
+            What did you work on for <LabelBold as="span">{currentProject?.name}</LabelBold>?
           </h2>
-          <p className="text-[16px] text-[#CAC4D0]">
+          <p className="text-[15px] text-[#CAC4D0] leading-relaxed">
             Describe what you accomplished today
           </p>
         </div>

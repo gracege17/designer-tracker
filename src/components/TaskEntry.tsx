@@ -4,6 +4,7 @@ import { Project } from '../types'
 import { ProjectStorage } from '../utils/storage'
 import Button from './Button'
 import ButtonIcon from './ButtonIcon'
+import { BodyTextMuted } from './Typography'
 
 interface TaskEntryProps {
   selectedProjectIds: string[]
@@ -74,9 +75,9 @@ const TaskEntry: React.FC<TaskEntryProps> = ({
             maxLength={500}
           />
           <div className="text-right">
-            <span className="text-sm text-slate-500">
+            <BodyTextMuted as="span">
               {taskDescription.length}/500 characters
-            </span>
+            </BodyTextMuted>
           </div>
         </div>
       </main>
