@@ -8,6 +8,7 @@ export interface ChallengeAction {
   title: string
   description: string
   type?: 'action' | 'resource' | 'tool' | 'podcast' | 'book'
+  url?: string
 }
 
 export interface ChallengeRecommendationTemplate {
@@ -432,6 +433,204 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
       },
     ],
     aliases: ['tools not enough', 'feel replaceable despite skills', 'ai makes tools easy'],
+  },
+  {
+    id: 'deadline-pressure-stress',
+    title: 'Deadline pressure feels intense',
+    summary:
+      'Your body flagged today’s work as stressful. When pressure spikes, clarity and momentum come from shrinking the next step.',
+    insight:
+      'Anxious energy is a signal, not a verdict. Translate the pressure into a plan so your mind can settle and your craft can show up again.',
+    emotionTags: ['Anxiety', 'Pressure', 'Stress'],
+    topicTags: ['Planning', 'Focus', 'Workload'],
+    growthGoalTags: ['Grounding', 'Prioritization'],
+    responseMode: 'structured-3-step-guide',
+    actions: [
+      {
+        type: 'action',
+        title: 'Reset the plan',
+        description: 'List the next three moves only — nothing beyond. Narrowing scope calms urgency.',
+      },
+      {
+        type: 'tool',
+        title: 'Daily reset checklist',
+        description: 'Use a simple Notion template to close loops and surface one priority at a time.',
+        url: 'https://notion.so/templates/daily-reset',
+      },
+      {
+        type: 'podcast',
+        title: 'Managing design stress',
+        description: 'Design Better Podcast episode on coping with pressure without burning out.',
+        url: 'https://www.designbetter.co/podcast/stress',
+      },
+      {
+        type: 'book',
+        title: 'The Obstacle Is the Way',
+        description: 'Ryan Holiday’s guide to reframing obstacles into momentum-building constraints.',
+      },
+    ],
+    aliases: [
+      'stressed about deadlines',
+      'deadline pressure',
+      'feeling pressure from today',
+      'overwhelmed by workload',
+    ],
+  },
+  {
+    id: 'low-energy-recovery',
+    title: 'Energy dipped throughout the day',
+    summary:
+      'Multiple moments today felt draining. That’s your cue to trade willpower for rhythm and recovery.',
+    insight:
+      'Creative energy is cyclical. Designing rest into your flow keeps craft sharp and burnout away.',
+    emotionTags: ['Drained', 'Tired', 'Low Energy'],
+    topicTags: ['Rest', 'Sustainable Pace'],
+    growthGoalTags: ['Recovery', 'Self-Care'],
+    responseMode: 'structured-3-step-guide',
+    actions: [
+      {
+        type: 'action',
+        title: 'Protect a micro-break',
+        description: 'Block 10 minutes after the next focus block — stretch, walk, or breathe.',
+      },
+      {
+        type: 'tool',
+        title: 'Designer recharge meditation',
+        description: 'A five-minute Calm session built for creative reset.',
+        url: 'https://www.calm.com/designer-recharge',
+      },
+      {
+        type: 'podcast',
+        title: 'Avoiding designer burnout',
+        description: 'Design Details episode on spotting exhaustion before it derails momentum.',
+        url: 'https://designdetails.fm/burnout',
+      },
+      {
+        type: 'book',
+        title: 'Rest Is Also Growth',
+        description: 'Short essays on why recovery is essential to creative excellence.',
+      },
+    ],
+    aliases: ['feeling drained', 'low energy', 'need rest', 'burned out'],
+  },
+  {
+    id: 'creative-block-frustration',
+    title: 'Creative momentum stalled',
+    summary:
+      'Today’s work carried some stuck or frustrated moments. Let’s add motion, reflection, and inspiration back into the loop.',
+    insight:
+      'Blocks are a request for new inputs. Change the environment, the medium, or the conversation to unstick your thinking.',
+    emotionTags: ['Frustrated', 'Stuck', 'Blocked'],
+    topicTags: ['Inspiration', 'Creative Process'],
+    growthGoalTags: ['Exploration', 'Momentum'],
+    responseMode: 'structured-3-step-guide',
+    actions: [
+      {
+        type: 'book',
+        title: 'Overcoming Creative Blocks',
+        description: 'Austin Kleon’s playbook for moving through creative friction.',
+        url: 'https://austinkleon.com/creative-blocks',
+      },
+      {
+        type: 'tool',
+        title: 'Creative research template',
+        description: 'Gather references and sparks in a Notion board to reboot curiosity.',
+        url: 'https://notion.so/templates/creative-research',
+      },
+      {
+        type: 'podcast',
+        title: 'When projects go wrong',
+        description: '99% Invisible stories on reframing failures into forward motion.',
+        url: 'https://99percentinvisible.org',
+      },
+      {
+        type: 'action',
+        title: 'Five-minute reset',
+        description: 'Step away, sketch with pen and paper, or talk it out loud to a teammate.',
+      },
+    ],
+    aliases: ['stuck and frustrated', 'creative block', 'can’t make progress'],
+  },
+  {
+    id: 'creative-flow-momentum',
+    title: 'Ride today’s creative momentum',
+    summary:
+      'You logged energized or joyful moments — perfect fuel for a bold move. Let’s amplify what worked.',
+    insight:
+      'Momentum compounds when you direct it with intention. Use today’s spark to move the needle on something meaningful.',
+    emotionTags: ['Excited', 'Joyful', 'Energized'],
+    topicTags: ['Growth', 'Momentum'],
+    growthGoalTags: ['Amplitude', 'Impact'],
+    responseMode: 'structured-3-step-guide',
+    actions: [
+      {
+        type: 'action',
+        title: 'Tackle the hard thing',
+        description: 'Use the energy window to move a high-impact task forward, even 10%.',
+      },
+      {
+        type: 'tool',
+        title: 'Design systems organizer',
+        description: 'Channel the flow into a Figma cleanup or component improvement.',
+        url: 'https://www.figma.com/community/plugin/design-systems',
+      },
+      {
+        type: 'podcast',
+        title: 'Scaling your design impact',
+        description: 'High Resolution episode on expanding influence when energy is high.',
+        url: 'https://www.highresolution.design/scaling-impact',
+      },
+      {
+        type: 'book',
+        title: 'Creative Flow',
+        description: 'Mihaly Csikszentmihalyi’s classic on sustaining deep engagement.',
+        url: 'https://www.goodreads.com/book/show/flow',
+      },
+    ],
+    aliases: [
+      'riding creative momentum',
+      'feeling energized',
+      'in flow today',
+      'creative high',
+    ],
+  },
+  {
+    id: 'general-overwhelm-focus',
+    title: 'Scattered across too many tasks',
+    summary:
+      'Everything felt important today, which steals focus. Let’s shrink decision load and rebuild momentum with one clear move.',
+    insight:
+      'Overwhelm fades when you choose a single anchor. Name the impact, protect a container for it, and let the rest wait.',
+    emotionTags: ['Overwhelmed', 'Scattered'],
+    topicTags: ['Prioritization', 'Focus'],
+    growthGoalTags: ['Clarity', 'Execution'],
+    responseMode: 'structured-3-step-guide',
+    actions: [
+      {
+        type: 'tool',
+        title: 'Minimal task board',
+        description: 'A pared-down Notion board for today’s top three priorities only.',
+        url: 'https://notion.so/templates/minimal-tasks',
+      },
+      {
+        type: 'book',
+        title: 'Make Time',
+        description: 'Jake Knapp’s framework for choosing a daily highlight and protecting energy.',
+        url: 'https://maketime.blog',
+      },
+      {
+        type: 'podcast',
+        title: 'Finding balance in design work',
+        description: 'Design Better stories on pacing multiple tracks without burning out.',
+        url: 'https://www.designbetter.co/podcast/balance',
+      },
+      {
+        type: 'action',
+        title: 'Set a focus timer',
+        description: 'Commit to 25 minutes on the highest leverage task, then reassess.',
+      },
+    ],
+    aliases: ['too many tasks', 'scattered', 'overwhelmed with work'],
   },
 ]
 

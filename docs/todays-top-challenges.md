@@ -59,6 +59,14 @@ Each challenge includes:
 }
 ```
 
+### Library Matching
+
+Daily emotion patterns are translated into short AI-style summaries that map to our recommendation library (`src/data/challengeRecommendations.ts`). Each matched template contributes:
+
+- A contextual insight (shown in the sheet’s “Feel” tab)
+- Action-oriented “Ways to cope” recommendations grouped into feel / do categories
+- Metadata (tags, response mode) consumed via `meta` for future analytics and UX cues
+
 ## UI Components
 
 ### Challenge Card Layout
@@ -162,8 +170,8 @@ export async function analyzeChallengesWithAI(todayEntry: Entry): Promise<Challe
 **Short Term:**
 - Track which suggestions users click
 - Show "You viewed this before" indicators
-- Add more diverse resource types (courses, communities, templates)
-- Support manual challenge lookups from curated library (see `findChallengeRecommendationFromInput`)
+- Expand emotion → library mappings to cover more nuanced scenarios
+- Continue enriching the library with new tone / format variants
 
 **Long Term:**
 - Personalized resource library based on user interests
@@ -267,7 +275,7 @@ export async function analyzeChallengesWithAI(todayEntry: Entry): Promise<Challe
 
 ---
 
-**Version**: 1.1
+**Version**: 1.2
 **Last Updated**: November 10, 2025
 **Status**: ✅ Implemented and Ready for Use
 

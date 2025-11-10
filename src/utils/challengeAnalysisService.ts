@@ -38,6 +38,57 @@ export interface ChallengeMeta {
   source?: 'emotion-analysis' | 'library'
 }
 
+const TEMPLATE_LOOKUP = new Map<string, ChallengeRecommendationTemplate>(
+  CHALLENGE_RECOMMENDATIONS.map(template => [template.id, template])
+)
+
+interface BuildChallengeOptions {
+  title?: string
+  empathy?: string
+  source?: ChallengeMeta['source']
+}
+
+const buildChallengeFromTemplate = (
+  template: ChallengeRecommendationTemplate,
+  rank: number,
+  options: BuildChallengeOptions = {}
+): Challenge => {
+  const title = options.title ?? template.title
+  const empathy = options.empathy ?? template.summary
+
+  const suggestions: ChallengeSuggestion[] = [
+    {
+      type: 'insight',
+      title: 'Insight',
+      desc: template.insight,
+    },
+    ...template.actions.map(action => ({
+      type: action.type ?? 'action',
+      title: action.title,
+      desc: action.description,
+      url: action.url,
+    })),
+  ]
+
+  return {
+    rank,
+    title,
+    empathy,
+    suggestions,
+    meta: {
+      id: template.id,
+      summary: template.summary,
+      insight: template.insight,
+      emotionTags: template.emotionTags,
+      topicTags: template.topicTags,
+      growthGoalTags: template.growthGoalTags,
+      responseMode: template.responseMode,
+      notes: template.notes,
+      source: options.source ?? 'library',
+    },
+  }
+}
+
 /**
  * Analyze today's entries and generate personalized challenges
  */
@@ -66,89 +117,134 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
   const annoyedCount = (emotionCounts[14] || 0) // Annoyed
   const sadCount = (emotionCounts[5] || 0) // Sad
 
-  // Challenge 1: Anxiety/Stress related
-  if (anxiousCount > 0 || frustratedCount > 0) {
+  let nextRank = 1
+
+  const pushFromTemplate = (templateId: string, options: BuildChallengeOptions = {}) => {
+    if (nextRank > 3) return false
+    const template = TEMPLATE_LOOKUP.get(templateId)
+    if (!template) return false
+
+    challenges.push(buildChallengeFromTemplate(template, nextRank, options))
+    nextRank += 1
+    return true
+  }
+
+  const pushManual = (title: string, empathy: string, suggestions: ChallengeSuggestion[]) => {
+    if (nextRank > 3) {
+      return
+    }
+
     challenges.push({
-      rank: 1,
-      title: "Stressed about deadlines",
-      empathy: "Break it down. One milestone at a time.",
-      suggestions: [
+      rank: nextRank,
+      title,
+      empathy,
+      suggestions,
+      meta: { source: 'emotion-analysis' },
+    })
+    nextRank += 1
+  }
+
+  const stressLoad = anxiousCount + frustratedCount
+  if (stressLoad > 0 && nextRank <= 3) {
+    const stressTitle =
+      stressLoad > 1 ? 'Feeling pressure across your work today' : 'Feeling pressure from today’s work'
+    const stressSummary = `You tagged ${stressLoad} task${stressLoad === 1 ? '' : 's'} with anxious or frustrated energy. Let’s turn that pressure into a plan.`
+
+    const added = pushFromTemplate('deadline-pressure-stress', {
+      title: stressTitle,
+      empathy: stressSummary,
+    })
+
+    if (!added) {
+      pushManual('Stressed about deadlines', 'Break it down. One milestone at a time.', [
         {
           type: 'tool',
           title: 'Notion Template: Daily Reset Checklist',
           desc: 'A simple way to reset when things feel overwhelming.',
-          url: 'https://notion.so/templates/daily-reset'
+          url: 'https://notion.so/templates/daily-reset',
         },
         {
           type: 'podcast',
           title: 'Managing Design Stress – Design Better Podcast',
           desc: 'How to handle pressure without burning out.',
-          url: 'https://www.designbetter.co/podcast/stress'
+          url: 'https://www.designbetter.co/podcast/stress',
         },
         {
           type: 'book',
           title: 'The Obstacle Is the Way – Ryan Holiday',
-          desc: 'Turn challenges into opportunities for growth.'
-        }
-      ]
-    })
+          desc: 'Turn challenges into opportunities for growth.',
+        },
+      ])
+    }
   }
 
-  // Challenge 2: Energy/Motivation issues
-  if (drainedCount > 0 || tiredCount > 0) {
-    challenges.push({
-      rank: challenges.length + 1,
-      title: "Drained and low energy",
-      empathy: "Recharge, don't push through. Take breaks every 90 minutes.",
-      suggestions: [
+  const energyLoad = drainedCount + tiredCount
+  if (energyLoad > 0 && nextRank <= 3) {
+    const energyTitle =
+      energyLoad > 1 ? 'Energy dipped multiple times today' : 'Energy dipped today'
+    const energySummary = `Energy flagged during ${energyLoad} task${energyLoad === 1 ? '' : 's'}. Let’s protect your focus and build in rest.`
+
+    const added = pushFromTemplate('low-energy-recovery', {
+      title: energyTitle,
+      empathy: energySummary,
+    })
+
+    if (!added) {
+      pushManual("Drained and low energy", "Recharge, don't push through. Take breaks every 90 minutes.", [
         {
           type: 'tool',
           title: 'Calm App – 5-Minute Designer Recharge',
           desc: 'Quick meditation for creative professionals.',
-          url: 'https://www.calm.com/designer-recharge'
+          url: 'https://www.calm.com/designer-recharge',
         },
         {
           type: 'podcast',
           title: 'Avoiding Designer Burnout – Design Details',
           desc: 'Recognizing and preventing creative exhaustion.',
-          url: 'https://designdetails.fm/burnout'
+          url: 'https://designdetails.fm/burnout',
         },
         {
           type: 'book',
-          title: 'Rest Is Also Growth – Designer\'s Guide to Self-Care',
-          desc: 'Why resting is productive work.'
-        }
-      ]
-    })
+          title: "Rest Is Also Growth – Designer's Guide to Self-Care",
+          desc: 'Why resting is productive work.',
+        },
+      ])
+    }
   }
 
-  // Challenge 3: Frustration/Creative blocks
-  if (annoyedCount > 0 || sadCount > 0) {
-    challenges.push({
-      rank: challenges.length + 1,
-      title: "Stuck and frustrated",
-      empathy: "Step away from the screen. Walk, sketch, talk it through.",
-      suggestions: [
+  const frustrationLoad = annoyedCount + sadCount
+  if (frustrationLoad > 0 && nextRank <= 3) {
+    const frustrationTitle =
+      frustrationLoad > 1 ? 'Creative momentum stalled across tasks' : 'Creative momentum stalled'
+    const frustrationSummary = `You marked ${frustrationLoad} task${frustrationLoad === 1 ? '' : 's'} with stuck or frustrated energy. Let’s get you moving again.`
+
+    const added = pushFromTemplate('creative-block-frustration', {
+      title: frustrationTitle,
+      empathy: frustrationSummary,
+    })
+
+    if (!added) {
+      pushManual('Stuck and frustrated', 'Step away from the screen. Walk, sketch, talk it through.', [
         {
           type: 'book',
           title: 'Overcoming Creative Blocks – Austin Kleon',
           desc: 'Practical strategies for getting unstuck.',
-          url: 'https://austinkleon.com/creative-blocks'
+          url: 'https://austinkleon.com/creative-blocks',
         },
         {
           type: 'tool',
           title: 'Notion Creative Research Template',
           desc: 'Organize your design inspiration and explorations.',
-          url: 'https://notion.so/templates/creative-research'
+          url: 'https://notion.so/templates/creative-research',
         },
         {
           type: 'podcast',
           title: 'When Projects Go Wrong – 99% Invisible',
           desc: 'Learning from design challenges and failures.',
-          url: 'https://99percentinvisible.org'
-        }
-      ]
-    })
+          url: 'https://99percentinvisible.org',
+        },
+      ])
+    }
   }
 
   // If mostly positive emotions, provide growth-oriented challenges
@@ -157,60 +253,83 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
   const energizedCount = (emotionCounts[10] || 0) // Energized
   const positiveTotal = excitedCount + happyCount + energizedCount
 
-  if (positiveTotal > anxiousCount + frustratedCount + drainedCount && challenges.length < 3) {
-    challenges.push({
-      rank: challenges.length + 1,
-      title: "Riding creative momentum",
-      empathy: "You're in flow. Tackle your hardest task now.",
-      suggestions: [
+  if (
+    positiveTotal > anxiousCount + frustratedCount + drainedCount &&
+    nextRank <= 3
+  ) {
+    const momentumSummary = `You logged ${positiveTotal} task${positiveTotal === 1 ? '' : 's'} with energized or joyful emotions. Momentum is here—aim it where it matters.`
+    const added = pushFromTemplate('creative-flow-momentum', {
+      title: 'Channel your creative momentum',
+      empathy: momentumSummary,
+    })
+
+    if (!added) {
+      pushManual("Riding creative momentum", "You're in flow. Tackle your hardest task now.", [
         {
           type: 'book',
           title: 'Creative Flow – Mihaly Csikszentmihalyi',
           desc: 'The science behind your creative momentum.',
-          url: 'https://www.goodreads.com/book/show/flow'
+          url: 'https://www.goodreads.com/book/show/flow',
         },
         {
           type: 'tool',
           title: 'Figma Plugin: Design Systems Organizer',
           desc: 'Channel your energy into building better systems.',
-          url: 'https://www.figma.com/community/plugin/design-systems'
+          url: 'https://www.figma.com/community/plugin/design-systems',
         },
         {
           type: 'podcast',
           title: 'Scaling Your Design Impact – High Resolution',
           desc: 'How to amplify your creative work.',
-          url: 'https://www.highresolution.design/scaling-impact'
-        }
-      ]
-    })
+          url: 'https://www.highresolution.design/scaling-impact',
+        },
+      ])
+    }
   }
 
   // If we still need more challenges, add a general one
-  if (challenges.length < 3) {
-    challenges.push({
-      rank: challenges.length + 1,
-      title: "Scattered across too many tasks",
-      empathy: "One task at a time. That's how creative flow begins.",
-      suggestions: [
+  if (nextRank <= 3) {
+    const focusSummary = 'One task at a time. That’s how creative flow begins.'
+    const added = pushFromTemplate('general-overwhelm-focus', {
+      title: 'Scattered across too many tasks',
+      empathy: focusSummary,
+    })
+
+    if (!added) {
+      pushManual('Scattered across too many tasks', focusSummary, [
         {
           type: 'tool',
           title: 'Notion Minimal Task Template',
           desc: 'Simplify your to-do list when energy is low.',
-          url: 'https://notion.so/templates/minimal-tasks'
+          url: 'https://notion.so/templates/minimal-tasks',
         },
         {
           type: 'book',
           title: 'Make Time – Jake Knapp',
           desc: 'Focus on what matters every day.',
-          url: 'https://maketime.blog'
+          url: 'https://maketime.blog',
         },
         {
           type: 'podcast',
           title: 'Finding Balance in Design Work – Design Better',
           desc: 'Balancing different types of design tasks.',
-          url: 'https://www.designbetter.co/podcast/balance'
-        }
-      ]
+          url: 'https://www.designbetter.co/podcast/balance',
+        },
+      ])
+    }
+  }
+
+  const defaultFallbacks = getDefaultChallenges()
+  while (challenges.length < 3 && defaultFallbacks.length > 0) {
+    const nextDefault = defaultFallbacks.shift()
+    if (!nextDefault) {
+      break
+    }
+
+    challenges.push({
+      ...nextDefault,
+      rank: challenges.length + 1,
+      meta: { source: nextDefault.meta?.source ?? 'emotion-analysis' },
     })
   }
 
@@ -246,7 +365,8 @@ function getDefaultChallenges(): Challenge[] {
           desc: 'Stories from the world\'s best designers.',
           url: 'https://www.designbetter.co/podcast'
         }
-      ]
+      ],
+      meta: { source: 'emotion-analysis' }
     },
     {
       rank: 2,
@@ -271,7 +391,8 @@ function getDefaultChallenges(): Challenge[] {
           desc: 'Build better creative habits one small step at a time.',
           url: 'https://jamesclear.com/atomic-habits'
         }
-      ]
+      ],
+      meta: { source: 'emotion-analysis' }
     },
     {
       rank: 3,
@@ -296,7 +417,8 @@ function getDefaultChallenges(): Challenge[] {
           desc: 'Navigating critique and maintaining confidence.',
           url: 'https://designdetails.fm/feedback'
         }
-      ]
+      ],
+      meta: { source: 'emotion-analysis' }
     }
   ]
 }

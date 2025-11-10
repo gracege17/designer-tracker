@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { CaretDown, MagnifyingGlass, X } from 'phosphor-react'
-import { Challenge, findChallengeRecommendationFromInput } from '../utils/challengeAnalysisService'
+import { CaretDown, X } from 'phosphor-react'
+import { Challenge } from '../utils/challengeAnalysisService'
 import Card from './Card'
 import ButtonIcon from './ButtonIcon'
-import ButtonPrimaryCTA from './ButtonPrimaryCTA'
-import ButtonText from './ButtonText'
 
 interface HelpfulResourcesCardProps {
   challenges: Challenge[]
@@ -33,8 +31,6 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
   const [activeTab, setActiveTab] = useState<'feel' | 'do'>('feel')
   const [isSheetVisible, setIsSheetVisible] = useState(false)
   const closeTimeoutRef = useRef<number | null>(null)
-  const [customChallengeInput, setCustomChallengeInput] = useState('')
-  const [customChallengeError, setCustomChallengeError] = useState<string | null>(null)
 
   const badgeStyles = [
     { color: '#F87171' },
@@ -132,26 +128,6 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
   const feelList = feelSuggestions.length > 0 ? feelSuggestions : fallbackSuggestions
   const doList = doSuggestions.length > 0 ? doSuggestions : fallbackSuggestions
 
-  const handleCustomChallengeSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-
-    if (!customChallengeInput.trim()) {
-      setCustomChallengeError('Describe a challenge to explore recommendations.')
-      return
-    }
-
-    const match = findChallengeRecommendationFromInput(customChallengeInput)
-
-    if (match) {
-      setCustomChallengeError(null)
-      openChallenge(match)
-    } else {
-      setCustomChallengeError(
-        "I don't have that one yet. Try another phrasing or add more detail."
-      )
-    }
-  }
-
   return (
     <div className="w-full mb-6">
       {/* Header */}
@@ -164,52 +140,6 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
             {subtitle}
           </p>
         )}
-      </div>
-
-      {/* Custom Challenge Lookup */}
-      <div className="mb-6 rounded-3xl border border-white/5 bg-white/[0.02] p-6">
-        <div className="flex items-center gap-3 text-[#E6E1E5]">
-          <MagnifyingGlass size={20} weight="bold" className="opacity-70" />
-          <div>
-            <h3 className="text-[16px] font-semibold leading-snug">Have a different challenge?</h3>
-            <p className="text-[13px] text-[#938F99]">
-              Describe what&apos;s on your mind to see recommendations from our challenge library.
-            </p>
-          </div>
-        </div>
-
-        <form onSubmit={handleCustomChallengeSubmit} className="mt-5 space-y-3">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-            <textarea
-              rows={3}
-              value={customChallengeInput}
-              onChange={event => setCustomChallengeInput(event.target.value)}
-              placeholder="Example: “Everyone thinks they’re a designer now.”"
-              className="w-full resize-none bg-transparent text-[14px] text-[#E6E1E5] placeholder:text-[#938F99] focus:outline-none"
-            />
-          </div>
-
-          <div className="flex items-center justify-between gap-3">
-            <ButtonText
-              type="button"
-              onClick={() => {
-                setCustomChallengeInput('')
-                setCustomChallengeError(null)
-              }}
-              className="text-[13px] text-[#CAC4D0] hover:text-white"
-            >
-              Clear
-            </ButtonText>
-
-            <ButtonPrimaryCTA type="submit" className="w-auto px-6">
-              Find recommendations
-            </ButtonPrimaryCTA>
-          </div>
-
-          {customChallengeError && (
-            <p className="text-[12px] font-medium text-[#F1B8B0]">{customChallengeError}</p>
-          )}
-        </form>
       </div>
 
       {/* Challenge Cards */}
