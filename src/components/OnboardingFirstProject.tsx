@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Palette, CaretRight, Plus, X, PaperPlaneRight } from 'phosphor-react'
-import Button from './Button'
-import Input from './Input'
+import { PaperPlaneRight } from 'phosphor-react'
 import ButtonIcon from './ButtonIcon'
+import ButtonText from './ButtonText'
 import { PROJECT_COLORS } from '../types'
 
 interface OnboardingFirstProjectProps {
@@ -26,7 +25,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       type: 'ai',
-      content: `Hey ${userName} 👋\n\nGot any projects in motion?\n\nYou can list them like:\n• One per line, or\n• Separate with commas, or\n• Use "and" between them\n\nType "skip" if you'd rather add them later. No rush!`
+      content: `What did you work on?\n\nList projects however it's easiest:\n• One per line\n• Separate with commas\n• Or use "and"\n\nTap Skip if you'd rather add them later.`
     }
   ])
   const [inputValue, setInputValue] = useState('')
@@ -200,6 +199,19 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
     }
   }
 
+  const handleSkipClick = () => {
+    setMessages(prev => [
+      ...prev,
+      {
+        type: 'ai',
+        content: 'No worries! You can add projects anytime later. 👍'
+      }
+    ])
+    setTimeout(() => {
+      onSkip()
+    }, 600)
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[var(--md-sys-color-surface)] text-[var(--md-sys-color-on-surface)]">
       {/* Chat Messages */}
@@ -234,6 +246,11 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
 
       {/* Input Area */}
       <div className="px-6 pb-8">
+        <div className="mb-3 flex justify-end">
+          <ButtonText type="button" onClick={handleSkipClick}>
+            Skip for now
+          </ButtonText>
+        </div>
         <div className="flex items-center gap-3 bg-[var(--md-sys-color-surface-container-high)] border border-white/10 p-2 shadow-[0_18px_44px_rgba(0,0,0,0.35)]" style={{ borderRadius: '24px' }}>
           <input
             type="text"
