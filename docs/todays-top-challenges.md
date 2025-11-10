@@ -163,6 +163,7 @@ export async function analyzeChallengesWithAI(todayEntry: Entry): Promise<Challe
 - Track which suggestions users click
 - Show "You viewed this before" indicators
 - Add more diverse resource types (courses, communities, templates)
+- Support manual challenge lookups from curated library (see `findChallengeRecommendationFromInput`)
 
 **Long Term:**
 - Personalized resource library based on user interests
@@ -266,7 +267,7 @@ export async function analyzeChallengesWithAI(todayEntry: Entry): Promise<Challe
 
 ---
 
-**Version**: 1.0
-**Last Updated**: October 31, 2025
+**Version**: 1.1
+**Last Updated**: November 10, 2025
 **Status**: ✅ Implemented and Ready for Use
 

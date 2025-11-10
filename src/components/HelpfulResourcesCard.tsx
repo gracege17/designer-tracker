@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { CaretDown, X } from 'phosphor-react'
-import { Challenge } from '../utils/challengeAnalysisService'
+import { CaretDown, MagnifyingGlass, X } from 'phosphor-react'
+import { Challenge, findChallengeRecommendationFromInput } from '../utils/challengeAnalysisService'
 import Card from './Card'
 import ButtonIcon from './ButtonIcon'
+import ButtonPrimaryCTA from './ButtonPrimaryCTA'
+import ButtonText from './ButtonText'
 
 interface HelpfulResourcesCardProps {
   challenges: Challenge[]
@@ -31,6 +33,8 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
   const [activeTab, setActiveTab] = useState<'feel' | 'do'>('feel')
   const [isSheetVisible, setIsSheetVisible] = useState(false)
   const closeTimeoutRef = useRef<number | null>(null)
+  const [customChallengeInput, setCustomChallengeInput] = useState('')
+  const [customChallengeError, setCustomChallengeError] = useState<string | null>(null)
 
   const badgeStyles = [
     { color: '#F87171' },
@@ -46,6 +50,8 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
       case 'podcast': return '🎧'
       case 'book': return '📚'
       case 'resource': return '💡'
+      case 'insight': return '🧠'
+      case 'action': return '✅'
       default: return '💡'
     }
   }
@@ -110,15 +116,41 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
 
   const feelSuggestions =
     selectedChallenge?.suggestions.filter(
-      suggestion => suggestion.type === 'podcast' || suggestion.type === 'book'
+      suggestion =>
+        suggestion.type === 'podcast' ||
+        suggestion.type === 'book' ||
+        suggestion.type === 'insight'
     ) ?? []
   const doSuggestions =
     selectedChallenge?.suggestions.filter(
-      suggestion => suggestion.type === 'tool' || suggestion.type === 'resource'
+      suggestion =>
+        suggestion.type === 'tool' ||
+        suggestion.type === 'resource' ||
+        suggestion.type === 'action'
     ) ?? []
   const fallbackSuggestions = selectedChallenge?.suggestions ?? []
   const feelList = feelSuggestions.length > 0 ? feelSuggestions : fallbackSuggestions
   const doList = doSuggestions.length > 0 ? doSuggestions : fallbackSuggestions
+
+  const handleCustomChallengeSubmit = (event: React.FormEvent) => {
+    event.preventDefault()
+
+    if (!customChallengeInput.trim()) {
+      setCustomChallengeError('Describe a challenge to explore recommendations.')
+      return
+    }
+
+    const match = findChallengeRecommendationFromInput(customChallengeInput)
+
+    if (match) {
+      setCustomChallengeError(null)
+      openChallenge(match)
+    } else {
+      setCustomChallengeError(
+        "I don't have that one yet. Try another phrasing or add more detail."
+      )
+    }
+  }
 
   return (
     <div className="w-full mb-6">
@@ -134,10 +166,58 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
         )}
       </div>
 
+      {/* Custom Challenge Lookup */}
+      <div className="mb-6 rounded-3xl border border-white/5 bg-white/[0.02] p-6">
+        <div className="flex items-center gap-3 text-[#E6E1E5]">
+          <MagnifyingGlass size={20} weight="bold" className="opacity-70" />
+          <div>
+            <h3 className="text-[16px] font-semibold leading-snug">Have a different challenge?</h3>
+            <p className="text-[13px] text-[#938F99]">
+              Describe what&apos;s on your mind to see recommendations from our challenge library.
+            </p>
+          </div>
+        </div>
+
+        <form onSubmit={handleCustomChallengeSubmit} className="mt-5 space-y-3">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
+            <textarea
+              rows={3}
+              value={customChallengeInput}
+              onChange={event => setCustomChallengeInput(event.target.value)}
+              placeholder="Example: “Everyone thinks they’re a designer now.”"
+              className="w-full resize-none bg-transparent text-[14px] text-[#E6E1E5] placeholder:text-[#938F99] focus:outline-none"
+            />
+          </div>
+
+          <div className="flex items-center justify-between gap-3">
+            <ButtonText
+              type="button"
+              onClick={() => {
+                setCustomChallengeInput('')
+                setCustomChallengeError(null)
+              }}
+              className="text-[13px] text-[#CAC4D0] hover:text-white"
+            >
+              Clear
+            </ButtonText>
+
+            <ButtonPrimaryCTA type="submit" className="w-auto px-6">
+              Find recommendations
+            </ButtonPrimaryCTA>
+          </div>
+
+          {customChallengeError && (
+            <p className="text-[12px] font-medium text-[#F1B8B0]">{customChallengeError}</p>
+          )}
+        </form>
+      </div>
+
       {/* Challenge Cards */}
       <div className="space-y-4">
         {challenges.map((challenge, index) => {
-          const isExpanded = selectedChallenge?.rank === challenge.rank
+          const isExpanded =
+            selectedChallenge?.meta?.source !== 'library' &&
+            selectedChallenge?.rank === challenge.rank
           const isActive = isExpanded && isSheetVisible
           const badgeStyle = badgeStyles[(challenge.rank - 1) % badgeStyles.length]
           
@@ -240,11 +320,26 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
               </ButtonIcon>
 
               <p className="mt-5 text-[12px] font-semibold uppercase tracking-widest text-[#938F99]">
-                Challenge {selectedChallenge.rank}
+                {selectedChallenge.meta?.source === 'library'
+                  ? 'Challenge Library'
+                  : `Challenge ${selectedChallenge.rank}`}
               </p>
               <h3 className="mt-2 text-[20px] font-semibold text-white leading-tight">
                 {selectedChallenge.title}
               </h3>
+
+              {selectedChallenge.meta?.topicTags && selectedChallenge.meta.topicTags.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {selectedChallenge.meta.topicTags.map(tag => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-[#CAC4D0]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-6 px-6 border-b border-white/10">
@@ -267,13 +362,21 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
               {activeTab === 'feel' ? (
                 <div className="space-y-5">
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <p className="text-[15px] text-[#E6E1E5] leading-relaxed">
                       {selectedChallenge.empathy}
                     </p>
-                    <p className="text-[13px] text-[#938F99] leading-relaxed">
-                      Pause, breathe, and name what you are feeling before moving forward.
-                    </p>
+
+                    {selectedChallenge.meta?.insight && (
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                        <p className="text-[12px] font-semibold uppercase tracking-wide text-[#CAC4D0]">
+                          Why this matters
+                        </p>
+                        <p className="mt-2 text-[13px] text-[#E6E1E5] leading-relaxed">
+                          {selectedChallenge.meta.insight}
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   {feelList.length === 0 ? (
@@ -285,7 +388,9 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                       {feelList.map((suggestion, suggestionIndex) => (
                         <div
                           key={`${suggestion.title}-${suggestionIndex}`}
-                          className="group flex items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.04] p-4 transition-all duration-200 hover:bg-white/[0.06]"
+                          className={`group flex items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.04] p-4 transition-all duration-200 ${
+                            suggestion.url ? 'cursor-pointer hover:bg-white/[0.06]' : 'cursor-default'
+                          }`}
                           onClick={() => {
                             if (suggestion.url) {
                               window.open(suggestion.url, '_blank')
@@ -323,7 +428,9 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                       {doList.map((suggestion, suggestionIndex) => (
                         <div
                           key={`${suggestion.title}-${suggestionIndex}`}
-                          className="group flex items-start gap-4 rounded-2xl bg-[#1F1B24] p-4 transition-all duration-200 hover:bg-[#282330] cursor-pointer"
+                          className={`group flex items-start gap-4 rounded-2xl bg-[#1F1B24] p-4 transition-all duration-200 ${
+                            suggestion.url ? 'cursor-pointer hover:bg-[#282330]' : 'cursor-default'
+                          }`}
                           onClick={() => {
                             if (suggestion.url) {
                               window.open(suggestion.url, '_blank')
@@ -341,9 +448,11 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                               {suggestion.desc}
                             </p>
                           </div>
-                          <div className="flex-shrink-0 self-center text-[12px] font-medium uppercase tracking-wide text-[#EC5429] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                            Open
-                          </div>
+                          {suggestion.url && (
+                            <div className="flex-shrink-0 self-center text-[12px] font-medium uppercase tracking-wide text-[#EC5429] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                              Open
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>

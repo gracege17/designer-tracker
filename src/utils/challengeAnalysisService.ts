@@ -6,9 +6,13 @@
  */
 
 import { Entry, EmotionLevel, EMOTIONS } from '../types'
+import {
+  CHALLENGE_RECOMMENDATIONS,
+  ChallengeRecommendationTemplate,
+} from '../data/challengeRecommendations'
 
 export interface ChallengeSuggestion {
-  type: 'tool' | 'podcast' | 'book' | 'resource'
+  type: 'tool' | 'podcast' | 'book' | 'resource' | 'insight' | 'action'
   title: string
   desc: string
   url?: string
@@ -19,6 +23,19 @@ export interface Challenge {
   title: string
   empathy: string
   suggestions: ChallengeSuggestion[]
+  meta?: ChallengeMeta
+}
+
+export interface ChallengeMeta {
+  id?: string
+  summary?: string
+  insight?: string
+  emotionTags?: string[]
+  topicTags?: string[]
+  growthGoalTags?: string[]
+  responseMode?: string
+  notes?: string
+  source?: 'emotion-analysis' | 'library'
 }
 
 /**
@@ -308,4 +325,156 @@ Return 3 challenges in JSON format with:
   // Return parsed challenges
 }
 */
+
+const STOP_WORDS = new Set([
+  'a',
+  'an',
+  'and',
+  'are',
+  'as',
+  'at',
+  'be',
+  'but',
+  'by',
+  'for',
+  'from',
+  'has',
+  'have',
+  'i',
+  'in',
+  'is',
+  'it',
+  'its',
+  'of',
+  'on',
+  'or',
+  'our',
+  'my',
+  'so',
+  'that',
+  'the',
+  'their',
+  'this',
+  'to',
+  'was',
+  'we',
+  'what',
+  'with',
+  'you',
+  'your',
+])
+
+const normalize = (text: string): string =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+const tokenize = (text: string): string[] =>
+  normalize(text)
+    .split(' ')
+    .filter(token => token.length > 1 && !STOP_WORDS.has(token))
+
+const computeMatchScore = (inputTokens: Set<string>, template: ChallengeRecommendationTemplate): number => {
+  let score = 0
+
+  const titleTokens = tokenize(template.title)
+  const summaryTokens = tokenize(template.summary)
+  const aliasTokens = (template.aliases || []).flatMap(alias => tokenize(alias))
+  const tagTokens = [
+    ...(template.topicTags || []),
+    ...(template.growthGoalTags || []),
+    ...(template.emotionTags || []),
+  ].flatMap(tag => tokenize(tag))
+
+  const countMatches = (tokens: string[], weight: number) => {
+    tokens.forEach(token => {
+      if (inputTokens.has(token)) {
+        score += weight
+      }
+    })
+  }
+
+  countMatches(titleTokens, 4)
+  countMatches(aliasTokens, 4)
+  countMatches(tagTokens, 2)
+  countMatches(summaryTokens, 1)
+
+  const normalizedInput = Array.from(inputTokens).join(' ')
+  const normalizedTitle = normalize(template.title)
+
+  if (normalizedTitle && normalizedInput && normalizedTitle.includes(normalizedInput)) {
+    score += 8
+  }
+
+  template.aliases?.forEach(alias => {
+    const normalizedAlias = normalize(alias)
+    if (normalizedAlias && normalizedInput && normalizedAlias.includes(normalizedInput)) {
+      score += 8
+    }
+  })
+
+  return score
+}
+
+export function findChallengeRecommendationFromInput(rawInput: string): Challenge | null {
+  if (!rawInput || !rawInput.trim()) {
+    return null
+  }
+
+  const inputTokens = new Set(tokenize(rawInput))
+
+  if (inputTokens.size === 0) {
+    return null
+  }
+
+  let bestTemplate: ChallengeRecommendationTemplate | null = null
+  let bestScore = 0
+
+  CHALLENGE_RECOMMENDATIONS.forEach(template => {
+    const score = computeMatchScore(inputTokens, template)
+    if (score > bestScore) {
+      bestScore = score
+      bestTemplate = template
+    }
+  })
+
+  if (!bestTemplate || bestScore === 0) {
+    return null
+  }
+
+  const suggestions: ChallengeSuggestion[] = [
+    {
+      type: 'insight',
+      title: 'Insight',
+      desc: bestTemplate.insight,
+    },
+    ...bestTemplate.actions.map(action => ({
+      type: action.type ?? 'action',
+      title: action.title,
+      desc: action.description,
+    })),
+  ]
+
+  const challenge: Challenge = {
+    rank: 1,
+    title: bestTemplate.title,
+    empathy: bestTemplate.summary,
+    suggestions,
+    meta: {
+      id: bestTemplate.id,
+      summary: bestTemplate.summary,
+      insight: bestTemplate.insight,
+      emotionTags: bestTemplate.emotionTags,
+      topicTags: bestTemplate.topicTags,
+      growthGoalTags: bestTemplate.growthGoalTags,
+      responseMode: bestTemplate.responseMode,
+      notes: bestTemplate.notes,
+      source: 'library',
+    },
+  }
+
+  return challenge
+}
 
