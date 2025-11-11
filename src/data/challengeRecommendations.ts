@@ -404,6 +404,7 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
       },
     ],
     aliases: ['overthinking design', 'too much analysis', 'stuck deciding'],
+    triggerExamples: ['stuck', 'blocked', 'can\'t move forward', 'paralyzed', 'no progress'],
   },
   {
     id: 'tool-mastery-not-enough',
@@ -434,6 +435,7 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
       },
     ],
     aliases: ['tools not enough', 'feel replaceable despite skills', 'ai makes tools easy'],
+    triggerExamples: ['hard to control', 'cursor is hard', 'tool is confusing', 'frustrated with tool', 'lost in the interface'],
   },
   {
     id: 'deadline-pressure-stress',

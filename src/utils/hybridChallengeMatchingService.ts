@@ -88,14 +88,26 @@ export async function matchChallengesToInput(todayEntry?: Entry): Promise<Challe
   if (negativeTasks.length > 0) {
     const scoredTasks = negativeTasks.map(task => ({
       task,
-      score: scoreTaskForChallenge(task)
+      score: scoreTaskForChallenge(task),
+      text: `${task.description} ${task.notes ?? ''}`.toLowerCase()
     }))
 
     const topScored = scoredTasks.filter(s => s.score >= 60).sort((a, b) => b.score - a.score)
 
     if (topScored.length > 0) {
       console.log('Using scored challenge match from negative task:', topScored[0].score)
-      // Return rule-based challenges that match the emotion pattern
+      
+      // Match the task text to the best challenge template
+      const taskText = topScored[0].text
+      const matchedTemplate = findBestTemplateForTask(taskText, candidateChallenges)
+      
+      if (matchedTemplate) {
+        return [buildChallengeFromTemplate(matchedTemplate, 1, {
+          empathy: `You mentioned: "${topScored[0].task.description}". ${matchedTemplate.summary}`
+        })]
+      }
+      
+      // Fallback to rule-based
       return analyzeTodayChallenges(todayEntry)
     }
   }
@@ -211,6 +223,58 @@ async function callGPTForMatching(request: GPTMatchRequest): Promise<MatchResult
     console.error('Error calling GPT API:', error)
     return simulateGPTMatching(request)
   }
+}
+
+/**
+ * Find best template match for a given task text
+ */
+function findBestTemplateForTask(taskText: string, candidates: ChallengeRecommendationTemplate[]): ChallengeRecommendationTemplate | null {
+  let bestMatch: ChallengeRecommendationTemplate | null = null
+  let bestScore = 0
+
+  candidates.forEach(template => {
+    let score = 0
+
+    // Check aliases
+    if (template.aliases) {
+      template.aliases.forEach(alias => {
+        if (taskText.includes(alias.toLowerCase())) {
+          score += 40
+        }
+      })
+    }
+
+    // Check trigger examples
+    if (template.triggerExamples) {
+      template.triggerExamples.forEach(trigger => {
+        if (taskText.includes(trigger.toLowerCase())) {
+          score += 35
+        }
+      })
+    }
+
+    // Check title keywords
+    const titleWords = template.title.toLowerCase().split(' ')
+    titleWords.forEach(word => {
+      if (word.length > 4 && taskText.includes(word)) {
+        score += 15
+      }
+    })
+
+    // Check summary keywords
+    const summaryWords = template.summary.toLowerCase().split(' ')
+    const matchedWords = summaryWords.filter(word => 
+      word.length > 5 && taskText.includes(word)
+    )
+    score += matchedWords.length * 5
+
+    if (score > bestScore) {
+      bestScore = score
+      bestMatch = template
+    }
+  })
+
+  return bestScore > 20 ? bestMatch : null
 }
 
 /**
