@@ -1,7 +1,8 @@
 /**
  * Simple Integration Test - Direct OpenAI API Call
  * 
- * This test calls OpenAI directly from Node.js, no Vercel needed!
+ * This test calls the REAL challenge matching function used in production.
+ * No code duplication - testing the actual implementation!
  * 
  * Setup:
  * 1. Create .env file with: OPENAI_API_KEY=your-key-here
@@ -9,14 +10,9 @@
  */
 
 import 'dotenv/config'
-import OpenAI from 'openai'
 import { Entry, EmotionLevel, EMOTIONS } from './src/types'
 import { CHALLENGE_RECOMMENDATIONS } from './src/data/challengeRecommendations'
-
-// Initialize OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || ''
-})
+import { matchChallengesWithOpenAI, entryToChallengeMatchRequest } from './src/utils/openaiChallengeMatching'
 
 // Create mock entry data
 const createMockEntry = (tasks: Array<{description: string, emotion: EmotionLevel, notes?: string}>): Entry => {
@@ -68,84 +64,18 @@ const scenarios = {
 }
 
 /**
- * Call OpenAI directly to match challenges
+ * Test the real matching function (same one used in production!)
  */
-async function matchChallengesWithOpenAI(entry: Entry) {
-  // Extract user input
-  const taskDescriptions = entry.tasks.map(task => task.description)
-  const feelings = entry.tasks.flatMap(task => {
-    const emotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
-    return emotions.map(emotion => EMOTIONS[emotion]?.label || 'Neutral')
-  })
-
-  const userText = [
-    ...taskDescriptions.map(t => `Task: "${t}"`),
-    ...feelings.map(f => `Feeling: ${f}`)
-  ].join('\n')
-
-  // Filter to top 20 candidate challenges (to keep prompt size manageable)
-  const candidateChallenges = CHALLENGE_RECOMMENDATIONS.slice(0, 20)
-
-  const challengeList = candidateChallenges.map((c, i) => 
-    `${i + 1}. ID: ${c.id}
-   Title: ${c.title}
-   Summary: ${c.summary}
-   Aliases: ${c.aliases?.join(', ') || 'none'}
-   Trigger examples: ${c.triggerExamples?.join(', ') || 'none'}`
-  ).join('\n\n')
-
-  const prompt = `You are an expert at understanding designer emotions and challenges.
-
-User's daily input:
-${userText}
-
-Available challenges to match against:
-${challengeList}
-
-Your task:
-1. Analyze the semantic meaning behind the user's task descriptions and feelings
-2. Score each challenge on relevance (0-100)
-3. Consider aliases and trigger examples to improve matching
-4. Return the top 3 most relevant challenges with reasoning
-
-Return JSON format:
-{
-  "matches": [
-    {
-      "id": "challenge-id",
-      "score": 85,
-      "reasoning": "User mentioned feeling lost with too much complexity, which strongly aligns with..."
-    }
-  ]
-}
-
-Focus on genuine semantic relevance. A score of 60+ means good match, 80+ means strong match.`
-
-  console.log('🤖 Calling OpenAI API...')
+async function testMatchChallenges(entry: Entry) {
+  const request = entryToChallengeMatchRequest(entry)
   
-  const completion = await openai.chat.completions.create({
-    model: process.env.OPENAI_MODEL || 'gpt-4o',
-    messages: [
-      {
-        role: 'system',
-        content: 'You are an expert at semantic matching and understanding designer challenges. Always return valid JSON.'
-      },
-      {
-        role: 'user',
-        content: prompt
-      }
-    ],
-    temperature: 0.3,
-    response_format: { type: 'json_object' }
-  })
-
-  const responseText = completion.choices[0]?.message?.content
-  if (!responseText) {
-    throw new Error('No response from OpenAI')
-  }
-
-  const parsed = JSON.parse(responseText)
-  return parsed.matches || []
+  const result = await matchChallengesWithOpenAI(
+    request,
+    process.env.OPENAI_API_KEY!,
+    process.env.OPENAI_MODEL || 'gpt-4o'
+  )
+  
+  return result.matches
 }
 
 // Run test for a specific scenario or all
@@ -172,7 +102,7 @@ async function runTest(scenarioName?: string) {
     })
     
     console.log('\n⏳ Matching challenges with OpenAI...\n')
-    const matches = await matchChallengesWithOpenAI(entry)
+    const matches = await testMatchChallenges(entry)
     
     console.log(`\n✅ Found ${matches.length} challenge(s):\n`)
     matches.forEach((match: any, i: number) => {
@@ -197,7 +127,7 @@ async function runTest(scenarioName?: string) {
       })
       
       console.log('\n⏳ Matching challenges with OpenAI...\n')
-      const matches = await matchChallengesWithOpenAI(entry)
+      const matches = await testMatchChallenges(entry)
       
       console.log(`✅ Found ${matches.length} challenge(s):\n`)
       matches.forEach((match: any, i: number) => {
@@ -220,9 +150,9 @@ if (scenarioArg === '--help' || scenarioArg === '-h') {
   console.log('\n📖 Simple Integration Test (Direct OpenAI)')
   console.log('=' .repeat(60))
   console.log('\n🎯 This test:')
-  console.log('   - Calls OpenAI API directly from Node.js')
-  console.log('   - No Vercel, no web server needed')
-  console.log('   - Just challenge matching logic + OpenAI\n')
+  console.log('   - Calls the REAL production matching function')
+  console.log('   - No code duplication - tests actual implementation')
+  console.log('   - No Vercel/web server needed for testing\n')
   console.log('Setup:')
   console.log('   1. Create .env file with OPENAI_API_KEY=your-key')
   console.log('   2. Run: npx tsx test-challenge-matching-simple.ts\n')

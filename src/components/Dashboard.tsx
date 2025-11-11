@@ -6,7 +6,7 @@ import { UserProfileStorage } from '../utils/storage'
 import { generateDailySummary } from '../utils/aiSummaryService'
 import { matchChallengesToInput } from '../utils/hybridChallengeMatchingService'
 import { analyzeTodayChallenges } from '../utils/challengeAnalysisService'
-import { calculateDailyColor } from '../utils/emotionColorBlender'
+import { calculateDailyColor, getColorFamilyBreakdown } from '../utils/emotionColorBlender'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
 import { EMOTIONS } from '../types'
 import namer from 'color-namer'
@@ -247,7 +247,32 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             
             {/* Today's Color Card */}
             {(() => {
+              // === LOGGING: Today's Color Calculation ===
+              console.group('🎨 Today\'s Color Calculation')
+              
+              // Log inputs
+              if (todayEntry && todayEntry.tasks && todayEntry.tasks.length > 0) {
+                console.log('📝 Input Emotions:')
+                todayEntry.tasks.forEach((task, i) => {
+                  const emotionLabel = EMOTIONS[task.emotion]?.label || 'Unknown'
+                  console.log(`  ${i + 1}. ${task.description} → ${emotionLabel}`)
+                })
+                console.log(`  Total tasks: ${todayEntry.tasks.length}`)
+              } else {
+                console.log('📝 Input: No tasks today (will use default color)')
+              }
+              
+              // Calculate color and get breakdown
               const dailyColor = calculateDailyColor(todayEntry)
+              const breakdown = getColorFamilyBreakdown(todayEntry)
+              
+              // Log color family breakdown
+              if (breakdown.length > 0) {
+                console.log('\n🎨 Color Family Breakdown:')
+                breakdown.forEach(family => {
+                  console.log(`  ${family.familyName}: ${family.percentage}`)
+                })
+              }
               
               // Get human-readable color name using color-namer
               const colorResult = namer(dailyColor)
@@ -259,6 +284,15 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                 .split(' ')
                 .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                 .join(' ')
+              
+              // Log outputs
+              console.log('\n✅ Final Color:')
+              console.log(`  Hex: ${dailyColor}`)
+              console.log(`  Name: "${formattedColorName}"`)
+              console.log(`  Preview: %c     `, `background: ${dailyColor}; padding: 10px; border-radius: 4px;`)
+              
+              console.groupEnd()
+              // === END LOGGING ===
               
               return (
                 <div className="p-6 bg-white/[0.04] flex flex-col items-center justify-center min-h-[180px]" style={{ borderRadius: '16px' }}>
