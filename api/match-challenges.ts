@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
+import OpenAI from 'openai'
 
 interface ChallengeCandidate {
   id: string
@@ -22,6 +23,11 @@ interface MatchResult {
   reasoning: string
 }
 
+// Initialize OpenAI client
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || ''
+})
+
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== 'POST') {
     return response.status(405).json({ error: 'Method not allowed' })
@@ -33,6 +39,17 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     if (!userInput || !candidateChallenges) {
       return response.status(400).json({ error: 'Missing required fields' })
+    }
+
+    // Check for API key
+    if (!process.env.OPENAI_API_KEY) {
+      console.warn('⚠️ No OPENAI_API_KEY found, falling back to simulated matching')
+      const matches: MatchResult[] = candidateChallenges.slice(0, 3).map((challenge, i) => ({
+        id: challenge.id,
+        score: 70 - (i * 10),
+        reasoning: `[SIMULATED] Match based on emotion and task context`
+      }))
+      return response.status(200).json({ matches })
     }
 
     // Prepare prompt for GPT
@@ -76,18 +93,37 @@ Return JSON format:
 
 Focus on genuine semantic relevance. A score of 60+ means good match, 80+ means strong match.`
 
-    // TODO: Replace with actual OpenAI API call
-    // For now, return a simulated response
-    const matches: MatchResult[] = candidateChallenges.slice(0, 3).map((challenge, i) => ({
-      id: challenge.id,
-      score: 70 - (i * 10),
-      reasoning: `Simulated match based on emotion and task context`
-    }))
+    // Call OpenAI API
+    console.log('🤖 Calling OpenAI API for challenge matching...')
+    const completion = await openai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || 'gpt-4o',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert at semantic matching and understanding designer challenges. Always return valid JSON.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.3,
+      response_format: { type: 'json_object' }
+    })
 
+    const responseText = completion.choices[0]?.message?.content
+    if (!responseText) {
+      throw new Error('No response from OpenAI')
+    }
+
+    const parsed = JSON.parse(responseText)
+    const matches: MatchResult[] = parsed.matches || []
+
+    console.log(`✅ OpenAI returned ${matches.length} matches`)
     return response.status(200).json({ matches })
 
   } catch (error) {
-    console.error('Error matching challenges:', error)
+    console.error('❌ Error matching challenges:', error)
     return response.status(500).json({ 
       error: 'Failed to match challenges',
       message: error instanceof Error ? error.message : 'Unknown error'

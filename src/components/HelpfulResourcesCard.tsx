@@ -24,7 +24,7 @@ interface HelpfulResourcesCardProps {
  */
 const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({ 
   challenges,
-  title = "Today's Top Challenges",
+  title = "Today's Challenges",
   subtitle
 }) => {
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null)
