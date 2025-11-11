@@ -37,6 +37,32 @@ interface GPTMatchResponse {
   }>
 }
 
+// Negative emotion labels that should trigger challenge matching
+const NEGATIVE_EMOTIONS = ['Drained', 'Frustrated', 'Overwhelmed', 'Sad', 'Disappointed', 'Anxious', 'Tired', 'Annoyed']
+
+/**
+ * Score a task based on description keywords for challenge relevance
+ */
+function scoreTaskForChallenge(task: { description: string; notes?: string }): number {
+  const text = `${task.description} ${task.notes ?? ''}`.toLowerCase()
+
+  // High priority triggers (80-85)
+  if (text.includes('no progress') || text.includes('stuck')) return 80
+  if (text.includes('avoid') || text.includes("can't start") || text.includes('blocked')) return 80
+  if (text.includes('deadline') || text.includes('pressure') || text.includes('stressed')) return 85
+
+  // Medium priority triggers (65-75)
+  if (text.includes('hard to control') || text.includes('overwhelmed')) return 70
+  if (text.includes('confused') || text.includes('unclear') || text.includes('frustrated')) return 65
+  if (text.includes('feedback') || text.includes('critique') || text.includes('rejected')) return 70
+  if (text.includes('lost') || text.includes('too much') || text.includes('not sure')) return 65
+
+  // Low priority (40-50)
+  if (text.includes('difficult') || text.includes('challenging')) return 50
+  
+  return 40 // fallback score
+}
+
 /**
  * Match today's input to relevant challenges using hybrid approach
  */
@@ -51,6 +77,28 @@ export async function matchChallengesToInput(todayEntry?: Entry): Promise<Challe
     const emotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
     return emotions.map(emotion => EMOTIONS[emotion]?.label || 'Neutral')
   })
+
+  // Step 1.5: Check for negative tasks and score them
+  const negativeTasks = todayEntry.tasks.filter(task => {
+    const taskEmotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
+    const emotionLabels = taskEmotions.map(emotion => EMOTIONS[emotion]?.label || 'Neutral')
+    return emotionLabels.some(label => NEGATIVE_EMOTIONS.includes(label))
+  })
+
+  if (negativeTasks.length > 0) {
+    const scoredTasks = negativeTasks.map(task => ({
+      task,
+      score: scoreTaskForChallenge(task)
+    }))
+
+    const topScored = scoredTasks.filter(s => s.score >= 60).sort((a, b) => b.score - a.score)
+
+    if (topScored.length > 0) {
+      console.log('Using scored challenge match from negative task:', topScored[0].score)
+      // Return rule-based challenges that match the emotion pattern
+      return analyzeTodayChallenges(todayEntry)
+    }
+  }
 
   // Step 2: Emotion-based rough filter
   const emotionCounts: Record<string, number> = {}
