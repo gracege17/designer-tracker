@@ -288,11 +288,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           </div>
         )}
 
-        {/* Today's Top Challenges - Personalized Based on Emotions */}
-        <HelpfulResourcesCard 
-          challenges={analyzeTodayChallenges(todayEntry)}
-        />
-
         {/* Weekly Emotional Calendar Overview */}
         <div className="mb-6">
           {/* Weekly View - Emojis with day labels */}
@@ -352,6 +347,11 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             </div>
           </div>
         </div>
+
+        {/* Today's Top Challenges - Personalized Based on Emotions */}
+        <HelpfulResourcesCard 
+          challenges={analyzeTodayChallenges(todayEntry)}
+        />
 
         {/* Inspirational Quote Card */}
         {(() => {
