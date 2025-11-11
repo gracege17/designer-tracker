@@ -4,9 +4,8 @@ import { Entry, EmotionLevel } from '../types'
 import { getTodayDateString } from '../utils/dataHelpers'
 import { UserProfileStorage } from '../utils/storage'
 import { generateDailySummary } from '../utils/aiSummaryService'
-import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
-import { analyzeTodayChallenges } from '../utils/challengeAnalysisService'
 import { matchChallengesToInput } from '../utils/hybridChallengeMatchingService'
+import { analyzeTodayChallenges } from '../utils/challengeAnalysisService'
 import { calculateDailyColor } from '../utils/emotionColorBlender'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
 import { EMOTIONS } from '../types'
@@ -28,9 +27,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   // AI Summary State
   const [dailySummary, setDailySummary] = useState<string>('')
   const [isLoadingSummary, setIsLoadingSummary] = useState(false)
-
-  // Emotion Breakdown State
-  const [emotionBreakdown, setEmotionBreakdown] = useState<any>(null)
 
   // Get user profile
   const userProfile = UserProfileStorage.getUserProfile()
@@ -124,12 +120,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
     }
 
     loadDailySummary()
-  }, [todayEntry])
-
-  // Calculate emotion breakdown
-  useEffect(() => {
-    const breakdown = calculateTodayEmotionBreakdown(todayEntry)
-    setEmotionBreakdown(breakdown)
   }, [todayEntry])
 
   // State for matched challenges
@@ -388,35 +378,6 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             </p>
           </div>
         ) : null}
-
-        {/* Inspirational Quote Card */}
-        {(() => {
-          const quotes = [
-            'Every step counts, even the weird ones.',
-            'Joy follows curiosity. Follow that spark.',
-            'Progress, not perfection.',
-            'Design is thinking made visual.',
-            'The best work comes from what you love doing.',
-          ]
-          const randomQuote = quotes[Math.floor(Math.random() * quotes.length)]
-          
-          return (
-            <div className="bg-white/[0.04] p-6 mb-6" style={{ borderRadius: '4px 47px 4px 4px' }}>
-              {/* Custom Illustration */}
-              <div className="h-48 mb-4 flex items-center justify-center overflow-hidden" style={{ borderRadius: '0 36px 0 0' }}>
-                <img 
-                  src="/illustrations/guy_desktop.jpg" 
-                  alt="Decorative illustration" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              <p className="text-[17px] text-[#E6E1E5] italic leading-relaxed text-center" style={{ fontFamily: 'Playfair Display, serif' }}>
-                "{randomQuote}"
-              </p>
-            </div>
-          )
-        })()}
       </main>
 
       {/* Bottom Navigation */}
