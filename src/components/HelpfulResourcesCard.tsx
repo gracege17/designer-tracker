@@ -251,7 +251,7 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
 
               <p className="mt-5 text-[12px] font-semibold uppercase tracking-widest text-[#938F99]">
                 {selectedChallenge.meta?.source === 'library'
-                  ? 'Challenge Library'
+                  ? 'Recommendation'
                   : `Challenge ${selectedChallenge.rank}`}
               </p>
               <h3 className="mt-2 text-[20px] font-semibold text-white leading-tight">
