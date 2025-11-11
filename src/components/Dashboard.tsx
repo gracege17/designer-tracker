@@ -6,6 +6,7 @@ import { UserProfileStorage } from '../utils/storage'
 import { generateDailySummary } from '../utils/aiSummaryService'
 import { calculateTodayEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { analyzeTodayChallenges } from '../utils/challengeAnalysisService'
+import { matchChallengesToInput } from '../utils/hybridChallengeMatchingService'
 import { calculateDailyColor } from '../utils/emotionColorBlender'
 import HelpfulResourcesCard from './HelpfulResourcesCard'
 import { EMOTIONS } from '../types'
@@ -129,6 +130,33 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   useEffect(() => {
     const breakdown = calculateTodayEmotionBreakdown(todayEntry)
     setEmotionBreakdown(breakdown)
+  }, [todayEntry])
+
+  // State for matched challenges
+  const [matchedChallenges, setMatchedChallenges] = useState<any[]>([])
+  const [isLoadingChallenges, setIsLoadingChallenges] = useState(false)
+
+  // Load matched challenges using hybrid approach
+  useEffect(() => {
+    const loadChallenges = async () => {
+      if (todayEntry && todayEntry.tasks.length > 0) {
+        setIsLoadingChallenges(true)
+        try {
+          const challenges = await matchChallengesToInput(todayEntry)
+          setMatchedChallenges(challenges)
+        } catch (error) {
+          console.error('Failed to match challenges:', error)
+          // Fallback to rule-based
+          setMatchedChallenges(analyzeTodayChallenges(todayEntry))
+        } finally {
+          setIsLoadingChallenges(false)
+        }
+      } else {
+        setMatchedChallenges([])
+      }
+    }
+
+    loadChallenges()
   }, [todayEntry])
 
   return (
@@ -349,9 +377,17 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
         </div>
 
         {/* Today's Top Challenges - Personalized Based on Emotions */}
-        <HelpfulResourcesCard 
-          challenges={analyzeTodayChallenges(todayEntry)}
-        />
+        {matchedChallenges.length > 0 ? (
+          <HelpfulResourcesCard 
+            challenges={matchedChallenges}
+          />
+        ) : todayEntry && todayEntry.tasks.length > 0 && !isLoadingChallenges ? (
+          <div className="w-full mb-6 p-6 bg-white/[0.02] border border-white/5" style={{ borderRadius: '20px' }}>
+            <p className="text-[16px] text-[#938F99] text-center leading-relaxed">
+              Keep logging to see personalized insights based on your patterns.
+            </p>
+          </div>
+        ) : null}
 
         {/* Inspirational Quote Card */}
         {(() => {

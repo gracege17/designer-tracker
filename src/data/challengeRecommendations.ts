@@ -23,6 +23,7 @@ export interface ChallengeRecommendationTemplate {
   notes?: string
   actions: ChallengeAction[]
   aliases?: string[]
+  triggerExamples?: string[]
 }
 
 export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [

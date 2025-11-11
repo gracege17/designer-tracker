@@ -144,7 +144,7 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     nextRank += 1
   }
 
-  const stressLoad = anxiousCount + frustratedCount
+  const stressLoad = Math.min(todayEntry.tasks.length, anxiousCount + frustratedCount)
   if (stressLoad > 0 && nextRank <= 3) {
     const stressTitle =
       stressLoad > 1 ? 'Feeling pressure across your work today' : 'Feeling pressure from today’s work'
@@ -178,7 +178,8 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     }
   }
 
-  const energyLoad = drainedCount + tiredCount
+  const remainingAfterStress = todayEntry.tasks.length - stressLoad
+  const energyLoad = remainingAfterStress > 0 ? Math.min(remainingAfterStress, drainedCount + tiredCount) : 0
   if (energyLoad > 0 && nextRank <= 3) {
     const energyTitle =
       energyLoad > 1 ? 'Energy dipped multiple times today' : 'Energy dipped today'
@@ -212,7 +213,8 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     }
   }
 
-  const frustrationLoad = annoyedCount + sadCount
+  const remainingAfterEnergy = todayEntry.tasks.length - stressLoad - energyLoad
+  const frustrationLoad = remainingAfterEnergy > 0 ? Math.min(remainingAfterEnergy, annoyedCount + sadCount) : 0
   if (frustrationLoad > 0 && nextRank <= 3) {
     const frustrationTitle =
       frustrationLoad > 1 ? 'Creative momentum stalled across tasks' : 'Creative momentum stalled'
