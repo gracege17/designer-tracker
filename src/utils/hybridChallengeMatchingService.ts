@@ -171,14 +171,11 @@ export async function matchChallengesToInput(todayEntry?: Entry): Promise<Challe
 
     const challenges: Challenge[] = []
     topMatches.forEach((match, index) => {
-      const template = CHALLENGE_RECOMMENDATIONS.find(t => t.id === match.id)
-      if (template) {
-        challenges.push(
-          buildChallengeFromTemplate(template, index + 1, {
-            empathy: match.reasoning || template.summary
-          })
-        )
-      }
+      challenges.push(
+        buildChallengeFromTemplate(match.challenge, index + 1, {
+          empathy: match.reasoning || match.challenge.summary
+        })
+      )
     })
 
     return challenges
@@ -195,7 +192,9 @@ export async function matchChallengesToInput(todayEntry?: Entry): Promise<Challe
  */
 async function callGPTForMatching(request: GPTMatchRequest): Promise<MatchResult[]> {
   // In development, simulate GPT with keyword matching
-  if (import.meta.env.DEV) {
+  // Check if we're in development mode (no API available)
+  const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+  if (isDev) {
     return simulateGPTMatching(request)
   }
 
@@ -233,24 +232,30 @@ async function callGPTForMatching(request: GPTMatchRequest): Promise<MatchResult
 function findBestTemplateForTask(taskText: string, candidates: ChallengeRecommendationTemplate[]): ChallengeRecommendationTemplate | null {
   let bestMatch: ChallengeRecommendationTemplate | null = null
   let bestScore = 0
+  const scores: Array<{ id: string; score: number; matches: string[] }> = []
 
   candidates.forEach(template => {
     let score = 0
+    const matches: string[] = []
 
-    // Check aliases
+    // Check aliases (high priority)
     if (template.aliases) {
       template.aliases.forEach(alias => {
         if (taskText.includes(alias.toLowerCase())) {
-          score += 40
+          score += 50
+          matches.push(`alias: ${alias}`)
         }
       })
     }
 
-    // Check trigger examples
+    // Check trigger examples (highest priority - these are most specific)
     if (template.triggerExamples) {
       template.triggerExamples.forEach(trigger => {
         if (taskText.includes(trigger.toLowerCase())) {
-          score += 35
+          // Give extra points for longer, more specific triggers
+          const triggerBonus = trigger.length > 10 ? 60 : 45
+          score += triggerBonus
+          matches.push(`trigger: ${trigger}`)
         }
       })
     }
@@ -260,21 +265,37 @@ function findBestTemplateForTask(taskText: string, candidates: ChallengeRecommen
     titleWords.forEach(word => {
       if (word.length > 4 && taskText.includes(word)) {
         score += 15
+        matches.push(`title: ${word}`)
       }
     })
 
     // Check summary keywords
     const summaryWords = template.summary.toLowerCase().split(' ')
-    const matchedWords = summaryWords.filter(word => 
+    const matchedWords = summaryWords.filter(word =>
       word.length > 5 && taskText.includes(word)
     )
     score += matchedWords.length * 5
+    if (matchedWords.length > 0) {
+      matches.push(`summary: ${matchedWords.length} words`)
+    }
+
+    scores.push({ id: template.id, score, matches })
 
     if (score > bestScore) {
       bestScore = score
       bestMatch = template
     }
   })
+
+  // Debug logging
+  const sortedScores = [...scores].sort((a, b) => b.score - a.score).slice(0, 5)
+  console.log('🔍 Template matching for task:', taskText)
+  console.log('📊 Top 5 matches:', sortedScores)
+  if (bestMatch && bestScore > 20) {
+    console.log('✅ Selected:', (bestMatch as ChallengeRecommendationTemplate).id, 'with score:', bestScore)
+  } else {
+    console.log('❌ No match found (score too low or no matches)')
+  }
 
   return bestScore > 20 ? bestMatch : null
 }
