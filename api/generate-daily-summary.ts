@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 
 interface TaskData {
   description: string
@@ -12,14 +12,26 @@ interface SummaryRequest {
   date: string
 }
 
-export async function POST(request: NextRequest) {
+export default async function handler(request: VercelRequest, response: VercelResponse) {
   try {
-    const { tasks, date }: SummaryRequest = await request.json()
+    if (request.method !== 'POST') {
+      response.status(405).json({ error: 'Method not allowed' })
+      return
+    }
+
+    const rawBody = request.body
+    const parsedBody: SummaryRequest =
+      typeof rawBody === 'string'
+        ? JSON.parse(rawBody)
+        : (rawBody as SummaryRequest | undefined) ?? { tasks: [], date: '' }
+
+    const { tasks, date } = parsedBody
 
     if (!tasks || tasks.length === 0) {
-      return NextResponse.json({ 
-        summary: "Ready to capture today's design journey? Add your first task to get a personalized summary!"
+      response.status(200).json({
+        summary: "Ready to capture today's design journey? Add your first task to get a personalized summary!",
       })
+      return
     }
 
     // Prepare the prompt for the AI
@@ -73,12 +85,9 @@ Provide a supportive, encouraging summary in one sentence:`
       summary = "You pushed through some tough moments today. Remember that difficult days often lead to the biggest breakthroughs and growth."
     }
 
-    return NextResponse.json({ summary })
+    response.status(200).json({ summary })
   } catch (error) {
     console.error('Error generating daily summary:', error)
-    return NextResponse.json(
-      { error: 'Failed to generate summary' },
-      { status: 500 }
-    )
+    response.status(500).json({ error: 'Failed to generate summary' })
   }
 }
