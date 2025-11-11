@@ -48,7 +48,7 @@ interface BuildChallengeOptions {
   source?: ChallengeMeta['source']
 }
 
-const buildChallengeFromTemplate = (
+export const buildChallengeFromTemplate = (
   template: ChallengeRecommendationTemplate,
   rank: number,
   options: BuildChallengeOptions = {}
