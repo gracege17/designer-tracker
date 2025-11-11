@@ -1,5 +1,17 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { generateSummaryWithOpenAI, SummaryRequest } from '../src/utils/openaiSummaryGeneration'
+import OpenAI from 'openai'
+
+interface TaskData {
+  description: string
+  emotion: number
+  emoji: string
+  taskType: string
+}
+
+interface SummaryRequest {
+  tasks: TaskData[]
+  date: string
+}
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== 'POST') {
@@ -52,14 +64,68 @@ export default async function handler(request: VercelRequest, response: VercelRe
       return response.status(200).json({ summary })
     }
 
-    // Call shared summary generation function
-    const result = await generateSummaryWithOpenAI(
-      body,
-      process.env.OPENAI_API_KEY,
-      process.env.OPENAI_MODEL || 'gpt-4o'
-    )
+    // Call OpenAI API
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    })
 
-    return response.status(200).json(result)
+    const taskList = body.tasks.map(task => 
+      `- "${task.description}" (${task.emoji})`
+    ).join('\n')
+
+    const prompt = `You are a supportive design coach.
+
+The user just finished their daily log of tasks and emotions. Summarize the main emotional and task theme of their day in one short sentence that feels personal and encouraging.
+
+Example input:
+Tasks: 
+- "Redesigned hero section" (😊)
+- "Fixed icon alignment issue" (😐)
+- "Presented design to client" (😫)
+
+Output:
+"You were most energized during visual exploration, even though alignment issues caused some fatigue. Great progress!"
+
+Now analyze this day:
+Tasks:
+${taskList}
+
+Provide a supportive, encouraging summary in one sentence:`
+
+    console.log('🤖 Calling OpenAI API for daily summary...')
+    console.log(`   Model: ${process.env.OPENAI_MODEL || 'gpt-4o'}`)
+    console.log(`   Tasks to analyze: ${body.tasks.length}`)
+    
+    const startTime = Date.now()
+    
+    const completion = await openai.chat.completions.create({
+      model: process.env.OPENAI_MODEL || 'gpt-4o',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a supportive design coach who helps designers reflect on their day. Keep summaries to one sentence, personal, and encouraging.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 100
+    })
+
+    const duration = Date.now() - startTime
+    const summary = completion.choices[0]?.message?.content?.trim()
+    
+    if (!summary) {
+      throw new Error('No response from OpenAI')
+    }
+
+    console.log(`✅ OpenAI generated summary in ${duration}ms`)
+    console.log(`   Summary: "${summary}"`)
+    console.log(`   Tokens used: ${completion.usage?.total_tokens || 'unknown'}`)
+    
+    return response.status(200).json({ summary })
 
   } catch (error) {
     console.error('❌ Error generating daily summary:', error)

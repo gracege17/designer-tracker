@@ -1,8 +1,8 @@
 /**
  * Simple Integration Test - Direct OpenAI API Call
  * 
- * This test calls the REAL challenge matching function used in production.
- * No code duplication - testing the actual implementation!
+ * This test calls the shared OpenAI matching function.
+ * Tests the same logic as production, but bypasses Vercel API layer.
  * 
  * Setup:
  * 1. Create .env file with: OPENAI_API_KEY=your-key-here
@@ -13,6 +13,9 @@ import 'dotenv/config'
 import { Entry, EmotionLevel, EMOTIONS } from './src/types'
 import { CHALLENGE_RECOMMENDATIONS } from './src/data/challengeRecommendations'
 import { matchChallengesWithOpenAI, entryToChallengeMatchRequest } from './src/utils/openaiChallengeMatching'
+
+// Note: The shared function is also used by tests, but Vercel API has its own 
+// self-contained implementation to avoid import issues in serverless environment
 
 // Create mock entry data
 const createMockEntry = (tasks: Array<{description: string, emotion: EmotionLevel, notes?: string}>): Entry => {

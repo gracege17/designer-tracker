@@ -1,15 +1,19 @@
 /**
  * Integration Test for Today's Summary Feature
  * 
- * Tests the REAL summary generation logic used in production.
- * Calls buildLocalSummary() directly (same function used in production).
- * No mocks - testing actual implementation, no API calls needed.
+ * Tests the summary generation logic.
+ * Can test both rule-based (buildLocalSummary) and OpenAI (if API key provided).
  * 
  * Run: npx tsx test-summary-generation.ts
  */
 
+import 'dotenv/config'
 import { Entry, EmotionLevel, EMOTIONS } from './src/types'
 import { buildLocalSummary } from './src/utils/aiSummaryService'
+import { generateSummaryWithOpenAI } from './src/utils/openaiSummaryGeneration'
+
+// Note: Tests use shared utilities. Vercel API has self-contained implementation
+// to avoid import issues in serverless environment.
 
 // Helper to create mock entry
 const createMockEntry = (tasks: Array<{ description: string; emotion: EmotionLevel; taskType?: string }>): Entry => {
