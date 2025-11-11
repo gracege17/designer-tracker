@@ -166,6 +166,66 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
     aliases: ['stuck pushing pixels', 'only executing designs', 'no career growth in design'],
   },
   {
+    id: 'ai-tool-prompt-clarity',
+    title: 'Fuzzy Prompts → Fuzzy Results with AI Tools',
+    summary:
+      'Working with AI coding tools like Cursor feels frustrating and unpredictable when prompts aren\'t clear or specific enough, leading to outputs that don\'t match expectations.',
+    insight:
+      'Designers working with AI tools are essentially "designing with language." When prompts are vague, the output becomes unpredictable — creating friction, especially when trying to move fast or be precise. Clear, structured prompts = better control.',
+    emotionTags: ['Frustrated', 'Annoyed', 'Stuck'],
+    topicTags: ['AI Tools', 'Cursor', 'Prompt Engineering'],
+    growthGoalTags: ['AI Collaboration', 'Prompt Clarity', 'Tool Control'],
+    responseMode: 'lightweight-2-step-plus-tools',
+    notes: 'This is specifically for designers/builders frustrated with AI coding assistants like Cursor, GitHub Copilot, etc.',
+    actions: [
+      {
+        title: 'Use the "Context + Goal + Constraint" formula',
+        description: 'Before asking, state: "I\'m building [X], I need [Y], and it should [Z]." Specificity reduces ambiguity.',
+        type: 'action',
+      },
+      {
+        title: 'Break requests into smaller chunks',
+        description: 'Instead of "build a form," try "create a text input with validation" → then "add a submit button" → then "connect to state."',
+        type: 'action',
+      },
+      {
+        title: 'Use examples in your prompt',
+        description: 'Show the AI what "good" looks like: "Make it like this: [paste example code or describe reference]."',
+        type: 'action',
+      },
+      {
+        title: 'Watch: Prompt Engineering for Designers',
+        description: 'A 10-minute primer on structuring effective prompts for creative and technical AI tools.',
+        type: 'resource',
+        url: 'https://www.youtube.com/results?search_query=prompt+engineering+for+designers',
+      },
+      {
+        title: 'Read: Cursor Tips & Tricks',
+        description: 'Community-sourced guide to getting better results from Cursor with clear prompt patterns.',
+        type: 'resource',
+        url: 'https://github.com/getcursor/cursor/discussions',
+      },
+    ],
+    aliases: [
+      'cursor is hard to use',
+      'ai tool not working',
+      'frustrated with cursor',
+      'ai gives wrong results',
+      'cant control cursor',
+    ],
+    triggerExamples: [
+      'cursor is hard to control',
+      'tool is confusing',
+      'frustrated with tool',
+      'lost in the interface',
+      'ai not understanding',
+      'unclear output',
+      'unpredictable results',
+      'cursor keeps messing up',
+      'hard to get what i want',
+    ],
+  },
+  {
     id: 'ux-feels-undervalued',
     title: 'UX Feels Undervalued',
     summary:
@@ -434,8 +494,7 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
         type: 'resource',
       },
     ],
-    aliases: ['tools not enough', 'feel replaceable despite skills', 'ai makes tools easy'],
-    triggerExamples: ['hard to control', 'cursor is hard', 'tool is confusing', 'frustrated with tool', 'lost in the interface'],
+    aliases: ['tools not enough', 'feel replaceable despite skills', 'ai makes tools easy', 'figma not enough'],
   },
   {
     id: 'deadline-pressure-stress',
