@@ -319,22 +319,21 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
     }
   }
 
-  const defaultFallbacks = getDefaultChallenges()
-  while (challenges.length < 3 && defaultFallbacks.length > 0) {
-    const nextDefault = defaultFallbacks.shift()
-    if (!nextDefault) {
-      break
+  if (challenges.length === 0) {
+    const defaults = getDefaultChallenges()
+    if (defaults.length > 0) {
+      const firstDefault = defaults[0]
+      return [
+        {
+          ...firstDefault,
+          rank: 1,
+          meta: { source: firstDefault.meta?.source ?? 'emotion-analysis' },
+        },
+      ]
     }
-
-    challenges.push({
-      ...nextDefault,
-      rank: challenges.length + 1,
-      meta: { source: nextDefault.meta?.source ?? 'emotion-analysis' },
-    })
   }
 
-  // Return top 3 challenges
-  return challenges.slice(0, 3)
+  return challenges
 }
 
 /**
