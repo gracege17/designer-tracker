@@ -25,7 +25,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       type: 'ai',
-      content: `What did you work on?\n\nList projects however it's easiest:\n• One per line\n• Separate with commas\n• Or use "and"\n\nTap Skip if you'd rather add them later.`
+      content: `What did you work on?\n\nList projects however it's easiest:\n• One per line\n• Separate with commas\n• Or use "and"\n\nType "skip" if you'd rather add them later.`
     }
   ])
   const [inputValue, setInputValue] = useState('')
@@ -257,7 +257,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Type your projects or 'skip'..."
+              placeholder="Type your projects or 'skip'..."
             className="flex-1 px-4 py-3 bg-transparent text-[var(--md-sys-color-on-surface)] text-[15px] outline-none placeholder:text-[var(--md-sys-color-on-surface-variant)]"
             autoFocus
           />
