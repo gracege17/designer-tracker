@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Dashboard from './components/Dashboard'
 import AddEntryForm from './components/AddEntryForm'
 import EntryList from './components/EntryList'
@@ -58,7 +58,6 @@ function App() {
   const [collectedTasks, setCollectedTasks] = useState<TaskReview[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [userProfile, setUserProfile] = useState<UserProfileData | null>(null)
-  const [overallFeeling, setOverallFeeling] = useState<number>(50)
   
   // Success toast state
   const [successToast, setSuccessToast] = useState({ show: false, message: '' })
@@ -157,8 +156,7 @@ function App() {
     }
   }
 
-  const handleOverallFeelingComplete = (feelingScore: number) => {
-    setOverallFeeling(feelingScore)
+  const handleOverallFeelingComplete = () => {
     setCurrentView('projectSelection')
   }
 
@@ -248,10 +246,6 @@ function App() {
     setCurrentView('reviewReflection')
   }
 
-  const handleAddNewProject = () => {
-    setCurrentView('addProject')
-  }
-
   const handleProjectAdded = (newProject: Project) => {
     setProjects(prev => [...prev, newProject])
     showSuccess(`Project "${newProject.name}" created!`)
@@ -272,7 +266,7 @@ function App() {
         id: taskToEdit.id,
         projectId: taskToEdit.projectId,
         description: taskToEdit.description,
-        taskType: 'design', // Default task type
+        taskType: 'design' as TaskType, // Default task type
         emotion: taskToEdit.emotion,
         emotions: taskToEdit.emotions,
         notes: taskToEdit.notes,
@@ -296,13 +290,13 @@ function App() {
       const existingEntry = EntryStorage.getEntryByDate(todayDate)
       
       // Convert collected tasks to proper Task format
-      const newTasks = collectedTasks.map(task => ({
+      const newTasks: Task[] = collectedTasks.map(task => ({
         id: task.id,
         projectId: task.projectId,
         description: task.description,
         taskType: 'design' as TaskType, // Default task type
-        emotion: typeof task.emotion === 'string' ? parseInt(task.emotion, 10) : task.emotion,
-        emotions: task.emotions ? task.emotions.map(e => typeof e === 'string' ? parseInt(e, 10) : e) : undefined, // Ensure numbers
+        emotion: (typeof task.emotion === 'string' ? parseInt(task.emotion, 10) : task.emotion) as EmotionLevel,
+        emotions: task.emotions ? task.emotions.map(e => (typeof e === 'string' ? parseInt(e, 10) : e) as EmotionLevel) : undefined, // Ensure numbers
         notes: task.notes,
         createdAt: new Date()
       }))
@@ -649,7 +643,6 @@ function App() {
             initialSelectedProjects={selectedProjectIds}
             onProjectsSelected={handleProjectsSelected}
             onBack={() => setCurrentView('overallFeeling')}
-            onAddNewProject={handleAddNewProject}
             onProjectDeleted={refreshProjects}
           />
         )
@@ -661,23 +654,15 @@ function App() {
           />
         )
       case 'taskEntry':
-        // Show count of COMPLETED tasks only (increments after animation)
-        const currentProjectId = selectedProjectIds[currentProjectIndex]
-        const completedForProject = collectedTasks.filter(t => t.projectId === currentProjectId).length
-        const taskEntryCount = completedForProject // No +1!
-        console.log('📝 TaskEntry - ProjectId:', currentProjectId, 'Completed tasks:', completedForProject, 'Badge showing:', taskEntryCount)
         return (
           <TaskEntry
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
             initialTaskDescription={taskDescription}
             onNext={handleTaskDescriptionNext}
             onBack={() => setCurrentView('projectSelection')}
-            taskCount={taskEntryCount}
           />
         )
       case 'emotionSelection':
-        // Show count of COMPLETED tasks only
-        const emotionSelectionCount = collectedTasks.filter(t => t.projectId === selectedProjectIds[currentProjectIndex]).length
         return (
           <EmotionSelection
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
@@ -688,13 +673,10 @@ function App() {
               console.log('Going back from emotionSelection to taskEntry')
               setCurrentView('taskEntry')
             }}
-            taskCount={emotionSelectionCount}
           />
         )
       case 'taskNotes':
-        // Show count of COMPLETED tasks only
         const isLastProject = currentProjectIndex === selectedProjectIds.length - 1
-        const taskNotesCount = collectedTasks.filter(t => t.projectId === selectedProjectIds[currentProjectIndex]).length
         return (
           <TaskNotes
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
@@ -703,7 +685,6 @@ function App() {
             onDoneReflecting={handleDoneReflecting}
             onBack={() => setCurrentView('emotionSelection')}
             isLastProject={isLastProject}
-            taskCount={taskNotesCount}
           />
         )
       case 'reviewReflection':

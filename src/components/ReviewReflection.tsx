@@ -2,14 +2,15 @@ import React from 'react'
 import { CaretLeft } from 'phosphor-react'
 import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import Card from './Card'
-import { EMOTIONS } from '../types'
+import { EMOTIONS, EmotionLevel } from '../types'
 import { ProjectStorage } from '../utils/storage'
 
 interface TaskReview {
   id: string
   projectId: string
   description: string
-  emotion: 1 | 2 | 3 | 4 | 5
+  emotion: EmotionLevel
+  emotions?: EmotionLevel[]
   notes?: string
 }
 
