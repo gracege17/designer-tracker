@@ -25,11 +25,7 @@ import { Entry, Project, TaskType, EmotionLevel, Task } from './types'
 import { EntryStorage, ProjectStorage, OnboardingStorage, UserProfileStorage } from './utils/storage'
 import { createTodayEntry, getTodayDateString, generateId } from './utils/dataHelpers'
 import { clearAICache } from './utils/aiInsightsService'
-import { mockEntries } from '../mock/mockEntries'
-import { mockProjects } from '../mock/mockProjects'
-
-// Enable mock data for testing insights
-const USE_MOCK_ENTRIES = true
+// Note: mock data removed – app now runs entirely on real user input
 
 type ViewType = 'onboardingAuth' | 'onboardingUserInfo' | 'onboardingLearningPreference' | 'onboardingFirstProject' | 'onboardingFirstEntry' | 'dashboard' | 'overallFeeling' | 'projectSelection' | 'addProject' | 'taskEntry' | 'emotionSelection' | 'taskNotes' | 'reviewReflection' | 'insights' | 'addForm' | 'entryList' | 'entryDetail' | 'editTask' | 'settings' | 'emotionDetail'
 
@@ -83,14 +79,6 @@ function App() {
           finalProjects = [defaultProject]
         }
         
-        // Add mock projects if enabled
-        if (USE_MOCK_ENTRIES) {
-          // Only add mock projects that don't already exist
-          const existingProjectIds = new Set(finalProjects.map(p => p.id))
-          const newMockProjects = mockProjects.filter(p => !existingProjectIds.has(p.id))
-          finalProjects = [...finalProjects, ...newMockProjects]
-        }
-        
         // Check for orphaned tasks (tasks with invalid project IDs)
         const projectIds = new Set(finalProjects.map(p => p.id))
         const hasOrphanedTasks = loadedEntries.some(entry => 
@@ -129,21 +117,13 @@ function App() {
           // Save cleaned entries
           cleanedEntries.forEach(entry => EntryStorage.saveEntry(entry))
           
-          // Merge with mock entries if enabled
-          if (USE_MOCK_ENTRIES) {
-            setEntries([...mockEntries, ...cleanedEntries])
-          } else {
-            setEntries(cleanedEntries)
-          }
+          setEntries(cleanedEntries)
         } else {
-          // Merge with mock entries if enabled
-          if (USE_MOCK_ENTRIES) {
-            setEntries([...mockEntries, ...loadedEntries])
-          } else {
-            setEntries(loadedEntries)
-          }
+          setEntries(loadedEntries)
         }
         
+        // Persist the latest project list so validation checks succeed
+        ProjectStorage.saveProjects(finalProjects)
         setProjects(finalProjects)
         setIsLoading(false)
       } catch (error) {

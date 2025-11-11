@@ -341,86 +341,101 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
  * Default challenges when no data is available
  */
 function getDefaultChallenges(): Challenge[] {
-  return [
-    {
-      rank: 1,
-      title: "Hard to start the day",
-      empathy: "Start with a 5-minute warm-up. Momentum builds from there.",
-      suggestions: [
-        {
-          type: 'tool',
-          title: 'Notion Daily Reflection Template',
-          desc: 'Track your creative progress and maintain balance.',
-          url: 'https://notion.so/templates/daily-reflection'
-        },
-        {
-          type: 'book',
-          title: 'The Art of Rest – Alex Pang',
-          desc: 'How rest restores focus and creativity.',
-          url: 'https://www.goodreads.com/book/show/the-art-of-rest'
-        },
-        {
-          type: 'podcast',
-          title: 'Design Better Podcast – InVision',
-          desc: 'Stories from the world\'s best designers.',
-          url: 'https://www.designbetter.co/podcast'
-        }
-      ],
-      meta: { source: 'emotion-analysis' }
-    },
-    {
-      rank: 2,
-      title: "Energy drops after lunch",
-      empathy: "Save lighter tasks for afternoon. Organize, review, admin.",
+  const defaults: Challenge[] = []
+
+  defaults.push({
+    rank: defaults.length + 1,
+    title: 'Hard to start the day',
+    empathy: 'Start with a 5-minute warm-up. Momentum builds from there.',
+    suggestions: [
+      {
+        type: 'tool',
+        title: 'Notion Daily Reflection Template',
+        desc: 'Track your creative progress and maintain balance.',
+        url: 'https://notion.so/templates/daily-reflection',
+      },
+      {
+        type: 'book',
+        title: 'The Art of Rest – Alex Pang',
+        desc: 'How rest restores focus and creativity.',
+        url: 'https://www.goodreads.com/book/show/the-art-of-rest',
+      },
+      {
+        type: 'podcast',
+        title: 'Design Better Podcast – InVision',
+        desc: "Stories from the world's best designers.",
+        url: 'https://www.designbetter.co/podcast',
+      },
+    ],
+    meta: { source: 'emotion-analysis' },
+  })
+
+  const lowEnergyTemplate = TEMPLATE_LOOKUP.get('low-energy-recovery')
+  if (lowEnergyTemplate) {
+    defaults.push(
+      buildChallengeFromTemplate(lowEnergyTemplate, defaults.length + 1, {
+        title: 'Energy drops after lunch',
+        empathy: 'Save lighter tasks for afternoon. Organize, review, admin.',
+        source: 'library',
+      })
+    )
+  } else {
+    defaults.push({
+      rank: defaults.length + 1,
+      title: 'Energy drops after lunch',
+      empathy: 'Save lighter tasks for afternoon. Organize, review, admin.',
       suggestions: [
         {
           type: 'tool',
           title: 'Forest App – Focus Timer',
           desc: 'Stay focused with gamified productivity.',
-          url: 'https://www.forestapp.cc'
+          url: 'https://www.forestapp.cc',
         },
         {
           type: 'podcast',
           title: 'High Resolution – Bobby Ghoshal',
           desc: 'Conversations about design, business, and creativity.',
-          url: 'https://www.highresolution.design'
+          url: 'https://www.highresolution.design',
         },
         {
           type: 'book',
           title: 'Atomic Habits – James Clear',
           desc: 'Build better creative habits one small step at a time.',
-          url: 'https://jamesclear.com/atomic-habits'
-        }
-      ],
-      meta: { source: 'emotion-analysis' }
-    },
-    {
-      rank: 3,
-      title: "Self-doubt after feedback",
-      empathy: "Feedback is data, not judgment. Filter signal from noise.",
-      suggestions: [
-        {
-          type: 'book',
-          title: 'Show Your Work! – Austin Kleon',
-          desc: 'Learn to share your creative process and build confidence.',
-          url: 'https://austinkleon.com/show-your-work'
+          url: 'https://jamesclear.com/atomic-habits',
         },
-        {
-          type: 'tool',
-          title: 'Loom',
-          desc: 'Record a quick video walkthrough of your design to communicate intent clearly.',
-          url: 'https://loom.com'
-        },
-        {
-          type: 'podcast',
-          title: 'Dealing with Design Feedback – Design Details',
-          desc: 'Navigating critique and maintaining confidence.',
-          url: 'https://designdetails.fm/feedback'
-        }
       ],
-      meta: { source: 'emotion-analysis' }
-    }
-  ]
+      meta: { source: 'emotion-analysis' },
+    })
+  }
+
+  defaults.push({
+    rank: defaults.length + 1,
+    title: 'Self-doubt after feedback',
+    empathy: 'Feedback is data, not judgment. Filter signal from noise.',
+    suggestions: [
+      {
+        type: 'book',
+        title: 'Show Your Work! – Austin Kleon',
+        desc: 'Learn to share your creative process and build confidence.',
+        url: 'https://austinkleon.com/show-your-work',
+      },
+      {
+        type: 'tool',
+        title: 'Loom',
+        desc: 'Record a quick video walkthrough of your design to communicate intent clearly.',
+        url: 'https://loom.com',
+      },
+      {
+        type: 'podcast',
+        title: 'Dealing with Design Feedback – Design Details',
+        desc: 'Navigating critique and maintaining confidence.',
+        url: 'https://designdetails.fm/feedback',
+      },
+    ],
+    meta: { source: 'emotion-analysis' },
+  })
+
+  return defaults
 }
 
 /**
