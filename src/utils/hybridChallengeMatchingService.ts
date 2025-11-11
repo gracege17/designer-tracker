@@ -7,7 +7,7 @@
 
 import { Entry, EMOTIONS } from '../types'
 import { CHALLENGE_RECOMMENDATIONS, ChallengeRecommendationTemplate } from '../data/challengeRecommendations'
-import { Challenge, buildChallengeFromTemplate } from './challengeAnalysisService'
+import { Challenge, buildChallengeFromTemplate, analyzeTodayChallenges } from './challengeAnalysisService'
 
 interface MatchResult {
   challenge: ChallengeRecommendationTemplate
@@ -98,11 +98,13 @@ export async function matchChallengesToInput(todayEntry?: Entry): Promise<Challe
     })
 
     // Step 4: Build challenges from top matches
-    const topMatches = matches.filter(match => match.score >= 60).slice(0, 3)
+    // Option 2: Show top matches even if score is low (always show something)
+    const topMatches = matches.slice(0, Math.min(3, matches.length))
 
     if (topMatches.length === 0) {
-      // No good match - return empty (will show "keep logging" message)
-      return []
+      // Option 3: Fall back to rule-based if no matches at all
+      console.log('No semantic matches found, falling back to rule-based')
+      return analyzeTodayChallenges(todayEntry)
     }
 
     const challenges: Challenge[] = []
@@ -121,11 +123,8 @@ export async function matchChallengesToInput(todayEntry?: Entry): Promise<Challe
 
   } catch (error) {
     console.error('GPT matching failed, falling back to rule-based:', error)
-    // Fallback: return top candidate by emotion filter
-    if (candidateChallenges.length > 0) {
-      return [buildChallengeFromTemplate(candidateChallenges[0], 1)]
-    }
-    return []
+    // Option 3: Always fall back to rule-based on error
+    return analyzeTodayChallenges(todayEntry)
   }
 }
 
