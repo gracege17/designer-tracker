@@ -97,17 +97,19 @@ export async function matchChallengesToInput(todayEntry?: Entry): Promise<Challe
     if (topScored.length > 0) {
       console.log('Using scored challenge match from negative task:', topScored[0].score)
       
-      // Match the task text to the best challenge template
+      // Match the task text to the best challenge template (search ALL templates)
       const taskText = topScored[0].text
-      const matchedTemplate = findBestTemplateForTask(taskText, candidateChallenges)
+      const matchedTemplate = findBestTemplateForTask(taskText, CHALLENGE_RECOMMENDATIONS)
       
       if (matchedTemplate) {
+        console.log('Matched template:', matchedTemplate.id, matchedTemplate.title)
         return [buildChallengeFromTemplate(matchedTemplate, 1, {
           empathy: `You mentioned: "${topScored[0].task.description}". ${matchedTemplate.summary}`
         })]
       }
       
       // Fallback to rule-based
+      console.log('No template match found, using rule-based')
       return analyzeTodayChallenges(todayEntry)
     }
   }
