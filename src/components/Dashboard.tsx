@@ -11,6 +11,7 @@ import HelpfulResourcesCard from './HelpfulResourcesCard'
 import { EMOTIONS } from '../types'
 import namer from 'color-namer'
 import SectionLabel from './SectionLabel'
+import { logger } from '../utils/logger'
 
 interface DashboardProps {
   entries: Entry[]
@@ -104,17 +105,46 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
   useEffect(() => {
     const loadDailySummary = async () => {
       if (todayEntry && todayEntry.tasks.length > 0) {
+        // === LOGGING: Today's Summary Generation ===
+        logger.group('📝 Today\'s Summary Generation', () => {
+          logger.log('📊 Input Data:')
+          logger.log(`   Total tasks: ${todayEntry.tasks.length}`)
+          
+          todayEntry.tasks.forEach((task, i) => {
+            const emotionLabel = EMOTIONS[task.emotion]?.label || 'Unknown'
+            logger.log(`   ${i + 1}. ${task.description} → ${emotionLabel} (${task.emotion})`)
+          })
+          
+          // Calculate average emotion
+          const avgEmotion = todayEntry.tasks.reduce((sum, task) => sum + task.emotion, 0) / todayEntry.tasks.length
+          logger.log(`\n   Average emotion: ${avgEmotion.toFixed(2)}`)
+          
+          // Determine emotion range
+          let emotionRange = ''
+          if (avgEmotion >= 10) emotionRange = 'Very High (≥10)'
+          else if (avgEmotion >= 7) emotionRange = 'Medium-High (7-9)'
+          else if (avgEmotion >= 4) emotionRange = 'Low-Medium (4-6)'
+          else emotionRange = 'Low (<4)'
+          
+          logger.log(`   Emotion range: ${emotionRange}`)
+        })
+        // === END LOGGING ===
+        
         setIsLoadingSummary(true)
         try {
           const summary = await generateDailySummary(todayEntry)
           setDailySummary(summary)
+          
+          // Log result
+          logger.log('\n✅ Summary Generated:', `"${summary}"`)
         } catch (error) {
-          console.error('Failed to load daily summary:', error)
+          logger.error('❌ Failed to load daily summary:', error)
           setDailySummary("You had a productive day with a mix of creative and technical work. Keep up the great momentum!")
         } finally {
           setIsLoadingSummary(false)
         }
       } else {
+        logger.log('📝 Today\'s Summary: No tasks today')
         setDailySummary("Add your first task to see today's summary.")
       }
     }
@@ -248,51 +278,58 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             {/* Today's Color Card */}
             {(() => {
               // === LOGGING: Today's Color Calculation ===
-              console.group('🎨 Today\'s Color Calculation')
+              logger.group('🎨 Today\'s Color Calculation', () => {
+                // Log inputs
+                if (todayEntry && todayEntry.tasks && todayEntry.tasks.length > 0) {
+                  logger.log('📝 Input Emotions:')
+                  todayEntry.tasks.forEach((task, i) => {
+                    const emotionLabel = EMOTIONS[task.emotion]?.label || 'Unknown'
+                    logger.log(`  ${i + 1}. ${task.description} → ${emotionLabel}`)
+                  })
+                  logger.log(`  Total tasks: ${todayEntry.tasks.length}`)
+                } else {
+                  logger.log('📝 Input: No tasks today (will use default color)')
+                }
+                
+                // Calculate color and get breakdown
+                const dailyColor = calculateDailyColor(todayEntry)
+                const breakdown = getColorFamilyBreakdown(todayEntry)
+                
+                // Log color family breakdown
+                if (breakdown.length > 0) {
+                  logger.log('\n🎨 Color Family Breakdown:')
+                  breakdown.forEach(family => {
+                    logger.log(`  ${family.familyName}: ${family.percentage}`)
+                  })
+                }
+                
+                // Get human-readable color name using color-namer
+                const colorResult = namer(dailyColor)
+                // Use pantone for more sophisticated names, fallback to basic
+                const colorName = colorResult.pantone?.[0]?.name || colorResult.basic?.[0]?.name || 'Neutral'
+                
+                // Capitalize each word for better display
+                const formattedColorName = colorName
+                  .split(' ')
+                  .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                  .join(' ')
+                
+                // Log outputs
+                logger.log('\n✅ Final Color:')
+                logger.log(`  Hex: ${dailyColor}`)
+                logger.log(`  Name: "${formattedColorName}"`)
+                logger.log(`  Preview: %c     `, `background: ${dailyColor}; padding: 10px; border-radius: 4px;`)
+              })
+              // === END LOGGING ===
               
-              // Log inputs
-              if (todayEntry && todayEntry.tasks && todayEntry.tasks.length > 0) {
-                console.log('📝 Input Emotions:')
-                todayEntry.tasks.forEach((task, i) => {
-                  const emotionLabel = EMOTIONS[task.emotion]?.label || 'Unknown'
-                  console.log(`  ${i + 1}. ${task.description} → ${emotionLabel}`)
-                })
-                console.log(`  Total tasks: ${todayEntry.tasks.length}`)
-              } else {
-                console.log('📝 Input: No tasks today (will use default color)')
-              }
-              
-              // Calculate color and get breakdown
+              // Calculate color (need to do this outside logger.group scope for the component)
               const dailyColor = calculateDailyColor(todayEntry)
-              const breakdown = getColorFamilyBreakdown(todayEntry)
-              
-              // Log color family breakdown
-              if (breakdown.length > 0) {
-                console.log('\n🎨 Color Family Breakdown:')
-                breakdown.forEach(family => {
-                  console.log(`  ${family.familyName}: ${family.percentage}`)
-                })
-              }
-              
-              // Get human-readable color name using color-namer
               const colorResult = namer(dailyColor)
-              // Use pantone for more sophisticated names, fallback to basic
               const colorName = colorResult.pantone?.[0]?.name || colorResult.basic?.[0]?.name || 'Neutral'
-              
-              // Capitalize each word for better display
               const formattedColorName = colorName
                 .split(' ')
                 .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                 .join(' ')
-              
-              // Log outputs
-              console.log('\n✅ Final Color:')
-              console.log(`  Hex: ${dailyColor}`)
-              console.log(`  Name: "${formattedColorName}"`)
-              console.log(`  Preview: %c     `, `background: ${dailyColor}; padding: 10px; border-radius: 4px;`)
-              
-              console.groupEnd()
-              // === END LOGGING ===
               
               return (
                 <div className="p-6 bg-white/[0.04] flex flex-col items-center justify-center min-h-[180px]" style={{ borderRadius: '16px' }}>

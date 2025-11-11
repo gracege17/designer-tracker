@@ -8,7 +8,7 @@ interface DailySummary {
 // Cache for daily summaries to avoid repeated API calls
 const summaryCache = new Map<string, DailySummary>()
 
-const buildLocalSummary = (taskData: Array<{ emotion: number; taskType?: string }>): string => {
+export const buildLocalSummary = (taskData: Array<{ emotion: number; taskType?: string }>): string => {
   if (taskData.length === 0) {
     return "Ready to capture today's design journey? Add your first task to get a personalized summary!"
   }

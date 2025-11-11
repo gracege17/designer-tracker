@@ -227,8 +227,30 @@ The app logs detailed information about Today's Color calculation to the browser
 
 - ✅ **Logs appear in browser console** - Not in Vercel server logs
 - ✅ **Client-side only** - These are browser console.log statements
-- ✅ **Always enabled** - No need to set environment variables
 - ⚠️ **Visible to users** - Anyone can open DevTools and see these logs
+
+### Toggle Logging On/Off
+
+Logging is currently **OFF** by default to keep production console clean.
+
+**To enable logging:**
+
+1. Open `src/utils/logger.ts`
+2. Change `LOGGING_ENABLED` from `false` to `true`:
+   ```typescript
+   const LOGGING_ENABLED = true // Set to true to enable logs
+   ```
+3. Rebuild and deploy
+
+**Quick toggle locations:**
+- **Main control**: `src/utils/logger.ts` → `LOGGING_ENABLED` flag
+- **All color logs**: Uses this flag automatically
+- **Error logs**: Always show (even when logging disabled)
+
+**Best practice:**
+- ✅ Keep logging **ON** during development/debugging
+- ✅ Turn logging **OFF** for production deployment
+- ✅ Code stays in place - just flip the flag
 
 ## Integration Testing
 
