@@ -33,6 +33,7 @@ export interface Entry {
   id: string;
   date: string; // YYYY-MM-DD format
   tasks: Task[];
+  overallFeeling?: number; // 0-100 slider value from "How's your day so far?"
   createdAt: Date;
   updatedAt: Date;
 }

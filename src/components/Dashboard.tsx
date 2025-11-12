@@ -12,6 +12,7 @@ import { EMOTIONS } from '../types'
 import namer from 'color-namer'
 import SectionLabel from './SectionLabel'
 import { logger } from '../utils/logger'
+import { getEmojiFromOverallFeeling, getIconPathFromOverallFeeling } from '../utils/overallFeelingMapper'
 
 interface DashboardProps {
   entries: Entry[]
@@ -61,13 +62,9 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
       
       const dayEntry = entries.find(entry => entry.date === dateString)
       
-      if (dayEntry && dayEntry.tasks.length > 0) {
-        // Get the first emotion from the first task (consistent with EntryList display)
-        const firstTask = dayEntry.tasks[0]
-        const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
-          ? firstTask.emotions[0] 
-          : firstTask.emotion
-        const emoji = EMOTIONS[emotionLevel]?.emoji || '😐'
+      if (dayEntry && dayEntry.overallFeeling !== undefined) {
+        // Only show emoji if overallFeeling exists (from "How's your day so far?" slider)
+        const emoji = getEmojiFromOverallFeeling(dayEntry.overallFeeling)
         
         // Still calculate average for tooltip/stats
         const avgEmotion = dayEntry.tasks.reduce((sum, task) => sum + task.emotion, 0) / dayEntry.tasks.length
@@ -393,17 +390,21 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
             {/* Week emojis */}
             <div className="grid grid-cols-7 gap-2">
               {weeklyData.map((day, index) => {
-                // Get emoji based on emotion
+                // Get emoji from overallFeeling only (no fallback)
                 const getEmotion = () => {
                   if (!day.hasData) return { emoji: '⚪', label: 'No data', iconPath: undefined }
-                  const firstTask = day.entry?.tasks[0]
-                  if (!firstTask) return { emoji: '⚪', label: 'No data', iconPath: undefined }
                   
-                  const emotionLevel = firstTask.emotions && firstTask.emotions.length > 0 
-                    ? firstTask.emotions[0] 
-                    : firstTask.emotion
+                  // Only use overallFeeling - no fallback to task emotions
+                  if (day.entry?.overallFeeling !== undefined) {
+                    return {
+                      emoji: getEmojiFromOverallFeeling(day.entry.overallFeeling),
+                      label: `Overall feeling`,
+                      iconPath: getIconPathFromOverallFeeling(day.entry.overallFeeling)
+                    }
+                  }
                   
-                  return EMOTIONS[emotionLevel] || { emoji: '😐', label: 'Neutral', iconPath: undefined }
+                  // If no overallFeeling, show empty (user didn't set it)
+                  return { emoji: '⚪', label: 'Not set', iconPath: undefined }
                 }
                 
                 const emotion = getEmotion()

@@ -58,6 +58,7 @@ function App() {
   const [collectedTasks, setCollectedTasks] = useState<TaskReview[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [userProfile, setUserProfile] = useState<UserProfileData | null>(null)
+  const [overallFeeling, setOverallFeeling] = useState<number | null>(null)
   
   // Success toast state
   const [successToast, setSuccessToast] = useState({ show: false, message: '' })
@@ -156,7 +157,8 @@ function App() {
     }
   }
 
-  const handleOverallFeelingComplete = () => {
+  const handleOverallFeelingComplete = (feelingScore: number) => {
+    setOverallFeeling(feelingScore)
     setCurrentView('projectSelection')
   }
 
@@ -306,6 +308,7 @@ function App() {
         const updatedEntry: Entry = {
           ...existingEntry,
           tasks: [...existingEntry.tasks, ...newTasks],
+          overallFeeling: overallFeeling ?? existingEntry.overallFeeling,
           updatedAt: new Date()
         }
         
@@ -317,6 +320,7 @@ function App() {
           id: generateId(),
           date: todayDate,
           tasks: newTasks,
+          overallFeeling: overallFeeling ?? undefined,
           createdAt: new Date(),
           updatedAt: new Date()
         }
@@ -331,6 +335,7 @@ function App() {
       setSelectedEmotions([])
       setCurrentProjectIndex(0)
       setCollectedTasks([])
+      setOverallFeeling(null)
       
       // Clear AI cache to trigger regeneration of insights
       clearAICache()
