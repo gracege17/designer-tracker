@@ -75,7 +75,9 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const prompt = `You are a supportive design coach.
 
-The user just finished their daily log of tasks and emotions. Summarize the main emotional and task theme of their day in one short sentence that feels personal and encouraging.
+The user just finished their daily log of tasks and emotions. Summarize the main emotional and task theme of their day in ONE SHORT sentence (max 120 characters) that feels personal and encouraging.
+
+IMPORTANT: Keep it under 120 characters so it displays nicely in 3 lines on mobile.
 
 Example input:
 Tasks: 
@@ -83,14 +85,17 @@ Tasks:
 - "Fixed icon alignment issue" (😐)
 - "Presented design to client" (😫)
 
-Output:
-"You were most energized during visual exploration, even though alignment issues caused some fatigue. Great progress!"
+Good output (93 chars):
+"You tackled diverse tasks with resilience, balancing creativity and precision beautifully."
+
+Bad output (too long):
+"Your creativity shone brightly through your emoji design, even as you tackled the challenges of prototyping with determination—keep pushing forward!"
 
 Now analyze this day:
 Tasks:
 ${taskList}
 
-Provide a supportive, encouraging summary in one sentence:`
+Provide a supportive, encouraging summary in one SHORT sentence (max 120 characters):`
 
     console.log('🤖 Calling OpenAI API for daily summary...')
     console.log(`   Model: ${process.env.OPENAI_MODEL || 'gpt-4o'}`)
