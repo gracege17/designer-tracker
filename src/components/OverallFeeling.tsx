@@ -10,6 +10,7 @@ interface OverallFeelingProps {
 
 const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) => {
   const [sliderValue, setSliderValue] = useState(50)
+  const [hasInteracted, setHasInteracted] = useState(false)
 
   // Gradient colors from low to high (updated with new emotion colors)
   const gradientStops = [
@@ -140,7 +141,10 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
                 min="0"
                 max="100"
                 value={sliderValue}
-                onChange={(e) => setSliderValue(Number(e.target.value))}
+                onChange={(e) => {
+                  setSliderValue(Number(e.target.value))
+                  setHasInteracted(true) // Enable button once user drags
+                }}
                 className="w-full h-3 appearance-none cursor-pointer rounded-full"
                 style={{
                   background: `linear-gradient(to right, ${gradientString})`,
@@ -204,7 +208,10 @@ const OverallFeeling: React.FC<OverallFeelingProps> = ({ onComplete, onBack }) =
           </div>
 
           {/* Continue Button */}
-          <ButtonPrimaryCTA onClick={() => onComplete(sliderValue)}>
+          <ButtonPrimaryCTA 
+            onClick={() => onComplete(sliderValue)}
+            disabled={!hasInteracted}
+          >
             Continue
           </ButtonPrimaryCTA>
         </div>

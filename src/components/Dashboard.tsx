@@ -12,7 +12,7 @@ import { EMOTIONS } from '../types'
 import namer from 'color-namer'
 import SectionLabel from './SectionLabel'
 import { logger } from '../utils/logger'
-import { getEmojiFromOverallFeeling, getIconPathFromOverallFeeling } from '../utils/overallFeelingMapper'
+import { getEmojiFromOverallFeeling, getIconPathFromOverallFeeling, getLabelFromOverallFeeling } from '../utils/overallFeelingMapper'
 
 interface DashboardProps {
   entries: Entry[]
@@ -237,17 +237,14 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
           <div className="grid grid-cols-2 gap-3 mb-6">
             {/* Today's Mood Card */}
             {(() => {
-              // Get most common emotion
-              const emotionCounts = todayTasks.reduce((acc, task) => {
-                const emotion = task.emotion
-                acc[emotion] = (acc[emotion] || 0) + 1
-                return acc
-              }, {} as Record<number, number>)
+              // Use overallFeeling if available, otherwise don't show
+              if (!todayEntry?.overallFeeling) {
+                return null
+              }
               
-              const mostCommonEmotion = Object.entries(emotionCounts)
-                .sort(([, a], [, b]) => b - a)[0]?.[0]
-              
-              const emotionData = mostCommonEmotion ? EMOTIONS[Number(mostCommonEmotion) as EmotionLevel] : EMOTIONS[8]
+              const emoji = getEmojiFromOverallFeeling(todayEntry.overallFeeling)
+              const label = getLabelFromOverallFeeling(todayEntry.overallFeeling)
+              const iconPath = getIconPathFromOverallFeeling(todayEntry.overallFeeling)
               
               return (
                 <div className="p-6 bg-white/[0.04] flex flex-col items-center justify-center min-h-[180px]" style={{ borderRadius: '16px' }}>
@@ -258,15 +255,15 @@ const Dashboard: React.FC<DashboardProps> = ({ entries, onAddEntry, onViewEntrie
                   {/* Emotion Icon */}
                   <div className="mb-3">
                     <img 
-                      src={emotionData.iconPath} 
-                      alt={emotionData.label}
+                      src={iconPath} 
+                      alt={label}
                       className="w-16 h-16"
                     />
                   </div>
                   
                   {/* Emotion Label */}
                   <p className="text-[18px] font-semibold text-white">
-                    {emotionData.label}
+                    {label}
                   </p>
                 </div>
               )

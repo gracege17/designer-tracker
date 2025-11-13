@@ -8,7 +8,7 @@ import { calculateAverageEmotion, getMostEnergizingTaskType, getMostDrainingTask
 import Card from './Card'
 import EmotionalRadarChart from './EmotionalRadarChart'
 import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
-import { generateWeeklyInsights } from '../utils/weeklyInsightsService'
+import { generateWeeklyInsights, generateWeeklyInsightsWithAI } from '../utils/weeklyInsightsService'
 import { generateSummaryTags } from '../utils/smartSummaryService'
 import SectionLabel from './SectionLabel'
 
@@ -38,6 +38,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeRange>('week')
   const [showFullCalendar, setShowFullCalendar] = useState(false)
   const [timeOffset, setTimeOffset] = useState(0) // 0 = current week/month, -1 = previous, 1 = next
+  const [weeklyInsights, setWeeklyInsights] = useState<string>('')
 
   // Helper function to extract keywords from task description
   const extractKeywords = (description: string): string => {
@@ -100,6 +101,24 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   }
   
   const currentEntries = getEntriesForTimeRange()
+
+  // Load weekly insights with AI
+  React.useEffect(() => {
+    const loadInsights = async () => {
+      const emotionBreakdown = getEmotionBreakdown(currentEntries)
+      const taskCount = currentEntries.reduce((sum, entry) => sum + entry.tasks.length, 0)
+      
+      const result = await generateWeeklyInsightsWithAI({
+        taskCount,
+        emotionBreakdown: emotionBreakdown?.breakdown,
+        timeRange: selectedTimeRange
+      })
+      
+      setWeeklyInsights(result)
+    }
+    
+    loadInsights()
+  }, [selectedTimeRange, timeOffset, entries])
 
   // Calculate insights from ALL entries (not just current time range)
   const averageEmotion = calculateAverageEmotion(entries)
@@ -396,34 +415,19 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
           return (
             <>
               {/* Week's Reflection Card */}
-              {(() => {
-                // Use time-filtered entries for insights
-                const filteredEntries = currentEntries
-                const emotionBreakdown = getEmotionBreakdown(filteredEntries)
-                const taskCount = filteredEntries.reduce((sum, entry) => sum + entry.tasks.length, 0)
-                
-                const insights = generateWeeklyInsights({
-                  taskCount,
-                  emotionBreakdown: emotionBreakdown?.breakdown,
-                  timeRange: selectedTimeRange
-                })
-
-                return (
-                  <Card 
-                    className="mb-4 p-[20px] space-y-0"
-                    style={{ borderRadius: '8px' }}
-                  >
-                    <div className="flex flex-col gap-3">
-                      <h2 className="text-[20px] font-bold text-[#E6E1E5]">
-                        {selectedTimeRange === 'week' ? "Week's Reflection" : "Month's Reflection"}
-                      </h2>
-                      <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
-                        {insights}
-                      </p>
-                    </div>
-                  </Card>
-                )
-              })()}
+              <Card 
+                className="mb-4 p-[20px] space-y-0"
+                style={{ borderRadius: '8px' }}
+              >
+                <div className="flex flex-col gap-3">
+                  <h2 className="text-[20px] font-bold text-[#E6E1E5]">
+                    {selectedTimeRange === 'week' ? "Week's Reflection" : "Month's Reflection"}
+                  </h2>
+                  <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+                    {weeklyInsights || 'Loading reflection...'}
+                  </p>
+                </div>
+              </Card>
 
               {/* Emotional Radar Chart */}
               {(() => {

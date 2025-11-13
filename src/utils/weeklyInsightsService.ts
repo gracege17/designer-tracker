@@ -125,55 +125,50 @@ export function generateWeeklyInsights(input: WeeklyInsightsInput): string {
 }
 
 /**
- * FUTURE: AI-powered weekly insights
+ * AI-powered weekly insights
  * 
- * Uncomment when ready to use GPT for more dynamic, personalized insights
+ * Calls Vercel API endpoint which uses OpenAI GPT for personalized reflections
  */
-/*
 export async function generateWeeklyInsightsWithAI(
-  input: WeeklyInsightsInput,
-  recentReflections?: string[]
+  input: WeeklyInsightsInput
 ): Promise<string> {
   const { taskCount, emotionBreakdown, timeRange } = input
   
-  if (!emotionBreakdown) {
+  // Check if we're in development mode
+  const isDev = typeof window !== 'undefined' && import.meta.env.MODE !== 'production'
+  
+  if (isDev || !emotionBreakdown) {
     return generateWeeklyInsights(input)
   }
 
-  const prompt = `You are a compassionate design coach reviewing a designer's ${timeRange}.
-
-Emotional breakdown:
-- Calm: ${(emotionBreakdown.calm * 100).toFixed(0)}%
-- Happy: ${(emotionBreakdown.happy * 100).toFixed(0)}%
-- Excited: ${(emotionBreakdown.excited * 100).toFixed(0)}%
-- Frustrated: ${(emotionBreakdown.frustrated * 100).toFixed(0)}%
-- Anxious: ${(emotionBreakdown.anxious * 100).toFixed(0)}%
-
-Tasks completed: ${taskCount}
-
-Write a 1-2 sentence reflection on their ${timeRange}. Be warm, specific, and encouraging. Acknowledge their efforts and emotions authentically.`
-
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('/api/generate-weekly-insights', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'gpt-4',
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 80,
-        temperature: 0.7
+        taskCount,
+        emotionBreakdown,
+        timeRange
       })
     })
 
+    if (!response.ok) {
+      throw new Error('API call failed')
+    }
+
     const data = await response.json()
-    return data.choices[0].message.content.trim()
+    
+    if (data.useRuleBased) {
+      // API said to use rule-based (no API key configured)
+      return generateWeeklyInsights(input)
+    }
+    
+    return data.reflection || generateWeeklyInsights(input)
   } catch (error) {
     console.error('AI weekly insights generation failed:', error)
     return generateWeeklyInsights(input)
   }
 }
-*/
 
