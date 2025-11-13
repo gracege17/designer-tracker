@@ -159,6 +159,60 @@ function generateFallbackTags(tasks: Task[], existingTags: string[]): string[] {
 }
 
 /**
+ * AI-powered summary tag generation
+ * 
+ * Calls Vercel API endpoint which uses OpenAI GPT for keyword extraction
+ */
+export async function generateSummaryTagsWithAI(
+  tasks: Task[],
+  emotionCategory: 'energized' | 'drained' | 'meaningful' | 'curious'
+): Promise<string[]> {
+  if (tasks.length === 0) {
+    return []
+  }
+
+  // Check if we're in development mode
+  const isDev = typeof window !== 'undefined' && import.meta.env.MODE !== 'production'
+  
+  if (isDev) {
+    return generateSummaryTags(tasks)
+  }
+
+  try {
+    const response = await fetch('/api/generate-emotion-keywords', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tasks: tasks.map(t => ({
+          description: t.description,
+          emotion: 0, // Not needed for AI analysis
+          taskType: t.taskType
+        })),
+        emotionCategory
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error('API call failed')
+    }
+
+    const data = await response.json()
+    
+    if (data.usePatternBased) {
+      // API said to use pattern-based (no API key configured)
+      return generateSummaryTags(tasks)
+    }
+    
+    return data.keywords || generateSummaryTags(tasks)
+  } catch (error) {
+    console.error('AI keyword generation failed:', error)
+    return generateSummaryTags(tasks)
+  }
+}
+
+/**
  * Generate summary tag for a single task (for quick preview)
  */
 export function generateSingleTag(taskDescription: string): string {

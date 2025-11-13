@@ -9,7 +9,7 @@ import Card from './Card'
 import EmotionalRadarChart from './EmotionalRadarChart'
 import { getEmotionBreakdown } from '../utils/emotionBreakdownService'
 import { generateWeeklyInsights, generateWeeklyInsightsWithAI } from '../utils/weeklyInsightsService'
-import { generateSummaryTags } from '../utils/smartSummaryService'
+import { generateSummaryTags, generateSummaryTagsWithAI } from '../utils/smartSummaryService'
 import SectionLabel from './SectionLabel'
 
 type EmotionType = 'energized' | 'drained' | 'meaningful' | 'curious'
@@ -39,6 +39,10 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
   const [showFullCalendar, setShowFullCalendar] = useState(false)
   const [timeOffset, setTimeOffset] = useState(0) // 0 = current week/month, -1 = previous, 1 = next
   const [weeklyInsights, setWeeklyInsights] = useState<string>('')
+  const [energizedKeywords, setEnergizedKeywords] = useState<string[]>([])
+  const [drainedKeywords, setDrainedKeywords] = useState<string[]>([])
+  const [meaningfulKeywords, setMeaningfulKeywords] = useState<string[]>([])
+  const [curiousKeywords, setCuriousKeywords] = useState<string[]>([])
 
   // Helper function to extract keywords from task description
   const extractKeywords = (description: string): string => {
@@ -118,6 +122,50 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
     }
     
     loadInsights()
+  }, [selectedTimeRange, timeOffset, entries])
+
+  // Load AI keywords for emotional cards
+  React.useEffect(() => {
+    const loadKeywords = async () => {
+      const allTasks = currentEntries.flatMap(entry => entry.tasks)
+      
+      // Define emotion categories
+      const energyEmotions = [1, 3, 10, 13, 16]
+      const drainingEmotions = [5, 6, 8, 12, 14, 15]
+      const meaningfulEmotions = [2, 9, 11, 13]
+      const passionEmotions = [3, 7, 10, 16]
+      
+      const getEmotions = (task: any) => task.emotions || [task.emotion]
+      
+      // Filter tasks by category
+      const energyTasks = allTasks.filter(task => 
+        getEmotions(task).some((e: number) => energyEmotions.includes(e))
+      )
+      const drainingTasks = allTasks.filter(task => 
+        getEmotions(task).some((e: number) => drainingEmotions.includes(e))
+      )
+      const meaningfulTasks = allTasks.filter(task => 
+        getEmotions(task).some((e: number) => meaningfulEmotions.includes(e))
+      )
+      const passionTasks = allTasks.filter(task => 
+        getEmotions(task).some((e: number) => passionEmotions.includes(e))
+      )
+      
+      // Generate keywords for each category (in parallel)
+      const [energized, drained, meaningful, curious] = await Promise.all([
+        generateSummaryTagsWithAI(energyTasks, 'energized'),
+        generateSummaryTagsWithAI(drainingTasks, 'drained'),
+        generateSummaryTagsWithAI(meaningfulTasks, 'meaningful'),
+        generateSummaryTagsWithAI(passionTasks, 'curious')
+      ])
+      
+      setEnergizedKeywords(energized)
+      setDrainedKeywords(drained)
+      setMeaningfulKeywords(meaningful)
+      setCuriousKeywords(curious)
+    }
+    
+    loadKeywords()
   }, [selectedTimeRange, timeOffset, entries])
 
   // Calculate insights from ALL entries (not just current time range)
@@ -472,15 +520,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Summary Tag (center, main focus) */}
                   {energyTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
-                      {(() => {
-                        const summaryTags = generateSummaryTags(energyTasks).slice(0, 1)
-                        
-                        return (
-                          <p className="text-[20px] font-bold text-[#FF2D55] leading-tight">
-                            {summaryTags[0] || 'Team collaboration'}
-                          </p>
-                        )
-                      })()}
+                      <p className="text-[20px] font-bold text-[#FF2D55] leading-tight">
+                        {energizedKeywords[0] || 'Analyzing...'}
+                      </p>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col justify-center">
@@ -512,15 +554,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Summary Tag (center, main focus) */}
                   {drainingTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
-                      {(() => {
-                        const summaryTags = generateSummaryTags(drainingTasks).slice(0, 1)
-                        
-                        return (
-                          <p className="text-[20px] font-bold text-[#938F99] leading-tight">
-                            {summaryTags[0] || 'Evening wrap-up'}
-                          </p>
-                        )
-                      })()}
+                      <p className="text-[20px] font-bold text-[#938F99] leading-tight">
+                        {drainedKeywords[0] || 'Analyzing...'}
+                      </p>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col justify-center">
@@ -552,15 +588,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Summary Tag (center, main focus) */}
                   {meaningfulTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
-                      {(() => {
-                        const summaryTags = generateSummaryTags(meaningfulTasks).slice(0, 1)
-                        
-                        return (
-                          <p className="text-[20px] font-bold text-[#F4C95D] leading-tight">
-                            {summaryTags[0] || 'Organizing workflow'}
-                          </p>
-                        )
-                      })()}
+                      <p className="text-[20px] font-bold text-[#F4C95D] leading-tight">
+                        {meaningfulKeywords[0] || 'Analyzing...'}
+                      </p>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col justify-center">
@@ -592,15 +622,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Summary Tag (center, main focus) */}
                   {passionTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
-                      {(() => {
-                        const summaryTags = generateSummaryTags(passionTasks).slice(0, 1)
-                        
-                        return (
-                          <p className="text-[20px] font-bold text-[#AF52DE] leading-tight">
-                            {summaryTags[0] || 'Team collaboration'}
-                          </p>
-                        )
-                      })()}
+                      <p className="text-[20px] font-bold text-[#AF52DE] leading-tight">
+                        {curiousKeywords[0] || 'Analyzing...'}
+                      </p>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col justify-center">
