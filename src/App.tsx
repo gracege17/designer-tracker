@@ -51,6 +51,7 @@ function App() {
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([])
   const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null)
   const [selectedEmotion, setSelectedEmotion] = useState<EmotionType | null>(null)
+  const [selectedTimeRange, setSelectedTimeRange] = useState<'week' | 'month'>('week')
   const [editingTask, setEditingTask] = useState<Task | null>(null)
   const [taskDescription, setTaskDescription] = useState('')
   const [selectedEmotions, setSelectedEmotions] = useState<EmotionLevel[]>([])
@@ -427,8 +428,9 @@ function App() {
     setCurrentView('entryDetail')
   }
 
-  const handleViewEmotionDetail = (emotion: EmotionType) => {
+  const handleViewEmotionDetail = (emotion: EmotionType, timeRange?: 'week' | 'month') => {
     setSelectedEmotion(emotion)
+    setSelectedTimeRange(timeRange || 'week')
     setCurrentView('emotionDetail')
   }
 
@@ -729,6 +731,7 @@ function App() {
           <EmotionDetailPage
             emotion={selectedEmotion}
             entries={entries}
+            timeRange={selectedTimeRange}
             onBack={() => setCurrentView('insights')}
             onNavigateHome={() => setCurrentView('dashboard')}
             onNavigateAdd={handleStartAddEntry}

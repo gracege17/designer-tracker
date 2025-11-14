@@ -159,6 +159,29 @@ function generateFallbackTags(tasks: Task[], existingTags: string[]): string[] {
 }
 
 /**
+ * Check if generated tags are too generic/meaningless
+ */
+export function areTagsMeaningful(tags: string[]): boolean {
+  if (tags.length === 0) return false
+  
+  // Generic patterns that indicate lack of meaningful data
+  const genericPatterns = [
+    /activities$/i,        // "Today activities", "Work activities"
+    /^daily tasks$/i,      // "Daily tasks"
+    /^work$/i,            // Just "Work"
+    /^general work$/i,    // "General work"
+    /^project updates$/i  // "Project updates"
+  ]
+  
+  // If all tags match generic patterns, they're not meaningful
+  const allGeneric = tags.every(tag => 
+    genericPatterns.some(pattern => pattern.test(tag))
+  )
+  
+  return !allGeneric
+}
+
+/**
  * AI-powered summary tag generation
  * 
  * Calls Vercel API endpoint which uses OpenAI GPT for keyword extraction

@@ -21,7 +21,7 @@ interface InsightsScreenProps {
   onNavigateHistory: () => void
   onNavigateSettings?: () => void
   onViewEntry: (entry: Entry) => void
-  onEmotionClick: (emotion: EmotionType) => void
+  onEmotionClick: (emotion: EmotionType, timeRange?: 'week' | 'month') => void
 }
 
 type TimeRange = 'week' | 'month'
@@ -507,7 +507,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               <div className="grid grid-cols-2 gap-3 mb-6">
               {/* 1. Energized */}
               <Card 
-                onClick={() => onEmotionClick('energized')}
+                onClick={() => onEmotionClick('energized', selectedTimeRange)}
                 className="transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden space-y-0"
                 style={{ borderRadius: '16px' }}
               >
@@ -541,7 +541,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               
               {/* 2. Drained */}
               <Card 
-                onClick={() => onEmotionClick('drained')}
+                onClick={() => onEmotionClick('drained', selectedTimeRange)}
                 className="transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden space-y-0"
                 style={{ borderRadius: '16px' }}
               >
@@ -575,7 +575,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               
               {/* 3. Meaningful */}
               <Card 
-                onClick={() => onEmotionClick('meaningful')}
+                onClick={() => onEmotionClick('meaningful', selectedTimeRange)}
                 className="transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden space-y-0"
                 style={{ borderRadius: '16px' }}
               >
@@ -609,7 +609,7 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
               
               {/* 4. Curious */}
               <Card 
-                onClick={() => onEmotionClick('curious')}
+                onClick={() => onEmotionClick('curious', selectedTimeRange)}
                 className="transition-all active:scale-[0.98] cursor-pointer p-5 min-w-[160px] min-h-[180px] sm:min-w-[214px] sm:h-[198px] overflow-hidden space-y-0"
                 style={{ borderRadius: '16px' }}
               >

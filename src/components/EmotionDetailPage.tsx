@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { CaretLeft } from 'phosphor-react'
 import { Entry, EmotionLevel } from '../types'
-import { generateSummaryTags } from '../utils/smartSummaryService'
+import { generateSummaryTags, areTagsMeaningful, generateSummaryTagsWithAI } from '../utils/smartSummaryService'
 import { getCurrentWeekEntries } from '../utils/dataHelpers'
 import BottomNav from './BottomNav'
 import Badge from './Badge'
@@ -9,6 +9,7 @@ import Badge from './Badge'
 interface EmotionDetailPageProps {
   emotion: 'energized' | 'drained' | 'meaningful' | 'curious'
   entries: Entry[]
+  timeRange?: 'week' | 'month' // Time range from Insights page
   onBack: () => void
   onNavigateHome: () => void
   onNavigateAdd: () => void
@@ -55,6 +56,7 @@ const emotionConfig = {
 const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
   emotion,
   entries,
+  timeRange = 'week', // Default to week if not specified
   onBack,
   onNavigateHome,
   onNavigateAdd,
@@ -62,26 +64,42 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
   onNavigateSettings
 }) => {
   const config = emotionConfig[emotion]
-
-  // Filter to only this week's entries first
-  const thisWeekEntries = useMemo(() => getCurrentWeekEntries(entries), [entries])
   
-  // Get total this week's entries for context
-  const totalEntriesThisWeek = thisWeekEntries.length
+  // State for AI-generated content
+  const [aiTriggers, setAiTriggers] = React.useState<string[]>([])
+  const [aiInsight, setAiInsight] = React.useState<string>('')
+  const [isLoadingAI, setIsLoadingAI] = React.useState(true)
 
-  // Filter entries and tasks that match this emotion (from this week only)
+  // Filter entries based on selected time range
+  const filteredEntries = useMemo(() => {
+    if (timeRange === 'week') {
+      return getCurrentWeekEntries(entries)
+    } else {
+      // Month view - get current month's entries
+      const today = new Date()
+      const year = today.getFullYear()
+      const month = today.getMonth()
+      
+      return entries.filter(entry => {
+        const entryDate = new Date(entry.date)
+        return entryDate.getFullYear() === year && entryDate.getMonth() === month
+      })
+    }
+  }, [entries, timeRange])
+
+  // Filter entries and tasks that match this emotion
   const { relevantEntries, relevantTasks } = useMemo(() => {
-    const filteredEntries: Entry[] = []
+    const relevantEntriesArray: Entry[] = []
     const allTasks: Array<{ date: string; description: string; projectName: string; notes?: string }> = []
 
-    thisWeekEntries.forEach(entry => {
+    filteredEntries.forEach(entry => {
       const matchingTasks = entry.tasks.filter(task => {
         const emotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
         return emotions.some(e => config.emotions.includes(e))
       })
 
       if (matchingTasks.length > 0) {
-        filteredEntries.push(entry)
+        relevantEntriesArray.push(entry)
         matchingTasks.forEach(task => {
           allTasks.push({
             date: entry.date,
@@ -93,16 +111,109 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
       }
     })
 
-    return { relevantEntries: filteredEntries, relevantTasks: allTasks }
-  }, [thisWeekEntries, config.emotions])
+    return { relevantEntries: relevantEntriesArray, relevantTasks: allTasks }
+  }, [filteredEntries, config.emotions])
 
-  // Generate top 3 reason tags
+  // Cache for AI insights (in-memory, per session)
+  const insightCache = React.useRef<Map<string, { triggers: string[]; insight: string }>>(new Map())
+
+  // Load AI-generated triggers and insight
+  React.useEffect(() => {
+    const loadAIContent = async () => {
+      // Create cache key based on emotion, time range, and task count
+      const cacheKey = `${emotion}-${timeRange}-${relevantTasks.length}`
+      
+      // Check cache first
+      if (insightCache.current.has(cacheKey)) {
+        const cached = insightCache.current.get(cacheKey)!
+        setAiTriggers(cached.triggers)
+        setAiInsight(cached.insight)
+        setIsLoadingAI(false)
+        return
+      }
+      
+      setIsLoadingAI(true)
+      
+      if (relevantTasks.length === 0) {
+        setAiTriggers([])
+        const emptyInsight = `You haven't logged any ${config.label.toLowerCase()} moments ${periodLabel} yet. Start tracking to discover your patterns!`
+        setAiInsight(emptyInsight)
+        setIsLoadingAI(false)
+        return
+      }
+
+      // Check if we're in development mode
+      const isDev = typeof window !== 'undefined' && import.meta.env.MODE !== 'production'
+      
+      if (isDev) {
+        // Use pattern-based in dev
+        const tasksForAnalysis = relevantTasks.map(t => ({ description: t.description }))
+        const triggers = generateSummaryTags(tasksForAnalysis).slice(0, 3)
+        setAiTriggers(triggers)
+        setAiInsight(insightPattern)
+        insightCache.current.set(cacheKey, { triggers, insight: insightPattern })
+        setIsLoadingAI(false)
+        return
+      }
+
+      try {
+        const response = await fetch('/api/generate-emotion-insight', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            tasks: relevantTasks.map(t => ({
+              description: t.description,
+              date: t.date,
+              projectName: t.projectName
+            })),
+            emotionCategory: emotion,
+            timeRange
+          })
+        })
+
+        if (!response.ok) {
+          throw new Error('API call failed')
+        }
+
+        const data = await response.json()
+        
+        if (data.useRuleBased) {
+          // Fall back to pattern-based
+          const tasksForAnalysis = relevantTasks.map(t => ({ description: t.description }))
+          const triggers = generateSummaryTags(tasksForAnalysis).slice(0, 3)
+          setAiTriggers(triggers)
+          setAiInsight(insightPattern)
+          insightCache.current.set(cacheKey, { triggers, insight: insightPattern })
+        } else {
+          const triggers = data.triggers || []
+          const insight = data.insight || insightPattern
+          setAiTriggers(triggers)
+          setAiInsight(insight)
+          // Cache the AI result
+          insightCache.current.set(cacheKey, { triggers, insight })
+        }
+      } catch (error) {
+        console.error('AI insight generation failed:', error)
+        // Fall back to pattern-based
+        const tasksForAnalysis = relevantTasks.map(t => ({ description: t.description }))
+        const triggers = generateSummaryTags(tasksForAnalysis).slice(0, 3)
+        setAiTriggers(triggers)
+        setAiInsight(insightPattern)
+        insightCache.current.set(cacheKey, { triggers, insight: insightPattern })
+      } finally {
+        setIsLoadingAI(false)
+      }
+    }
+
+    loadAIContent()
+  }, [relevantTasks, emotion, timeRange])
+
+  // Generate top 3 reason tags (fallback/backup)
   const topReasonTags = useMemo(() => {
-    if (relevantTasks.length === 0) return []
-    
-    const tasksForAnalysis = relevantTasks.map(t => ({ description: t.description }))
-    return generateSummaryTags(tasksForAnalysis).slice(0, 3)
-  }, [relevantTasks])
+    return aiTriggers.length > 0 ? aiTriggers : []
+  }, [aiTriggers])
 
   // Generate insight pattern
   const insightPattern = useMemo(() => {
@@ -161,22 +272,32 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
     }
   }
 
-  // Get current week date range
-  const getWeekRange = () => {
+  // Get date range (week or month)
+  const getDateRange = () => {
     const today = new Date()
-    const dayOfWeek = today.getDay() // 0 = Sunday, 1 = Monday, etc.
-    const startOfWeek = new Date(today)
-    startOfWeek.setDate(today.getDate() - dayOfWeek)
     
-    const endOfWeek = new Date(startOfWeek)
-    endOfWeek.setDate(startOfWeek.getDate() + 6)
-    
-    const formatWeekDate = (date: Date) => {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    if (timeRange === 'month') {
+      // Month: "November 2025"
+      return today.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    } else {
+      // Week: "Nov 10 - Nov 16"
+      const dayOfWeek = today.getDay()
+      const startOfWeek = new Date(today)
+      startOfWeek.setDate(today.getDate() - dayOfWeek)
+      
+      const endOfWeek = new Date(startOfWeek)
+      endOfWeek.setDate(startOfWeek.getDate() + 6)
+      
+      const formatWeekDate = (date: Date) => {
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      }
+      
+      return `${formatWeekDate(startOfWeek)} - ${formatWeekDate(endOfWeek)}`
     }
-    
-    return `${formatWeekDate(startOfWeek)} - ${formatWeekDate(endOfWeek)}`
   }
+  
+  // Get period label (for display text)
+  const periodLabel = timeRange === 'month' ? 'this month' : 'this week'
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -191,7 +312,7 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
               <CaretLeft size={24} weight="bold" className="text-[#E6E1E5]" />
             </button>
             <p className="text-[14px] text-[#938F99]">
-              {getWeekRange()}
+              {getDateRange()}
             </p>
           </div>
         </div>
@@ -206,7 +327,7 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
             {config.label}
           </h2>
           <p className="text-[14px] text-[#938F99]">
-            {relevantTasks.length} {relevantTasks.length === 1 ? 'task' : 'tasks'} this week
+            {relevantTasks.length} {relevantTasks.length === 1 ? 'task' : 'tasks'} {periodLabel}
           </p>
         </div>
 
@@ -220,7 +341,7 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
               ✨ Insight
             </h2>
             <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
-              {insightPattern}
+              {isLoadingAI ? 'Analyzing patterns...' : (aiInsight || insightPattern)}
             </p>
           </div>
         </div>
@@ -231,19 +352,25 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
             <h3 className="text-[12px] font-semibold text-[#938F99] uppercase tracking-wider mb-3">
               Top Triggers
             </h3>
-            <div className="flex flex-wrap gap-2">
-              {topReasonTags.map((tag, index) => (
-                <Badge
-                  key={index}
-                  tone="neutral"
-                  size="md"
-                  uppercase={false}
-                  className="text-white"
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
+            {areTagsMeaningful(topReasonTags) ? (
+              <div className="flex flex-wrap gap-2">
+                {topReasonTags.map((tag, index) => (
+                  <Badge
+                    key={index}
+                    tone="neutral"
+                    size="md"
+                    uppercase={false}
+                    className="text-white"
+                  >
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[14px] text-[#938F99] italic">
+                Not enough detail to identify patterns. Try using more descriptive task names like "Design homepage hero section" instead of "Today task".
+              </p>
+            )}
           </div>
         )}
 
@@ -278,7 +405,7 @@ const EmotionDetailPage: React.FC<EmotionDetailPageProps> = ({
               <span className="text-[32px]">📝</span>
             </div>
             <h3 className="text-[18px] font-bold text-[#E6E1E5] mb-2">
-              No {config.label.toLowerCase()} moments yet
+              No {config.label.toLowerCase()} moments {periodLabel}
             </h3>
             <p className="text-[14px] text-[#938F99]">
               Start logging your tasks to track when you feel {config.label.toLowerCase()}
