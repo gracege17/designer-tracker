@@ -1,0 +1,320 @@
+# Today's Challenges - Feel Tab Feature
+
+## What It Does
+
+The "Feel" tab in the Today's Challenges bottom sheet shows insights and resources that help users understand and process their emotional struggles. It filters coping suggestions to show only reflective, learning-oriented content.
+
+**Visual Display:**
+- Tab label: "Feel"
+- Default active tab (opens first)
+- Shows suggestions with icons and descriptions
+- Scrollable list of insights and resources
+- Each item can have external links
+
+## User-Facing Behavior
+
+1. **User taps challenge card** (e.g., "Deadline pressure feels intense")
+2. **Bottom sheet opens** with Feel tab active by default
+3. **Shows two types of content:**
+   - **🧠 Insights** - Reflective perspectives and mental frameworks
+   - **💡 Resources** - Learning materials including:
+     - 🎧 Podcasts (listen)
+     - 📚 Books (read)
+     - 🎥 Videos (watch)
+     - 📄 Articles (read)
+4. **User can tap external links** to open resources
+5. **User can switch to Do tab** for action-oriented strategies
+
+**Example:**
+```
+Fuzzy Prompts → Fuzzy Results with AI Tools
+
+[Feel] [Do]  ← Feel tab active (underlined/highlighted)
+
+— Insights —
+
+🧠 Frame before you design
+   Before opening your design tool, write a problem 
+   statement and three user goals to anchor your work.
+
+— Resources —
+
+🎧 Listen: Managing Design Stress (Podcast)
+   Design Better Podcast episode on coping with pressure 
+   without burning out.
+   [Listen →]
+
+📚 Read: The Obstacle Is the Way (Book)
+   Ryan Holiday's guide to reframing obstacles into 
+   momentum-building constraints.
+
+🎥 Watch: Prompt Engineering for Designers (Video)
+   A 10-minute primer on structuring effective prompts.
+   [Watch →]
+```
+
+## Technical Implementation
+
+### Core Logic Location
+- **Component**: `src/components/HelpfulResourcesCard.tsx` (lines 113-129)
+- **Filtering logic**: Inline filter based on suggestion type
+- **Data source**: Challenge.suggestions array
+
+### How It Works
+
+#### 1. Filter Suggestions by Type
+
+```typescript
+const feelSuggestions = selectedChallenge?.suggestions.filter(
+  suggestion =>
+    suggestion.type === 'podcast' ||
+    suggestion.type === 'book' ||
+    suggestion.type === 'insight' ||
+    suggestion.type === 'video' ||     // Added
+    suggestion.type === 'resource'     // Added
+) ?? []
+```
+
+**Included types** (Feel tab):
+- `insight` - Reflective perspectives
+- `podcast` - Audio episodes
+- `book` - Books/articles
+- `video` - Video content
+- `resource` - Other learning materials
+
+**Excluded types** (shown in Do tab):
+- `action` - Practical steps
+- `tool` - Software/templates
+- `strategy` - Approaches/methods
+
+#### 2. Fallback Logic
+
+```typescript
+const fallbackSuggestions = selectedChallenge?.suggestions ?? []
+const feelList = feelSuggestions.length > 0 ? feelSuggestions : fallbackSuggestions
+```
+
+**If no Feel-type suggestions exist:**
+- Shows all suggestions as fallback
+- Prevents empty tab
+
+#### 3. Render Suggestions
+
+**For each suggestion:**
+```jsx
+<div className="flex items-start gap-3">
+  <span className="text-2xl">{icon}</span>  {/* Emoji based on type */}
+  <div>
+    <h4 className="font-semibold">{suggestion.title}</h4>
+    <p className="text-gray">{suggestion.description}</p>
+    {suggestion.url && <a href={suggestion.url}>View →</a>}
+  </div>
+</div>
+```
+
+## Suggestion Type Icons
+
+**Feel tab icons:**
+- 🧠 Insight
+- 🎧 Podcast
+- 📚 Book
+- 🎥 Video (if implemented)
+- 💡 Resource
+
+**Determined by:**
+```typescript
+const getSuggestionIcon = (type: string): string => {
+  switch (type) {
+    case 'insight': return '🧠'
+    case 'podcast': return '🎧'
+    case 'book': return '📚'
+    case 'resource': return '💡'
+    default: return '💡'
+  }
+}
+```
+
+## Example Feel Suggestions
+
+### Insight Type
+```
+🧠 Define your point of view
+   Write one sentence about what only you believe good 
+   design should achieve to clarify your signature value.
+```
+
+### Podcast Type
+```
+🎧 Managing design stress
+   Design Better Podcast episode on coping with pressure 
+   without burning out.
+   [Listen →]
+```
+
+### Book Type
+```
+📚 The Obstacle Is the Way
+   Ryan Holiday's guide to reframing obstacles into 
+   momentum-building constraints.
+```
+
+### Resource Type
+```
+💡 Read: Cursor Tips & Tricks
+   Community-sourced guide to getting better results from 
+   Cursor with clear prompt patterns.
+   [View →]
+```
+
+## Key Files
+
+1. **`src/components/HelpfulResourcesCard.tsx`** (lines 113-129)
+   - Feel tab filtering logic
+   - Suggestion type categorization
+   - Icon mapping
+
+2. **`src/data/challengeRecommendations.ts`**
+   - Challenge templates with suggestions
+   - Each suggestion has a `type` field
+   - Examples of Feel-type content
+
+## Edge Cases
+
+- **Challenge always has suggestions**: Every challenge includes both Feel and Do content
+- **Unbalanced suggestions**: More Feel than Do (or vice versa) is fine - shows what exists
+- **Challenge has mixed suggestions**: Each tab shows its filtered subset
+- **Suggestion without URL**: No link shown, just text
+- **Very long description**: Wraps naturally (no truncation)
+- **Unknown suggestion type**: Uses default icon (💡)
+
+## Performance
+
+- ⚡ **Instant filtering** - O(n) where n = suggestion count (typically 3-6)
+- 💾 **No storage** - Computed from props
+- 🎨 **Smooth transitions** - Tab switch is instant
+
+## Design Decisions
+
+### Why Default to Feel Tab?
+
+**Reasoning:**
+- ✅ **Emotional first** - Users clicked because they're struggling
+- ✅ **Understanding before action** - Process feelings first
+- ✅ **Reflection is valuable** - Not everything needs immediate action
+- ✅ **Gentle approach** - Less pressuring than "Do this now!"
+
+**User can always switch** to Do tab if they want action immediately.
+
+### Why Group Podcasts/Books/Videos Together?
+
+**All are "consuming content" activities:**
+- Similar time commitment (passive consumption)
+- Similar mindset (learning/reflecting)
+- Different from doing/building
+
+**Clearer than:**
+- Having 5 separate categories
+- Random mixing of types
+
+## Integration Testing
+
+### Test Strategy
+
+Integration tests verify the Feel tab filtering logic works correctly:
+
+1. **Type Filtering** - Correct suggestions filtered to Feel tab
+2. **Icon Mapping** - Correct icons for each type
+3. **Mixed Suggestions** - Properly separates Feel vs Do
+4. **Balanced Suggestions** - Equal Feel and Do content
+5. **Unbalanced Suggestions** - More of one type than the other
+
+### Test Scenarios
+
+**Scenario 1: Challenge with Mixed Suggestions**
+- Input: Challenge with 2 insights, 1 podcast, 2 actions, 1 tool
+- Expected Feel: 3 items (2 insights + 1 podcast)
+- Expected Do: 3 items (2 actions + 1 tool)
+
+**Scenario 2: Challenge with Balanced Suggestions**
+- Input: Challenge with 2 insights, 2 actions
+- Expected Feel: 2 insights
+- Expected Do: 2 actions
+
+**Scenario 3: Challenge with More Feel Than Do**
+- Input: Challenge with 3 Feel items, 1 Do item
+- Expected Feel: 3 items
+- Expected Do: 1 item
+
+**Scenario 4: All Suggestion Types**
+- Input: Challenge with all 8 suggestion types
+- Expected Feel: 5 items (insight, podcast, book, video, resource)
+- Expected Do: 3 items (action, tool, strategy)
+
+### Running Integration Tests
+
+```bash
+# Run all Feel tab filtering tests
+npx tsx test-feel-tab-filtering.ts
+
+# Run specific scenario
+npx tsx test-feel-tab-filtering.ts "Mixed Suggestions"
+npx tsx test-feel-tab-filtering.ts "Only Feel Suggestions"
+
+# Show help
+npx tsx test-feel-tab-filtering.ts --help
+```
+
+### What Gets Tested
+
+✅ **Real production code** - Uses actual filtering logic from HelpfulResourcesCard  
+✅ **No mocks** - Tests complete suggestion filtering  
+✅ **Type categorization** - Validates Feel vs Do split  
+✅ **Icon mapping** - Confirms correct icons  
+✅ **Balanced content** - Tests equal Feel/Do distribution  
+✅ **Unbalanced content** - Tests when one type dominates
+
+### Test Output Example
+
+```
+============================================================
+Testing: Challenge with Mixed Suggestions
+============================================================
+
+📝 Input:
+   Challenge: "Deadline pressure feels intense"
+   Total suggestions: 6
+     - 2 insights (🧠)
+     - 1 podcast (🎧)
+     - 2 actions (✅)
+     - 1 tool (🛠️)
+
+📊 Filtering Results:
+
+Feel Tab:
+   Filtered to: 3 suggestions
+     1. 🧠 Insight: "Reset the plan"
+     2. 🧠 Insight: "Write three priorities"
+     3. 🎧 Podcast: "Managing design stress"
+
+Do Tab:
+   Filtered to: 3 suggestions
+     1. ✅ Action: "Set a focus timer"
+     2. ✅ Action: "Block 10 minutes"
+     3. 🛠️ Tool: "Daily reset checklist"
+
+✅ Result:
+   Feel suggestions: 3 ✅
+   Do suggestions: 3 ✅
+   Correct types in each tab: YES ✅
+   No overlap between tabs: YES ✅
+```
+
+### No External Dependencies
+
+Like other feature tests:
+- ❌ **No API calls** - Pure filtering logic
+- ❌ **No API keys** - Works immediately
+- ❌ **No network** - Client-side only
+- ✅ **Instant execution** - Runs in milliseconds
+- ✅ **Deterministic** - Same suggestions = same filtering
+
