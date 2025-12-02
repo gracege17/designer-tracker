@@ -67,27 +67,24 @@ The **Onboarding Flow** is a 5-step guided walkthrough shown to new users when t
 **Step 4: Add Projects** (Optional)
 - **Screen**: `OnboardingFirstProject`
 - **What User Sees**:
-  - Conversational chat interface
-  - AI assistant asks: "What did you work on?"
-  - Instructions for input formats:
-    - "One per line"
-    - "Separate with commas"
-    - "Or use 'and'"
-  - Chat input field with send button
+  - "What projects are you working on?" heading
+  - Inline input form with "+ Add Project" button
+  - Added projects appear as pills below
   - "Skip for now" button in top right
+  - "Next" button to continue (enabled when at least one project added or skipped)
 - **User Action**:
-  - Type project names in any format:
-    - Multiple lines: "NetSave 2\nK12 visual UI"
-    - Commas: "NetSave 2, K12 visual UI"
-    - And: "NetSave 2 and K12 visual UI"
-  - AI parses input and shows extracted project names
-  - User confirms with "yes" or re-types to fix
-  - Type "done" or "great" when finished
+  - Tap "+ Add Project" button
+  - Type project name in input field (max 24 characters)
+  - Character counter shows "X/24" in real-time
+  - Tap "Add" or press Enter to create project
+  - Project appears as pill, auto-selected
+  - Repeat to add more projects
   - OR tap "Skip for now" to create default project later
-- **Parsing Logic**:
-  - Splits by commas, "and", or newlines
-  - Capitalizes first letter of each project
-  - Assigns colors automatically from color palette
+- **Input Validation**:
+  - Maximum 24 characters enforced
+  - Character counter turns orange at limit
+  - Empty/whitespace input rejected
+  - Duplicate names prevented (case-insensitive)
 - **Visual**: Progress bar shows 3/4 complete
 
 **Step 5: Ready to Start** (Informational)
@@ -144,10 +141,11 @@ The **Onboarding Flow** is a 5-step guided walkthrough shown to new users when t
   - Privacy text centered with lock emoji and bold emphasis
   - Checkbox centered below text with "I agree to the privacy terms" label
   - Error message appears below if unchecked on form submission
-- **Chat Interface** (Projects screen):
-  - User messages: Right-aligned, orange background
-  - AI messages: Left-aligned, surface container background
-  - Auto-scroll to bottom on new messages
+- **Project Input Form** (Projects screen):
+  - "+ Add Project" button: Orange background, white text
+  - Inline input field: Dark background, orange border when focused
+  - Character counter: "X/24" below input, orange at limit
+  - Project pills: Display added projects with edit/remove icons
 
 ### Animations
 - Selected option buttons lift slightly (`translateY(-2px)`)
@@ -291,51 +289,40 @@ export const UserProfileStorage = {
 - Saved to `localStorage` using `ProjectStorage.saveProject(project)`
 - If user skips, a default project "General" is created
 
-### 4. Project Name Parsing
+### 4. Project Creation Logic
 
 **File**: `src/components/OnboardingFirstProject.tsx`
 
 ```typescript
-const parseProjects = (input: string): string[] => {
-  // Split by common separators: commas, 'and', newlines
-  const projectNames = input
-    .split(/,|\band\b|\n/gi)
-    .map(p => p.trim())
-    .filter(p => p.length > 0)
-    .map(p => {
-      // Capitalize first letter
-      return p.charAt(0).toUpperCase() + p.slice(1)
-    })
-  
-  return projectNames
+const [projects, setProjects] = useState<Array<{ name: string; color: string }>>([])
+const [showAddInput, setShowAddInput] = useState(false)
+const [newProjectName, setNewProjectName] = useState('')
+
+const handleAddProject = () => {
+  if (newProjectName.trim() && newProjectName.length <= 24) {
+    // Check for duplicates (case-insensitive)
+    const isDuplicate = projects.some(
+      p => p.name.toLowerCase() === newProjectName.trim().toLowerCase()
+    )
+    
+    if (!isDuplicate) {
+      const newProject = {
+        name: newProjectName.trim(),
+        color: getNextColor() // Assigns color from palette
+      }
+      setProjects(prev => [...prev, newProject])
+      setNewProjectName('')
+      setShowAddInput(false)
+    }
+  }
 }
 ```
 
-**Regex**: `/,|\band\b|\n/gi`
-- Splits by: comma (`,`), word "and" (`\band\b`), newline (`\n`)
-- Case-insensitive (`i` flag)
-- Global matching (`g` flag)
-
-### 5. Chat Conversation State
-
-**File**: `src/components/OnboardingFirstProject.tsx`
-
-```typescript
-const [messages, setMessages] = useState<ChatMessage[]>([...])
-const [pendingProjects, setPendingProjects] = useState<Project[]>([])
-const [waitingForConfirmation, setWaitingForConfirmation] = useState(false)
-const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useState(false)
-```
-
-**State Machine**:
-1. **Initial**: AI asks for projects
-2. **User Types**: Parse input, show extracted projects
-3. **Waiting for Confirmation**: AI asks "Does this look right?"
-4. **User Confirms**:
-   - "yes" → Save projects, ask if done
-   - Other → Re-parse as correction
-5. **Waiting for Done**: AI says "Type 'Done' when ready"
-6. **User Types "done"**: Complete onboarding step
+**Key Features**:
+- Maximum 24 characters enforced via `maxLength={24}`
+- Character counter shows "X/24" in real-time
+- Duplicate prevention (case-insensitive)
+- Auto-assigns colors from palette
 
 ---
 
@@ -357,9 +344,9 @@ const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useSta
    - Requires at least one selection
 
 4. **`src/components/OnboardingFirstProject.tsx`**
-   - Conversational chat interface for adding projects
+   - Inline project creation form (same pattern as ProjectSelectionImproved)
    - Props: `userName`, `onComplete` (receives project array), `onSkip`
-   - AI-like parsing and confirmation flow
+   - Character counter, validation, and project pills display
 
 5. **`src/components/OnboardingFirstEntry.tsx`**
    - Final "ready to start" screen
@@ -406,10 +393,10 @@ const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useSta
 
 ### User Corrections
 - **Re-typing Projects**: AI re-parses new input, shows updated list
-- **Changing Mind**: User can type "skip" or "no" at any point in project chat
+- **Changing Mind**: User can tap "Skip for now" or remove added projects
 
 ### Keyboard/Input
-- **Enter Key**: Sends message in chat interface
+- **Enter Key**: Submits project name in input field
 - **Auto-focus**: Input fields auto-focus on screen load
 - **Auto-scroll**: Chat messages scroll to bottom automatically
 
@@ -426,7 +413,7 @@ const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useSta
 |---------|----------------|------------------|
 | **When Shown** | First launch only | Anytime in Settings |
 | **Required** | Name, job title | Optional updates |
-| **Projects** | Conversational chat | Not editable in Settings |
+| **Projects** | Inline input form with pills | Not editable in Settings |
 | **Learning Preferences** | Multi-select during setup | Can update in Settings |
 | **Persistence** | One-time, never shown again | Editable anytime |
 
@@ -436,7 +423,7 @@ const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useSta
 
 - ⚡ **Instant screen transitions** - No loading states between steps
 - 💾 **Profile data local** - Your info saved locally. AI insights use secure API processing
-- 🎨 **Smooth animations** - Button presses, progress bars, chat scroll
+- 🎨 **Smooth animations** - Button presses, progress bars, pill transitions
 - 📱 **Mobile-first** - Optimized for touch interactions
 
 ---
@@ -448,11 +435,11 @@ const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useSta
 - **Not Overwhelming** - Each screen has one focused task
 - **Clear Progress** - Visual progress bar shows how far along user is
 
-### Why Conversational Chat for Projects?
-- **Natural Language** - Users can type however they think
-- **Flexible Parsing** - Handles multiple formats gracefully
-- **Friendly Tone** - Feels like a conversation, not a form
-- **Confirmation Loop** - Builds trust by showing what was understood
+### Why Inline Input Form for Projects?
+- **Consistency** - Same pattern as task entry project selection
+- **Character Limit** - 24 characters keeps names concise and readable
+- **Immediate Feedback** - Projects appear as pills instantly
+- **Familiar UX** - Same interaction pattern users will use throughout app
 
 ### Why Optional Steps?
 - **Faster Onboarding** - Power users can skip to get started quickly
@@ -474,8 +461,8 @@ Integration tests verify the onboarding flow logic works correctly:
 
 1. **Onboarding Detection** - First launch vs returning user
 2. **Data Persistence** - User profile, learning preferences, projects saved
-3. **Project Parsing** - Multiple input formats parsed correctly
-4. **Validation** - Required fields enforced
+3. **Project Creation** - Inline input with 24 character limit
+4. **Validation** - Required fields enforced, duplicates prevented
 5. **Skip Functionality** - Default project created when skipped
 6. **Completion Status** - Onboarding marked as complete after Step 5
 
@@ -493,17 +480,17 @@ Integration tests verify the onboarding flow logic works correctly:
 - Input: Empty name or job title
 - Expected: Continue button disabled, error messages shown
 
-**Scenario 4: Project Parsing - Commas**
-- Input: "NetSave 2, K12 visual UI, Portfolio redesign"
-- Expected: 3 projects extracted and capitalized
+**Scenario 4: Project Creation - Valid Name**
+- Input: "Website Redesign" (16 characters)
+- Expected: Project created, appears as pill, character counter shows "16/24"
 
-**Scenario 5: Project Parsing - Multiple Lines**
-- Input: "NetSave 2\nK12 visual UI\nPortfolio redesign"
-- Expected: 3 projects extracted and capitalized
+**Scenario 5: Project Creation - At Character Limit**
+- Input: "Website Redesign 2024!!" (24 characters)
+- Expected: Project created, counter shows "24/24" in orange
 
-**Scenario 6: Project Parsing - "and"**
-- Input: "NetSave 2 and K12 visual UI and Portfolio redesign"
-- Expected: 3 projects extracted and capitalized
+**Scenario 6: Project Creation - Duplicate Prevention**
+- Input: Create "Mobile App", then try "mobile app"
+- Expected: Second attempt rejected (case-insensitive match)
 
 **Scenario 7: Skip Projects**
 - Input: User taps "Skip for now" on projects screen
@@ -522,7 +509,7 @@ Integration tests verify the onboarding flow logic works correctly:
 npx tsx test-onboarding-flow.ts
 
 # Run specific scenario
-npx tsx test-onboarding-flow.ts "Project Parsing - Commas"
+npx tsx test-onboarding-flow.ts "Project Creation - Valid Name"
 
 # Show help
 npx tsx test-onboarding-flow.ts --help
@@ -533,7 +520,7 @@ npx tsx test-onboarding-flow.ts --help
 ✅ **Real production code** - Uses actual storage and parsing logic  
 ✅ **No mocks** - Tests complete onboarding flow end-to-end  
 ✅ **Data persistence** - Validates localStorage operations  
-✅ **Project parsing** - Tests all input format variations  
+✅ **Project creation** - Tests inline input with character limit and duplicate prevention  
 ✅ **Validation logic** - Tests required field enforcement  
 ✅ **Skip functionality** - Tests default project creation  
 ✅ **Completion status** - Tests onboarding flag is set correctly
@@ -542,22 +529,22 @@ npx tsx test-onboarding-flow.ts --help
 
 ```
 ============================================================
-Testing: Project Parsing - Commas
+Testing: Project Creation - Valid Name
 ============================================================
 
-📝 Scenario: Parse projects from comma-separated input
-   Input: "NetSave 2, K12 visual UI, Portfolio redesign"
+📝 Scenario: Create project with inline input
+   Input: "Website Redesign"
 
-📊 Parsing Result:
-   ✅ Extracted 3 projects
-   1. "NetSave 2"
-   2. "K12 visual UI"
-   3. "Portfolio redesign"
+📊 Creation Result:
+   ✅ Project created
+   Project Name: "Website Redesign"
+   Character Count: 16/24
+   Color Assigned: #94A3B8
 
 ✅ Result:
-   Project count: 3 ✅
-   First letter capitalized: YES ✅
-   No empty strings: YES ✅
+   Name saved correctly: YES ✅
+   Character limit enforced: YES ✅
+   Appears as pill: YES ✅
 ============================================================
 ```
 
