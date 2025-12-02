@@ -590,9 +590,9 @@ function App() {
   }
 
   const handleOnboardingStartEntry = () => {
-    // Mark onboarding as complete and start first entry
+    // Mark onboarding as complete and go to dashboard
     OnboardingStorage.markOnboardingCompleted()
-    setCurrentView('projectSelection')
+    setCurrentView('dashboard')
   }
 
   if (isLoading) {

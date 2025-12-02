@@ -101,12 +101,12 @@ The **Onboarding Flow** is a 5-step guided walkthrough shown to new users when t
 - **User Action**:
   - Tap "Start My First Reflection" button
   - App marks onboarding as complete
-  - Transitions to normal task entry flow (Project Selection)
+  - Transitions to Dashboard (home page)
 - **Visual**: Progress bar shows 4/4 complete (all bars filled)
 
 ### After Onboarding
 - **Onboarding Status**: `localStorage` key `'onboarding'` set to `'true'`
-- **Next View**: User enters normal app flow starting with "Project Selection"
+- **Next View**: User enters normal app flow starting with Dashboard (home page)
 - **Data Saved**:
   - User profile (name, job title, gender, age range, learning preferences)
   - Projects (if added)
@@ -220,10 +220,10 @@ const handleOnboardingSkip = () => {
   setCurrentView('onboardingFirstEntry')
 }
 
-// Step 5 → App: Mark Complete and Start Entry
+// Step 5 → App: Mark Complete and Go to Dashboard
 const handleOnboardingStartEntry = () => {
   OnboardingStorage.markOnboardingCompleted()
-  setCurrentView('projectSelection')
+  setCurrentView('dashboard')
 }
 ```
 
@@ -500,7 +500,7 @@ Integration tests verify the onboarding flow logic works correctly:
 - Input: User completes all steps and taps "Start My First Reflection"
 - Expected: 
   - `localStorage.getItem('onboarding')` returns `'true'`
-  - App navigates to `projectSelection` view
+  - App navigates to `dashboard` view (home page)
 
 ### Running Integration Tests
 
