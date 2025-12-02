@@ -20,21 +20,6 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
   const [newProjectName, setNewProjectName] = useState('')
   const [error, setError] = useState<string | null>(null)
 
-  // Get next available color that isn't already used by existing projects
-  const getNextAvailableColor = (): string => {
-    const usedColors = new Set(projects.map(p => p.color))
-    
-    // First, try to find an unused color from the palette
-    for (const color of PROJECT_COLORS) {
-      if (!usedColors.has(color)) {
-        return color
-      }
-    }
-    
-    // If all colors are used, cycle through based on total count
-    return PROJECT_COLORS[projects.length % PROJECT_COLORS.length]
-  }
-
   const handleAddProject = () => {
     const trimmedName = newProjectName.trim()
     
@@ -55,7 +40,7 @@ const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userNam
 
     const newProject: Project = {
       name: trimmedName,
-      color: getNextAvailableColor()
+      color: PROJECT_COLORS[projects.length % PROJECT_COLORS.length]
     }
 
     setProjects(prev => [...prev, newProject])

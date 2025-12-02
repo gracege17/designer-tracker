@@ -687,6 +687,7 @@ function App() {
         return (
           <TaskNotes
             selectedProjectIds={[selectedProjectIds[currentProjectIndex]]}
+            selectedEmotions={selectedEmotions}
             onAddAnotherTask={handleAddAnotherTask}
             onNextProject={handleNextProject}
             onDoneReflecting={handleDoneReflecting}

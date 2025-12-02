@@ -24,9 +24,9 @@ The "Today's Challenges" feature analyzes the user's daily tasks and emotions to
 3. **AI matches to challenge templates** using semantic understanding
 4. **Shows relevant challenges** that match user's situation (dynamic number)
 5. **User taps challenge card** to see coping strategies
-6. **Bottom sheet opens** with two tabs:
-   - **Feel** - Insights and resources (podcasts, books, videos)
-   - **Do** - Actions, tools, and strategies (practical steps)
+6. **Bottom sheet opens** showing all suggestions together:
+   - All suggestion types displayed in one unified list
+   - Insights, actions, tools, strategies, podcasts, books, resources
 7. **User explores strategies** and can open external links
 8. **User closes** by tapping X or outside sheet
 
@@ -111,31 +111,35 @@ Challenges ranked by:
 ```
 
 ### Expanded State (Tapped)
-**Bottom sheet slides up with:**
+**Bottom sheet slides up showing all suggestions together:**
 
-**Feel Tab (Insights & Resources):**
+**All Suggestions (unified list):**
 - 🧠 Insights - Reflective perspectives
-- 💡 Resources - Podcasts, books, videos, articles
-
-**Do Tab (Actions, Tools & Strategies):**
 - ✅ Actions - Specific steps to take
 - 🛠️ Tools - Software, templates, frameworks
 - 📋 Strategies - Practical approaches and methods
+- 🎧 Podcasts - Audio episodes
+- 📚 Books - Reading materials
+- 💡 Resources - Other learning materials
 
 **Example:**
 ```
 Fuzzy Prompts → Fuzzy Results with AI Tools
 
-[Feel] [Do]  ← Tabs
-
 ✅ Use the "Context + Goal + Constraint" formula
    Before asking, state: "I'm building [X], I need [Y]..."
+   [Learn more →]
 
-✅ Break requests into smaller chunks  
-   Instead of "build a form," try "create a text input"...
+🛠️ Use browser DevTools effectively
+   Set breakpoints, inspect elements, check Network tab.
+   [View docs →]
 
-💡 Watch: Prompt Engineering for Designers
+🧠 Frame before you design
+   Before opening your design tool, write a problem statement.
+
+🎧 Listen: Prompt Engineering for Designers
    A 10-minute primer on structuring effective prompts
+   [Listen →]
 
 [X]  ← Close button
 ```
@@ -144,10 +148,23 @@ Fuzzy Prompts → Fuzzy Results with AI Tools
 
 ### Core Logic Location
 - **Component**: `src/components/HelpfulResourcesCard.tsx`
-- **Challenge matching**: `src/utils/hybridChallengeMatchingService.ts`
+- **Challenge matching (Primary)**: `src/utils/hybridChallengeMatchingService.ts` (AI-powered)
+- **Challenge matching (Fallback)**: `src/utils/challengeAnalysisService.ts` (Rule-based)
 - **API endpoint**: `api/match-challenges.ts` (OpenAI integration)
 - **Challenge templates**: `src/data/challengeRecommendations.ts`
-- **Display**: `src/components/Dashboard.tsx` (lines 438-452)
+- **Display**: `src/components/Dashboard.tsx` (lines 156-177, 438-452)
+
+### Fallback Implementation
+
+**When AI fails** (API error, no API key, or no matches found), the system automatically falls back to rule-based matching:
+
+- **Service**: `analyzeTodayChallenges()` from `challengeAnalysisService.ts`
+- **Method**: Emotion frequency pattern analysis
+- **Output**: Fixed top 3 challenges based on emotion counts
+- **No API required**: Works entirely client-side
+- **Less personalized**: Uses templates instead of AI-generated empathy messages
+
+The fallback ensures the feature always works, even without AI capabilities.
 
 ### How It Works (Step-by-Step)
 
@@ -200,17 +217,10 @@ openChallenge(challenge)
 
 #### 5. Render Bottom Sheet
 
-**Two tabs:**
-
-**Feel tab** (Insights & Resources - default):
-- Filters suggestions: insight, podcast, book, video, resource
-- Emotional/reflective content
-- Focus on understanding, learning, perspective
-
-**Do tab** (Actions, Tools & Strategies):
-- Filters suggestions: action, tool, strategy
-- Practical/actionable content
-- Focus on doing, solving, taking steps
+**Single unified list:**
+- Shows all suggestions together (no filtering)
+- All types displayed: insights, actions, tools, strategies, podcasts, books, resources
+- Users can see everything at once and choose what resonates
 
 #### 6. Close Sheet
 
@@ -362,17 +372,17 @@ Shows gray text in bordered card.
 ## Edge Cases
 
 - **No tasks logged**: Challenges don't appear
-- **Only positive emotions**: AI detects no challenges → Shows 0 ✅
-- **No API key**: Feature disabled (requires AI)
-- **API failure**: Shows empty state (no fallback)
-- **AI returns 0 matches**: Shows "Keep logging..." empty state
+- **Only positive emotions**: AI detects no challenges → Shows 0 ✅ (Fallback shows 3 defaults)
+- **No API key**: Falls back to rule-based matching automatically ✅
+- **API failure**: Automatically falls back to rule-based matching ✅
+- **AI returns 0 matches**: Falls back to rule-based matching ✅
 - **AI returns 1 match**: Shows just 1 challenge ✅
 - **AI returns 2 matches**: Shows 2 challenges ✅
 - **AI returns many matches**: Shows all highly relevant ones (typically 2-4)
 - **Weak relevance scores**: AI filters out, not shown
 - **Multiple struggles in one task**: AI understands context, shows all relevant
 - **Bottom sheet open, navigate away**: Sheet closes on unmount
-- **Vague task descriptions**: AI tries best but may return 0 matches
+- **Vague task descriptions**: AI tries best but may return 0 matches (falls back to rule-based)
 
 ## Performance
 
@@ -383,19 +393,20 @@ Shows gray text in bordered card.
 
 ## AI Integration
 
-### Current Status: ✅ ACTIVE (AI-Powered Only!)
+### Current Status: ✅ ACTIVE (AI-Powered with Fallback)
 
 **How it works:**
-- Uses OpenAI GPT for semantic matching
+- **Primary**: Uses OpenAI GPT for semantic matching
+- **Fallback**: Rule-based emotion analysis (when AI unavailable)
 - Understands context and meaning, not just keywords
 - More accurate and personalized challenge selection
 - Only shows challenges that truly match user's situation
 
-**To enable:**
-Already implemented! Just add `OPENAI_API_KEY` to Vercel environment variables.
+**To enable AI:**
+Add `OPENAI_API_KEY` to Vercel environment variables for AI-powered matching.
 
 **Without API key:**
-Feature won't show challenges (requires AI for quality matching).
+Feature automatically falls back to rule-based matching (still works, but less personalized).
 
 ## Design Decisions
 
@@ -414,27 +425,17 @@ Feature won't show challenges (requires AI for quality matching).
 - 2-3 challenges: Multiple struggles (common)
 - Rarely >3: Only if many strong matches
 
-### Why Two Tabs (Feel / Do)?
+### Why No Tabs (All Suggestions Together)?
 
-**Separates two types of support:**
-
-**Feel (Insights & Resources):**
-- For understanding and learning
-- Podcasts, books, videos for perspective
-- Reflective, educational content
-- "I want to understand this better"
-
-**Do (Actions, Tools & Strategies):**
-- For taking action and solving
-- Practical steps, tools, frameworks
-- Actionable, hands-on content
-- "I want to do something about this now"
+**Simpler, unified approach:**
 
 **Benefits:**
-- ✅ **User choice** - Lets user decide what they need right now
-- ✅ **Clear organization** - Know where to find what
-- ✅ **Reduces overwhelm** - Not one long mixed list
-- ✅ **Matches mindset** - Reflective vs action-oriented states
+- ✅ **Simpler UX** - No need to switch between tabs
+- ✅ **See everything at once** - All suggestions visible immediately
+- ✅ **Less cognitive load** - Don't need to decide which tab to check
+- ✅ **Faster scanning** - Can quickly see all available options
+- ✅ **More flexible** - Users can choose what resonates, regardless of type
+- ✅ **Cleaner design** - Less UI complexity, more focus on content
 
 ### Why Expandable Instead of Always Open?
 

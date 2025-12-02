@@ -38,11 +38,16 @@ export default async function handler(request: VercelRequest, response: VercelRe
     // Check for API key
     if (!process.env.OPENAI_API_KEY) {
       console.warn('⚠️ No OPENAI_API_KEY found, falling back to simulated matching')
-      const matches: MatchResult[] = body.candidateChallenges.slice(0, 3).map((challenge, i) => ({
-        id: challenge.id,
-        score: 70 - (i * 10),
-        reasoning: `[SIMULATED] Match based on emotion and task context`
-      }))
+      // Only return matches with score >= 65 (relevance threshold)
+      const RELEVANCE_THRESHOLD = 65
+      const matches: MatchResult[] = body.candidateChallenges
+        .slice(0, 3)
+        .map((challenge, i) => ({
+          id: challenge.id,
+          score: 75 - (i * 5), // Scores: 75, 70, 65 (all 3 pass threshold)
+          reasoning: `[SIMULATED] Match based on emotion and task context`
+        }))
+        .filter(match => match.score >= RELEVANCE_THRESHOLD)
       return response.status(200).json({ matches })
     }
 
@@ -75,9 +80,17 @@ ${challengeList}
 
 Your task:
 1. Analyze the semantic meaning behind the user's task descriptions and feelings
-2. Score each challenge on relevance (0-100)
-3. Consider aliases and trigger examples to improve matching
-4. Return the top 3 most relevant challenges with reasoning
+2. Pay close attention to CONTEXT - "too many bugs" is different from "too many tasks"
+3. Consider the specific domain (debugging, design work, meetings, etc.)
+4. Score each challenge on relevance (0-100) based on actual context, not just keywords
+5. Consider aliases and trigger examples to improve matching
+6. Return ONLY challenges that are truly relevant (score >= 65)
+7. Do NOT force 3 matches - return only genuinely relevant ones (could be 0, 1, 2, or 3)
+
+IMPORTANT: Understand context carefully:
+- "too many bugs" or "debugging" with frustration → Technical/debugging challenge, NOT "too many tasks"
+- "too many tasks" or "scattered work" → Scattered tasks challenge
+- Match based on actual meaning, not just keyword overlap
 
 Return JSON format:
 {
@@ -90,7 +103,7 @@ Return JSON format:
   ]
 }
 
-Focus on genuine semantic relevance. A score of 60+ means good match, 80+ means strong match.`
+Focus on genuine semantic relevance. Only include matches with score >= 65. A score of 65+ means good match, 80+ means strong match. If no challenges are truly relevant (all scores < 65), return an empty matches array.`
 
     // Call OpenAI API
     console.log('🤖 Calling OpenAI API for challenge matching...')

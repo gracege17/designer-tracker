@@ -2,101 +2,81 @@
 
 ## What It Does
 
-The "Feel" tab in the Today's Challenges bottom sheet shows insights and resources that help users understand and process their emotional struggles. It filters coping suggestions to show only reflective, learning-oriented content.
+The Today's Challenges bottom sheet shows all coping suggestions together - insights, resources, actions, tools, and strategies - in a single unified list. No tabs, just all suggestions displayed together.
 
 **Visual Display:**
-- Tab label: "Feel"
-- Default active tab (opens first)
-- Shows suggestions with icons and descriptions
-- Scrollable list of insights and resources
+- No tabs - all suggestions shown together
+- Shows all suggestion types with icons and descriptions
+- Scrollable list of all suggestions
 - Each item can have external links
 
 ## User-Facing Behavior
 
 1. **User taps challenge card** (e.g., "Deadline pressure feels intense")
-2. **Bottom sheet opens** with Feel tab active by default
-3. **Shows two types of content:**
+2. **Bottom sheet opens** showing all suggestions together
+3. **Shows all types of content in one list:**
    - **🧠 Insights** - Reflective perspectives and mental frameworks
-   - **💡 Resources** - Learning materials including:
-     - 🎧 Podcasts (listen)
-     - 📚 Books (read)
-     - 🎥 Videos (watch)
-     - 📄 Articles (read)
+   - **✅ Actions** - Specific steps to take
+   - **🛠️ Tools** - Software, templates, frameworks
+   - **📋 Strategies** - Practical approaches and methods
+   - **🎧 Podcasts** - Audio episodes
+   - **📚 Books** - Reading materials
+   - **💡 Resources** - Other learning materials
 4. **User can tap external links** to open resources
-5. **User can switch to Do tab** for action-oriented strategies
+5. **All suggestions visible** - no need to switch tabs
 
 **Example:**
 ```
 Fuzzy Prompts → Fuzzy Results with AI Tools
 
-[Feel] [Do]  ← Feel tab active (underlined/highlighted)
+— All Suggestions —
 
-— Insights —
+✅ Use the "Context + Goal + Constraint" formula
+   Before asking, state: "I'm building [X], I need [Y]..."
+   [Learn more →]
+
+🛠️ Use browser DevTools effectively
+   Set breakpoints, inspect elements, check Network tab.
+   [View docs →]
 
 🧠 Frame before you design
    Before opening your design tool, write a problem 
    statement and three user goals to anchor your work.
 
-— Resources —
-
 🎧 Listen: Managing Design Stress (Podcast)
-   Design Better Podcast episode on coping with pressure 
-   without burning out.
+   Design Better Podcast episode on coping with pressure.
    [Listen →]
 
 📚 Read: The Obstacle Is the Way (Book)
-   Ryan Holiday's guide to reframing obstacles into 
-   momentum-building constraints.
-
-🎥 Watch: Prompt Engineering for Designers (Video)
-   A 10-minute primer on structuring effective prompts.
-   [Watch →]
+   Ryan Holiday's guide to reframing obstacles.
+   [Read →]
 ```
 
 ## Technical Implementation
 
 ### Core Logic Location
-- **Component**: `src/components/HelpfulResourcesCard.tsx` (lines 113-129)
-- **Filtering logic**: Inline filter based on suggestion type
+- **Component**: `src/components/HelpfulResourcesCard.tsx`
+- **No filtering**: Shows all suggestions together
 - **Data source**: Challenge.suggestions array
 
 ### How It Works
 
-#### 1. Filter Suggestions by Type
+#### 1. Display All Suggestions
 
 ```typescript
-const feelSuggestions = selectedChallenge?.suggestions.filter(
-  suggestion =>
-    suggestion.type === 'podcast' ||
-    suggestion.type === 'book' ||
-    suggestion.type === 'insight' ||
-    suggestion.type === 'video' ||     // Added
-    suggestion.type === 'resource'     // Added
-) ?? []
+// Show all suggestions together (no filtering by type)
+const allSuggestions = selectedChallenge?.suggestions ?? []
 ```
 
-**Included types** (Feel tab):
-- `insight` - Reflective perspectives
-- `podcast` - Audio episodes
-- `book` - Books/articles
-- `video` - Video content
-- `resource` - Other learning materials
-
-**Excluded types** (shown in Do tab):
-- `action` - Practical steps
-- `tool` - Software/templates
-- `strategy` - Approaches/methods
-
-#### 2. Fallback Logic
-
-```typescript
-const fallbackSuggestions = selectedChallenge?.suggestions ?? []
-const feelList = feelSuggestions.length > 0 ? feelSuggestions : fallbackSuggestions
-```
-
-**If no Feel-type suggestions exist:**
-- Shows all suggestions as fallback
-- Prevents empty tab
+**All suggestion types shown together:**
+- `insight` - Reflective perspectives 🧠
+- `action` - Practical steps ✅
+- `tool` - Software/templates 🛠️
+- `strategy` - Approaches/methods 📋
+- `podcast` - Audio episodes 🎧
+- `book` - Books/articles 📚
+- `video` - Video content 🎥
+- `resource` - Other learning materials 💡
 
 #### 3. Render Suggestions
 
@@ -114,21 +94,26 @@ const feelList = feelSuggestions.length > 0 ? feelSuggestions : fallbackSuggesti
 
 ## Suggestion Type Icons
 
-**Feel tab icons:**
+**All suggestion types with icons:**
 - 🧠 Insight
+- ✅ Action
+- 🛠️ Tool
+- 📋 Strategy
 - 🎧 Podcast
 - 📚 Book
-- 🎥 Video (if implemented)
+- 🎥 Video
 - 💡 Resource
 
 **Determined by:**
 ```typescript
 const getSuggestionIcon = (type: string): string => {
   switch (type) {
-    case 'insight': return '🧠'
+    case 'tool': return '🛠️'
     case 'podcast': return '🎧'
     case 'book': return '📚'
     case 'resource': return '💡'
+    case 'insight': return '🧠'
+    case 'action': return '✅'
     default: return '💡'
   }
 }
@@ -168,24 +153,24 @@ const getSuggestionIcon = (type: string): string => {
 
 ## Key Files
 
-1. **`src/components/HelpfulResourcesCard.tsx`** (lines 113-129)
-   - Feel tab filtering logic
-   - Suggestion type categorization
-   - Icon mapping
+1. **`src/components/HelpfulResourcesCard.tsx`**
+   - Displays all suggestions together (no filtering)
+   - Icon mapping for all suggestion types
+   - Single unified list display
 
 2. **`src/data/challengeRecommendations.ts`**
    - Challenge templates with suggestions
    - Each suggestion has a `type` field
-   - Examples of Feel-type content
+   - Mix of all suggestion types (insights, actions, tools, resources, etc.)
 
 ## Edge Cases
 
-- **Challenge always has suggestions**: Every challenge includes both Feel and Do content
-- **Unbalanced suggestions**: More Feel than Do (or vice versa) is fine - shows what exists
-- **Challenge has mixed suggestions**: Each tab shows its filtered subset
+- **Challenge always has suggestions**: Every challenge includes various suggestion types
+- **Mixed suggestion types**: All shown together in one list
 - **Suggestion without URL**: No link shown, just text
 - **Very long description**: Wraps naturally (no truncation)
 - **Unknown suggestion type**: Uses default icon (💡)
+- **Empty suggestions**: Shows "Suggestions coming soon" message
 
 ## Performance
 
@@ -195,61 +180,47 @@ const getSuggestionIcon = (type: string): string => {
 
 ## Design Decisions
 
-### Why Default to Feel Tab?
+### Why No Tabs?
 
 **Reasoning:**
-- ✅ **Emotional first** - Users clicked because they're struggling
-- ✅ **Understanding before action** - Process feelings first
-- ✅ **Reflection is valuable** - Not everything needs immediate action
-- ✅ **Gentle approach** - Less pressuring than "Do this now!"
+- ✅ **Simpler UX** - No need to switch between tabs
+- ✅ **See everything at once** - All suggestions visible immediately
+- ✅ **Less cognitive load** - Don't need to decide which tab to check
+- ✅ **Faster scanning** - Can quickly see all available options
+- ✅ **More flexible** - Users can choose what resonates, regardless of type
 
-**User can always switch** to Do tab if they want action immediately.
-
-### Why Group Podcasts/Books/Videos Together?
-
-**All are "consuming content" activities:**
-- Similar time commitment (passive consumption)
-- Similar mindset (learning/reflecting)
-- Different from doing/building
-
-**Clearer than:**
-- Having 5 separate categories
-- Random mixing of types
+**All suggestions shown together** - insights, actions, tools, resources - in one unified list.
 
 ## Integration Testing
 
 ### Test Strategy
 
-Integration tests verify **both Feel and Do tab filtering logic** works correctly:
+Integration tests verify **all suggestions display correctly**:
 
-1. **Type Filtering** - Correct suggestions filtered to Feel tab (insights, resources)
-2. **Type Filtering** - Correct suggestions filtered to Do tab (actions, tools, strategies)
-3. **Icon Mapping** - Correct icons for each type
-4. **Mixed Suggestions** - Properly separates Feel vs Do (no overlap)
-5. **Balanced Suggestions** - Equal Feel and Do content
-6. **Unbalanced Suggestions** - More of one type than the other
+1. **All Suggestions Display** - All suggestion types shown together
+2. **Icon Mapping** - Correct icons for each type
+3. **Mixed Suggestions** - All types displayed in one list
+4. **Empty State** - Shows message when no suggestions
+5. **URL Handling** - External links work correctly
+6. **Suggestion Order** - Maintains order from challenge template
 
 ### Test Scenarios
 
 **Scenario 1: Challenge with Mixed Suggestions**
 - Input: Challenge with 2 insights, 1 podcast, 2 actions, 1 tool
-- Expected Feel: 3 items (2 insights + 1 podcast)
-- Expected Do: 3 items (2 actions + 1 tool)
+- Expected: All 6 items shown together in one list
 
-**Scenario 2: Challenge with Balanced Suggestions**
-- Input: Challenge with 2 insights, 2 actions
-- Expected Feel: 2 insights
-- Expected Do: 2 actions
+**Scenario 2: Challenge with All Types**
+- Input: Challenge with all suggestion types
+- Expected: All suggestions displayed together (insights, actions, tools, podcasts, books, resources)
 
-**Scenario 3: Challenge with More Feel Than Do**
-- Input: Challenge with 3 Feel items, 1 Do item
-- Expected Feel: 3 items
-- Expected Do: 1 item
+**Scenario 3: Challenge with Single Type**
+- Input: Challenge with only actions
+- Expected: All actions shown together
 
-**Scenario 4: All Suggestion Types**
-- Input: Challenge with all 8 suggestion types
-- Expected Feel: 5 items (insight, podcast, book, video, resource)
-- Expected Do: 3 items (action, tool, strategy)
+**Scenario 4: Empty Suggestions**
+- Input: Challenge with no suggestions
+- Expected: Shows "Suggestions coming soon" message
 
 ### Running Integration Tests
 
@@ -267,14 +238,13 @@ npx tsx test-feel-tab-filtering.ts --help
 
 ### What Gets Tested
 
-✅ **Real production code** - Uses actual filtering logic from HelpfulResourcesCard  
-✅ **No mocks** - Tests complete suggestion filtering  
-✅ **Feel tab filtering** - Validates insights, podcasts, books, videos, resources  
-✅ **Do tab filtering** - Validates actions, tools, strategies  
-✅ **Type categorization** - Validates Feel vs Do split (no overlap)  
+✅ **Real production code** - Uses actual display logic from HelpfulResourcesCard  
+✅ **No mocks** - Tests complete suggestion display  
+✅ **All suggestions display** - Validates all types shown together  
 ✅ **Icon mapping** - Confirms correct icons for all types  
-✅ **Balanced content** - Tests equal Feel/Do distribution  
-✅ **Unbalanced content** - Tests when one type dominates
+✅ **Mixed content** - Tests challenges with various suggestion types  
+✅ **Empty state** - Tests when no suggestions available  
+✅ **URL handling** - Validates external links work correctly
 
 ### Test Output Example
 
@@ -291,25 +261,21 @@ Testing: Challenge with Mixed Suggestions
      - 2 actions (✅)
      - 1 tool (🛠️)
 
-📊 Filtering Results:
+📊 Display Results:
 
-Feel Tab:
-   Filtered to: 3 suggestions
-     1. 🧠 Insight: "Reset the plan"
-     2. 🧠 Insight: "Write three priorities"
-     3. 🎧 Podcast: "Managing design stress"
-
-Do Tab:
-   Filtered to: 3 suggestions
-     1. ✅ Action: "Set a focus timer"
-     2. ✅ Action: "Block 10 minutes"
-     3. 🛠️ Tool: "Daily reset checklist"
+All Suggestions (shown together):
+   1. 🧠 Insight: "Reset the plan"
+   2. 🧠 Insight: "Write three priorities"
+   3. 🎧 Podcast: "Managing design stress"
+   4. ✅ Action: "Set a focus timer"
+   5. ✅ Action: "Block 10 minutes"
+   6. 🛠️ Tool: "Daily reset checklist"
 
 ✅ Result:
-   Feel suggestions: 3 ✅
-   Do suggestions: 3 ✅
-   Correct types in each tab: YES ✅
-   No overlap between tabs: YES ✅
+   All suggestions displayed: 6 ✅
+   Correct icons for each type: YES ✅
+   All types shown together: YES ✅
+   No filtering applied: YES ✅
 ```
 
 ### No External Dependencies

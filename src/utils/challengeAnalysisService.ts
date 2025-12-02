@@ -16,6 +16,8 @@ export interface ChallengeSuggestion {
   title: string
   desc: string
   url?: string
+  searchQuery?: string // Copy-pasteable Google search query
+  aiPrompt?: string // Copy-pasteable ChatGPT/Gemini prompt
 }
 
 export interface Challenge {
@@ -57,16 +59,14 @@ export const buildChallengeFromTemplate = (
   const empathy = options.empathy ?? template.summary
 
   const suggestions: ChallengeSuggestion[] = [
-    {
-      type: 'insight',
-      title: 'Insight',
-      desc: template.insight,
-    },
+    // Note: template.insight is shown in "Why this matters" section, not duplicated here
     ...template.actions.map(action => ({
       type: action.type ?? 'action',
       title: action.title,
       desc: action.description,
       url: action.url,
+      searchQuery: action.searchQuery,
+      aiPrompt: action.aiPrompt,
     })),
   ]
 
@@ -216,36 +216,95 @@ export function analyzeTodayChallenges(todayEntry?: Entry): Challenge[] {
   const remainingAfterEnergy = todayEntry.tasks.length - stressLoad - energyLoad
   const frustrationLoad = remainingAfterEnergy > 0 ? Math.min(remainingAfterEnergy, annoyedCount + sadCount) : 0
   if (frustrationLoad > 0 && nextRank <= 3) {
-    const frustrationTitle =
-      frustrationLoad > 1 ? 'Creative momentum stalled across tasks' : 'Creative momentum stalled'
-    const frustrationSummary = `You marked ${frustrationLoad} task${frustrationLoad === 1 ? '' : 's'} with stuck or frustrated energy. Let’s get you moving again.`
-
-    const added = pushFromTemplate('creative-block-frustration', {
-      title: frustrationTitle,
-      empathy: frustrationSummary,
+    // Find frustrated tasks to reference in empathy message
+    const frustratedTasks = tasks.filter(task => {
+      const taskEmotions = task.emotions && task.emotions.length > 0 ? task.emotions : [task.emotion]
+      return taskEmotions.some(e => e === 4 || e === 14 || e === 5) // Frustrated, Annoyed, Sad
     })
+    
+    // Check if any frustrated tasks mention debugging/bugs
+    const hasDebuggingContext = frustratedTasks.some(task => {
+      const taskText = `${task.description} ${task.notes || ''}`.toLowerCase()
+      return taskText.includes('debug') || taskText.includes('bug') || taskText.includes('fix')
+    })
+    
+    // Extract task keywords/descriptions for context
+    const taskContext = frustratedTasks.length > 0 
+      ? frustratedTasks.map(t => t.description.toLowerCase()).join(', ')
+      : 'your work'
+    
+    // Create contextual empathy message
+    let frustrationSummary: string
+    if (frustrationLoad === 1 && frustratedTasks.length === 1) {
+      // Single task - reference it specifically
+      const taskDesc = frustratedTasks[0].description
+      frustrationSummary = `${taskDesc} made you feel stuck or frustrated. Let's get you moving again.`
+    } else {
+      // Multiple tasks - reference the context
+      frustrationSummary = `You felt stuck or frustrated with ${taskContext}. Let's get you moving again.`
+    }
+    
+    // Match to debugging challenge if debugging context detected, otherwise creative block
+    if (hasDebuggingContext) {
+      const debuggingTitle = frustrationLoad > 1 ? 'Debugging feels endless' : 'Debugging feels endless'
+      const added = pushFromTemplate('debugging-overwhelm', {
+        title: debuggingTitle,
+        empathy: frustrationSummary,
+      })
+      
+      if (!added) {
+        // Fallback if template not found
+        pushManual('Debugging feels endless', frustrationSummary, [
+          {
+            type: 'action',
+            title: 'Set up a debugging checklist',
+            desc: 'Create a standard process: Reproduce → Check errors → Isolate → Fix → Verify.',
+          },
+          {
+            type: 'tool',
+            title: 'Use browser DevTools',
+            desc: 'Master breakpoints, console, and network tab to debug faster.',
+            url: 'https://developer.chrome.com/docs/devtools',
+          },
+          {
+            type: 'action',
+            title: 'Create bug reproduction template',
+            desc: 'Document environment, steps, expected vs actual, errors, screenshots.',
+          },
+        ])
+      }
+    } else {
+      // Creative block challenge for non-debugging frustration
+      const frustrationTitle =
+        frustrationLoad > 1 ? 'Creative momentum stalled across tasks' : 'Creative momentum stalled'
 
-    if (!added) {
-      pushManual('Stuck and frustrated', 'Step away from the screen. Walk, sketch, talk it through.', [
-        {
-          type: 'book',
-          title: 'Overcoming Creative Blocks – Austin Kleon',
-          desc: 'Practical strategies for getting unstuck.',
-          url: 'https://austinkleon.com/creative-blocks',
-        },
-        {
-          type: 'tool',
-          title: 'Notion Creative Research Template',
-          desc: 'Organize your design inspiration and explorations.',
-          url: 'https://notion.so/templates/creative-research',
-        },
-        {
-          type: 'podcast',
-          title: 'When Projects Go Wrong – 99% Invisible',
-          desc: 'Learning from design challenges and failures.',
-          url: 'https://99percentinvisible.org',
-        },
-      ])
+      const added = pushFromTemplate('creative-block-frustration', {
+        title: frustrationTitle,
+        empathy: frustrationSummary,
+      })
+
+      if (!added) {
+        pushManual('Stuck and frustrated', 'Step away from the screen. Walk, sketch, talk it through.', [
+          {
+            type: 'book',
+            title: 'Overcoming Creative Blocks – Austin Kleon',
+            desc: 'Practical strategies for getting unstuck.',
+            url: 'https://austinkleon.com/creative-blocks',
+          },
+          {
+            type: 'tool',
+            title: 'Notion Creative Research Template',
+            desc: 'Organize your design inspiration and explorations.',
+            url: 'https://notion.so/templates/creative-research',
+          },
+          {
+            type: 'podcast',
+            title: 'When Projects Go Wrong – 99% Invisible',
+            desc: 'Learning from design challenges and failures.',
+            url: 'https://99percentinvisible.org',
+          },
+        ])
+      }
     }
   }
 

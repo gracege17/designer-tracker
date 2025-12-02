@@ -159,13 +159,18 @@ export async function matchChallengesToInput(todayEntry?: Entry): Promise<Challe
       }))
     })
 
-    // Step 4: Build challenges from top matches
-    // Option 2: Show top matches even if score is low (always show something)
-    const topMatches = matches.slice(0, Math.min(3, matches.length))
+    // Step 4: Filter matches by relevance threshold, then take top matches
+    // Only show challenges with score >= 65 (good match threshold)
+    // Lowered from 70 to ensure we show relevant matches while still filtering weak ones
+    const RELEVANCE_THRESHOLD = 65
+    const relevantMatches = matches.filter(match => match.score >= RELEVANCE_THRESHOLD)
+    
+    // Take up to 3 of the most relevant matches (not forced to show 3)
+    const topMatches = relevantMatches.slice(0, Math.min(3, relevantMatches.length))
 
     if (topMatches.length === 0) {
-      // Option 3: Fall back to rule-based if no matches at all
-      console.log('No semantic matches found, falling back to rule-based')
+      // No relevant matches found - fall back to rule-based matching
+      console.log(`No matches above relevance threshold (${RELEVANCE_THRESHOLD}), falling back to rule-based`)
       return analyzeTodayChallenges(todayEntry)
     }
 

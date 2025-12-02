@@ -9,6 +9,8 @@ export interface ChallengeAction {
   description: string
   type?: 'action' | 'resource' | 'tool' | 'podcast' | 'book'
   url?: string
+  searchQuery?: string // Copy-pasteable Google search query
+  aiPrompt?: string // Copy-pasteable ChatGPT/Gemini prompt
 }
 
 export interface ChallengeRecommendationTemplate {
@@ -182,16 +184,19 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
         title: 'Use the "Context + Goal + Constraint" formula',
         description: 'Before asking, state: "I\'m building [X], I need [Y], and it should [Z]." Specificity reduces ambiguity.',
         type: 'action',
+        url: 'https://www.promptingguide.ai/techniques/fewshot',
       },
       {
         title: 'Break requests into smaller chunks',
         description: 'Instead of "build a form," try "create a text input with validation" → then "add a submit button" → then "connect to state."',
         type: 'action',
+        url: 'https://learnprompting.org/docs/basics/techniques',
       },
       {
         title: 'Use examples in your prompt',
         description: 'Show the AI what "good" looks like: "Make it like this: [paste example code or describe reference]."',
         type: 'action',
+        url: 'https://www.promptingguide.ai/techniques/fewshot',
       },
       {
         title: 'Watch: Prompt Engineering for Designers',
@@ -522,13 +527,15 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
         type: 'tool',
         title: 'Daily reset checklist',
         description: 'Use a simple Notion template to close loops and surface one priority at a time.',
-        url: 'https://notion.so/templates/daily-reset',
+        searchQuery: 'Notion daily reset template productivity',
+        aiPrompt: 'Help me create a daily reset checklist template in Notion. I need sections for: closing loops, identifying top priority, and planning tomorrow. Make it simple and actionable.',
       },
       {
         type: 'podcast',
         title: 'Managing design stress',
         description: 'Design Better Podcast episode on coping with pressure without burning out.',
-        url: 'https://www.designbetter.co/podcast/stress',
+        searchQuery: 'Design Better Podcast managing stress burnout designers',
+        aiPrompt: 'I\'m a designer feeling stressed about deadlines and pressure. Can you recommend strategies for managing design stress and avoiding burnout? Give me practical, actionable advice.',
       },
       {
         type: 'book',
@@ -564,13 +571,15 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
         type: 'tool',
         title: 'Designer recharge meditation',
         description: 'A five-minute Calm session built for creative reset.',
-        url: 'https://www.calm.com/designer-recharge',
+        searchQuery: 'Calm app meditation for designers creative reset',
+        aiPrompt: 'I need a 5-minute meditation script for designers to recharge during the workday. Focus on creative reset, reducing mental fatigue, and restoring focus. Make it practical and easy to follow.',
       },
       {
         type: 'podcast',
         title: 'Avoiding designer burnout',
         description: 'Design Details episode on spotting exhaustion before it derails momentum.',
-        url: 'https://designdetails.fm/burnout',
+        searchQuery: 'Design Details podcast burnout designers exhaustion',
+        aiPrompt: 'I\'m a designer starting to feel burned out. What are early warning signs of designer burnout, and what practical steps can I take to prevent it? Give me actionable strategies.',
       },
       {
         type: 'book',
@@ -596,13 +605,15 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
         type: 'book',
         title: 'Overcoming Creative Blocks',
         description: 'Austin Kleon’s playbook for moving through creative friction.',
-        url: 'https://austinkleon.com/creative-blocks',
+        searchQuery: 'Austin Kleon creative blocks book Steal Like an Artist',
+        aiPrompt: 'I\'m experiencing a creative block as a designer. Based on Austin Kleon\'s approach to overcoming creative blocks, what practical strategies can I use to break through? Give me actionable steps.',
       },
       {
         type: 'tool',
         title: 'Creative research template',
         description: 'Gather references and sparks in a Notion board to reboot curiosity.',
-        url: 'https://notion.so/templates/creative-research',
+        searchQuery: 'Notion creative research template design inspiration board',
+        aiPrompt: 'Help me create a Notion template for creative research. I need sections for: design references, inspiration, color palettes, typography examples, and notes. Make it visual and easy to organize.',
       },
       {
         type: 'podcast',
@@ -639,19 +650,22 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
         type: 'tool',
         title: 'Design systems organizer',
         description: 'Channel the flow into a Figma cleanup or component improvement.',
-        url: 'https://www.figma.com/community/plugin/design-systems',
+        searchQuery: 'Figma design system component library organization best practices',
+        aiPrompt: 'I want to organize my Figma design system better. What\'s the best way to structure components, create a component library, and maintain consistency? Give me a step-by-step approach.',
       },
       {
         type: 'podcast',
         title: 'Scaling your design impact',
         description: 'High Resolution episode on expanding influence when energy is high.',
-        url: 'https://www.highresolution.design/scaling-impact',
+        searchQuery: 'High Resolution podcast scaling design impact influence',
+        aiPrompt: 'I\'m a designer with high energy and want to scale my impact. How can I expand my influence, take on bigger projects, and make a greater impact in my organization? Give me practical strategies.',
       },
       {
         type: 'book',
         title: 'Creative Flow',
         description: 'Mihaly Csikszentmihalyi’s classic on sustaining deep engagement.',
-        url: 'https://www.goodreads.com/book/show/flow',
+        searchQuery: 'Mihaly Csikszentmihalyi Flow book creative state',
+        aiPrompt: 'Explain Mihaly Csikszentmihalyi\'s concept of "flow" and how I can achieve it as a designer. What conditions help me enter flow state, and how can I sustain it during creative work?',
       },
     ],
     aliases: [
@@ -665,11 +679,11 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
     id: 'general-overwhelm-focus',
     title: 'Scattered across too many tasks',
     summary:
-      'Everything felt important today, which steals focus. Let’s shrink decision load and rebuild momentum with one clear move.',
+      'Everything felt important today, which steals focus. Let\'s shrink decision load and rebuild momentum with one clear move.',
     insight:
       'Overwhelm fades when you choose a single anchor. Name the impact, protect a container for it, and let the rest wait.',
     emotionTags: ['Overwhelmed', 'Scattered'],
-    topicTags: ['Prioritization', 'Focus'],
+    topicTags: ['Prioritization', 'Focus', 'Task Management'],
     growthGoalTags: ['Clarity', 'Execution'],
     responseMode: 'structured-3-step-guide',
     actions: [
@@ -677,19 +691,22 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
         type: 'tool',
         title: 'Minimal task board',
         description: 'A pared-down Notion board for today’s top three priorities only.',
-        url: 'https://notion.so/templates/minimal-tasks',
+        searchQuery: 'Notion minimal task board template top 3 priorities',
+        aiPrompt: 'Create a simple Notion template for a minimal task board. I only want to see my top 3 priorities for today. Make it clean, focused, and help me avoid overwhelm.',
       },
       {
         type: 'book',
         title: 'Make Time',
         description: 'Jake Knapp’s framework for choosing a daily highlight and protecting energy.',
-        url: 'https://maketime.blog',
+        searchQuery: 'Jake Knapp Make Time book daily highlight framework',
+        aiPrompt: 'Explain Jake Knapp\'s "Make Time" framework. How do I choose a daily highlight and protect my energy? Give me practical steps to implement this as a designer.',
       },
       {
         type: 'podcast',
         title: 'Finding balance in design work',
         description: 'Design Better stories on pacing multiple tracks without burning out.',
-        url: 'https://www.designbetter.co/podcast/balance',
+        searchQuery: 'Design Better Podcast balance multiple projects designers',
+        aiPrompt: 'I\'m juggling multiple design projects and feeling overwhelmed. How can I find balance, pace myself, and avoid burning out? Give me practical strategies for managing multiple tracks.',
       },
       {
         type: 'action',
@@ -698,6 +715,54 @@ export const CHALLENGE_RECOMMENDATIONS: ChallengeRecommendationTemplate[] = [
       },
     ],
     aliases: ['too many tasks', 'scattered', 'overwhelmed with work'],
+    triggerExamples: [
+      'too many tasks',
+      'scattered across tasks',
+      'overwhelmed with multiple projects',
+      'juggling too many things',
+    ],
+    notes: 'This challenge is specifically about task/project overwhelm, NOT debugging or technical bugs. For debugging frustration, see "Debugging feels endless" challenge.',
+  },
+  {
+    id: 'debugging-overwhelm',
+    title: 'Debugging feels endless',
+    summary:
+      'Too many bugs pile up, making debugging feel like an endless cycle. Each fix reveals another issue, draining energy and momentum.',
+    insight:
+      'Debugging overwhelm happens when problems compound without a clear strategy. Setting up a systematic debugging workflow helps you tackle issues efficiently.',
+    emotionTags: ['Frustrated', 'Drained', 'Overwhelmed'],
+    topicTags: ['Debugging', 'Technical Work', 'Problem Solving'],
+    growthGoalTags: ['Systematic Approach', 'Debugging Workflow'],
+    responseMode: 'action-focused',
+    actions: [
+      {
+        type: 'action',
+        title: 'Set up a debugging checklist',
+        description: 'Create a standard process: 1) Reproduce the bug, 2) Check console/network errors, 3) Isolate the component, 4) Test one fix at a time, 5) Verify the fix works.',
+        url: 'https://www.freecodecamp.org/news/debugging-guide/',
+      },
+      {
+        type: 'tool',
+        title: 'Use browser DevTools effectively',
+        description: 'Set breakpoints, inspect elements, check Network tab for failed requests, use Console to test code snippets. Master these tools to debug faster.',
+        url: 'https://developer.chrome.com/docs/devtools',
+      },
+    ],
+    aliases: [
+      'too many bugs',
+      'debugging is endless',
+      'bugs keep piling up',
+      'frustrated with bugs',
+      'debugging overwhelm',
+    ],
+    triggerExamples: [
+      'too many bugs',
+      'debugging',
+      'bugs keep appearing',
+      'endless debugging',
+      'frustrated debugging',
+      'can\'t fix all the bugs',
+    ],
   },
 ]
 

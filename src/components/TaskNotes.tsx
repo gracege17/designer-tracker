@@ -4,9 +4,11 @@ import ButtonPrimaryCTA from './ButtonPrimaryCTA'
 import ButtonSecondary from './ButtonSecondary'
 import ButtonIcon from './ButtonIcon'
 import { ProjectStorage } from '../utils/storage'
+import { EMOTIONS, EmotionLevel } from '../types'
 
 interface TaskNotesProps {
   selectedProjectIds: string[]
+  selectedEmotions: EmotionLevel[]
   onAddAnotherTask: (notes?: string) => void
   onNextProject: (notes?: string) => void
   onDoneReflecting: (notes?: string) => void
@@ -15,7 +17,8 @@ interface TaskNotesProps {
 }
 
 const TaskNotes: React.FC<TaskNotesProps> = ({ 
-  selectedProjectIds, 
+  selectedProjectIds,
+  selectedEmotions,
   onAddAnotherTask,
   onNextProject,
   onDoneReflecting,
@@ -29,6 +32,26 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
   const firstProject = selectedProjectIds.length > 0 
     ? ProjectStorage.getProjectById(selectedProjectIds[0])
     : null
+
+  // Format emotion labels for the question
+  const getEmotionQuestion = (): string => {
+    if (selectedEmotions.length === 0) {
+      return 'Why did you feel that way?'
+    }
+    
+    const emotionLabels = selectedEmotions.map(emotion => EMOTIONS[emotion].label)
+    
+    if (emotionLabels.length === 1) {
+      return `Why did you feel ${emotionLabels[0]}?`
+    } else if (emotionLabels.length === 2) {
+      return `Why did you feel ${emotionLabels[0]} and ${emotionLabels[1]}?`
+    } else {
+      // For 3+ emotions: "Happy, Excited, and Anxious"
+      const allButLast = emotionLabels.slice(0, -1)
+      const lastEmotion = emotionLabels[emotionLabels.length - 1]
+      return `Why did you feel ${allButLast.join(', ')}, and ${lastEmotion}?`
+    }
+  }
 
   const handleAddAnotherTask = () => {
     // Capture and save current notes
@@ -77,7 +100,7 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
         {/* Title */}
         <div className="mb-8">
           <h2 className="text-[32px] font-bold text-[#E6E1E5] mb-2 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Why did you feel that way?
+            {getEmotionQuestion()}
           </h2>
           <p className="text-[16px] text-[#CAC4D0]">
             Optional
@@ -87,7 +110,7 @@ const TaskNotes: React.FC<TaskNotesProps> = ({
         {/* Textarea */}
         <textarea
           className="w-full min-h-[140px] p-4 bg-white/[0.04] border border-[#3A3840] text-[#E6E1E5] placeholder:text-[#938F99] focus:outline-none focus:border-[#EC5429] resize-none"
-          placeholder="e.g., The client loved the direction — felt proud!"
+          placeholder="e.g., The client loved the direction — felt proud! Or: Too many bugs to fix — feeling overwhelmed."
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           maxLength={1000}

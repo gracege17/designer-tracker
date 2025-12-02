@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { CaretDown, X } from 'phosphor-react'
+import { CaretDown, X, Copy } from 'phosphor-react'
 import { Challenge } from '../utils/challengeAnalysisService'
 import Card from './Card'
 import ButtonIcon from './ButtonIcon'
@@ -28,8 +28,8 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
   subtitle
 }) => {
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null)
-  const [activeTab, setActiveTab] = useState<'feel' | 'do'>('feel')
   const [isSheetVisible, setIsSheetVisible] = useState(false)
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const closeTimeoutRef = useRef<number | null>(null)
 
   const badgeStyles = [
@@ -52,6 +52,17 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
     }
   }
 
+  // Copy text to clipboard
+  const copyToClipboard = async (text: string, key: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedKey(key)
+      setTimeout(() => setCopiedKey(null), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
   const openChallenge = useCallback((challenge: Challenge) => {
     if (closeTimeoutRef.current) {
       window.clearTimeout(closeTimeoutRef.current)
@@ -59,7 +70,6 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
     }
 
     setSelectedChallenge(challenge)
-    setActiveTab('feel')
   }, [])
 
   const closeChallenge = useCallback(() => {
@@ -110,23 +120,8 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
     }
   }, [])
 
-  const feelSuggestions =
-    selectedChallenge?.suggestions.filter(
-      suggestion =>
-        suggestion.type === 'podcast' ||
-        suggestion.type === 'book' ||
-        suggestion.type === 'insight'
-    ) ?? []
-  const doSuggestions =
-    selectedChallenge?.suggestions.filter(
-      suggestion =>
-        suggestion.type === 'tool' ||
-        suggestion.type === 'resource' ||
-        suggestion.type === 'action'
-    ) ?? []
-  const fallbackSuggestions = selectedChallenge?.suggestions ?? []
-  const feelList = feelSuggestions.length > 0 ? feelSuggestions : fallbackSuggestions
-  const doList = doSuggestions.length > 0 ? doSuggestions : fallbackSuggestions
+  // Show all suggestions together, but limit to top 3
+  const allSuggestions = (selectedChallenge?.suggestions ?? []).slice(0, 3)
 
   return (
     <div className="w-full mb-6">
@@ -272,53 +267,40 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
               )}
             </div>
 
-            <div className="flex items-center gap-6 px-6 border-b border-white/10">
-              <button
-                type="button"
-                onClick={() => setActiveTab('feel')}
-                className={`pb-3 text-[15px] font-semibold uppercase tracking-wide transition-all ${activeTab === 'feel' ? 'text-white border-b-2 border-[#EC5429]' : 'text-[#938F99] border-b-2 border-transparent hover:text-white/80'}`}
-              >
-                Feel
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('do')}
-                className={`pb-3 text-[15px] font-semibold uppercase tracking-wide transition-all ${activeTab === 'do' ? 'text-white border-b-2 border-[#EC5429]' : 'text-[#938F99] border-b-2 border-transparent hover:text-white/80'}`}
-              >
-                Do
-              </button>
-            </div>
-
             <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
-              {activeTab === 'feel' ? (
-                <div className="space-y-5">
+              <div className="space-y-5">
+                <div className="space-y-3">
+                  <p className="text-[15px] text-[#E6E1E5] leading-relaxed">
+                    {selectedChallenge.empathy}
+                  </p>
+
+                  {selectedChallenge.meta?.insight && (
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                      <p className="text-[12px] font-semibold uppercase tracking-wide text-[#CAC4D0]">
+                        Why this matters
+                      </p>
+                      <p className="mt-2 text-[13px] text-[#E6E1E5] leading-relaxed">
+                        {selectedChallenge.meta.insight}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {allSuggestions.length === 0 ? (
+                  <p className="text-[13px] text-[#938F99]">
+                    Suggestions coming soon.
+                  </p>
+                ) : (
                   <div className="space-y-3">
-                    <p className="text-[15px] text-[#E6E1E5] leading-relaxed">
-                      {selectedChallenge.empathy}
-                    </p>
-
-                    {selectedChallenge.meta?.insight && (
-                      <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                        <p className="text-[12px] font-semibold uppercase tracking-wide text-[#CAC4D0]">
-                          Why this matters
-                        </p>
-                        <p className="mt-2 text-[13px] text-[#E6E1E5] leading-relaxed">
-                          {selectedChallenge.meta.insight}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {feelList.length === 0 ? (
-                    <p className="text-[13px] text-[#938F99]">
-                      Emotional grounding tips coming soon.
-                    </p>
-                  ) : (
-                    <div className="space-y-3">
-                      {feelList.map((suggestion, suggestionIndex) => (
+                    {allSuggestions.slice(0, 3).map((suggestion, suggestionIndex) => {
+                      const hasCopyable = suggestion.searchQuery || suggestion.aiPrompt
+                      const copyText = suggestion.searchQuery || suggestion.aiPrompt || ''
+                      const copyKey = `copy-${suggestionIndex}`
+                      
+                      return (
                         <div
                           key={`${suggestion.title}-${suggestionIndex}`}
-                          className={`group flex items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.04] p-4 transition-all duration-200 ${
+                          className={`group relative flex items-start gap-4 rounded-2xl border border-white/5 bg-white/[0.04] p-4 transition-all duration-200 ${
                             suggestion.url ? 'cursor-pointer hover:bg-white/[0.06]' : 'cursor-default'
                           }`}
                           onClick={() => {
@@ -331,64 +313,41 @@ const HelpfulResourcesCard: React.FC<HelpfulResourcesCardProps> = ({
                             {getSuggestionIcon(suggestion.type)}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-[15px] font-semibold text-white leading-snug mb-1 group-hover:text-red-300 transition-colors">
+                            <h4 className="text-[15px] font-semibold text-white leading-snug mb-1 group-hover:text-red-300 transition-colors pr-6">
                               {suggestion.title}
                             </h4>
                             <p className="text-[13px] text-[#CAC4D0] leading-relaxed">
                               {suggestion.desc}
                             </p>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <p className="text-[13px] font-semibold uppercase tracking-wide text-[#938F99]">
-                    Try one of these small actions
-                  </p>
-
-                  {doList.length === 0 ? (
-                    <p className="text-[13px] text-[#938F99]">
-                      Actions will appear here once available.
-                    </p>
-                  ) : (
-                    <div className="space-y-3">
-                      {doList.map((suggestion, suggestionIndex) => (
-                        <div
-                          key={`${suggestion.title}-${suggestionIndex}`}
-                          className={`group flex items-start gap-4 rounded-2xl bg-[#1F1B24] p-4 transition-all duration-200 ${
-                            suggestion.url ? 'cursor-pointer hover:bg-[#282330]' : 'cursor-default'
-                          }`}
-                          onClick={() => {
-                            if (suggestion.url) {
-                              window.open(suggestion.url, '_blank')
-                            }
-                          }}
-                        >
-                          <div className="flex-shrink-0 text-[22px]">
-                            {getSuggestionIcon(suggestion.type)}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-[15px] font-semibold text-white leading-snug mb-1 group-hover:text-red-300 transition-colors">
-                              {suggestion.title}
-                            </h4>
-                            <p className="text-[13px] text-[#A1A1AA] leading-relaxed">
-                              {suggestion.desc}
-                            </p>
-                          </div>
-                          {suggestion.url && (
+                          {/* Copy icon in top right corner */}
+                          {hasCopyable && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                copyToClipboard(copyText, copyKey)
+                              }}
+                              className="absolute top-3 right-3 p-1.5 rounded-lg bg-white/[0.08] hover:bg-white/[0.12] text-[#CAC4D0] hover:text-white transition-all"
+                              title={suggestion.searchQuery ? 'Copy search query' : 'Copy AI prompt'}
+                            >
+                              {copiedKey === copyKey ? (
+                                <span className="text-[12px] text-[#EC5429]">✓</span>
+                              ) : (
+                                <Copy size={14} weight="regular" />
+                              )}
+                            </button>
+                          )}
+                          {suggestion.url && !hasCopyable && (
                             <div className="flex-shrink-0 self-center text-[12px] font-medium uppercase tracking-wide text-[#EC5429] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                               Open
                             </div>
                           )}
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
