@@ -1,7 +1,9 @@
 /**
- * Integration Test for Today's Challenges - Feel Tab Filtering
+ * Integration Test for Today's Challenges - Feel & Do Tab Filtering
  * 
- * Tests the REAL suggestion filtering logic for Feel vs Do tabs.
+ * Tests the REAL suggestion filtering logic for BOTH Feel and Do tabs.
+ * - Feel tab: insights, podcasts, books, videos, resources
+ * - Do tab: actions, tools, strategies
  * No mocks - testing actual implementation end-to-end.
  * 
  * Run: npx tsx test-feel-tab-filtering.ts
@@ -244,12 +246,13 @@ const args = process.argv.slice(2)
 const scenarioArg = args.find(arg => !arg.startsWith('-'))
 
 if (args.includes('--help') || args.includes('-h')) {
-  console.log('\n📖 Integration Test for Feel Tab Filtering')
+  console.log('\n📖 Integration Test for Feel & Do Tab Filtering')
   console.log('=' .repeat(60))
   console.log('\n🎯 This test:')
   console.log('   - Tests REAL production suggestion filtering logic')
+  console.log('   - Tests BOTH Feel tab (insights, resources) AND Do tab (actions, tools)')
   console.log('   - No mocks - validates Feel vs Do categorization')
-  console.log('   - Tests fallback logic')
+  console.log('   - Validates no overlap between tabs')
   console.log('   - Instant execution - runs in milliseconds\n')
   console.log('Usage:')
   console.log('  npx tsx test-feel-tab-filtering.ts [scenario-name]\n')

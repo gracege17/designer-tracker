@@ -463,19 +463,19 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
           return (
             <>
               {/* Week's Reflection Card */}
-              <Card 
-                className="mb-4 p-[20px] space-y-0"
-                style={{ borderRadius: '8px' }}
-              >
-                <div className="flex flex-col gap-3">
-                  <h2 className="text-[20px] font-bold text-[#E6E1E5]">
-                    {selectedTimeRange === 'week' ? "Week's Reflection" : "Month's Reflection"}
-                  </h2>
-                  <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
+                  <Card 
+                    className="mb-4 p-[20px] space-y-0"
+                    style={{ borderRadius: '8px' }}
+                  >
+                    <div className="flex flex-col gap-3">
+                      <h2 className="text-[20px] font-bold text-[#E6E1E5]">
+                        {selectedTimeRange === 'week' ? "Week's Reflection" : "Month's Reflection"}
+                      </h2>
+                      <p className="text-[14px] font-normal text-[#938F99] leading-relaxed">
                     {weeklyInsights || 'Loading reflection...'}
-                  </p>
-                </div>
-              </Card>
+                      </p>
+                    </div>
+                  </Card>
 
               {/* Emotional Radar Chart */}
               {(() => {
@@ -520,9 +520,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Summary Tag (center, main focus) */}
                   {energyTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
-                      <p className="text-[20px] font-bold text-[#FF2D55] leading-tight">
+                          <p className="text-[20px] font-bold text-[#FF2D55] leading-tight">
                         {energizedKeywords[0] || 'Analyzing...'}
-                      </p>
+                          </p>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col justify-center">
@@ -554,9 +554,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Summary Tag (center, main focus) */}
                   {drainingTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
-                      <p className="text-[20px] font-bold text-[#938F99] leading-tight">
+                          <p className="text-[20px] font-bold text-[#938F99] leading-tight">
                         {drainedKeywords[0] || 'Analyzing...'}
-                      </p>
+                          </p>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col justify-center">
@@ -588,9 +588,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Summary Tag (center, main focus) */}
                   {meaningfulTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
-                      <p className="text-[20px] font-bold text-[#F4C95D] leading-tight">
+                          <p className="text-[20px] font-bold text-[#F4C95D] leading-tight">
                         {meaningfulKeywords[0] || 'Analyzing...'}
-                      </p>
+                          </p>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col justify-center">
@@ -622,9 +622,9 @@ const InsightsScreen: React.FC<InsightsScreenProps> = ({
                   {/* Summary Tag (center, main focus) */}
                   {passionTasks.length > 0 ? (
                     <div className="flex-1 flex flex-col justify-center">
-                      <p className="text-[20px] font-bold text-[#AF52DE] leading-tight">
+                          <p className="text-[20px] font-bold text-[#AF52DE] leading-tight">
                         {curiousKeywords[0] || 'Analyzing...'}
-                      </p>
+                          </p>
                     </div>
                   ) : (
                     <div className="flex-1 flex flex-col justify-center">

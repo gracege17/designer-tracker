@@ -220,13 +220,14 @@ const getSuggestionIcon = (type: string): string => {
 
 ### Test Strategy
 
-Integration tests verify the Feel tab filtering logic works correctly:
+Integration tests verify **both Feel and Do tab filtering logic** works correctly:
 
-1. **Type Filtering** - Correct suggestions filtered to Feel tab
-2. **Icon Mapping** - Correct icons for each type
-3. **Mixed Suggestions** - Properly separates Feel vs Do
-4. **Balanced Suggestions** - Equal Feel and Do content
-5. **Unbalanced Suggestions** - More of one type than the other
+1. **Type Filtering** - Correct suggestions filtered to Feel tab (insights, resources)
+2. **Type Filtering** - Correct suggestions filtered to Do tab (actions, tools, strategies)
+3. **Icon Mapping** - Correct icons for each type
+4. **Mixed Suggestions** - Properly separates Feel vs Do (no overlap)
+5. **Balanced Suggestions** - Equal Feel and Do content
+6. **Unbalanced Suggestions** - More of one type than the other
 
 ### Test Scenarios
 
@@ -253,12 +254,12 @@ Integration tests verify the Feel tab filtering logic works correctly:
 ### Running Integration Tests
 
 ```bash
-# Run all Feel tab filtering tests
+# Run all Feel & Do tab filtering tests
 npx tsx test-feel-tab-filtering.ts
 
 # Run specific scenario
-npx tsx test-feel-tab-filtering.ts "Mixed Suggestions"
-npx tsx test-feel-tab-filtering.ts "Only Feel Suggestions"
+npx tsx test-feel-tab-filtering.ts "Challenge with Mixed Suggestions"
+npx tsx test-feel-tab-filtering.ts "Challenge with Balanced Suggestions"
 
 # Show help
 npx tsx test-feel-tab-filtering.ts --help
@@ -268,8 +269,10 @@ npx tsx test-feel-tab-filtering.ts --help
 
 ✅ **Real production code** - Uses actual filtering logic from HelpfulResourcesCard  
 ✅ **No mocks** - Tests complete suggestion filtering  
-✅ **Type categorization** - Validates Feel vs Do split  
-✅ **Icon mapping** - Confirms correct icons  
+✅ **Feel tab filtering** - Validates insights, podcasts, books, videos, resources  
+✅ **Do tab filtering** - Validates actions, tools, strategies  
+✅ **Type categorization** - Validates Feel vs Do split (no overlap)  
+✅ **Icon mapping** - Confirms correct icons for all types  
 ✅ **Balanced content** - Tests equal Feel/Do distribution  
 ✅ **Unbalanced content** - Tests when one type dominates
 
