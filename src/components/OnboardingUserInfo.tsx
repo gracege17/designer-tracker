@@ -167,7 +167,7 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
         {/* Privacy Notice */}
         <div className="mt-8 max-w-md mx-auto bg-[var(--md-sys-color-surface-container-high)] p-4 border border-white/10" style={{ borderRadius: '0 24px 0 0' }}>
           <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] text-center">
-            🔒 <span className="font-semibold text-[var(--md-sys-color-on-surface)]">Your privacy matters.</span> Everything stays on your device. You can update this anytime in settings.
+            🔒 <span className="font-semibold text-[var(--md-sys-color-on-surface)]">Your privacy matters.</span> Your personal info stays local. AI insights use secure, anonymous processing. You control everything and can update anytime in settings.
           </p>
         </div>
       </div>

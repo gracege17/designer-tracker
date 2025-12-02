@@ -36,7 +36,7 @@ The **Onboarding Flow** is a 5-step guided walkthrough shown to new users when t
     2. Job Title (required) - Text input, e.g., "Product Designer"
     3. Gender (optional) - Dropdown: Male 👨, Female 👩, Non-binary 🧑, Prefer not to say 👤
     4. Age Range (optional) - Dropdown: 18-24, 25-34, 35-44, 45-54, 55-64, 65+
-  - Privacy notice: "Your data is encrypted and private"
+  - Privacy notice: "Your privacy matters. Your personal info stays local. AI insights use secure, anonymous processing. You control everything and can update anytime in settings."
 - **User Action**:
   - Enter name and job title (must complete to proceed)
   - Select gender and age range (optional)
