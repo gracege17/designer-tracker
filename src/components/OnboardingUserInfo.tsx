@@ -129,26 +129,17 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
             <label className="block text-sm font-medium text-[var(--md-sys-color-on-surface-variant)] mb-3">
               Gender (Optional)
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value as UserProfileData['gender'])}
+              className="w-full px-4 py-3 border border-white/10 bg-[var(--md-sys-color-surface-container)] text-[var(--md-sys-color-on-surface)] rounded-lg backdrop-blur-sm transition-all duration-200 hover:border-white/20 focus:border-[var(--md-sys-color-primary)] focus:outline-none focus:ring-0"
+            >
               {genderOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => setGender(option.value)}
-                  className={`px-4 py-3 border transition-all duration-200 flex items-center gap-3 rounded-lg backdrop-blur-sm ${
-                    gender === option.value
-                      ? 'border-[var(--md-sys-color-primary)] bg-[rgba(236,84,41,0.18)] shadow-[0_12px_30px_rgba(236,84,41,0.25)]'
-                      : 'border-white/10 bg-[var(--md-sys-color-surface-container)] hover:border-white/20'
-                  }`}
-                >
-                  <span className="text-xl">{option.emoji}</span>
-                  <span className={`text-sm font-medium ${
-                    gender === option.value ? 'text-[var(--md-sys-color-on-surface)]' : 'text-[var(--md-sys-color-on-surface-variant)]'
-                  }`}>
-                    {option.label}
-                  </span>
-                </button>
+                <option key={option.value} value={option.value}>
+                  {option.emoji} {option.label}
+                </option>
               ))}
-            </div>
+            </select>
             <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] mt-2 ml-1">
               Used for analytics and personalization only
             </p>
@@ -159,25 +150,17 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
             <label className="block text-sm font-medium text-[var(--md-sys-color-on-surface-variant)] mb-3 ml-1">
               Age Range
             </label>
-            <div className="grid grid-cols-3 gap-3">
+            <select
+              value={ageRange}
+              onChange={(e) => setAgeRange(e.target.value as UserProfileData['ageRange'])}
+              className="w-full px-4 py-3 border border-white/10 bg-[var(--md-sys-color-surface-container)] text-[var(--md-sys-color-on-surface)] rounded-lg backdrop-blur-sm transition-all duration-200 hover:border-white/20 focus:border-[var(--md-sys-color-primary)] focus:outline-none focus:ring-0"
+            >
               {ageRangeOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => setAgeRange(option.value)}
-                  className={`p-3 border transition-all duration-200 flex items-center justify-center rounded-xl ${
-                    ageRange === option.value
-                      ? 'border-[var(--md-sys-color-primary)] bg-[rgba(236,84,41,0.18)] shadow-[0_8px_24px_rgba(236,84,41,0.2)]'
-                      : 'border-white/10 bg-[var(--md-sys-color-surface-container)] hover:border-white/20'
-                  }`}
-                >
-                  <span className={`text-sm font-medium ${
-                    ageRange === option.value ? 'text-[var(--md-sys-color-on-surface)]' : 'text-[var(--md-sys-color-on-surface-variant)]'
-                  }`}>
-                    {option.label}
-                  </span>
-                </button>
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
               ))}
-            </div>
+            </select>
           </div>
         </div>
 

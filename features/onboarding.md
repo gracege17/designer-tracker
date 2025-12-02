@@ -34,8 +34,8 @@ The **Onboarding Flow** is a 5-step guided walkthrough shown to new users when t
   - 4 form fields:
     1. Name (required) - Text input, e.g., "Alex Johnson"
     2. Job Title (required) - Text input, e.g., "Product Designer"
-    3. Gender (optional) - 4 buttons: Male 👨, Female 👩, Non-binary 🧑, Prefer not to say 👤
-    4. Age Range (optional) - 6 buttons: 18-24, 25-34, 35-44, 45-54, 55-64, 65+
+    3. Gender (optional) - Dropdown: Male 👨, Female 👩, Non-binary 🧑, Prefer not to say 👤
+    4. Age Range (optional) - Dropdown: 18-24, 25-34, 35-44, 45-54, 55-64, 65+
   - Privacy notice: "Your data is encrypted and private"
 - **User Action**:
   - Enter name and job title (must complete to proceed)
