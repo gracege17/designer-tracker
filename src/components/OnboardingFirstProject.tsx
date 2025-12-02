@@ -1,13 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { PaperPlaneRight } from 'phosphor-react'
-import ButtonIcon from './ButtonIcon'
-import ButtonText from './ButtonText'
+import React, { useState } from 'react'
+import { CaretLeft, X, Plus } from 'phosphor-react'
 import { PROJECT_COLORS } from '../types'
 
 interface OnboardingFirstProjectProps {
   userName: string
   onComplete: (projects: Array<{ name: string; color: string }>) => void
   onSkip: () => void
+  onBack?: () => void
 }
 
 interface Project {
@@ -15,269 +14,199 @@ interface Project {
   color: string
 }
 
-interface ChatMessage {
-  type: 'ai' | 'user'
-  content: string
-  projects?: Project[]
-}
-
-const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userName, onComplete, onSkip }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      type: 'ai',
-      content: `What did you work on?\n\nList projects however it's easiest:\n• One per line\n• Separate with commas\n• Or use "and"\n\nType "skip" if you'd rather add them later.`
-    }
-  ])
-  const [inputValue, setInputValue] = useState('')
+const OnboardingFirstProject: React.FC<OnboardingFirstProjectProps> = ({ userName, onComplete, onSkip, onBack }) => {
   const [projects, setProjects] = useState<Project[]>([])
-  const [pendingProjects, setPendingProjects] = useState<Project[]>([])
-  const [waitingForConfirmation, setWaitingForConfirmation] = useState(false)
-  const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [showAddInput, setShowAddInput] = useState(false)
+  const [newProjectName, setNewProjectName] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
-
-  const parseProjects = (input: string): string[] => {
-    // Split by common separators: commas, 'and', newlines
-    const projectNames = input
-      .split(/,|\band\b|\n/gi)
-      .map(p => p.trim())
-      .filter(p => p.length > 0)
-      .map(p => {
-        // Capitalize first letter
-        return p.charAt(0).toUpperCase() + p.slice(1)
-      })
+  const handleAddProject = () => {
+    const trimmedName = newProjectName.trim()
     
-    return projectNames
-  }
-
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return
-
-    const userInput = inputValue.trim()
-
-    // Add user message
-    setMessages(prev => [...prev, {
-      type: 'user',
-      content: userInput
-    }])
-
-    // Check if user is confirming projects
-    if (waitingForProjectConfirmation) {
-      if (userInput.toLowerCase() === 'yes' || userInput.toLowerCase() === 'correct' || userInput.toLowerCase() === 'good') {
-        // User confirmed, save the projects
-        setProjects(prev => [...prev, ...pendingProjects])
-        setPendingProjects([])
-        setWaitingForProjectConfirmation(false)
-        
-        setMessages(prev => [...prev, {
-          type: 'ai',
-          content: `Perfect! I've saved your ${pendingProjects.length > 1 ? 'projects' : 'project'}. 🎉`
-        }])
-
-        // Add instruction message
-        setTimeout(() => {
-          setMessages(prev => [...prev, {
-            type: 'ai',
-            content: 'Type "Done" or "Great" when you\'re ready to move on. 🙌'
-          }])
-          setWaitingForConfirmation(true)
-        }, 500)
-        
-        setInputValue('')
-        return
-      } else {
-        // User wants to re-type, reset and parse again
-        setWaitingForProjectConfirmation(false)
-        setPendingProjects([])
-        
-        // Parse the new input as a correction
-        const projectNames = parseProjects(userInput)
-        
-        if (projectNames.length > 0) {
-          const newProjects: Project[] = projectNames.map((name, index) => ({
-            name,
-            color: PROJECT_COLORS[(projects.length + index) % PROJECT_COLORS.length]
-          }))
-
-          setPendingProjects(newProjects)
-          
-          // Show parsed projects for confirmation
-          setMessages(prev => [...prev, {
-            type: 'ai',
-            content: `I see you mentioned:`,
-            projects: newProjects
-          }])
-
-          setTimeout(() => {
-            setMessages(prev => [...prev, {
-              type: 'ai',
-              content: 'Does this look right?\nReply "yes" to continue, or re-type to fix.'
-            }])
-            setWaitingForProjectConfirmation(true)
-          }, 500)
-        } else {
-          setMessages(prev => [...prev, {
-            type: 'ai',
-            content: 'Hmm, I didn\'t catch any project names. Try listing them clearly, like "NetSave 2, K12 visual UI" or type "Skip".'
-          }])
-        }
-        
-        setInputValue('')
-        return
-      }
-    }
-
-    // Check if user wants to finish
-    if (waitingForConfirmation && (userInput.toLowerCase() === 'done' || userInput.toLowerCase() === 'great')) {
-      if (projects.length > 0) {
-        onComplete(projects)
-      } else {
-        onSkip()
-      }
+    if (!trimmedName) {
+      setError('Please enter a project name')
       return
     }
 
-    // Check if user wants to skip
-    if (userInput.toLowerCase() === 'skip' || userInput.toLowerCase() === 'later' || userInput.toLowerCase() === 'no') {
-      setMessages(prev => [...prev, {
-        type: 'ai',
-        content: 'No worries! You can add projects anytime later. 👍'
-      }])
-      setTimeout(() => {
-        onSkip()
-      }, 1500)
-      setInputValue('')
+    // Check for duplicates (case-insensitive)
+    const isDuplicate = projects.some(
+      p => p.name.toLowerCase() === trimmedName.toLowerCase()
+    )
+
+    if (isDuplicate) {
+      setError('A project with this name already exists')
       return
     }
 
-    // Parse project names
-    const projectNames = parseProjects(userInput)
-    
-    if (projectNames.length > 0) {
-      const newProjects: Project[] = projectNames.map((name, index) => ({
-        name,
-        color: PROJECT_COLORS[(projects.length + index) % PROJECT_COLORS.length]
-      }))
-
-      setPendingProjects(newProjects)
-      
-      // Show parsed projects for confirmation
-      setMessages(prev => [...prev, {
-        type: 'ai',
-        content: `I see you mentioned:`,
-        projects: newProjects
-      }])
-
-      setTimeout(() => {
-        setMessages(prev => [...prev, {
-          type: 'ai',
-          content: 'Does this look right?\nReply "yes" to continue, or re-type to fix.'
-        }])
-        setWaitingForProjectConfirmation(true)
-      }, 500)
-    } else {
-      // Couldn't parse projects
-      setMessages(prev => [...prev, {
-        type: 'ai',
-        content: 'Hmm, I didn\'t catch any project names. Try something like: \'NetSave 2, K12 visual UI\' or type \'skip\'.'
-      }])
+    const newProject: Project = {
+      name: trimmedName,
+      color: PROJECT_COLORS[projects.length % PROJECT_COLORS.length]
     }
 
-    setInputValue('')
+    setProjects(prev => [...prev, newProject])
+    setNewProjectName('')
+    setShowAddInput(false)
+    setError(null)
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && inputValue.trim()) {
-      handleSendMessage()
+  const handleRemoveProject = (index: number) => {
+    setProjects(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleAddProject()
+    } else if (e.key === 'Escape') {
+      setShowAddInput(false)
+      setNewProjectName('')
+      setError(null)
     }
   }
 
-  const handleSkipClick = () => {
-    setMessages(prev => [
-      ...prev,
-      {
-        type: 'ai',
-        content: 'No worries! You can add projects anytime later. 👍'
-      }
-    ])
-    setTimeout(() => {
-      onSkip()
-    }, 600)
+  const handleContinue = () => {
+    if (projects.length > 0) {
+      onComplete(projects)
+    }
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--md-sys-color-surface)] text-[var(--md-sys-color-on-surface)]">
-      {/* Chat Messages */}
-      <div className="flex-grow overflow-y-auto px-6 py-8 space-y-4">
-        {messages.map((message, index) => (
-          <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`max-w-[85%] px-5 py-4 shadow-[0_16px_44px_rgba(0,0,0,0.35)] border ${
-                message.type === 'user'
-                  ? 'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] border-[var(--md-sys-color-primary)]'
-                  : 'bg-[var(--md-sys-color-surface-container)] text-[var(--md-sys-color-on-surface)] border-white/5'
-              }`}
-              style={{ borderRadius: message.type === 'user' ? '16px 16px 0 16px' : '16px 16px 16px 0' }}
-            >
-              <p className="text-[15px] leading-relaxed whitespace-pre-line">
-                {message.content}
-              </p>
-              {message.projects && message.projects.length > 0 && (
-                <ul className="mt-3 space-y-1">
-                  {message.projects.map((project, idx) => (
-                    <li key={idx} className="text-[15px] font-medium">
-                      • {project.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
+      {/* Progress Indicator */}
+      <div className="px-6 pt-6 pb-4">
+        <div className="flex items-center gap-2">
+          <div className="h-2 flex-1 rounded-full bg-[var(--md-sys-color-primary)] shadow-[0_8px_20px_rgba(236,84,41,0.35)]"></div>
+          <div className="h-2 flex-1 rounded-full bg-[var(--md-sys-color-primary)] shadow-[0_8px_20px_rgba(236,84,41,0.35)]"></div>
+          <div className="h-2 flex-1 rounded-full bg-[var(--md-sys-color-primary)] shadow-[0_8px_20px_rgba(236,84,41,0.35)]"></div>
+          <div className="h-2 flex-1 rounded-full bg-white/10"></div>
+        </div>
       </div>
 
-      {/* Input Area */}
-      <div className="px-6 pb-8">
-        <div className="mb-3 flex justify-end">
-          <ButtonText type="button" onClick={handleSkipClick}>
-            Skip for now
-          </ButtonText>
-        </div>
-        <div className="flex items-center gap-3 bg-[var(--md-sys-color-surface-container-high)] border border-white/10 p-2 shadow-[0_18px_44px_rgba(0,0,0,0.35)]" style={{ borderRadius: '24px' }}>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-              placeholder="Type your projects or 'skip'..."
-            className="flex-1 px-4 py-3 bg-transparent text-[var(--md-sys-color-on-surface)] text-[15px] outline-none placeholder:text-[var(--md-sys-color-on-surface-variant)]"
-            autoFocus
-          />
-          <ButtonIcon
-            onClick={handleSendMessage}
-            disabled={!inputValue.trim()}
-            className={`p-3 rounded-full ${
-              inputValue.trim()
-                ? 'text-[var(--md-sys-color-on-surface)] hover:bg-white/10 active:scale-95 opacity-100'
-                : 'text-white/30 cursor-not-allowed opacity-40'
-            }`}
-            aria-label="Send message"
+      {/* Back Button */}
+      {onBack && (
+        <div className="px-6 pt-2">
+          <button
+            onClick={onBack}
+            className="p-2 -ml-2 text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] transition-colors"
           >
-            <PaperPlaneRight size={20} weight="bold" />
-          </ButtonIcon>
+            <CaretLeft size={24} weight="bold" />
+          </button>
         </div>
+      )}
+
+      {/* Content */}
+      <div className="flex-grow px-6 py-8">
+        {/* Title & Description */}
+        <h2 className="text-[28px] font-bold text-[var(--md-sys-color-on-surface)] mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
+          What did you work on?
+        </h2>
+        <p className="text-[16px] text-[var(--md-sys-color-on-surface-variant)] mb-8 leading-relaxed">
+          Select one or more projects you worked on today — for example, "Website Redesign" or "Client Dashboard".
+        </p>
+
+        {/* Project Pills */}
+        <div className="flex flex-wrap gap-3 mb-6">
+          {projects.map((project, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2 px-4 py-2 bg-white/[0.04] border border-white/10 rounded-full"
+            >
+              <span className="text-[15px] text-[var(--md-sys-color-on-surface)]">
+                {project.name}
+              </span>
+              <button
+                onClick={() => handleRemoveProject(index)}
+                className="p-1 text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] transition-colors"
+              >
+                <X size={16} weight="bold" />
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Add Project Button / Input */}
+        {showAddInput ? (
+          <div className="space-y-3">
+            <div>
+              <input
+                type="text"
+                value={newProjectName}
+                onChange={(e) => {
+                  setNewProjectName(e.target.value)
+                  setError(null)
+                }}
+                onKeyDown={handleKeyDown}
+                placeholder="Project name"
+                maxLength={24}
+                autoFocus
+                className="w-full px-4 py-3 bg-white/[0.04] border border-[#49454F] focus:border-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-surface)] text-[15px] rounded-lg outline-none transition-colors"
+              />
+              <p className={`text-xs mt-1 ml-1 ${
+                newProjectName.length === 24 ? 'text-[var(--md-sys-color-primary)]' : 'text-[var(--md-sys-color-on-surface-variant)]'
+              }`}>
+                {newProjectName.length}/24
+              </p>
+              {error && (
+                <p className="text-xs text-red-400 mt-1 ml-1">{error}</p>
+              )}
+            </div>
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => {
+                  setShowAddInput(false)
+                  setNewProjectName('')
+                  setError(null)
+                }}
+                className="px-4 py-2 text-[var(--md-sys-color-on-surface-variant)] border border-white/10 rounded-lg hover:bg-white/5 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddProject}
+                disabled={!newProjectName.trim()}
+                className={`px-4 py-2 rounded-lg transition-colors ${
+                  newProjectName.trim()
+                    ? 'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] hover:opacity-90'
+                    : 'bg-white/10 text-white/40 cursor-not-allowed'
+                }`}
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={() => setShowAddInput(true)}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] font-semibold rounded-lg shadow-[0_12px_30px_rgba(236,84,41,0.3)] hover:opacity-90 active:scale-[0.98] transition-all"
+          >
+            <Plus size={20} weight="bold" />
+            <span>Project</span>
+          </button>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="px-6 pb-8 space-y-3">
+        <button
+          onClick={handleContinue}
+          disabled={projects.length === 0}
+          className={`w-full font-semibold py-3 px-4 text-[17px] rounded-2xl transition-all duration-200 ${
+            projects.length === 0
+              ? 'bg-white/10 text-white/40 cursor-not-allowed'
+              : 'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] shadow-[0_18px_44px_rgba(236,84,41,0.4)] hover:opacity-90 active:scale-[0.98]'
+          }`}
+        >
+          {projects.length === 0 ? 'Select at least one project' : 'Next'}
+        </button>
+        <button
+          onClick={onSkip}
+          className="w-full py-3 px-4 text-[15px] text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] transition-colors"
+        >
+          Skip for now
+        </button>
       </div>
     </div>
   )
 }
 
 export default OnboardingFirstProject
-
