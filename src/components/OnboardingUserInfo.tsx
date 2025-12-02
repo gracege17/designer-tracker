@@ -20,16 +20,20 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
   const [jobTitle, setJobTitle] = useState('')
   const [gender, setGender] = useState<UserProfileData['gender']>('prefer-not-to-say')
   const [ageRange, setAgeRange] = useState<UserProfileData['ageRange']>('25-34')
-  const [errors, setErrors] = useState<{ name?: string; jobTitle?: string }>({})
+  const [privacyAgreed, setPrivacyAgreed] = useState(false)
+  const [errors, setErrors] = useState<{ name?: string; jobTitle?: string; privacy?: string }>({})
 
   const handleContinue = () => {
-    const newErrors: { name?: string; jobTitle?: string } = {}
+    const newErrors: { name?: string; jobTitle?: string; privacy?: string } = {}
 
     if (!name.trim()) {
       newErrors.name = 'Please enter your name'
     }
     if (!jobTitle.trim()) {
       newErrors.jobTitle = 'Please enter your job title'
+    }
+    if (!privacyAgreed) {
+      newErrors.privacy = 'Please agree to the privacy terms to continue'
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -164,11 +168,29 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
           </div>
         </div>
 
-        {/* Privacy Notice */}
+        {/* Privacy Agreement */}
         <div className="mt-8 max-w-md mx-auto bg-[var(--md-sys-color-surface-container-high)] p-4 border border-white/10" style={{ borderRadius: '0 24px 0 0' }}>
-          <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] text-center">
+          <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] text-center mb-3">
             🔒 <span className="font-semibold text-[var(--md-sys-color-on-surface)]">Your privacy matters.</span> Your personal info stays local. AI insights use secure, anonymous processing. You control everything and can update anytime in settings.
           </p>
+          <div className="flex items-center justify-center gap-3">
+            <input
+              type="checkbox"
+              id="privacy-agreement"
+              checked={privacyAgreed}
+              onChange={(e) => {
+                setPrivacyAgreed(e.target.checked)
+                setErrors({ ...errors, privacy: undefined })
+              }}
+              className="w-4 h-4 text-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-surface-container)] border-white/20 rounded focus:ring-[var(--md-sys-color-primary)] focus:ring-2"
+            />
+            <label htmlFor="privacy-agreement" className="text-sm text-[var(--md-sys-color-on-surface-variant)] cursor-pointer">
+              I agree to the privacy terms
+            </label>
+          </div>
+          {errors.privacy && (
+            <p className="text-xs text-red-400 text-center mt-2">{errors.privacy}</p>
+          )}
         </div>
       </div>
 
@@ -176,7 +198,7 @@ const OnboardingUserInfo: React.FC<OnboardingUserInfoProps> = ({ onComplete }) =
       <div className="px-6 pb-8 space-y-3">
         <button
           onClick={handleContinue}
-          disabled={!name.trim() || !jobTitle.trim()}
+          disabled={!name.trim() || !jobTitle.trim() || !privacyAgreed}
           className={`w-full font-semibold py-3 px-4 text-[17px] transition-all duration-200 flex items-center justify-center gap-2 rounded-2xl ${
             !name.trim() || !jobTitle.trim()
               ? 'bg-white/10 text-white/40 cursor-not-allowed'
