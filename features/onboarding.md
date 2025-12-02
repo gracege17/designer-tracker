@@ -430,7 +430,7 @@ const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useSta
 ## Performance
 
 - ⚡ **Instant screen transitions** - No loading states between steps
-- 💾 **LocalStorage only** - All data saved locally, no API calls
+- 💾 **Profile data local** - Your info saved locally. AI insights use secure API processing
 - 🎨 **Smooth animations** - Button presses, progress bars, chat scroll
 - 📱 **Mobile-first** - Optimized for touch interactions
 
@@ -455,7 +455,7 @@ const [waitingForProjectConfirmation, setWaitingForProjectConfirmation] = useSta
 - **Editable Later** - Everything can be changed in Settings
 
 ### Why Store Locally?
-- **Privacy First** - No server, no tracking, no data breaches
+- **Privacy First** - Your profile stays local. AI insights use secure, anonymous processing
 - **Works Offline** - App works without internet
 - **Instant** - No API delays, no loading spinners
 
