@@ -36,12 +36,10 @@ The **Onboarding Flow** is a 5-step guided walkthrough shown to new users when t
     2. Job Title (required) - Text input, e.g., "Product Designer"
     3. Gender (optional) - Dropdown: Male 👨, Female 👩, Non-binary 🧑, Prefer not to say 👤
     4. Age Range (optional) - Dropdown: 18-24, 25-34, 35-44, 45-54, 55-64, 65+
-  - Privacy agreement: "🔒 Your privacy matters. Your personal info stays local. AI insights use secure, anonymous processing. You control everything and can update anytime in settings."
-  - Checkbox: "I agree to the privacy terms" (required)
+    5. Privacy agreement - Checkbox to agree to terms (required)
 - **User Action**:
-  - Enter name and job title (must complete to proceed)
-  - Select gender and age range (optional)
-  - Check privacy agreement checkbox (must complete to proceed)
+  - Fill required fields (name, job title, privacy agreement)
+  - Optionally select gender and age range
   - Tap "Continue" button
 - **Validation**:
   - Continue button disabled until name, job title filled, and privacy agreement checked
@@ -138,9 +136,14 @@ The **Onboarding Flow** is a 5-step guided walkthrough shown to new users when t
   - Primary: Orange gradient with large shadow
   - Secondary: Surface container with subtle border
   - Disabled: Grayed out, cursor not-allowed
-- **Inputs**: 
+- **Inputs**:
   - Text fields with labels and error states
   - Multi-select buttons with accent border when selected
+- **Privacy Agreement**:
+  - Card with signature rounded corners (`0 24px 0 0`)
+  - Privacy text centered with lock emoji and bold emphasis
+  - Checkbox centered below text with "I agree to the privacy terms" label
+  - Error message appears below if unchecked on form submission
 - **Chat Interface** (Projects screen):
   - User messages: Right-aligned, orange background
   - AI messages: Left-aligned, surface container background
