@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CaretLeft, DownloadSimple, Trash, EnvelopeSimple, HouseSimple, Plus, ChartBar, Notepad, GearSix } from 'phosphor-react'
+import { CaretLeft, DownloadSimple, EnvelopeSimple, HouseSimple, Plus, ChartBar, Notepad } from 'phosphor-react'
 import BottomNav from './BottomNav'
 import { UserProfileStorage, EntryStorage, ProjectStorage } from '../utils/storage'
 import ButtonIcon from './ButtonIcon'
@@ -58,89 +58,6 @@ const Settings: React.FC<SettingsProps> = ({
     } catch (error) {
       console.error('Export failed:', error)
       alert('Failed to export data. Please try again.')
-    }
-  }
-
-  const handleDeleteAllData = () => {
-    const confirm1 = window.confirm('Delete everything? You can\'t undo this.')
-    if (!confirm1) return
-    
-    const confirm2 = window.confirm('Last chance. Your reflections will be gone forever. Really delete?')
-    if (!confirm2) return
-    
-    try {
-      EntryStorage.clearEntries()
-      ProjectStorage.clearProjects()
-      alert('All data has been deleted.')
-      window.location.reload()
-    } catch (error) {
-      console.error('Delete failed:', error)
-      alert('Failed to delete data. Please try again.')
-    }
-  }
-
-  const handleCheckDataIntegrity = () => {
-    try {
-      const entries = EntryStorage.loadEntries()
-      const projects = ProjectStorage.loadProjects()
-      const projectIds = new Set(projects.map(p => p.id))
-      
-      // Find orphaned tasks
-      const orphanedTasks: Array<{entryDate: string, taskDescription: string, invalidProjectId: string}> = []
-      entries.forEach(entry => {
-        entry.tasks.forEach(task => {
-          if (!projectIds.has(task.projectId)) {
-            orphanedTasks.push({
-              entryDate: entry.date,
-              taskDescription: task.description,
-              invalidProjectId: task.projectId
-            })
-          }
-        })
-      })
-      
-      if (orphanedTasks.length === 0) {
-        alert('✅ Data integrity check passed!\n\nAll tasks have valid project references.')
-      } else {
-        const message = `⚠️ Found ${orphanedTasks.length} task(s) with invalid project references:\n\n` +
-          orphanedTasks.slice(0, 5).map(t => `• ${t.taskDescription} (${t.entryDate})`).join('\n') +
-          (orphanedTasks.length > 5 ? `\n... and ${orphanedTasks.length - 5} more` : '') +
-          '\n\nThis usually happens when projects are deleted but tasks remain.\n\nWould you like to fix this automatically? We\'ll move these tasks to a "Recovered Projects" folder.'
-        
-        if (window.confirm(message)) {
-          // Create recovery project
-          const recoveryProject = {
-            id: 'recovered-project',
-            name: 'Recovered Projects',
-            color: '#D1D5DB',
-            createdAt: new Date()
-          }
-          
-          if (!projectIds.has('recovered-project')) {
-            ProjectStorage.saveProject(recoveryProject)
-          }
-          
-          // Fix orphaned tasks
-          const cleanedEntries = entries.map(entry => ({
-            ...entry,
-            tasks: entry.tasks.map(task => {
-              if (!projectIds.has(task.projectId)) {
-                return { ...task, projectId: 'recovered-project' }
-              }
-              return task
-            })
-          }))
-          
-          // Save cleaned entries
-          cleanedEntries.forEach(entry => EntryStorage.saveEntries(cleanedEntries))
-          
-          alert('✅ Data has been repaired!\n\nAll orphaned tasks have been moved to "Recovered Projects".')
-          window.location.reload()
-        }
-      }
-    } catch (error) {
-      console.error('Data integrity check failed:', error)
-      alert('❌ Failed to check data integrity. Please try again.')
     }
   }
 
@@ -251,42 +168,6 @@ const Settings: React.FC<SettingsProps> = ({
                 <div>
                   <p className="text-sm font-medium text-white">Export Data</p>
                   <p className="text-xs text-[#938F99]">Save your reflections as backup</p>
-                </div>
-              </div>
-            </Card>
-
-            {/* Check Data Integrity */}
-            <Card
-              as="button"
-              type="button"
-              onClick={handleCheckDataIntegrity}
-              className="w-full text-left active:scale-[0.98] hover:bg-white/[0.06] space-y-0"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
-                  <GearSix size={20} weight="regular" className="text-[#AF52DE]" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-white">Check for Issues</p>
-                  <p className="text-xs text-[#938F99]">Scan and fix any broken links</p>
-                </div>
-              </div>
-            </Card>
-
-            {/* Delete All Data */}
-            <Card
-              as="button"
-              type="button"
-              onClick={handleDeleteAllData}
-              className="w-full text-left active:scale-[0.98] hover:bg-white/[0.06] space-y-0"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/[0.06] flex items-center justify-center">
-                  <Trash size={20} weight="regular" className="text-[#FF6B6B]" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-[#FF6B6B]">Delete All Data</p>
-                  <p className="text-xs text-[#938F99]">Removes everything permanently</p>
                 </div>
               </div>
             </Card>

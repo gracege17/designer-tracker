@@ -9,6 +9,7 @@ The "Export Data" feature allows users to download a complete backup of all thei
 - Clickable card showing:
   - Download icon (gray)
   - "Export Data" title
+  - "Save your reflections as backup" subtitle
 - Card has hover and tap effects
 
 ## User-Facing Behavior
@@ -37,7 +38,7 @@ designer-tracker-backup-2025-11-12.json
 ## Technical Implementation
 
 ### Core Logic Location
-- **Component**: `src/components/Settings.tsx` (lines 38-62, 240-256)
+- **Component**: `src/components/Settings.tsx`
 - **Entry storage**: `src/utils/storage.ts` → `EntryStorage`
 - **Project storage**: `src/utils/storage.ts` → `ProjectStorage`
 
@@ -104,6 +105,7 @@ URL.revokeObjectURL(url)
 
 ### Text
 - Title: "Export Data" - 14px, white, medium weight
+- Subtitle: "Save your reflections as backup" - 12px, gray
 
 ## Safety Features
 
@@ -121,7 +123,7 @@ URL.revokeObjectURL(url)
 
 ## Key Files
 
-1. **`src/components/Settings.tsx`** (lines 38-62, 240-256)
+1. **`src/components/Settings.tsx`**
    - Export Data implementation
    - UI rendering
    - Download trigger logic
@@ -300,3 +302,7 @@ Like other feature tests:
 - ✅ **Instant execution** - Runs in milliseconds
 - ✅ **Deterministic** - Same data = same export
 
+---
+
+**Last Updated**: December 2, 2024  
+**Status**: ✅ Fully Implemented (Export Data only)
